@@ -2,11 +2,11 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev": "npx nodemon",
     "build": "rimraf ./dist && tsc",
-    "start": "npm run build && node dist/index.js",
+    "start": "npm run build && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .ts ."
   },
@@ -19,6 +19,7 @@
     "@typescript-eslint/parser": "^6.5.0",
     "eslint": "^8.48.0",
     "nodemon": "^3.0.1",
+    "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
