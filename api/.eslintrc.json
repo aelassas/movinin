@@ -1,0 +1,27 @@
+{
+  "env": {
+    "es2022": true,
+    "node": true
+  },
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "ignorePatterns": ["dist/**/*.js"],
+  "rules": {
+    "no-console": "off",
+    "semi": ["error", "never"],
+    "brace-style": ["error", "1tbs"],
+    "curly": "error"
+  }
+}
