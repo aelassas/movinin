@@ -35,6 +35,7 @@
     "helmet": "^7.0.0",
     "localized-strings": "^0.2.4",
     "mongoose": "^7.5.0",
+    "movinin-types": "file:../packages/movinin-types",
     "nocache": "^4.0.0"
   }
 }
