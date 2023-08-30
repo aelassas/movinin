@@ -32,7 +32,7 @@ if (HTTPS) {
 const close = () => {
     console.log('\nGracefully shutting down')
     server.close(async () => {
-        console.log('HTTP server closed')
+        console.log(`HTTP${HTTPS ? 'S' : ''} server closed`)
         await mongoose.connection.close(true)
         console.log('MongoDB connection closed')
         process.exit(0)
