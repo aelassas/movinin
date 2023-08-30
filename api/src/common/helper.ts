@@ -1,7 +1,7 @@
-export function StringToBoolean(input: string): boolean | undefined {
+export function StringToBoolean(input: string): boolean {
     try {
         return Boolean(JSON.parse(input.toLocaleLowerCase()))
-    } catch (e) {
-        return undefined
+    } catch {
+        return false
     }
 }

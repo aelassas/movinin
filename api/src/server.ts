@@ -1,26 +1,26 @@
 import process from 'node:process'
-import express from 'express'
+import express, { Express } from 'express'
 import cors from 'cors'
-import mongoose from 'mongoose'
+import mongoose, { ConnectOptions } from 'mongoose'
 import compression from 'compression'
 import helmet from 'helmet'
 import nocache from 'nocache'
 import strings from './config/app.config'
 import * as Helper from './common/helper'
 
-const DB_URI = String(process.env.MI_DB_URI)
-const DB_SSL = Helper.StringToBoolean(String(process.env.MI_DB_SSL))
-const DB_SSL_CERT = String(process.env.MI_DB_SSL_CERT)
-const DB_SSL_CA = String(process.env.MI_DB_SSL_CA)
-const DB_DEBUG = Helper.StringToBoolean(String(process.env.MI_DB_DEBUG))
-const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
+const DB_URI: string = String(process.env.MI_DB_URI)
+const DB_SSL: boolean = Helper.StringToBoolean(String(process.env.MI_DB_SSL))
+const DB_SSL_CERT: string = String(process.env.MI_DB_SSL_CERT)
+const DB_SSL_CA: string = String(process.env.MI_DB_SSL_CA)
+const DB_DEBUG: boolean = Helper.StringToBoolean(String(process.env.MI_DB_DEBUG))
+const DEFAULT_LANGUAGE: string = String(process.env.MI_DEFAULT_LANGUAGE)
 
-let options = {}
+let options: ConnectOptions = {}
 if (DB_SSL) {
     options = {
-        ssl: true,
+        tls: true,
         tlsCertificateKeyFile: DB_SSL_CERT,
-        tlsCAFile: [DB_SSL_CA],
+        tlsCAFile: DB_SSL_CA,
     }
 }
 
@@ -33,7 +33,7 @@ try {
     console.error('Cannot connect to the database:', err)
 }
 
-const app = express()
+const app: Express = express()
 app.use(helmet.contentSecurityPolicy())
 app.use(helmet.dnsPrefetchControl())
 app.use(helmet.crossOriginEmbedderPolicy())
