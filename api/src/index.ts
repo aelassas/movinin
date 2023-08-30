@@ -1,7 +1,9 @@
 import 'dotenv/config'
-import fs from 'node:fs/promises'
-import https from 'node:https'
 import process from 'node:process'
+import fs from 'node:fs/promises'
+import http from 'node:http'
+import https from 'node:https'
+import mongoose from 'mongoose'
 import app from './server'
 import * as Helper from './common/helper'
 
@@ -10,23 +12,31 @@ const HTTPS = Helper.StringToBoolean(String(process.env.MI_HTTPS))
 const PRIVATE_KEY = String(process.env.MI_PRIVATE_KEY)
 const CERTIFICATE = String(process.env.MI_CERTIFICATE)
 
+let server: http.Server | https.Server
 if (HTTPS) {
     https.globalAgent.maxSockets = Number.POSITIVE_INFINITY
     const privateKey = await fs.readFile(PRIVATE_KEY, 'utf8')
     const certificate = await fs.readFile(CERTIFICATE, 'utf8')
     const credentials = { key: privateKey, cert: certificate }
-    const httpsServer = https.createServer(credentials, app)
+    server = https.createServer(credentials, app)
 
-    httpsServer.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log('HTTPS server is running on Port', PORT)
     })
 } else {
-    app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
         console.log('HTTP server is running on Port', PORT)
     })
 }
 
-process.on('SIGINT', function () {
-    console.log('\nGracefully shutting down from SIGINT (Ctrl-C)')
-    process.exit(0)
-})
+const close = () => {
+    console.log('\nGracefully shutting down')
+    server.close(async () => {
+        console.log('HTTP server closed')
+        await mongoose.connection.close(true)
+        console.log('MongoDB connection closed')
+        process.exit(0)
+    })
+}
+
+['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) => process.on(signal, close))
