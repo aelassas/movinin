@@ -19,6 +19,7 @@ interface User {
   location?: string
   type?: string
   blacklisted?: boolean
+  payLater?: boolean
 }
 
 const userSchema = new Schema<User>(
@@ -98,12 +99,16 @@ const userSchema = new Schema<User>(
     },
     type: {
       type: String,
-      enum: [Env.UserType.User, Env.UserType.Admin],
+      enum: [Env.UserType.User, Env.UserType.Agency, Env.UserType.Admin],
       default: Env.UserType.User,
     },
     blacklisted: {
       type: Boolean,
       default: false,
+    },
+    payLater: {
+      type: Boolean,
+      default: true,
     },
   },
   {
