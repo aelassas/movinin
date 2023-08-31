@@ -1,6 +1,6 @@
 export function formatNumber(x: number): string {
     if (typeof x === 'number') {
-        const parts = String(x).split('.')
+        const parts: string[] = String(x).split('.')
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
         return parts.join('.')
     }
