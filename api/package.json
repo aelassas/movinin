@@ -19,6 +19,7 @@
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/node": "^20.5.7",
+    "@types/validator": "^13.11.1",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
     "eslint": "^8.48.0",
@@ -36,6 +37,7 @@
     "localized-strings": "^0.2.4",
     "mongoose": "^7.5.0",
     "movinin-types": "file:../packages/movinin-types",
-    "nocache": "^4.0.0"
+    "nocache": "^4.0.0",
+    "validator": "^13.11.0"
   }
 }
