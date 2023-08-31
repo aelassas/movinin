@@ -7,6 +7,7 @@ import helmet from 'helmet'
 import nocache from 'nocache'
 import strings from './config/app.config'
 import * as Helper from './common/helper'
+import userRoutes from './routes/userRoutes'
 
 const DB_URI: string = String(process.env.MI_DB_URI)
 const DB_SSL: boolean = Helper.StringToBoolean(String(process.env.MI_DB_SSL))
@@ -53,7 +54,7 @@ app.use(compression({ threshold: 0 }))
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(express.json({ limit: '50mb' }))
 app.use(cors())
-// app.use('/', userRoutes)
+app.use('/', userRoutes)
 
 strings.setLanguage(DEFAULT_LANGUAGE)
 export default app

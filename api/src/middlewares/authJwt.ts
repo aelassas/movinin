@@ -13,13 +13,13 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
 
   const token: string = String(Array.isArray(header) && header.length > 0 ? header[0] : header)
 
-  jwt.verify(token, JWT_SECRET, (err) => {
+  return jwt.verify(token, JWT_SECRET, (err) => {
     if (err) {
       console.log(err)
       return res.status(401).send({ message: 'Unauthorized!' })
     }
 
-    next()
+    return next()
   })
 }
 

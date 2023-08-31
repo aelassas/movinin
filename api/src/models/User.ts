@@ -1,9 +1,10 @@
 import process from 'node:process'
 import validator from 'validator'
-import { Schema, model } from 'mongoose'
+import { Schema, model, Types } from 'mongoose'
 import * as Env from '../config/env.config'
 
 interface User {
+  agency?: Types.ObjectId
   fullName: string
   email: string
   phone?: string
@@ -24,6 +25,10 @@ interface User {
 
 const userSchema = new Schema<User>(
   {
+    agency: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
     fullName: {
       type: String,
       required: [true, "can't be blank"],

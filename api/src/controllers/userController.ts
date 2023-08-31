@@ -16,6 +16,7 @@ import PushNotification from '../models/PushNotification'
 import * as Helper from '../common/helper'
 import Notification from '../models/Notification'
 import Property from '../models/Property'
+import * as MovininTypes from 'movinin-types'
 
 const DEFAULT_LANGUAGE: string = String(process.env.MI_DEFAULT_LANGUAGE)
 const HTTPS: boolean = Helper.StringToBoolean(String(process.env.MI_HTTPS))
@@ -33,7 +34,7 @@ const getStatusMessage = (lang: string, msg: string): string => (
 )
 
 export async function signup(req: Request, res: Response) {
-  const { body } = req
+  const body: MovininTypes.FrontendSignUpBody = req.body
 
   try {
     body.active = true
@@ -88,7 +89,7 @@ export async function signup(req: Request, res: Response) {
 }
 
 export async function adminSignup(req: Request, res: Response) {
-  const { body } = req
+  const body: MovininTypes.BackendSignUpBody = req.body
 
   try {
     body.active = true
@@ -148,7 +149,7 @@ export async function adminSignup(req: Request, res: Response) {
 }
 
 export async function create(req: Request, res: Response) {
-  const { body } = req
+  const body: MovininTypes.CreateUserBody = req.body
 
   try {
     body.verified = false
@@ -325,7 +326,7 @@ export async function resend(req: Request, res: Response) {
 }
 
 export async function activate(req: Request, res: Response) {
-  const { userId } = req.body
+  const userId: string = req.body.userId
 
   try {
     const user = await User.findById(userId)
@@ -344,10 +345,10 @@ export async function activate(req: Request, res: Response) {
         await user.save()
 
         return res.sendStatus(200)
-      } else {
-        return res.sendStatus(204)
       }
     }
+
+    return res.sendStatus(204)
   } catch (err) {
     console.error(`[user.activate] ${strings.DB_ERROR} ${userId}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
@@ -355,7 +356,7 @@ export async function activate(req: Request, res: Response) {
 }
 
 export async function signin(req: Request, res: Response) {
-  const { email } = req.body
+  const email: string = req.body.email
 
   try {
     const user = await User.findOne({ email })
@@ -368,7 +369,7 @@ export async function signin(req: Request, res: Response) {
       (req.params.type === Env.AppType.Backend && user.type === Env.UserType.User) ||
       (req.params.type === Env.AppType.Frontend && user.type !== Env.UserType.User)
     ) {
-      res.sendStatus(204)
+      return res.sendStatus(204)
     } else {
       const passwordMatch = await bcrypt.compare(req.body.password, user.password)
 
@@ -392,10 +393,10 @@ export async function signin(req: Request, res: Response) {
           blacklisted: user.blacklisted,
           avatar: user.avatar,
         })
-      } else {
-        return res.sendStatus(204)
       }
     }
+
+    return res.sendStatus(204)
   } catch (err) {
     console.error(`[user.signin] ${strings.DB_ERROR} ${email}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
@@ -453,7 +454,7 @@ export async function deletePushToken(req: Request, res: Response) {
 }
 
 export async function validateEmail(req: Request, res: Response) {
-  const { email } = req.body
+  const email: string = req.body.email
 
   try {
     const exists = await User.exists({ email })
@@ -511,7 +512,7 @@ export async function confirmEmail(req: Request, res: Response) {
 }
 
 export async function resendLink(req: Request, res: Response) {
-  const { email } = req.body
+  const email: string = req.body.email
 
   try {
     const user = await User.findOne({ email })
@@ -553,20 +554,32 @@ export async function resendLink(req: Request, res: Response) {
 
 export async function update(req: Request, res: Response) {
   try {
-    const { _id } = req.body
+    const body: MovininTypes.UpdateUserBody = req.body
+    const _id: string = body._id
     const user = await User.findById(_id)
+
     if (!user) {
       console.error('[user.update] User not found:', req.body.email)
       return res.sendStatus(204)
     } else {
-      const { fullName, phone, bio, location, type, birthDate, enableEmailNotifications, payLater } = req.body
+      const {
+        fullName,
+        phone,
+        bio,
+        location,
+        type,
+        birthDate,
+        enableEmailNotifications,
+        payLater
+      } = body
+
       if (fullName) {
         user.fullName = fullName
       }
       user.phone = phone
       user.location = location
       user.bio = bio
-      user.birthDate = birthDate
+      user.birthDate = new Date(birthDate)
       if (type) {
         user.type = type
       }
@@ -588,13 +601,14 @@ export async function update(req: Request, res: Response) {
 
 export async function updateEmailNotifications(req: Request, res: Response) {
   try {
-    const { _id } = req.body
+    const _id: string = req.body
     const user = await User.findById(_id)
     if (!user) {
       console.error('[user.updateEmailNotifications] User not found:', req.body)
       return res.sendStatus(204)
     } else {
-      user.enableEmailNotifications = req.body.enableEmailNotifications
+      const enableEmailNotifications: boolean = req.body.enableEmailNotifications
+      user.enableEmailNotifications = enableEmailNotifications
       await user.save()
       return res.sendStatus(200)
     }
@@ -606,11 +620,13 @@ export async function updateEmailNotifications(req: Request, res: Response) {
 
 export async function updateLanguage(req: Request, res: Response) {
   try {
-    const { id, language } = req.body
+    const id: string = req.body
+    const language: string = req.body
     const user = await User.findById(id)
+
     if (!user) {
       console.error('[user.updateLanguage] User not found:', id)
-      res.sendStatus(204)
+      return res.sendStatus(204)
     } else {
       user.language = language
       await user.save()
@@ -738,7 +754,7 @@ export async function deleteAvatar(req: Request, res: Response) {
       return res.sendStatus(200)
     } else {
       console.error('[user.deleteAvatar] User not found:', userId)
-      res.sendStatus(204)
+      return res.sendStatus(204)
     }
   } catch (err) {
     console.error(`[user.deleteAvatar] ${strings.DB_ERROR} ${userId}`, err)
@@ -763,7 +779,8 @@ export async function deleteTempAvatar(req: Request, res: Response) {
 }
 
 export async function changePassword(req: Request, res: Response) {
-  const { _id, password: currentPassword, newPassword, strict } = req.body
+  const body: MovininTypes.changePasswordBody = req.body
+  const { _id, password: currentPassword, newPassword, strict } = body
 
   try {
     const user = await User.findOne({ _id })
@@ -899,7 +916,8 @@ export async function getUsers(req: Request, res: Response) {
 
 export async function deleteUsers(req: Request, res: Response) {
   try {
-    const ids = req.body.map((id: string) => new mongoose.Types.ObjectId(id))
+    const body: string[] = req.body
+    const ids: mongoose.Types.ObjectId[] = body.map((id: string) => new mongoose.Types.ObjectId(id))
 
     for (const id of ids) {
       const user = await User.findByIdAndDelete(id)
