@@ -30,9 +30,9 @@ const locationValueSchema = new Schema<LocationValue>(
   },
 )
 
-const locationValueModel = model('LocationValue', locationValueSchema)
+const LocationValue = model<LocationValue>('LocationValue', locationValueSchema)
 
-locationValueModel.on('index', (err) => {
+LocationValue.on('index', (err) => {
   if (err) {
     console.error('LocationValue index error: %s', err)
   } else {
@@ -40,4 +40,4 @@ locationValueModel.on('index', (err) => {
   }
 })
 
-export default locationValueModel
+export default LocationValue

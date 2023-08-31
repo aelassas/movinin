@@ -35,9 +35,9 @@ const notificationSchema = new Schema<Notification>(
   },
 )
 
-const notificationModel = model('Notification', notificationSchema)
+const Notification = model<Notification>('Notification', notificationSchema)
 
-notificationModel.on('index', (err) => {
+Notification.on('index', (err) => {
   if (err) {
     console.error('Notification index error: %s', err)
   } else {
@@ -45,4 +45,4 @@ notificationModel.on('index', (err) => {
   }
 })
 
-export default notificationModel
+export default Notification

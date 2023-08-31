@@ -118,9 +118,9 @@ const userSchema = new Schema<User>(
   },
 )
 
-const userModel = model('User', userSchema)
+const User = model<User>('User', userSchema)
 
-userModel.on('index', (err) => {
+User.on('index', (err) => {
   if (err) {
     console.error('User index error: %s', err)
   } else {
@@ -128,4 +128,4 @@ userModel.on('index', (err) => {
   }
 })
 
-export default userModel
+export default User

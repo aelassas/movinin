@@ -25,9 +25,9 @@ const pushNotificationSchema = new Schema<PushNotification>(
   },
 )
 
-const pushNotificationModel = model('PushNotification', pushNotificationSchema)
+const PushNotification = model<PushNotification>('PushNotification', pushNotificationSchema)
 
-pushNotificationModel.on('index', (err) => {
+PushNotification.on('index', (err) => {
   if (err) {
     console.error('PushNotification index error: %s', err)
   } else {
@@ -35,4 +35,4 @@ pushNotificationModel.on('index', (err) => {
   }
 })
 
-export default pushNotificationModel
+export default PushNotification

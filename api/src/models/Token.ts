@@ -32,9 +32,9 @@ const tokenSchema = new Schema<Token>(
   },
 )
 
-const tokenModel = model('Token', tokenSchema)
+const Token = model<Token>('Token', tokenSchema)
 
-tokenModel.on('index', (err) => {
+Token.on('index', (err) => {
   if (err) {
     console.error('Token index error: %s', err)
   } else {
@@ -42,4 +42,4 @@ tokenModel.on('index', (err) => {
   }
 })
 
-export default tokenModel
+export default Token

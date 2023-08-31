@@ -146,9 +146,9 @@ const propertySchema = new Schema<Property>(
     },
 )
 
-const propertyModel = model('Property', propertySchema)
+const Property = model<Property>('Property', propertySchema)
 
-propertyModel.on('index', (err) => {
+Property.on('index', (err) => {
     if (err) {
         console.error('Property index error: %s', err)
     } else {
@@ -156,4 +156,4 @@ propertyModel.on('index', (err) => {
     }
 })
 
-export default propertyModel
+export default Property

@@ -29,9 +29,9 @@ const notificationCounterSchema = new Schema<NotificationCounter>(
   },
 )
 
-const notificationCounterModel = model('NotificationCounter', notificationCounterSchema)
+const NotificationCounter = model<NotificationCounter>('NotificationCounter', notificationCounterSchema)
 
-notificationCounterModel.on('index', (err) => {
+NotificationCounter.on('index', (err) => {
   if (err) {
     console.error('NotificationCounter index error: %s', err)
   } else {
@@ -39,4 +39,4 @@ notificationCounterModel.on('index', (err) => {
   }
 })
 
-export default notificationCounterModel
+export default NotificationCounter
