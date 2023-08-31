@@ -2,8 +2,8 @@ export const DEFAULT_LANGUAGE = 'en'
 
 export enum UserType {
     Admin = 'ADMIN',
-    User = 'USER',
     Agency = 'AGENCY',
+    User = 'USER',
 }
 
 export enum AppType {

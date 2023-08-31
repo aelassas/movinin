@@ -99,7 +99,7 @@ const userSchema = new Schema<User>(
     },
     type: {
       type: String,
-      enum: [Env.UserType.User, Env.UserType.Agency, Env.UserType.Admin],
+      enum: [Env.UserType.Admin, Env.UserType.Agency, Env.UserType.User],
       default: Env.UserType.User,
     },
     blacklisted: {
