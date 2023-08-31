@@ -14,6 +14,7 @@ import Booking from '../models/Booking'
 import Token from '../models/Token'
 import PushNotification from '../models/PushNotification'
 import * as Helper from '../common/helper'
+import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Property from '../models/Property'
 import * as MovininTypes from 'movinin-types'
@@ -947,6 +948,8 @@ export async function deleteUsers(req: Request, res: Response) {
       } else if (user.type === Env.UserType.User) {
         await Booking.deleteMany({ driver: id })
       }
+
+      await NotificationCounter.deleteMany({ user: id })
       await Notification.deleteMany({ user: id })
     }
 
