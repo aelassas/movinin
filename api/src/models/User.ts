@@ -10,11 +10,11 @@ interface User {
   password?: string
   birthDate?: Date
   verified?: boolean
-  verifiedAt?: boolean
+  verifiedAt?: Date
   active?: boolean
-  language?: string
+  language: string
   enableEmailNotifications?: boolean
-  avatar?: string
+  avatar?: string | null
   bio?: string
   location?: string
   type?: string

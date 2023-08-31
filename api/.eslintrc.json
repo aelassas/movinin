@@ -17,11 +17,20 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "ignorePatterns": ["dist/**/*.js"],
+  "ignorePatterns": [
+    "dist/**/*.js"
+  ],
   "rules": {
     "no-console": "off",
-    "semi": ["error", "never"],
-    "brace-style": ["error", "1tbs"],
-    "curly": "error"
+    "semi": [
+      "error",
+      "never"
+    ],
+    "brace-style": [
+      "error",
+      "1tbs"
+    ],
+    "curly": "error",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }

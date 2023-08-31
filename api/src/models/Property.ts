@@ -1,7 +1,7 @@
 import { Schema, model, Types } from 'mongoose'
 import * as Env from '../config/env.config'
 
-const MINIMUM_AGE = Number.parseInt(String(process.env.MI_MINIMUM_AGE), 10)
+const MINIMUM_AGE: number = Number.parseInt(String(process.env.MI_MINIMUM_AGE), 10)
 
 interface Property {
     name: string
