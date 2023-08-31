@@ -20,3 +20,12 @@ export enum PropertyType {
     Commercial = 'COMMERCIAL',
     Industrial = 'INDUSTRIAL',
 }
+
+export enum BookingStatus {
+    Void = 'VOID',
+    Pending = 'PENDING',
+    Deposit = 'Deposit',
+    Paid = 'PAID',
+    Reserved = 'RESERVED',
+    Cancelled = 'CANCELLED'
+}

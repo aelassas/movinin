@@ -23,6 +23,7 @@ interface Property {
     price: number
     soldOut?: boolean
     hidden?: boolean
+    cancellation?: boolean
 }
 
 const propertySchema = new Schema<Property>(
@@ -132,6 +133,10 @@ const propertySchema = new Schema<Property>(
         hidden: {
             type: Boolean,
             default: false
+        },
+        cancellation: {
+            type: Boolean,
+            default: false,
         },
     },
     {
