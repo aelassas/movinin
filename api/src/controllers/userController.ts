@@ -19,16 +19,16 @@ import Notification from '../models/Notification'
 import Property from '../models/Property'
 import * as MovininTypes from 'movinin-types'
 
-const DEFAULT_LANGUAGE: string = String(process.env.MI_DEFAULT_LANGUAGE)
+const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
 const HTTPS: boolean = Helper.StringToBoolean(String(process.env.MI_HTTPS))
-const JWT_SECRET: string = String(process.env.MI_JWT_SECRET)
+const JWT_SECRET = String(process.env.MI_JWT_SECRET)
 const JWT_EXPIRE_AT: number = Number.parseInt(String(process.env.MI_JWT_EXPIRE_AT), 10)
-const SMTP_FROM: string = String(process.env.MI_SMTP_FROM)
-const CDN: string = String(process.env.MI_CDN_USERS)
-const CDN_TEMP: string = String(process.env.MI_CDN_TEMP_USERS)
-const CDN_PROPERTIES: string = String(process.env.MI_CDN_PROPERTIES)
-const Backend_HOST: string = String(process.env.MI_Backend_HOST)
-const Frontend_HOST: string = String(process.env.MI_Frontend_HOST)
+const SMTP_FROM = String(process.env.MI_SMTP_FROM)
+const CDN = String(process.env.MI_CDN_USERS)
+const CDN_TEMP = String(process.env.MI_CDN_TEMP_USERS)
+const CDN_PROPERTIES = String(process.env.MI_CDN_PROPERTIES)
+const Backend_HOST = String(process.env.MI_Backend_HOST)
+const Frontend_HOST = String(process.env.MI_Frontend_HOST)
 
 const getStatusMessage = (lang: string, msg: string): string => (
   `<!DOCTYPE html><html lang="' ${lang}'"><head></head><body><p>${msg}</p></body></html>`
@@ -851,7 +851,7 @@ export async function checkPassword(req: Request, res: Response) {
 export async function getUsers(req: Request, res: Response) {
   try {
     const keyword: string = escapeStringRegexp(String(req.query.s || ''))
-    const options: string = 'i'
+    const options = 'i'
     const page: number = Number.parseInt(req.params.page, 10)
     const size: number = Number.parseInt(req.params.size, 10)
     const types: string[] = req.body.types
