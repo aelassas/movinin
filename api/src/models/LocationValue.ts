@@ -1,11 +1,7 @@
 import { Schema, model } from 'mongoose'
+import * as Env from '../config/env.config'
 
-interface LocationValue {
-  language: string
-  value: string
-}
-
-const locationValueSchema = new Schema<LocationValue>(
+const locationValueSchema = new Schema<Env.LocationValue>(
   {
     language: {
       type: String,
@@ -30,7 +26,7 @@ const locationValueSchema = new Schema<LocationValue>(
   },
 )
 
-const LocationValue = model<LocationValue>('LocationValue', locationValueSchema)
+const LocationValue = model<Env.LocationValue>('LocationValue', locationValueSchema)
 
 LocationValue.on('index', (err) => {
   if (err) {

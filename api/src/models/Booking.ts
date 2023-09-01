@@ -1,19 +1,7 @@
-import { Schema, model, Types } from 'mongoose'
+import { Schema, model } from 'mongoose'
 import * as Env from '../config/env.config'
 
-interface Booking {
-  agency: Types.ObjectId
-  property: Types.ObjectId
-  renter: Types.ObjectId
-  from: Date
-  to: Date
-  status: Env.BookingStatus
-  cancellation?: boolean
-  cancelRequest?: boolean
-  price: number
-}
-
-const bookingSchema = new Schema<Booking>(
+const bookingSchema = new Schema<Env.Booking>(
   {
     agency: {
       type: Schema.Types.ObjectId,
@@ -70,7 +58,7 @@ const bookingSchema = new Schema<Booking>(
   },
 )
 
-const Booking = model<Booking>('Booking', bookingSchema)
+const Booking = model<Env.Booking>('Booking', bookingSchema)
 
 Booking.on('index', (err) => {
   if (err) {

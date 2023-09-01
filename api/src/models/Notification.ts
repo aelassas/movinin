@@ -1,13 +1,7 @@
-import { Schema, model, Types } from 'mongoose'
+import { Schema, model } from 'mongoose'
+import * as Env from '../config/env.config'
 
-interface Notification {
-  user: Types.ObjectId
-  message: string
-  booking: Types.ObjectId
-  isRead?: boolean
-}
-
-const notificationSchema = new Schema<Notification>(
+const notificationSchema = new Schema<Env.Notification>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -35,7 +29,7 @@ const notificationSchema = new Schema<Notification>(
   },
 )
 
-const Notification = model<Notification>('Notification', notificationSchema)
+const Notification = model<Env.Notification>('Notification', notificationSchema)
 
 Notification.on('index', (err) => {
   if (err) {

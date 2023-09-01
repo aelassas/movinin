@@ -1,32 +1,9 @@
-import { Schema, model, Types } from 'mongoose'
+import { Schema, model } from 'mongoose'
 import * as Env from '../config/env.config'
 
 const MINIMUM_AGE: number = Number.parseInt(String(process.env.MI_MINIMUM_AGE), 10)
 
-interface Property {
-    name: string
-    type: Env.PropertyType
-    agency: Types.ObjectId
-    description: string
-    image: string
-    images?: string[]
-    bedrooms: number
-    bathrooms: number
-    kitchens?: number
-    parkingSpaces?: number,
-    size: number
-    petsAllowed: boolean
-    furnished: boolean
-    minimumAge: number
-    location: Types.ObjectId
-    address?: string
-    price: number
-    soldOut?: boolean
-    hidden?: boolean
-    cancellation?: boolean
-}
-
-const propertySchema = new Schema<Property>(
+const propertySchema = new Schema<Env.Property>(
     {
         name: {
             type: String,
@@ -146,7 +123,7 @@ const propertySchema = new Schema<Property>(
     },
 )
 
-const Property = model<Property>('Property', propertySchema)
+const Property = model<Env.Property>('Property', propertySchema)
 
 Property.on('index', (err) => {
     if (err) {

@@ -1,10 +1,7 @@
-import { Schema, model, Types } from 'mongoose'
+import { Schema, model } from 'mongoose'
+import * as Env from '../config/env.config'
 
-interface Location {
-  values: Types.ObjectId[]
-}
-
-const locationSchema = new Schema<Location>(
+const locationSchema = new Schema<Env.Location>(
   {
     values: {
       type: [Schema.Types.ObjectId],
@@ -19,7 +16,7 @@ const locationSchema = new Schema<Location>(
   },
 )
 
-const Location = model<Location>('Location', locationSchema)
+const Location = model<Env.Location>('Location', locationSchema)
 
 Location.on('index', (err) => {
   if (err) {

@@ -1,11 +1,7 @@
-import { Schema, model, Types } from 'mongoose'
+import { Schema, model } from 'mongoose'
+import * as Env from '../config/env.config'
 
-interface NotificationCounter {
-  user: Types.ObjectId
-  count?: number
-}
-
-const notificationCounterSchema = new Schema<NotificationCounter>(
+const notificationCounterSchema = new Schema<Env.NotificationCounter>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -29,7 +25,7 @@ const notificationCounterSchema = new Schema<NotificationCounter>(
   },
 )
 
-const NotificationCounter = model<NotificationCounter>('NotificationCounter', notificationCounterSchema)
+const NotificationCounter = model<Env.NotificationCounter>('NotificationCounter', notificationCounterSchema)
 
 NotificationCounter.on('index', (err) => {
   if (err) {

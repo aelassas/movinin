@@ -1,11 +1,7 @@
-import { Schema, model, Types } from 'mongoose'
+import { Schema, model } from 'mongoose'
+import * as Env from '../config/env.config'
 
-interface PushNotification {
-  user: Types.ObjectId
-  token: string
-}
-
-const pushNotificationSchema = new Schema<PushNotification>(
+const pushNotificationSchema = new Schema<Env.PushNotification>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -25,7 +21,7 @@ const pushNotificationSchema = new Schema<PushNotification>(
   },
 )
 
-const PushNotification = model<PushNotification>('PushNotification', pushNotificationSchema)
+const PushNotification = model<Env.PushNotification>('PushNotification', pushNotificationSchema)
 
 PushNotification.on('index', (err) => {
   if (err) {

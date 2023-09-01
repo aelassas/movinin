@@ -48,3 +48,12 @@ export interface changePasswordBody {
     newPassword: string
     strict: boolean
 }
+
+export interface UpdateAgencyBody {
+    _id: string
+    fullName: string
+    phone: string
+    location: string
+    bio: string
+    payLater: boolean
+}
