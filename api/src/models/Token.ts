@@ -1,10 +1,10 @@
 import process from 'node:process'
 import { Schema, model } from 'mongoose'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 
 const EXPIRE_AT = Number.parseInt(String(process.env.MI_TOKEN_EXPIRE_AT), 10)
 
-const tokenSchema = new Schema<Env.Token>(
+const tokenSchema = new Schema<env.Token>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -27,7 +27,7 @@ const tokenSchema = new Schema<Env.Token>(
   },
 )
 
-const Token = model<Env.Token>('Token', tokenSchema)
+const Token = model<env.Token>('Token', tokenSchema)
 
 Token.on('index', (err) => {
   if (err) {

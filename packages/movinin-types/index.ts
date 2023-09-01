@@ -57,3 +57,49 @@ export interface UpdateAgencyBody {
     bio: string
     payLater: boolean
 }
+
+export interface UpdateStatusBody {
+    ids: string[],
+    status: string
+}
+
+export interface CreateBookingBody {
+    agency: string
+    property: string
+    renter: string
+    from: Date
+    to: Date
+    status: string
+    cancellation: boolean
+    price: number
+}
+
+export interface UpdateBookingBody extends CreateBookingBody {
+    _id: string
+}
+
+export interface Renter {
+    email: string
+    phone: string
+    fullName: string
+    birthDate: string
+    language: string
+    verified: boolean
+    blacklisted: boolean
+}
+
+export interface Booking {
+    agency: string
+    property: string
+    renter: string
+    from: Date
+    to: Date
+    status: string
+    cancellation: boolean
+    price: number
+}
+
+export interface BookBody {
+    renter: Renter
+    booking: Booking
+}

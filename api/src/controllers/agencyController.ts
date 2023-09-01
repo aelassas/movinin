@@ -4,14 +4,14 @@ import process from 'node:process'
 import escapeStringRegexp from 'escape-string-regexp'
 import { Request, Response } from 'express'
 import strings from '../config/app.config'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 import User from '../models/User'
 import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Booking from '../models/Booking'
 import Property from '../models/Property'
-import * as Helper from '../common/helper'
-import * as MovininTypes from 'movinin-types'
+import * as helper from '../common/helper'
+import * as movininTypes from 'movinin-types'
 
 const CDN = String(process.env.MI_CDN_USERS)
 const CDN_PROPERTIES = String(process.env.MI_CDN_PROPERTIES)
@@ -23,7 +23,7 @@ export async function validate(req: Request, res: Response) {
     const keyword = escapeStringRegexp(fullName)
     const options = 'i'
     const user = await User.findOne({
-      type: Env.UserType.Agency,
+      type: env.UserType.Agency,
       fullName: { $regex: new RegExp(`^${keyword}$`), $options: options },
     })
     return user ? res.sendStatus(204) : res.sendStatus(200)
@@ -34,7 +34,7 @@ export async function validate(req: Request, res: Response) {
 }
 
 export async function update(req: Request, res: Response) {
-  const body: MovininTypes.UpdateAgencyBody = req.body
+  const body: movininTypes.UpdateAgencyBody = req.body
   const { _id } = body
 
   try {
@@ -68,7 +68,7 @@ export async function deleteAgency(req: Request, res: Response) {
     if (agency) {
       if (agency.avatar) {
         const avatar = path.join(CDN, agency.avatar)
-        if (await Helper.exists(avatar)) {
+        if (await helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
 
@@ -79,7 +79,7 @@ export async function deleteAgency(req: Request, res: Response) {
         await Property.deleteMany({ agency: id })
         for (const car of properties) {
           const image = path.join(CDN_PROPERTIES, car.image)
-          if (await Helper.exists(image)) {
+          if (await helper.exists(image)) {
             await fs.unlink(image)
           }
         }
@@ -133,7 +133,7 @@ export async function getAgencies(req: Request, res: Response) {
       [
         {
           $match: {
-            type: Env.UserType.Agency,
+            type: env.UserType.Agency,
             fullName: { $regex: keyword, $options: options },
           },
         },
@@ -148,11 +148,11 @@ export async function getAgencies(req: Request, res: Response) {
           },
         },
       ],
-      { collation: { locale: Env.DEFAULT_LANGUAGE, strength: 2 } },
+      { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
     if (data.length > 0) {
-      data[0].resultData = data[0].resultData.map((agency: Env.User) => {
+      data[0].resultData = data[0].resultData.map((agency: env.User) => {
         const { _id, fullName, avatar } = agency
         return { _id, fullName, avatar }
       })
@@ -169,14 +169,14 @@ export async function getAllAgencies(req: Request, res: Response) {
   try {
     let data = await User.aggregate(
       [
-        { $match: { type: Env.UserType.Agency } },
+        { $match: { type: env.UserType.Agency } },
         { $sort: { fullName: 1 } },
       ],
-      { collation: { locale: Env.DEFAULT_LANGUAGE, strength: 2 } },
+      { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
     if (data.length > 0) {
-      data = data.map((agency: Env.User) => {
+      data = data.map((agency: env.User) => {
         const { _id, fullName, avatar } = agency
         return { _id, fullName, avatar }
       })

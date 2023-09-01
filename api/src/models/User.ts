@@ -1,9 +1,9 @@
 import process from 'node:process'
 import validator from 'validator'
 import { Schema, model } from 'mongoose'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 
-const userSchema = new Schema<Env.User>(
+const userSchema = new Schema<env.User>(
   {
     agency: {
       type: Schema.Types.ObjectId,
@@ -84,8 +84,8 @@ const userSchema = new Schema<Env.User>(
     },
     type: {
       type: String,
-      enum: [Env.UserType.Admin, Env.UserType.Agency, Env.UserType.User],
-      default: Env.UserType.User,
+      enum: [env.UserType.Admin, env.UserType.Agency, env.UserType.User],
+      default: env.UserType.User,
     },
     blacklisted: {
       type: Boolean,
@@ -103,7 +103,7 @@ const userSchema = new Schema<Env.User>(
   },
 )
 
-const User = model<Env.User>('User', userSchema)
+const User = model<env.User>('User', userSchema)
 
 User.on('index', (err) => {
   if (err) {

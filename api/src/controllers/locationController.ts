@@ -1,7 +1,7 @@
 import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 import strings from '../config/app.config'
 import Location from '../models/Location'
 import LocationValue from '../models/LocationValue'
@@ -53,13 +53,13 @@ export async function update(req: Request, res: Response) {
   const { id } = req.params
 
   try {
-    const location = await Location.findById(id).populate<{ values: Env.LocationValue[] }>('values')
+    const location = await Location.findById(id).populate<{ values: env.LocationValue[] }>('values')
 
     if (location) {
       const names = req.body
       for (let i = 0; i < names.length; i++) {
         const name = names[i]
-        const locationValue = (location.values as Env.LocationValue[]).filter((value) => value.language === name.language)[0]
+        const locationValue = (location.values as env.LocationValue[]).filter((value) => value.language === name.language)[0]
         if (locationValue) {
           const lv = await LocationValue.findById(locationValue._id)
           if (!lv) {
@@ -110,10 +110,10 @@ export async function getLocation(req: Request, res: Response) {
   const { id } = req.params
 
   try {
-    const location = await Location.findById(id).populate<{ values: Env.LocationValue[] }>('values').lean()
+    const location = await Location.findById(id).populate<{ values: env.LocationValue[] }>('values').lean()
 
     if (location) {
-      const name = (location.values as Env.LocationValue[]).filter((value) => value.language === req.params.language)[0].value
+      const name = (location.values as env.LocationValue[]).filter((value) => value.language === req.params.language)[0].value
       const l = { ...location, name }
       return res.json(l)
     } else {
@@ -175,7 +175,7 @@ export async function getLocations(req: Request, res: Response) {
           },
         },
       ],
-      { collation: { locale: Env.DEFAULT_LANGUAGE, strength: 2 } },
+      { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
     return res.json(locations)

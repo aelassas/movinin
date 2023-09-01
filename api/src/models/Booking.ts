@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 
-const bookingSchema = new Schema<Env.Booking>(
+const bookingSchema = new Schema<env.Booking>(
   {
     agency: {
       type: Schema.Types.ObjectId,
@@ -29,12 +29,12 @@ const bookingSchema = new Schema<Env.Booking>(
     status: {
       type: String,
       enum: [
-        Env.BookingStatus.Void,
-        Env.BookingStatus.Pending,
-        Env.BookingStatus.Deposit,
-        Env.BookingStatus.Paid,
-        Env.BookingStatus.Reserved,
-        Env.BookingStatus.Cancelled
+        env.BookingStatus.Void,
+        env.BookingStatus.Pending,
+        env.BookingStatus.Deposit,
+        env.BookingStatus.Paid,
+        env.BookingStatus.Reserved,
+        env.BookingStatus.Cancelled
       ],
       required: [true, "can't be blank"],
     },
@@ -58,7 +58,7 @@ const bookingSchema = new Schema<Env.Booking>(
   },
 )
 
-const Booking = model<Env.Booking>('Booking', bookingSchema)
+const Booking = model<env.Booking>('Booking', bookingSchema)
 
 Booking.on('index', (err) => {
   if (err) {

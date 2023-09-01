@@ -45,6 +45,20 @@ export interface Booking {
     price: number
 }
 
+export interface PopulatedBooking {
+    _id?: Types.ObjectId
+    agency: Types.ObjectId | User
+    property: Types.ObjectId
+    renter: Types.ObjectId | User
+    from: Date
+    to: Date
+    status: BookingStatus
+    cancellation?: boolean
+    cancelRequest?: boolean
+    price: number
+}
+
+
 export interface Location {
     _id?: Types.ObjectId
     values: Types.ObjectId[]
@@ -119,6 +133,27 @@ export interface User {
     verifiedAt?: Date
     active?: boolean
     language: string
+    enableEmailNotifications?: boolean
+    avatar?: string | null
+    bio?: string
+    location?: string
+    type?: string
+    blacklisted?: boolean
+    payLater?: boolean
+}
+
+export interface UserInfo {
+    _id?: Types.ObjectId
+    agency?: Types.ObjectId
+    fullName: string
+    email?: string
+    phone?: string
+    password?: string
+    birthDate?: Date
+    verified?: boolean
+    verifiedAt?: Date
+    active?: boolean
+    language?: string
     enableEmailNotifications?: boolean
     avatar?: string | null
     bio?: string

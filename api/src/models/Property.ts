@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 
 const MINIMUM_AGE: number = Number.parseInt(String(process.env.MI_MINIMUM_AGE), 10)
 
-const propertySchema = new Schema<Env.Property>(
+const propertySchema = new Schema<env.Property>(
     {
         name: {
             type: String,
@@ -12,13 +12,13 @@ const propertySchema = new Schema<Env.Property>(
         type: {
             type: String,
             enum: [
-                Env.PropertyType.House,
-                Env.PropertyType.Apartment,
-                Env.PropertyType.Townhouse,
-                Env.PropertyType.Plot,
-                Env.PropertyType.Farm,
-                Env.PropertyType.Commercial,
-                Env.PropertyType.Industrial
+                env.PropertyType.House,
+                env.PropertyType.Apartment,
+                env.PropertyType.Townhouse,
+                env.PropertyType.Plot,
+                env.PropertyType.Farm,
+                env.PropertyType.Commercial,
+                env.PropertyType.Industrial
             ],
             required: [true, "can't be blank"],
         },
@@ -123,7 +123,7 @@ const propertySchema = new Schema<Env.Property>(
     },
 )
 
-const Property = model<Env.Property>('Property', propertySchema)
+const Property = model<env.Property>('Property', propertySchema)
 
 Property.on('index', (err) => {
     if (err) {

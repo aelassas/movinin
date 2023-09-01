@@ -8,19 +8,19 @@ import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
 import strings from '../config/app.config'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 import User from '../models/User'
 import Booking from '../models/Booking'
 import Token from '../models/Token'
 import PushNotification from '../models/PushNotification'
-import * as Helper from '../common/helper'
+import * as helper from '../common/helper'
 import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Property from '../models/Property'
-import * as MovininTypes from 'movinin-types'
+import * as movininTypes from 'movinin-types'
 
 const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
-const HTTPS = Helper.StringToBoolean(String(process.env.MI_HTTPS))
+const HTTPS = helper.StringToBoolean(String(process.env.MI_HTTPS))
 const JWT_SECRET = String(process.env.MI_JWT_SECRET)
 const JWT_EXPIRE_AT = Number.parseInt(String(process.env.MI_JWT_EXPIRE_AT), 10)
 const SMTP_FROM = String(process.env.MI_SMTP_FROM)
@@ -35,13 +35,13 @@ const getStatusMessage = (lang: string, msg: string): string => (
 )
 
 export async function signup(req: Request, res: Response) {
-  const body: MovininTypes.FrontendSignUpBody = req.body
+  const body: movininTypes.FrontendSignUpBody = req.body
 
   try {
     body.active = true
     body.verified = false
     body.blacklisted = false
-    body.type = Env.UserType.User
+    body.type = env.UserType.User
 
     const salt = await bcrypt.genSalt(10)
     const password = body.password
@@ -53,7 +53,7 @@ export async function signup(req: Request, res: Response) {
 
     if (body.avatar) {
       const avatar = path.join(CDN_TEMP, body.avatar)
-      if (await Helper.exists(avatar)) {
+      if (await helper.exists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
         const newPath = path.join(CDN, filename)
 
@@ -81,7 +81,7 @@ export async function signup(req: Request, res: Response) {
         http${HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
-    await Helper.sendMail(mailOptions)
+    await helper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.signup] ${strings.DB_ERROR} ${body}`, err)
@@ -90,13 +90,13 @@ export async function signup(req: Request, res: Response) {
 }
 
 export async function adminSignup(req: Request, res: Response) {
-  const body: MovininTypes.BackendSignUpBody = req.body
+  const body: movininTypes.BackendSignUpBody = req.body
 
   try {
     body.active = true
     body.verified = false
     body.blacklisted = false
-    body.type = Env.UserType.Admin
+    body.type = env.UserType.Admin
 
     const salt = await bcrypt.genSalt(10)
     const password = body.password
@@ -108,7 +108,7 @@ export async function adminSignup(req: Request, res: Response) {
 
     if (body.avatar) {
       const avatar = path.join(CDN_TEMP, body.avatar)
-      if (await Helper.exists(avatar)) {
+      if (await helper.exists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
         const newPath = path.join(CDN, filename)
 
@@ -141,7 +141,7 @@ export async function adminSignup(req: Request, res: Response) {
         ${strings.REGARDS}<br></p>`,
     }
 
-    await Helper.sendMail(mailOptions)
+    await helper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.adminSignup] ${strings.DB_ERROR} ${body}`, err)
@@ -150,7 +150,7 @@ export async function adminSignup(req: Request, res: Response) {
 }
 
 export async function create(req: Request, res: Response) {
-  const body: MovininTypes.CreateUserBody = req.body
+  const body: movininTypes.CreateUserBody = req.body
 
   try {
     body.verified = false
@@ -169,7 +169,7 @@ export async function create(req: Request, res: Response) {
     // avatar
     if (body.avatar) {
       const avatar = path.join(CDN_TEMP, body.avatar)
-      if (await Helper.exists(avatar)) {
+      if (await helper.exists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
         const newPath = path.join(CDN, filename)
 
@@ -202,14 +202,14 @@ export async function create(req: Request, res: Response) {
       html:
         `<p>${strings.HELLO}${user.fullName},<br><br>
         ${strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-        ${Helper.joinURL(
-          user.type === Env.UserType.User ? Frontend_HOST : Backend_HOST,
+        ${helper.joinURL(
+          user.type === env.UserType.User ? Frontend_HOST : Backend_HOST,
           'activate',
-        )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+        )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
 
-    await Helper.sendMail(mailOptions)
+    await helper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.create] ${strings.DB_ERROR} ${body}`, err)
@@ -228,9 +228,9 @@ export async function checkToken(req: Request, res: Response) {
 
     if (user) {
       if (
-        ![Env.AppType.Frontend.toString(), Env.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
-        (req.params.type === Env.AppType.Backend && user.type === Env.UserType.User) ||
-        (req.params.type === Env.AppType.Frontend && user.type !== Env.UserType.User) ||
+        ![env.AppType.Frontend.toString(), env.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
+        (req.params.type === env.AppType.Backend && user.type === env.UserType.User) ||
+        (req.params.type === env.AppType.Frontend && user.type !== env.UserType.User) ||
         user.active
       ) {
         return res.sendStatus(403)
@@ -282,9 +282,9 @@ export async function resend(req: Request, res: Response) {
 
     if (user) {
       if (
-        ![Env.AppType.Frontend.toString(), Env.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
-        (req.params.type === Env.AppType.Backend && user.type === Env.UserType.User) ||
-        (req.params.type === Env.AppType.Frontend && user.type !== Env.UserType.User)
+        ![env.AppType.Frontend.toString(), env.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
+        (req.params.type === env.AppType.Backend && user.type === env.UserType.User) ||
+        (req.params.type === env.AppType.Frontend && user.type !== env.UserType.User)
       ) {
         return res.sendStatus(403)
       } else {
@@ -307,14 +307,14 @@ export async function resend(req: Request, res: Response) {
           html:
             `<p>${strings.HELLO}${user.fullName},<br><br>
             ${reset ? strings.PASSWORD_RESET_LINK : strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-            ${Helper.joinURL(
-              user.type === Env.UserType.User ? Frontend_HOST : Backend_HOST,
+            ${helper.joinURL(
+              user.type === env.UserType.User ? Frontend_HOST : Backend_HOST,
               reset ? 'reset-password' : 'activate',
-            )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+            )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
             ${strings.REGARDS}<br></p>`,
         }
 
-        await Helper.sendMail(mailOptions)
+        await helper.sendMail(mailOptions)
         return res.sendStatus(200)
       }
     } else {
@@ -366,9 +366,9 @@ export async function signin(req: Request, res: Response) {
       !req.body.password ||
       !user ||
       !user.password ||
-      ![Env.AppType.Frontend.toString(), Env.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
-      (req.params.type === Env.AppType.Backend && user.type === Env.UserType.User) ||
-      (req.params.type === Env.AppType.Frontend && user.type !== Env.UserType.User)
+      ![env.AppType.Frontend.toString(), env.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
+      (req.params.type === env.AppType.Backend && user.type === env.UserType.User) ||
+      (req.params.type === env.AppType.Frontend && user.type !== env.UserType.User)
     ) {
       return res.sendStatus(204)
     } else {
@@ -544,7 +544,7 @@ export async function resendLink(req: Request, res: Response) {
           ${strings.REGARDS}<br></p>`,
       }
 
-      await Helper.sendMail(mailOptions)
+      await helper.sendMail(mailOptions)
       return res.status(200).send(getStatusMessage(user.language, strings.ACCOUNT_ACTIVATION_EMAIL_SENT_PART_1 + user.email + strings.ACCOUNT_ACTIVATION_EMAIL_SENT_PART_2))
     }
   } catch (err) {
@@ -555,7 +555,7 @@ export async function resendLink(req: Request, res: Response) {
 
 export async function update(req: Request, res: Response) {
   try {
-    const body: MovininTypes.UpdateUserBody = req.body
+    const body: movininTypes.UpdateUserBody = req.body
     const _id: string = body._id
     const user = await User.findById(_id)
 
@@ -679,7 +679,7 @@ export async function createAvatar(req: Request, res: Response) {
       return res.status(204).send(msg)
     }
 
-    if (!(await Helper.exists(CDN_TEMP))) {
+    if (!(await helper.exists(CDN_TEMP))) {
       await fs.mkdir(CDN_TEMP, { recursive: true })
     }
 
@@ -707,14 +707,14 @@ export async function updateAvatar(req: Request, res: Response) {
     const user = await User.findById(userId)
 
     if (user) {
-      if (!(await Helper.exists(CDN))) {
+      if (!(await helper.exists(CDN))) {
         await fs.mkdir(CDN, { recursive: true })
       }
 
       if (user.avatar && !user.avatar.startsWith('http')) {
         const avatar = path.join(CDN, user.avatar)
 
-        if (await Helper.exists(avatar)) {
+        if (await helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
       }
@@ -745,7 +745,7 @@ export async function deleteAvatar(req: Request, res: Response) {
     if (user) {
       if (user.avatar && !user.avatar.startsWith('http')) {
         const avatar = path.join(CDN, user.avatar)
-        if (await Helper.exists(avatar)) {
+        if (await helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
       }
@@ -768,7 +768,7 @@ export async function deleteTempAvatar(req: Request, res: Response) {
 
   try {
     const avatarFile = path.join(CDN_TEMP, avatar)
-    if (await Helper.exists(avatarFile)) {
+    if (await helper.exists(avatarFile)) {
       await fs.unlink(avatarFile)
     }
 
@@ -780,7 +780,7 @@ export async function deleteTempAvatar(req: Request, res: Response) {
 }
 
 export async function changePassword(req: Request, res: Response) {
-  const body: MovininTypes.changePasswordBody = req.body
+  const body: movininTypes.changePasswordBody = req.body
   const { _id, password: currentPassword, newPassword, strict } = body
 
   try {
@@ -905,7 +905,7 @@ export async function getUsers(req: Request, res: Response) {
           },
         },
       ],
-      { collation: { locale: Env.DEFAULT_LANGUAGE, strength: 2 } },
+      { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
     return res.json(users)
@@ -930,22 +930,22 @@ export async function deleteUsers(req: Request, res: Response) {
 
       if (user.avatar) {
         const avatar = path.join(CDN, user.avatar)
-        if (await Helper.exists(avatar)) {
+        if (await helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
       }
 
-      if (user.type === Env.UserType.Agency) {
+      if (user.type === env.UserType.Agency) {
         await Booking.deleteMany({ company: id })
         const properties = await Property.find({ agency: id })
         await Property.deleteMany({ agency: id })
         for (const property of properties) {
           const image = path.join(CDN_PROPERTIES, property.image)
-          if (await Helper.exists(image)) {
+          if (await helper.exists(image)) {
             await fs.unlink(image)
           }
         }
-      } else if (user.type === Env.UserType.User) {
+      } else if (user.type === env.UserType.User) {
         await Booking.deleteMany({ driver: id })
       }
 

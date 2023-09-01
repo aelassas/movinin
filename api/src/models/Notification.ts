@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 
-const notificationSchema = new Schema<Env.Notification>(
+const notificationSchema = new Schema<env.Notification>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -29,7 +29,7 @@ const notificationSchema = new Schema<Env.Notification>(
   },
 )
 
-const Notification = model<Env.Notification>('Notification', notificationSchema)
+const Notification = model<env.Notification>('Notification', notificationSchema)
 
 Notification.on('index', (err) => {
   if (err) {
