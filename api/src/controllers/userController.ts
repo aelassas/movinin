@@ -35,7 +35,7 @@ const getStatusMessage = (lang: string, msg: string): string => (
 )
 
 export async function signup(req: Request, res: Response) {
-  const body: movininTypes.FrontendSignUpBody = req.body
+  const body: movininTypes.FrontendSignUpPayload = req.body
 
   try {
     body.active = true
@@ -90,7 +90,7 @@ export async function signup(req: Request, res: Response) {
 }
 
 export async function adminSignup(req: Request, res: Response) {
-  const body: movininTypes.BackendSignUpBody = req.body
+  const body: movininTypes.BackendSignUpPayload = req.body
 
   try {
     body.active = true
@@ -150,7 +150,7 @@ export async function adminSignup(req: Request, res: Response) {
 }
 
 export async function create(req: Request, res: Response) {
-  const body: movininTypes.CreateUserBody = req.body
+  const body: movininTypes.CreateUserPayload = req.body
 
   try {
     body.verified = false
@@ -555,7 +555,7 @@ export async function resendLink(req: Request, res: Response) {
 
 export async function update(req: Request, res: Response) {
   try {
-    const body: movininTypes.UpdateUserBody = req.body
+    const body: movininTypes.UpdateUserPayload = req.body
     const _id: string = body._id
     const user = await User.findById(_id)
 
@@ -780,7 +780,7 @@ export async function deleteTempAvatar(req: Request, res: Response) {
 }
 
 export async function changePassword(req: Request, res: Response) {
-  const body: movininTypes.changePasswordBody = req.body
+  const body: movininTypes.changePasswordPayload = req.body
   const { _id, password: currentPassword, newPassword, strict } = body
 
   try {

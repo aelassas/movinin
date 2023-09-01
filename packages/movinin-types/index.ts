@@ -4,7 +4,7 @@ export interface Property {
     name: string
 }
 
-export interface BackendSignUpBody {
+export interface BackendSignUpPayload {
     email: string
     password: string
     fullName: string
@@ -16,11 +16,11 @@ export interface BackendSignUpBody {
     avatar?: string
 }
 
-export interface FrontendSignUpBody extends BackendSignUpBody {
+export interface FrontendSignUpPayload extends BackendSignUpPayload {
     birthDate: number | Date
 }
 
-export interface CreateUserBody {
+export interface CreateUserPayload {
     email: string
     phone: string
     location: string
@@ -36,20 +36,20 @@ export interface CreateUserBody {
     blacklisted?: boolean
 }
 
-export interface UpdateUserBody extends CreateUserBody {
+export interface UpdateUserPayload extends CreateUserPayload {
     _id: string
     enableEmailNotifications: boolean
     payLater: boolean
 }
 
-export interface changePasswordBody {
+export interface changePasswordPayload {
     _id: string
     password: string
     newPassword: string
     strict: boolean
 }
 
-export interface UpdateAgencyBody {
+export interface UpdateAgencyPayload {
     _id: string
     fullName: string
     phone: string
@@ -58,12 +58,12 @@ export interface UpdateAgencyBody {
     payLater: boolean
 }
 
-export interface UpdateStatusBody {
+export interface UpdateStatusPayload {
     ids: string[],
     status: string
 }
 
-export interface CreateBookingBody {
+export interface CreateBookingPayload {
     agency: string
     property: string
     renter: string
@@ -74,7 +74,7 @@ export interface CreateBookingBody {
     price: number
 }
 
-export interface UpdateBookingBody extends CreateBookingBody {
+export interface UpdateBookingPayload extends CreateBookingPayload {
     _id: string
 }
 
@@ -99,7 +99,34 @@ export interface Booking {
     price: number
 }
 
-export interface BookBody {
+export interface BookPayload {
     renter: Renter
     booking: Booking
+}
+
+export interface CreatePropertyPayload {
+    name: string
+    type: string
+    agency: string
+    description: string
+    image: string
+    images: string[]
+    bedrooms: number
+    bathrooms: number
+    kitchens: number
+    parkingSpaces: number,
+    size: number
+    petsAllowed: boolean
+    furnished: boolean
+    minimumAge: number
+    location: string
+    address?: string
+    price: number
+    soldOut: boolean
+    hidden: boolean
+    cancellation: boolean
+}
+
+export interface UpdatePropertyPayload extends CreatePropertyPayload {
+    tempImages: string[]
 }

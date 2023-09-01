@@ -70,6 +70,13 @@ export interface LocationValue {
     value: string
 }
 
+export interface LocationInfo {
+    _id?: Types.ObjectId
+    name?: string
+    values: LocationValue[]
+}
+
+
 export interface Notification {
     _id?: Types.ObjectId
     user: Types.ObjectId
@@ -89,6 +96,30 @@ export interface Property {
     name: string
     type: PropertyType
     agency: Types.ObjectId
+    description: string
+    image: string
+    images?: string[]
+    bedrooms: number
+    bathrooms: number
+    kitchens?: number
+    parkingSpaces?: number,
+    size: number
+    petsAllowed: boolean
+    furnished: boolean
+    minimumAge: number
+    location: Types.ObjectId
+    address?: string
+    price: number
+    soldOut?: boolean
+    hidden?: boolean
+    cancellation?: boolean
+}
+
+export interface PropertyInfo {
+    _id?: Types.ObjectId
+    name: string
+    type: PropertyType
+    agency: UserInfo
     description: string
     image: string
     images?: string[]
@@ -161,4 +192,9 @@ export interface UserInfo {
     type?: string
     blacklisted?: boolean
     payLater?: boolean
+}
+
+export enum Availability {
+    Available = 'AVAILABLE',
+    Unavailable = 'UNAVAILABLE'
 }

@@ -23,7 +23,7 @@ const EXPO_ACCESS_TOKEN = String(process.env.BC_EXPO_ACCESS_TOKEN)
 
 export async function create(req: Request, res: Response) {
   try {
-    const body: movininTypes.CreateBookingBody = req.body
+    const body: movininTypes.CreateBookingPayload = req.body
     const booking = new Booking(body)
 
     await booking.save()
@@ -69,7 +69,7 @@ async function notifySupplier(user: env.User, booking: env.PopulatedBooking, age
 export async function book(req: Request, res: Response) {
   try {
     let user
-    const body: movininTypes.BookBody = req.body
+    const body: movininTypes.BookPayload = req.body
     const { renter } = body
 
     if (renter) {
@@ -259,7 +259,7 @@ async function notifyDriver(booking: env.Booking) {
 
 export async function update(req: Request, res: Response) {
   try {
-    const body: movininTypes.UpdateBookingBody = req.body
+    const body: movininTypes.UpdateBookingPayload = req.body
     const booking = await Booking.findById(body._id)
 
     if (booking) {
@@ -305,7 +305,7 @@ export async function update(req: Request, res: Response) {
 
 export async function updateStatus(req: Request, res: Response) {
   try {
-    const body: movininTypes.UpdateStatusBody = req.body
+    const body: movininTypes.UpdateStatusPayload = req.body
     const { ids: _ids, status } = body
     const ids = _ids.map((id) => new mongoose.Types.ObjectId(id))
     const bulk = Booking.collection.initializeOrderedBulkOp()
@@ -346,8 +346,7 @@ export async function getBooking(req: Request, res: Response) {
   try {
     const booking = await Booking.findById(id)
       .populate<{ agency: env.UserInfo }>('agency')
-      .populate<{ property: env.Property }>('property')
-      .populate<{ property: { agency: env.UserInfo } }>({
+      .populate<{ property: env.PropertyInfo }>({
         path: 'property',
         populate: {
           path: 'agency',

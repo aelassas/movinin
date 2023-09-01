@@ -41,6 +41,8 @@ export default new LocalizedStringsDefault({
         CANCEL_BOOKING_NOTIFICATION: 'made a request to cancel the booking',
         BOOKING_UPDATED_NOTIFICATION_PART1: 'The status of the booking',
         BOOKING_UPDATED_NOTIFICATION_PART2: 'was updated.',
+        PROPERTY_IMAGE_REQUIRED: 'Le champ image ne peut pas être vide: ',
+        PROPERTY_IMAGE_NOT_FOUND: 'Le fichier image est introuvable : ',
     },
     fr: {
         ERROR: 'Erreur interne : ',
@@ -80,5 +82,7 @@ export default new LocalizedStringsDefault({
         CANCEL_BOOKING_NOTIFICATION: "a fait une demande d'annulation de la réservation",
         BOOKING_UPDATED_NOTIFICATION_PART1: 'Le statut de la réservation',
         BOOKING_UPDATED_NOTIFICATION_PART2: 'a été mis à jour.',
+        PROPERTY_IMAGE_REQUIRED: "Property's image field can't be blank: ",
+        PROPERTY_IMAGE_NOT_FOUND: 'Image file not found: ',
     },
 })

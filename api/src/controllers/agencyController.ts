@@ -34,7 +34,7 @@ export async function validate(req: Request, res: Response) {
 }
 
 export async function update(req: Request, res: Response) {
-  const body: movininTypes.UpdateAgencyBody = req.body
+  const body: movininTypes.UpdateAgencyPayload = req.body
   const { _id } = body
 
   try {
