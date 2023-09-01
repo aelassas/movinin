@@ -9,8 +9,8 @@ import * as Helper from './common/helper'
 
 const PORT: number = Number.parseInt(String(process.env.MI_PORT), 10) || 4003
 const HTTPS: boolean = Helper.StringToBoolean(String(process.env.MI_HTTPS))
-const PRIVATE_KEY: string = String(process.env.MI_PRIVATE_KEY)
-const CERTIFICATE: string = String(process.env.MI_CERTIFICATE)
+const PRIVATE_KEY = String(process.env.MI_PRIVATE_KEY)
+const CERTIFICATE = String(process.env.MI_CERTIFICATE)
 
 let server: http.Server | https.Server
 if (HTTPS) {

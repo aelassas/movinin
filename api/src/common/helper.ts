@@ -21,10 +21,10 @@ export async function exists(path: string): Promise<boolean> {
 }
 
 export function sendMail(mailOptions: nodemailer.SendMailOptions) {
-    const SMTP_HOST: string = String(process.env.BC_SMTP_HOST)
+    const SMTP_HOST = String(process.env.BC_SMTP_HOST)
     const SMTP_PORT: number = Number.parseInt(String(process.env.BC_SMTP_PORT), 10)
-    const SMTP_USER: string = String(process.env.BC_SMTP_USER)
-    const SMTP_PASS: string = String(process.env.BC_SMTP_PASS)
+    const SMTP_USER = String(process.env.BC_SMTP_USER)
+    const SMTP_PASS = String(process.env.BC_SMTP_PASS)
 
     const transporterOptions: SMTPTransport.Options = {
         host: SMTP_HOST,

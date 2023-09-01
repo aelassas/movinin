@@ -13,8 +13,8 @@ import Property from '../models/Property'
 import * as Helper from '../common/helper'
 import * as MovininTypes from 'movinin-types'
 
-const CDN: string = String(process.env.MI_CDN_USERS)
-const CDN_PROPERTIES: string = String(process.env.MI_CDN_PROPERTIES)
+const CDN = String(process.env.MI_CDN_USERS)
+const CDN_PROPERTIES = String(process.env.MI_CDN_PROPERTIES)
 
 export async function validate(req: Request, res: Response) {
   const fullName: string = req.body.fullName

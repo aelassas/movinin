@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import process from 'node:process'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET: string = String(process.env.BC_JWT_SECRET)
+const JWT_SECRET = String(process.env.BC_JWT_SECRET)
 
 function verifyToken(req: Request, res: Response, next: NextFunction) {
   const token: string = req.headers['x-access-token'] as string

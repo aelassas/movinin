@@ -9,12 +9,12 @@ import strings from './config/app.config'
 import * as Helper from './common/helper'
 import userRoutes from './routes/userRoutes'
 
-const DB_URI: string = String(process.env.MI_DB_URI)
+const DB_URI = String(process.env.MI_DB_URI)
 const DB_SSL: boolean = Helper.StringToBoolean(String(process.env.MI_DB_SSL))
-const DB_SSL_CERT: string = String(process.env.MI_DB_SSL_CERT)
-const DB_SSL_CA: string = String(process.env.MI_DB_SSL_CA)
+const DB_SSL_CERT = String(process.env.MI_DB_SSL_CERT)
+const DB_SSL_CA = String(process.env.MI_DB_SSL_CA)
 const DB_DEBUG: boolean = Helper.StringToBoolean(String(process.env.MI_DB_DEBUG))
-const DEFAULT_LANGUAGE: string = String(process.env.MI_DEFAULT_LANGUAGE)
+const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
 
 let options: ConnectOptions = {}
 if (DB_SSL) {
