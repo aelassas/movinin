@@ -7,8 +7,8 @@ import mongoose from 'mongoose'
 import app from './server'
 import * as Helper from './common/helper'
 
-const PORT: number = Number.parseInt(String(process.env.MI_PORT), 10) || 4003
-const HTTPS: boolean = Helper.StringToBoolean(String(process.env.MI_HTTPS))
+const PORT = Number.parseInt(String(process.env.MI_PORT), 10) || 4003
+const HTTPS = Helper.StringToBoolean(String(process.env.MI_HTTPS))
 const PRIVATE_KEY = String(process.env.MI_PRIVATE_KEY)
 const CERTIFICATE = String(process.env.MI_CERTIFICATE)
 

@@ -20,9 +20,9 @@ import Property from '../models/Property'
 import * as MovininTypes from 'movinin-types'
 
 const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
-const HTTPS: boolean = Helper.StringToBoolean(String(process.env.MI_HTTPS))
+const HTTPS = Helper.StringToBoolean(String(process.env.MI_HTTPS))
 const JWT_SECRET = String(process.env.MI_JWT_SECRET)
-const JWT_EXPIRE_AT: number = Number.parseInt(String(process.env.MI_JWT_EXPIRE_AT), 10)
+const JWT_EXPIRE_AT = Number.parseInt(String(process.env.MI_JWT_EXPIRE_AT), 10)
 const SMTP_FROM = String(process.env.MI_SMTP_FROM)
 const CDN = String(process.env.MI_CDN_USERS)
 const CDN_TEMP = String(process.env.MI_CDN_TEMP_USERS)
