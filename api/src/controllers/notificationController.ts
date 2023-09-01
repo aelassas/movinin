@@ -73,10 +73,10 @@ export async function markAsRead(req: Request, res: Response) {
       return res.status(400).send(strings.DB_ERROR)
     }
     const counter = await NotificationCounter.findOne({ user: userId })
-    if (!counter) {
+    if (!counter || typeof counter.count === 'undefined') {
       return res.sendStatus(204)
     }
-    counter.count! -= length
+    counter.count -= length
     await counter.save()
 
     return res.sendStatus(200)
@@ -108,10 +108,10 @@ export async function markAsUnRead(req: Request, res: Response) {
       return res.status(400).send(strings.DB_ERROR)
     }
     const counter = await NotificationCounter.findOne({ user: userId })
-    if (!counter) {
+    if (!counter || typeof counter.count === 'undefined') {
       return res.sendStatus(204)
     }
-    counter.count! += length
+    counter.count += length
     await counter.save()
 
     return res.sendStatus(200)
@@ -132,10 +132,10 @@ export async function deleteNotifications(req: Request, res: Response) {
     await Notification.deleteMany({ _id: { $in: ids } })
 
     const counter = await NotificationCounter.findOne({ user: userId })
-    if (!counter) {
+    if (!counter || typeof counter.count === 'undefined') {
       return res.sendStatus(204)
     }
-    counter.count! -= count
+    counter.count -= count
     await counter.save()
 
     return res.sendStatus(200)
