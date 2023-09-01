@@ -193,8 +193,3 @@ export interface UserInfo {
     blacklisted?: boolean
     payLater?: boolean
 }
-
-export enum Availability {
-    Available = 'AVAILABLE',
-    Unavailable = 'UNAVAILABLE'
-}
