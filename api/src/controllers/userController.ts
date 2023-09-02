@@ -749,7 +749,7 @@ export async function deleteAvatar(req: Request, res: Response) {
           await fs.unlink(avatar)
         }
       }
-      user.avatar = null
+      user.avatar = undefined
 
       await user.save()
       return res.sendStatus(200)

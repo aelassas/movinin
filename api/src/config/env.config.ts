@@ -48,9 +48,9 @@ export interface Booking {
 
 export interface BookingInfo {
     _id?: Types.ObjectId
-    agency: Types.ObjectId | User
+    agency: UserInfo
     property: Types.ObjectId
-    renter: Types.ObjectId | User
+    renter: UserInfo
     from: Date
     to: Date
     status: BookingStatus
@@ -166,7 +166,7 @@ export interface User {
     active?: boolean
     language: string
     enableEmailNotifications?: boolean
-    avatar?: string | null
+    avatar?: string
     bio?: string
     location?: string
     type?: string
@@ -187,7 +187,7 @@ export interface UserInfo {
     active?: boolean
     language?: string
     enableEmailNotifications?: boolean
-    avatar?: string | null
+    avatar?: string
     bio?: string
     location?: string
     type?: string

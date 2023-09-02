@@ -34,13 +34,13 @@ export async function create(req: Request, res: Response) {
   }
 }
 
-async function notifySupplier(user: env.User, booking: env.BookingInfo, agency: env.User, notificationMessage: string) {
+async function notifySupplier(user: env.User, bookingId: string, agency: env.User, notificationMessage: string) {
   // notification
-  const message = `${user.fullName} ${notificationMessage} ${booking._id}.`
+  const message = `${user.fullName} ${notificationMessage} ${bookingId}.`
   const notification = new Notification({
     user: agency._id,
     message,
-    booking: booking._id,
+    booking: bookingId
   })
 
   await notification.save()
@@ -60,7 +60,7 @@ async function notifySupplier(user: env.User, booking: env.BookingInfo, agency: 
     from: SMTP_FROM,
     to: agency.email,
     subject: message,
-    html: `<p>${strings.HELLO}${agency.fullName},<br><br>${message}<br><br>${helper.joinURL(BACKEND_HOST, `booking?b=${booking._id}`)}<br><br>${strings.REGARDS}<br></p>`,
+    html: `<p>${strings.HELLO}${agency.fullName},<br><br>${message}<br><br>${helper.joinURL(BACKEND_HOST, `booking?b=${bookingId}`)}<br><br>${strings.REGARDS}<br></p>`,
   }
 
   await helper.sendMail(mailOptions)
@@ -168,7 +168,7 @@ export async function book(req: Request, res: Response) {
     if (agency.language) {
       strings.setLanguage(agency.language)
     }
-    await notifySupplier(user, booking, agency, strings.BOOKING_NOTIFICATION)
+    await notifySupplier(user, booking._id.toString(), agency, strings.BOOKING_NOTIFICATION)
 
     return res.sendStatus(200)
   } catch (err) {
@@ -504,7 +504,7 @@ export async function getBookings(req: Request, res: Response) {
     ])
 
     if (data.length > 0) {
-      const bookings = data[0].resultData
+      const bookings: env.BookingInfo[] = data[0].resultData
 
       for (const booking of bookings) {
         const { _id, fullName, avatar } = booking.agency
@@ -555,7 +555,7 @@ export async function cancelBooking(req: Request, res: Response) {
       await booking.save()
 
       // Notify supplier
-      await notifySupplier(booking.renter, booking, booking.agency, strings.CANCEL_BOOKING_NOTIFICATION)
+      await notifySupplier(booking.renter, booking.id.toString(), booking.agency, strings.CANCEL_BOOKING_NOTIFICATION)
 
       return res.sendStatus(200)
     }
