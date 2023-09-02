@@ -391,19 +391,20 @@ export async function getBooking(req: Request, res: Response) {
 
 export async function getBookings(req: Request, res: Response) {
   try {
+    const body: movininTypes.GetBookingsPayload = req.body
     const page = Number.parseInt(req.params.page) + 1
     const size = Number.parseInt(req.params.size)
-    const companies = req.body.companies.map((id: string) => new mongoose.Types.ObjectId(id))
-    const statuses = req.body.statuses
-    const user = req.body.user
-    const property = req.body.property
-    const from = (req.body.filter && req.body.filter.from && new Date(req.body.filter.from)) || null
-    const to = (req.body.filter && req.body.filter.to && new Date(req.body.filter.to)) || null
-    let keyword = (req.body.filter && req.body.filter.keyword) || ''
+    const agencies = body.agencies.map((id: string) => new mongoose.Types.ObjectId(id))
+    const statuses = body.statuses
+    const user = body.user
+    const property = body.property
+    const from = (body.filter && body.filter.from && new Date(body.filter.from)) || null
+    const to = (body.filter && body.filter.to && new Date(body.filter.to)) || null
+    let keyword = (body.filter && body.filter.keyword) || ''
     const options = 'i'
 
     const $match: mongoose.FilterQuery<any> = {
-      $and: [{ 'agency._id': { $in: companies } }, { status: { $in: statuses } }],
+      $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }],
     }
     if ($match.$and) {
       if (user) {

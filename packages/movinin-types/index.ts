@@ -98,6 +98,20 @@ export interface BookPayload {
     booking: Booking
 }
 
+export interface Filter {
+    from: Date
+    to: Date
+    keyword?: string
+}
+
+export interface GetBookingsPayload {
+    agencies: string[]
+    statuses: string[]
+    user?: string
+    property?: string
+    filter?: Filter
+}
+
 export interface CreatePropertyPayload {
     name: string
     type: string
