@@ -1,9 +1,3 @@
-
-export interface Property {
-    id: string
-    name: string
-}
-
 export interface BackendSignUpPayload {
     email: string
     password: string

@@ -7,6 +7,11 @@ import helmet from 'helmet'
 import nocache from 'nocache'
 import strings from './config/app.config'
 import * as helper from './common/helper'
+import agencyRoutes from './routes/agencyRoutes'
+import bookingRoutes from './routes/bookingRoutes'
+import locationRoutes from './routes/locationRoutes'
+import notificationRoutes from './routes/notificationRoutes'
+import propertyRoutes from './routes/propertyRoutes'
 import userRoutes from './routes/userRoutes'
 
 const DB_URI = String(process.env.MI_DB_URI)
@@ -54,6 +59,11 @@ app.use(compression({ threshold: 0 }))
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(express.json({ limit: '50mb' }))
 app.use(cors())
+app.use('/', agencyRoutes)
+app.use('/', bookingRoutes)
+app.use('/', locationRoutes)
+app.use('/', notificationRoutes)
+app.use('/', propertyRoutes)
 app.use('/', userRoutes)
 
 strings.setLanguage(DEFAULT_LANGUAGE)
