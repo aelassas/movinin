@@ -227,10 +227,11 @@ export async function checkToken(req: Request, res: Response) {
     })
 
     if (user) {
+      const type = req.params.type as env.AppType
       if (
-        ![env.AppType.Frontend.toString(), env.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
-        (req.params.type === env.AppType.Backend && user.type === env.UserType.User) ||
-        (req.params.type === env.AppType.Frontend && user.type !== env.UserType.User) ||
+        ![env.AppType.Frontend, env.AppType.Backend].includes(type) ||
+        (type === env.AppType.Backend && user.type === env.UserType.User) ||
+        (type === env.AppType.Frontend && user.type !== env.UserType.User) ||
         user.active
       ) {
         return res.sendStatus(403)
@@ -357,28 +358,30 @@ export async function activate(req: Request, res: Response) {
 }
 
 export async function signin(req: Request, res: Response) {
-  const email: string = req.body.email
+  const body: { email: string, password?: string, stayConnected?: boolean } = req.body
+  const { email, password, stayConnected } = body
 
   try {
     const user = await User.findOne({ email })
+    const type = req.params.type as env.AppType
 
     if (
-      !req.body.password ||
+      !password ||
       !user ||
       !user.password ||
-      ![env.AppType.Frontend.toString(), env.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
-      (req.params.type === env.AppType.Backend && user.type === env.UserType.User) ||
-      (req.params.type === env.AppType.Frontend && user.type !== env.UserType.User)
+      ![env.AppType.Frontend, env.AppType.Backend].includes(type) ||
+      (type === env.AppType.Backend && user.type === env.UserType.User) ||
+      (type === env.AppType.Frontend && user.type !== env.UserType.User)
     ) {
       return res.sendStatus(204)
     } else {
-      const passwordMatch = await bcrypt.compare(req.body.password, user.password)
+      const passwordMatch = await bcrypt.compare(password, user.password)
 
       if (passwordMatch) {
         const payload = { id: user._id }
 
         let options: { expiresIn?: number } = { expiresIn: JWT_EXPIRE_AT }
-        if (req.body.stayConnected) {
+        if (stayConnected) {
           options = {}
         }
 
@@ -394,10 +397,10 @@ export async function signin(req: Request, res: Response) {
           blacklisted: user.blacklisted,
           avatar: user.avatar,
         })
+      } else {
+        return res.sendStatus(204)
       }
     }
-
-    return res.sendStatus(204)
   } catch (err) {
     console.error(`[user.signin] ${strings.DB_ERROR} ${email}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
@@ -582,7 +585,7 @@ export async function update(req: Request, res: Response) {
       user.bio = bio
       user.birthDate = new Date(birthDate)
       if (type) {
-        user.type = type
+        user.type = type as env.UserType
       }
       if (typeof enableEmailNotifications !== 'undefined') {
         user.enableEmailNotifications = enableEmailNotifications

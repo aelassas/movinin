@@ -268,8 +268,8 @@ export async function deleteProperty(req: Request, res: Response) {
 export async function uploadImage(req: Request, res: Response) {
   try {
     if (!req.file) {
-      const msg = 'req.file not found'
-      console.error(`[property.uploadImage] ${msg}`)
+      const msg = `[property.uploadImage] req.file not found`
+      console.error(msg)
       return res.status(400).send(msg)
     }
 

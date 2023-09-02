@@ -158,7 +158,7 @@ export interface User extends Document {
     avatar?: string
     bio?: string
     location?: string
-    type?: string
+    type?: UserType
     blacklisted?: boolean
     payLater?: boolean
 }
