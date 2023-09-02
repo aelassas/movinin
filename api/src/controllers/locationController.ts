@@ -9,7 +9,7 @@ import Property from '../models/Property'
 import * as movininTypes from 'movinin-types'
 
 export async function validate(req: Request, res: Response) {
-  const body: { language: string, name: string } = req.body
+  const body: movininTypes.ValidateLocationPayload = req.body
   const { language, name } = body
 
   try {

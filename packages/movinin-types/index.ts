@@ -143,3 +143,42 @@ export interface LocationName {
     language: string
     name: string
 }
+
+export interface ActivatePayload {
+    userId: string
+    token: string
+    password: string
+}
+
+export interface ValidateEmailPayload {
+    email: string
+}
+
+export interface SignInPayload {
+    email: string
+    password?: string
+    stayConnected?: boolean
+}
+
+export interface ResendLinkPayload {
+    email?: string
+}
+
+export interface UpdateEmailNotifications {
+    _id: string
+    enableEmailNotifications: boolean
+}
+
+export interface UpdateLanguage {
+    id: string
+    language: string
+}
+
+export interface ValidateAgencyPayload {
+    fullName: string
+}
+
+export interface ValidateLocationPayload {
+    language: string
+    name: string
+}

@@ -30,9 +30,8 @@ const CDN_PROPERTIES = String(process.env.MI_CDN_PROPERTIES)
 const Backend_HOST = String(process.env.MI_Backend_HOST)
 const Frontend_HOST = String(process.env.MI_Frontend_HOST)
 
-const getStatusMessage = (lang: string, msg: string): string => (
+const getStatusMessage = (lang: string, msg: string): string =>
   `<!DOCTYPE html><html lang="' ${lang}'"><head></head><body><p>${msg}</p></body></html>`
-)
 
 export async function signup(req: Request, res: Response) {
   const body: movininTypes.FrontendSignUpPayload = req.body
@@ -328,7 +327,8 @@ export async function resend(req: Request, res: Response) {
 }
 
 export async function activate(req: Request, res: Response) {
-  const userId: string = req.body.userId
+  const body: movininTypes.ActivatePayload = req.body
+  const { userId } = body
 
   try {
     const user = await User.findById(userId)
@@ -358,7 +358,7 @@ export async function activate(req: Request, res: Response) {
 }
 
 export async function signin(req: Request, res: Response) {
-  const body: { email: string, password?: string, stayConnected?: boolean } = req.body
+  const body: movininTypes.SignInPayload = req.body
   const { email, password, stayConnected } = body
 
   try {
@@ -458,7 +458,8 @@ export async function deletePushToken(req: Request, res: Response) {
 }
 
 export async function validateEmail(req: Request, res: Response) {
-  const email: string = req.body.email
+  const body: movininTypes.ValidateEmailPayload = req.body
+  const { email } = body
 
   try {
     const exists = await User.exists({ email })
@@ -516,14 +517,15 @@ export async function confirmEmail(req: Request, res: Response) {
 }
 
 export async function resendLink(req: Request, res: Response) {
-  const email: string = req.body.email
+  const body: movininTypes.ResendLinkPayload = req.body
+  const { email } = body
 
   try {
     const user = await User.findOne({ email })
 
     // user is not found into database
     if (!user) {
-      console.error('[user.resendLink] User not found:', req.params)
+      console.error('[user.resendLink] User not found:', body)
       return res.status(400).send(getStatusMessage(DEFAULT_LANGUAGE, strings.ACCOUNT_ACTIVATION_RESEND_ERROR))
     } else if (user.verified) {
       // user has been already verified
@@ -604,28 +606,31 @@ export async function update(req: Request, res: Response) {
 }
 
 export async function updateEmailNotifications(req: Request, res: Response) {
+  const body: movininTypes.UpdateEmailNotifications = req.body
+
   try {
-    const _id: string = req.body
+    const { _id } = body
     const user = await User.findById(_id)
     if (!user) {
-      console.error('[user.updateEmailNotifications] User not found:', req.body)
+      console.error('[user.updateEmailNotifications] User not found:', body)
       return res.sendStatus(204)
     } else {
-      const enableEmailNotifications: boolean = req.body.enableEmailNotifications
+      const enableEmailNotifications: boolean = body.enableEmailNotifications
       user.enableEmailNotifications = enableEmailNotifications
       await user.save()
       return res.sendStatus(200)
     }
   } catch (err) {
-    console.error(`[user.updateEmailNotifications] ${strings.DB_ERROR} ${req.body}`, err)
+    console.error(`[user.updateEmailNotifications] ${strings.DB_ERROR} ${body}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
   }
 }
 
 export async function updateLanguage(req: Request, res: Response) {
   try {
-    const id: string = req.body
-    const language: string = req.body
+    const body: movininTypes.UpdateLanguage = req.body
+    const { id, language } = body
+
     const user = await User.findById(id)
 
     if (!user) {

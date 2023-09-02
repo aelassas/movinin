@@ -17,7 +17,8 @@ const CDN = String(process.env.MI_CDN_USERS)
 const CDN_PROPERTIES = String(process.env.MI_CDN_PROPERTIES)
 
 export async function validate(req: Request, res: Response) {
-  const fullName: string = req.body.fullName
+  const body: movininTypes.ValidateAgencyPayload = req.body
+  const { fullName } = body
 
   try {
     const keyword = escapeStringRegexp(fullName)
