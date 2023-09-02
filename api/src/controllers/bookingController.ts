@@ -34,7 +34,7 @@ export async function create(req: Request, res: Response) {
   }
 }
 
-async function notifySupplier(user: env.User, booking: env.PopulatedBooking, agency: env.User, notificationMessage: string) {
+async function notifySupplier(user: env.User, booking: env.BookingInfo, agency: env.User, notificationMessage: string) {
   // notification
   const message = `${user.fullName} ${notificationMessage} ${booking._id}.`
   const notification = new Notification({
@@ -68,7 +68,7 @@ async function notifySupplier(user: env.User, booking: env.PopulatedBooking, age
 
 export async function book(req: Request, res: Response) {
   try {
-    let user
+    let user: env.User
     const body: movininTypes.BookPayload = req.body
     const { renter } = body
 
@@ -76,8 +76,19 @@ export async function book(req: Request, res: Response) {
       renter.verified = false
       renter.blacklisted = false
 
-      user = new User(renter)
-      await user.save()
+      const _user = new User(renter)
+      await _user.save()
+      const __user = await User.findById(_user._id)
+      if (!__user) {
+        console.log(`Driver ${_user._id} not found`)
+        return res.sendStatus(204)
+      }
+      user = __user
+
+      if (!user._id) {
+        console.log('User _id not found', body.booking)
+        return res.sendStatus(400)
+      }
 
       const token = new Token({ user: user._id, token: uuid() })
       await token.save()
@@ -97,11 +108,12 @@ export async function book(req: Request, res: Response) {
 
       body.booking.renter = user._id.toString()
     } else {
-      user = await User.findById(req.body.booking.renter)
-      if (!user) {
+      const _user = await User.findById(req.body.booking.renter)
+      if (!_user) {
         console.log(`Renter ${req.body.booking.renter} not found`)
         return res.sendStatus(204)
       }
+      user = _user
       if (user.language) {
         strings.setLanguage(user.language)
       }

@@ -46,7 +46,7 @@ export interface Booking {
     price: number
 }
 
-export interface PopulatedBooking {
+export interface BookingInfo {
     _id?: Types.ObjectId
     agency: Types.ObjectId | User
     property: Types.ObjectId
