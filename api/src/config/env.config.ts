@@ -27,7 +27,7 @@ export enum PropertyType {
 export enum BookingStatus {
     Void = 'VOID',
     Pending = 'PENDING',
-    Deposit = 'Deposit',
+    Deposit = 'DEPOSIT',
     Paid = 'PAID',
     Reserved = 'RESERVED',
     Cancelled = 'CANCELLED'
