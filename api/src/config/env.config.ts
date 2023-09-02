@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { Types } from 'mongoose'
+import { Document, Types } from 'mongoose'
 
 export const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
 
@@ -33,8 +33,7 @@ export enum BookingStatus {
     Cancelled = 'CANCELLED'
 }
 
-export interface Booking {
-    _id?: Types.ObjectId
+export interface Booking extends Document {
     agency: Types.ObjectId
     property: Types.ObjectId
     renter: Types.ObjectId
@@ -60,40 +59,34 @@ export interface BookingInfo {
 }
 
 
-export interface Location {
-    _id?: Types.ObjectId
+export interface Location extends Document {
     values: Types.ObjectId[]
 }
 
-export interface LocationValue {
-    _id?: Types.ObjectId
+export interface LocationValue extends Document {
     language: string
     value: string
 }
 
-export interface LocationInfo {
-    _id?: Types.ObjectId
+export interface LocationInfo extends Document {
     name?: string
     values: LocationValue[]
 }
 
 
-export interface Notification {
-    _id?: Types.ObjectId
+export interface Notification extends Document {
     user: Types.ObjectId
     message: string
     booking: Types.ObjectId
     isRead?: boolean
 }
 
-export interface NotificationCounter {
-    _id?: Types.ObjectId
+export interface NotificationCounter extends Document {
     user: Types.ObjectId
     count?: number
 }
 
-export interface Property {
-    _id?: Types.ObjectId
+export interface Property extends Document {
     name: string
     type: PropertyType
     agency: Types.ObjectId
@@ -116,8 +109,7 @@ export interface Property {
     cancellation?: boolean
 }
 
-export interface PropertyInfo {
-    _id?: Types.ObjectId
+export interface PropertyInfo extends Document {
     name: string
     type: PropertyType
     agency: UserInfo
@@ -140,21 +132,18 @@ export interface PropertyInfo {
     cancellation?: boolean
 }
 
-export interface PushNotification {
-    _id?: Types.ObjectId
+export interface PushNotification extends Document {
     user: Types.ObjectId
     token: string
 }
 
-export interface Token {
-    _id?: Types.ObjectId
+export interface Token extends Document {
     user: Types.ObjectId
     token: string
     expireAt?: Date
 }
 
-export interface User {
-    _id?: Types.ObjectId
+export interface User extends Document {
     agency?: Types.ObjectId
     fullName: string
     email: string

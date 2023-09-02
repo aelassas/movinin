@@ -68,7 +68,7 @@ async function notifySupplier(user: env.User, bookingId: string, agency: env.Use
 
 export async function book(req: Request, res: Response) {
   try {
-    let user: env.User
+    let user: env.User | null
     const body: movininTypes.BookPayload = req.body
     const { renter } = body
 
@@ -76,19 +76,8 @@ export async function book(req: Request, res: Response) {
       renter.verified = false
       renter.blacklisted = false
 
-      const _user = new User(renter)
-      await _user.save()
-      const __user = await User.findById(_user._id)
-      if (!__user) {
-        console.log(`Driver ${_user._id} not found`)
-        return res.sendStatus(204)
-      }
-      user = __user
-
-      if (!user._id) {
-        console.log('User _id not found', body.booking)
-        return res.sendStatus(400)
-      }
+      user = new User(renter)
+      await user.save()
 
       const token = new Token({ user: user._id, token: uuid() })
       await token.save()
@@ -108,22 +97,25 @@ export async function book(req: Request, res: Response) {
 
       body.booking.renter = user._id.toString()
     } else {
-      const _user = await User.findById(req.body.booking.renter)
-      if (!_user) {
-        console.log(`Renter ${req.body.booking.renter} not found`)
-        return res.sendStatus(204)
-      }
-      user = _user
-      if (user.language) {
-        strings.setLanguage(user.language)
-      }
+      user = await User.findById(body.booking.renter)
     }
 
-    const booking = new Booking(req.body.booking)
+    if (!user) {
+      console.log('Renter not found', body)
+      return res.sendStatus(204)
+    }
+
+    let language = env.DEFAULT_LANGUAGE
+    if (user.language) {
+      language = user.language
+      strings.setLanguage(user.language)
+    }
+
+    const booking = new Booking(body.booking)
 
     await booking.save()
 
-    const locale = user.language === 'fr' ? 'fr-FR' : 'en-US'
+    const locale = language === 'fr' ? 'fr-FR' : 'en-US'
     const options: Intl.DateTimeFormatOptions = {
       weekday: 'long',
       month: 'long',

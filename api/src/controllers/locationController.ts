@@ -6,9 +6,11 @@ import strings from '../config/app.config'
 import Location from '../models/Location'
 import LocationValue from '../models/LocationValue'
 import Property from '../models/Property'
+import * as movininTypes from 'movinin-types'
 
 export async function validate(req: Request, res: Response) {
-  const { language, name } = req.body
+  const body: { language: string, name: string } = req.body
+  const { language, name } = body
 
   try {
     const keyword = escapeStringRegexp(name)
@@ -26,7 +28,8 @@ export async function validate(req: Request, res: Response) {
 }
 
 export async function create(req: Request, res: Response) {
-  const names = req.body
+  const body: movininTypes.LocationName[] = req.body
+  const names = body
 
   try {
     const values = []
@@ -59,15 +62,10 @@ export async function update(req: Request, res: Response) {
       const names = req.body
       for (let i = 0; i < names.length; i++) {
         const name = names[i]
-        const locationValue = (location.values as env.LocationValue[]).filter((value) => value.language === name.language)[0]
+        const locationValue = location.values.filter((value) => value.language === name.language)[0]
         if (locationValue) {
-          const lv = await LocationValue.findById(locationValue._id)
-          if (!lv) {
-            console.log(`LocationValue ${locationValue._id} not found`)
-            continue
-          }
-          lv.value = name.name
-          await lv.save()
+          locationValue.value = name.name
+          await locationValue.save()
         } else {
           const locationValue = new LocationValue({
             language: name.language,
@@ -95,8 +93,9 @@ export async function deleteLocation(req: Request, res: Response) {
   try {
     const location = await Location.findByIdAndDelete(id)
     if (!location) {
-      console.log(`Location ${id} not found`)
-      return res.sendStatus(204)
+      const msg = `[location.delete] Location ${id} not found`
+      console.log(msg)
+      return res.status(204).send(msg)
     }
     await LocationValue.deleteMany({ _id: { $in: location.values } })
     return res.sendStatus(200)

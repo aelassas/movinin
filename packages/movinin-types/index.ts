@@ -138,3 +138,8 @@ export interface CreatePropertyPayload {
 export interface UpdatePropertyPayload extends CreatePropertyPayload {
     tempImages: string[]
 }
+
+export interface LocationName {
+    language: string
+    name: string
+}
