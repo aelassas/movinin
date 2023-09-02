@@ -77,10 +77,18 @@ export async function deleteAgency(req: Request, res: Response) {
         await Booking.deleteMany({ agency: id })
         const properties = await Property.find({ agency: id })
         await Property.deleteMany({ agency: id })
-        for (const car of properties) {
-          const image = path.join(CDN_PROPERTIES, car.image)
+        for (const property of properties) {
+          const image = path.join(CDN_PROPERTIES, property.image)
           if (await helper.exists(image)) {
             await fs.unlink(image)
+          }
+          if (property.images) {
+            for (const imageFile of property.images) {
+              const image = path.join(CDN_PROPERTIES, imageFile)
+              if (await helper.exists(image)) {
+                await fs.unlink(image)
+              }
+            }
           }
         }
       }
