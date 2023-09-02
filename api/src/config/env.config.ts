@@ -1,6 +1,7 @@
+import process from 'node:process'
 import { Types } from 'mongoose'
 
-export const DEFAULT_LANGUAGE = 'en'
+export const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
 
 export enum UserType {
     Admin = 'ADMIN',
