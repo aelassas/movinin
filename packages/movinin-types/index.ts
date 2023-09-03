@@ -87,7 +87,8 @@ export interface UpdateStatusPayload {
     status: string
 }
 
-export interface CreateBookingPayload {
+export interface UpsertBookingPayload {
+    _id?: string
     agency: string
     property: string
     renter: string
@@ -96,10 +97,6 @@ export interface CreateBookingPayload {
     status: string
     cancellation: boolean
     price: number
-}
-
-export interface UpdateBookingPayload extends CreateBookingPayload {
-    _id: string
 }
 
 export interface Renter {

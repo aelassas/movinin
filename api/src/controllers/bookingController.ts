@@ -23,7 +23,7 @@ const EXPO_ACCESS_TOKEN = String(process.env.BC_EXPO_ACCESS_TOKEN)
 
 export async function create(req: Request, res: Response) {
   try {
-    const body: movininTypes.CreateBookingPayload = req.body
+    const body: movininTypes.UpsertBookingPayload = req.body
     const booking = new Booking(body)
 
     await booking.save()
@@ -263,7 +263,7 @@ async function notifyDriver(booking: env.Booking) {
 
 export async function update(req: Request, res: Response) {
   try {
-    const body: movininTypes.UpdateBookingPayload = req.body
+    const body: movininTypes.UpsertBookingPayload = req.body
     const booking = await Booking.findById(body._id)
 
     if (booking) {
