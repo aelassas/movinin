@@ -1,3 +1,33 @@
+export const enum UserType {
+    Admin = 'ADMIN',
+    Agency = 'AGENCY',
+    User = 'USER',
+}
+
+export const enum AppType {
+    Backend = 'BACKEND',
+    Frontend = 'FRONTEND',
+}
+
+export const enum PropertyType {
+    House = 'HOUSE',
+    Apartment = 'APPARTMENT',
+    Townhouse = 'TOWNHOUSE',
+    Plot = 'PLOT',
+    Farm = 'FARM',
+    Commercial = 'COMMERCIAL',
+    Industrial = 'INDUSTRIAL',
+}
+
+export const enum BookingStatus {
+    Void = 'VOID',
+    Pending = 'PENDING',
+    Deposit = 'DEPOSIT',
+    Paid = 'PAID',
+    Reserved = 'RESERVED',
+    Cancelled = 'CANCELLED'
+}
+
 export interface BackendSignUpPayload {
     email: string
     password: string

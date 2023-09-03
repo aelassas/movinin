@@ -1,37 +1,8 @@
 import process from 'node:process'
 import { Document, Types } from 'mongoose'
+import * as movininTypes from 'movinin-types'
 
 export const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
-
-export enum UserType {
-    Admin = 'ADMIN',
-    Agency = 'AGENCY',
-    User = 'USER',
-}
-
-export enum AppType {
-    Backend = 'BACKEND',
-    Frontend = 'FRONTEND',
-}
-
-export enum PropertyType {
-    House = 'HOUSE',
-    Apartment = 'APPARTMENT',
-    Townhouse = 'TOWNHOUSE',
-    Plot = 'PLOT',
-    Farm = 'FARM',
-    Commercial = 'COMMERCIAL',
-    Industrial = 'INDUSTRIAL',
-}
-
-export enum BookingStatus {
-    Void = 'VOID',
-    Pending = 'PENDING',
-    Deposit = 'DEPOSIT',
-    Paid = 'PAID',
-    Reserved = 'RESERVED',
-    Cancelled = 'CANCELLED'
-}
 
 export interface Booking extends Document {
     agency: Types.ObjectId
@@ -39,7 +10,7 @@ export interface Booking extends Document {
     renter: Types.ObjectId
     from: Date
     to: Date
-    status: BookingStatus
+    status: movininTypes.BookingStatus
     cancellation?: boolean
     cancelRequest?: boolean
     price: number
@@ -52,7 +23,7 @@ export interface BookingInfo {
     renter: UserInfo
     from: Date
     to: Date
-    status: BookingStatus
+    status: movininTypes.BookingStatus
     cancellation?: boolean
     cancelRequest?: boolean
     price: number
@@ -88,7 +59,7 @@ export interface NotificationCounter extends Document {
 
 export interface Property extends Document {
     name: string
-    type: PropertyType
+    type: movininTypes.PropertyType
     agency: Types.ObjectId
     description: string
     image: string
@@ -111,7 +82,7 @@ export interface Property extends Document {
 
 export interface PropertyInfo extends Document {
     name: string
-    type: PropertyType
+    type: movininTypes.PropertyType
     agency: UserInfo
     description: string
     image: string
@@ -158,7 +129,7 @@ export interface User extends Document {
     avatar?: string
     bio?: string
     location?: string
-    type?: UserType
+    type?: movininTypes.UserType
     blacklisted?: boolean
     payLater?: boolean
 }

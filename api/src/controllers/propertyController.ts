@@ -146,7 +146,7 @@ export async function update(req: Request, res: Response) {
       } = body
 
       property.name = name
-      property.type = type as env.PropertyType
+      property.type = type as movininTypes.PropertyType
       property.agency = new mongoose.Types.ObjectId(agency)
       property.description = description
       property.bedrooms = bedrooms

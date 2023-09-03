@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
+import * as movininTypes from 'movinin-types'
 
 const MINIMUM_AGE: number = Number.parseInt(String(process.env.MI_MINIMUM_AGE), 10)
 
@@ -12,13 +13,13 @@ const propertySchema = new Schema<env.Property>(
         type: {
             type: String,
             enum: [
-                env.PropertyType.House,
-                env.PropertyType.Apartment,
-                env.PropertyType.Townhouse,
-                env.PropertyType.Plot,
-                env.PropertyType.Farm,
-                env.PropertyType.Commercial,
-                env.PropertyType.Industrial
+                movininTypes.PropertyType.House,
+                movininTypes.PropertyType.Apartment,
+                movininTypes.PropertyType.Townhouse,
+                movininTypes.PropertyType.Plot,
+                movininTypes.PropertyType.Farm,
+                movininTypes.PropertyType.Commercial,
+                movininTypes.PropertyType.Industrial
             ],
             required: [true, "can't be blank"],
         },

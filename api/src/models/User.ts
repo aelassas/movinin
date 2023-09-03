@@ -2,6 +2,7 @@ import process from 'node:process'
 import validator from 'validator'
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
+import * as movininTypes from 'movinin-types'
 
 const userSchema = new Schema<env.User>(
   {
@@ -84,8 +85,8 @@ const userSchema = new Schema<env.User>(
     },
     type: {
       type: String,
-      enum: [env.UserType.Admin, env.UserType.Agency, env.UserType.User],
-      default: env.UserType.User,
+      enum: [movininTypes.UserType.Admin, movininTypes.UserType.Agency, movininTypes.UserType.User],
+      default: movininTypes.UserType.User,
     },
     blacklisted: {
       type: Boolean,

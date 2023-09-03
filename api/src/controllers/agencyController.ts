@@ -24,7 +24,7 @@ export async function validate(req: Request, res: Response) {
     const keyword = escapeStringRegexp(fullName)
     const options = 'i'
     const user = await User.findOne({
-      type: env.UserType.Agency,
+      type: movininTypes.UserType.Agency,
       fullName: { $regex: new RegExp(`^${keyword}$`), $options: options },
     })
     return user ? res.sendStatus(204) : res.sendStatus(200)
@@ -142,7 +142,7 @@ export async function getAgencies(req: Request, res: Response) {
       [
         {
           $match: {
-            type: env.UserType.Agency,
+            type: movininTypes.UserType.Agency,
             fullName: { $regex: keyword, $options: options },
           },
         },
@@ -178,7 +178,7 @@ export async function getAllAgencies(req: Request, res: Response) {
   try {
     let data = await User.aggregate(
       [
-        { $match: { type: env.UserType.Agency } },
+        { $match: { type: movininTypes.UserType.Agency } },
         { $sort: { fullName: 1 } },
       ],
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },

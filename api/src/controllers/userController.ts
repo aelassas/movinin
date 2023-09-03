@@ -40,7 +40,7 @@ export async function signup(req: Request, res: Response) {
     body.active = true
     body.verified = false
     body.blacklisted = false
-    body.type = env.UserType.User
+    body.type = movininTypes.UserType.User
 
     const salt = await bcrypt.genSalt(10)
     const password = body.password
@@ -95,7 +95,7 @@ export async function adminSignup(req: Request, res: Response) {
     body.active = true
     body.verified = false
     body.blacklisted = false
-    body.type = env.UserType.Admin
+    body.type = movininTypes.UserType.Admin
 
     const salt = await bcrypt.genSalt(10)
     const password = body.password
@@ -202,7 +202,7 @@ export async function create(req: Request, res: Response) {
         `<p>${strings.HELLO}${user.fullName},<br><br>
         ${strings.ACCOUNT_ACTIVATION_LINK}<br><br>
         ${helper.joinURL(
-          user.type === env.UserType.User ? Frontend_HOST : Backend_HOST,
+          user.type === movininTypes.UserType.User ? Frontend_HOST : Backend_HOST,
           'activate',
         )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${strings.REGARDS}<br></p>`,
@@ -226,11 +226,11 @@ export async function checkToken(req: Request, res: Response) {
     })
 
     if (user) {
-      const type = req.params.type as env.AppType
+      const type = req.params.type as movininTypes.AppType
       if (
-        ![env.AppType.Frontend, env.AppType.Backend].includes(type) ||
-        (type === env.AppType.Backend && user.type === env.UserType.User) ||
-        (type === env.AppType.Frontend && user.type !== env.UserType.User) ||
+        ![movininTypes.AppType.Frontend, movininTypes.AppType.Backend].includes(type) ||
+        (type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User) ||
+        (type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User) ||
         user.active
       ) {
         return res.sendStatus(403)
@@ -282,9 +282,9 @@ export async function resend(req: Request, res: Response) {
 
     if (user) {
       if (
-        ![env.AppType.Frontend.toString(), env.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
-        (req.params.type === env.AppType.Backend && user.type === env.UserType.User) ||
-        (req.params.type === env.AppType.Frontend && user.type !== env.UserType.User)
+        ![movininTypes.AppType.Frontend.toString(), movininTypes.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
+        (req.params.type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User) ||
+        (req.params.type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User)
       ) {
         return res.sendStatus(403)
       } else {
@@ -308,7 +308,7 @@ export async function resend(req: Request, res: Response) {
             `<p>${strings.HELLO}${user.fullName},<br><br>
             ${reset ? strings.PASSWORD_RESET_LINK : strings.ACCOUNT_ACTIVATION_LINK}<br><br>
             ${helper.joinURL(
-              user.type === env.UserType.User ? Frontend_HOST : Backend_HOST,
+              user.type === movininTypes.UserType.User ? Frontend_HOST : Backend_HOST,
               reset ? 'reset-password' : 'activate',
             )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
             ${strings.REGARDS}<br></p>`,
@@ -363,15 +363,15 @@ export async function signin(req: Request, res: Response) {
 
   try {
     const user = await User.findOne({ email })
-    const type = req.params.type as env.AppType
+    const type = req.params.type as movininTypes.AppType
 
     if (
       !password ||
       !user ||
       !user.password ||
-      ![env.AppType.Frontend, env.AppType.Backend].includes(type) ||
-      (type === env.AppType.Backend && user.type === env.UserType.User) ||
-      (type === env.AppType.Frontend && user.type !== env.UserType.User)
+      ![movininTypes.AppType.Frontend, movininTypes.AppType.Backend].includes(type) ||
+      (type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User) ||
+      (type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User)
     ) {
       return res.sendStatus(204)
     } else {
@@ -587,7 +587,7 @@ export async function update(req: Request, res: Response) {
       user.bio = bio
       user.birthDate = new Date(birthDate)
       if (type) {
-        user.type = type as env.UserType
+        user.type = type as movininTypes.UserType
       }
       if (typeof enableEmailNotifications !== 'undefined') {
         user.enableEmailNotifications = enableEmailNotifications
@@ -943,7 +943,7 @@ export async function deleteUsers(req: Request, res: Response) {
         }
       }
 
-      if (user.type === env.UserType.Agency) {
+      if (user.type === movininTypes.UserType.Agency) {
         await Booking.deleteMany({ company: id })
         const properties = await Property.find({ agency: id })
         await Property.deleteMany({ agency: id })
@@ -953,7 +953,7 @@ export async function deleteUsers(req: Request, res: Response) {
             await fs.unlink(image)
           }
         }
-      } else if (user.type === env.UserType.User) {
+      } else if (user.type === movininTypes.UserType.User) {
         await Booking.deleteMany({ driver: id })
       }
 
