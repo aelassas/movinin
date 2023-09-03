@@ -443,10 +443,11 @@ export async function getProperties(req: Request, res: Response) {
   }
 }
 
-export async function getAgencyProperties(req: Request, res: Response) {
+export async function getBookingyProperties(req: Request, res: Response) {
   try {
-    const body: { agency: string } = req.body
+    const body: movininTypes.GetBookingPropertiesPayload = req.body
     const agency = new mongoose.Types.ObjectId(body.agency)
+    const location = new mongoose.Types.ObjectId(body.location)
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
     const page = Number.parseInt(req.params.page)
@@ -456,7 +457,10 @@ export async function getAgencyProperties(req: Request, res: Response) {
       [
         {
           $match: {
-            $and: [{ agency: { $eq: agency } }, { name: { $regex: keyword, $options: options } }],
+            $and: [
+              { agency: { $eq: agency } },
+              { location: location },
+              { name: { $regex: keyword, $options: options } }]
           },
         },
         { $sort: { name: 1 } },

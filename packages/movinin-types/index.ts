@@ -212,3 +212,8 @@ export interface ValidateLocationPayload {
     language: string
     name: string
 }
+
+export interface GetBookingPropertiesPayload {
+    agency: string
+    location: string
+}
