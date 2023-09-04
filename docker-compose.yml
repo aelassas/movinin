@@ -1,0 +1,53 @@
+version: "3.8"
+services:
+  api:
+    build: ./api
+    env_file: ./api/.env.docker
+    restart: always
+    ports:
+      - 4002:4002
+    depends_on:
+      - mongo
+    volumes:
+      - cdn:/var/www/cdn/movinin
+      - ./packages:/movinin/packages
+      # - ./movinin.key:/etc/ssl/movinin.key
+      # - ./movinin.crt:/etc/ssl/movinin.crt
+
+  mongo:
+    image: mongo:latest
+    command: mongod --quiet --logpath /dev/null
+    restart: always
+    environment:
+      # Provide your credentials here
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: PASSWORD
+    ports:
+      - 27017:27017
+
+  backend:
+    build: ./backend
+    depends_on:
+      - api
+    ports:
+      - 3001:3001
+    volumes:
+      - ./packages:/movinin/packages
+      # - ./movinin.key:/etc/ssl/movinin.key
+      # - ./movinin.crt:/etc/ssl/movinin.crt
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - 80:80
+      # - 443:443
+    volumes:
+      - cdn:/var/www/cdn/movinin
+      - ./packages:/movinin/packages
+      # - ./movinin.key:/etc/ssl/movinin.key
+      # - ./movinin.crt:/etc/ssl/movinin.crt
+
+volumes:
+  cdn:
