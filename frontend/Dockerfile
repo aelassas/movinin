@@ -2,14 +2,16 @@
 
 FROM node:18-alpine as build
 WORKDIR /movinin/frontend
-COPY . .
-COPY ./.env.docker ./.env
+COPY ./frontend ./
+COPY ./frontend/.env.docker .env
+COPY ./packages /movinin/packages
 RUN npm install
 RUN npm run build
 
 FROM nginx:stable-alpine
-COPY --from=build /movinin/frontend/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /usr/share/nginx/html
+RUN rm -rf *
+COPY --from=build /movinin/frontend/build .
+COPY ./frontend/nginx.conf /etc/nginx/conf.d/default.conf
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80
-# EXPOSE 443

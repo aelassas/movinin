@@ -27,8 +27,8 @@ const SMTP_FROM = String(process.env.MI_SMTP_FROM)
 const CDN = String(process.env.MI_CDN_USERS)
 const CDN_TEMP = String(process.env.MI_CDN_TEMP_USERS)
 const CDN_PROPERTIES = String(process.env.MI_CDN_PROPERTIES)
-const Backend_HOST = String(process.env.MI_Backend_HOST)
-const Frontend_HOST = String(process.env.MI_Frontend_HOST)
+const Backend_HOST = String(process.env.MI_BACKEND_HOST)
+const Frontend_HOST = String(process.env.MI_FRONTEND_HOST)
 
 const getStatusMessage = (lang: string, msg: string): string =>
   `<!DOCTYPE html><html lang="' ${lang}'"><head></head><body><p>${msg}</p></body></html>`

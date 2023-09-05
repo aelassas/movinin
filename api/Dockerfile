@@ -2,7 +2,8 @@
 
 FROM node:18-alpine
 WORKDIR /movinin/api
-COPY . .
+COPY ./api ./
+COPY ./packages /movinin/packages
 RUN mkdir -p /var/www/cdn/movinin/users
 RUN mkdir -p /var/www/cdn/movinin/temp/users
 RUN mkdir -p /var/www/cdn/movinin/cars
