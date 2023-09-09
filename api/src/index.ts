@@ -5,10 +5,10 @@ import http from 'node:http'
 import https from 'node:https'
 import mongoose from 'mongoose'
 import app from './server'
-import * as helper from './common/helper'
+import * as Helper from './common/Helper'
 
 const PORT = Number.parseInt(String(process.env.MI_PORT), 10) || 4003
-const HTTPS = helper.StringToBoolean(String(process.env.MI_HTTPS))
+const HTTPS = Helper.StringToBoolean(String(process.env.MI_HTTPS))
 const PRIVATE_KEY = String(process.env.MI_PRIVATE_KEY)
 const CERTIFICATE = String(process.env.MI_CERTIFICATE)
 

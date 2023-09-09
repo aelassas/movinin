@@ -1,6 +1,5 @@
 import path from 'node:path'
 import fs from 'node:fs/promises'
-import process from 'node:process'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { v1 as uuid } from 'uuid'
@@ -13,22 +12,11 @@ import User from '../models/User'
 import Booking from '../models/Booking'
 import Token from '../models/Token'
 import PushNotification from '../models/PushNotification'
-import * as helper from '../common/helper'
+import * as Helper from '../common/Helper'
 import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Property from '../models/Property'
 import * as movininTypes from 'movinin-types'
-
-const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
-const HTTPS = helper.StringToBoolean(String(process.env.MI_HTTPS))
-const JWT_SECRET = String(process.env.MI_JWT_SECRET)
-const JWT_EXPIRE_AT = Number.parseInt(String(process.env.MI_JWT_EXPIRE_AT), 10)
-const SMTP_FROM = String(process.env.MI_SMTP_FROM)
-const CDN = String(process.env.MI_CDN_USERS)
-const CDN_TEMP = String(process.env.MI_CDN_TEMP_USERS)
-const CDN_PROPERTIES = String(process.env.MI_CDN_PROPERTIES)
-const Backend_HOST = String(process.env.MI_BACKEND_HOST)
-const Frontend_HOST = String(process.env.MI_FRONTEND_HOST)
 
 const getStatusMessage = (lang: string, msg: string): string =>
   `<!DOCTYPE html><html lang="' ${lang}'"><head></head><body><p>${msg}</p></body></html>`
@@ -51,10 +39,10 @@ export async function signup(req: Request, res: Response) {
     await user.save()
 
     if (body.avatar) {
-      const avatar = path.join(CDN_TEMP, body.avatar)
-      if (await helper.exists(avatar)) {
+      const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
+      if (await Helper.exists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
-        const newPath = path.join(CDN, filename)
+        const newPath = path.join(env.CDN_USERS, filename)
 
         await fs.rename(avatar, newPath)
         user.avatar = filename
@@ -71,16 +59,16 @@ export async function signup(req: Request, res: Response) {
     strings.setLanguage(user.language)
 
     const mailOptions = {
-      from: SMTP_FROM,
+      from: env.SMTP_FROM,
       to: user.email,
       subject: strings.ACCOUNT_ACTIVATION_SUBJECT,
       html:
         `<p>${strings.HELLO}${user.fullName},<br><br>
         ${strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-        http${HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
+        http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
-    await helper.sendMail(mailOptions)
+    await Helper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.signup] ${strings.DB_ERROR} ${body}`, err)
@@ -106,10 +94,10 @@ export async function adminSignup(req: Request, res: Response) {
     await user.save()
 
     if (body.avatar) {
-      const avatar = path.join(CDN_TEMP, body.avatar)
-      if (await helper.exists(avatar)) {
+      const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
+      if (await Helper.exists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
-        const newPath = path.join(CDN, filename)
+        const newPath = path.join(env.CDN_USERS, filename)
 
         try {
           await fs.rename(avatar, newPath)
@@ -130,17 +118,17 @@ export async function adminSignup(req: Request, res: Response) {
     strings.setLanguage(user.language)
 
     const mailOptions = {
-      from: SMTP_FROM,
+      from: env.SMTP_FROM,
       to: user.email,
       subject: strings.ACCOUNT_ACTIVATION_SUBJECT,
       html:
         `<p>${strings.HELLO}${user.fullName},<br><br>
         ${strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-        http${HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
+        http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
 
-    await helper.sendMail(mailOptions)
+    await Helper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.adminSignup] ${strings.DB_ERROR} ${body}`, err)
@@ -167,10 +155,10 @@ export async function create(req: Request, res: Response) {
 
     // avatar
     if (body.avatar) {
-      const avatar = path.join(CDN_TEMP, body.avatar)
-      if (await helper.exists(avatar)) {
+      const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
+      if (await Helper.exists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
-        const newPath = path.join(CDN, filename)
+        const newPath = path.join(env.CDN_USERS, filename)
 
         try {
           await fs.rename(avatar, newPath)
@@ -195,20 +183,20 @@ export async function create(req: Request, res: Response) {
     strings.setLanguage(user.language)
 
     const mailOptions = {
-      from: SMTP_FROM,
+      from: env.SMTP_FROM,
       to: user.email,
       subject: strings.ACCOUNT_ACTIVATION_SUBJECT,
       html:
         `<p>${strings.HELLO}${user.fullName},<br><br>
         ${strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-        ${helper.joinURL(
-          user.type === movininTypes.UserType.User ? Frontend_HOST : Backend_HOST,
+        ${Helper.joinURL(
+          user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.BACKEND_HOST,
           'activate',
         )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
 
-    await helper.sendMail(mailOptions)
+    await Helper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.create] ${strings.DB_ERROR} ${body}`, err)
@@ -301,20 +289,20 @@ export async function resend(req: Request, res: Response) {
         const reset = req.params.reset === 'true'
 
         const mailOptions = {
-          from: SMTP_FROM,
+          from: env.SMTP_FROM,
           to: user.email,
           subject: reset ? strings.PASSWORD_RESET_SUBJECT : strings.ACCOUNT_ACTIVATION_SUBJECT,
           html:
             `<p>${strings.HELLO}${user.fullName},<br><br>
             ${reset ? strings.PASSWORD_RESET_LINK : strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-            ${helper.joinURL(
-              user.type === movininTypes.UserType.User ? Frontend_HOST : Backend_HOST,
+            ${Helper.joinURL(
+              user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.BACKEND_HOST,
               reset ? 'reset-password' : 'activate',
             )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
             ${strings.REGARDS}<br></p>`,
         }
 
-        await helper.sendMail(mailOptions)
+        await Helper.sendMail(mailOptions)
         return res.sendStatus(200)
       }
     } else {
@@ -380,12 +368,12 @@ export async function signin(req: Request, res: Response) {
       if (passwordMatch) {
         const payload = { id: user._id }
 
-        let options: { expiresIn?: number } = { expiresIn: JWT_EXPIRE_AT }
+        let options: { expiresIn?: number } = { expiresIn: env.JWT_EXPIRE_AT }
         if (stayConnected) {
           options = {}
         }
 
-        const token = jwt.sign(payload, JWT_SECRET, options)
+        const token = jwt.sign(payload, env.JWT_SECRET, options)
 
         return res.status(200).send({
           id: user._id,
@@ -526,7 +514,7 @@ export async function resendLink(req: Request, res: Response) {
     // user is not found into database
     if (!user) {
       console.error('[user.resendLink] User not found:', body)
-      return res.status(400).send(getStatusMessage(DEFAULT_LANGUAGE, strings.ACCOUNT_ACTIVATION_RESEND_ERROR))
+      return res.status(400).send(getStatusMessage(env.DEFAULT_LANGUAGE, strings.ACCOUNT_ACTIVATION_RESEND_ERROR))
     } else if (user.verified) {
       // user has been already verified
       return res.status(200).send(getStatusMessage(user.language, strings.ACCOUNT_ACTIVATION_ACCOUNT_VERIFIED))
@@ -539,17 +527,17 @@ export async function resendLink(req: Request, res: Response) {
       // Send email
       strings.setLanguage(user.language)
       const mailOptions = {
-        from: SMTP_FROM,
+        from: env.SMTP_FROM,
         to: user.email,
         subject: strings.ACCOUNT_ACTIVATION_SUBJECT,
         html:
           `<p>${strings.HELLO}${user.fullName},<br><br>
           ${strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-          http${HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
+          http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
           ${strings.REGARDS}<br></p>`,
       }
 
-      await helper.sendMail(mailOptions)
+      await Helper.sendMail(mailOptions)
       return res.status(200).send(getStatusMessage(user.language, strings.ACCOUNT_ACTIVATION_EMAIL_SENT_PART_1 + user.email + strings.ACCOUNT_ACTIVATION_EMAIL_SENT_PART_2))
     }
   } catch (err) {
@@ -687,12 +675,12 @@ export async function createAvatar(req: Request, res: Response) {
       return res.status(204).send(msg)
     }
 
-    if (!(await helper.exists(CDN_TEMP))) {
-      await fs.mkdir(CDN_TEMP, { recursive: true })
+    if (!(await Helper.exists(env.CDN_TEMP_USERS))) {
+      await fs.mkdir(env.CDN_TEMP_USERS, { recursive: true })
     }
 
     const filename = `${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
-    const filepath = path.join(CDN_TEMP, filename)
+    const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
     return res.json(filename)
@@ -715,20 +703,20 @@ export async function updateAvatar(req: Request, res: Response) {
     const user = await User.findById(userId)
 
     if (user) {
-      if (!(await helper.exists(CDN))) {
-        await fs.mkdir(CDN, { recursive: true })
+      if (!(await Helper.exists(env.CDN_USERS))) {
+        await fs.mkdir(env.CDN_USERS, { recursive: true })
       }
 
       if (user.avatar && !user.avatar.startsWith('http')) {
-        const avatar = path.join(CDN, user.avatar)
+        const avatar = path.join(env.CDN_USERS, user.avatar)
 
-        if (await helper.exists(avatar)) {
+        if (await Helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
       }
 
       const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
-      const filepath = path.join(CDN, filename)
+      const filepath = path.join(env.CDN_USERS, filename)
 
       await fs.writeFile(filepath, req.file.buffer)
       user.avatar = filename
@@ -752,8 +740,8 @@ export async function deleteAvatar(req: Request, res: Response) {
 
     if (user) {
       if (user.avatar && !user.avatar.startsWith('http')) {
-        const avatar = path.join(CDN, user.avatar)
-        if (await helper.exists(avatar)) {
+        const avatar = path.join(env.CDN_USERS, user.avatar)
+        if (await Helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
       }
@@ -775,8 +763,8 @@ export async function deleteTempAvatar(req: Request, res: Response) {
   const { avatar } = req.params
 
   try {
-    const avatarFile = path.join(CDN_TEMP, avatar)
-    if (await helper.exists(avatarFile)) {
+    const avatarFile = path.join(env.CDN_TEMP_USERS, avatar)
+    if (await Helper.exists(avatarFile)) {
       await fs.unlink(avatarFile)
     }
 
@@ -937,8 +925,8 @@ export async function deleteUsers(req: Request, res: Response) {
       }
 
       if (user.avatar) {
-        const avatar = path.join(CDN, user.avatar)
-        if (await helper.exists(avatar)) {
+        const avatar = path.join(env.CDN_USERS, user.avatar)
+        if (await Helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
       }
@@ -948,8 +936,8 @@ export async function deleteUsers(req: Request, res: Response) {
         const properties = await Property.find({ agency: id })
         await Property.deleteMany({ agency: id })
         for (const property of properties) {
-          const image = path.join(CDN_PROPERTIES, property.image)
-          if (await helper.exists(image)) {
+          const image = path.join(env.CDN_PROPERTIES, property.image)
+          if (await Helper.exists(image)) {
             await fs.unlink(image)
           }
         }

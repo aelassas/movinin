@@ -1,4 +1,3 @@
-import process from 'node:process'
 import mongoose from 'mongoose'
 import escapeStringRegexp from 'escape-string-regexp'
 import { v1 as uuid } from 'uuid'
@@ -12,14 +11,9 @@ import Property from '../models/Property'
 import Notification from '../models/Notification'
 import NotificationCounter from '../models/NotificationCounter'
 import PushNotification from '../models/PushNotification'
-import * as helper from '../common/helper'
+import * as Helper from '../common/Helper'
 import * as env from '../config/env.config'
 import * as movininTypes from 'movinin-types'
-
-const SMTP_FROM = String(process.env.BC_SMTP_FROM)
-const BACKEND_HOST = String(process.env.BC_BACKEND_HOST)
-const FRONTEND_HOST = String(process.env.BC_FRONTEND_HOST)
-const EXPO_ACCESS_TOKEN = String(process.env.BC_EXPO_ACCESS_TOKEN)
 
 export async function create(req: Request, res: Response) {
   try {
@@ -57,13 +51,13 @@ async function notifySupplier(user: env.User, bookingId: string, agency: env.Use
   strings.setLanguage(agency.language)
 
   const mailOptions = {
-    from: SMTP_FROM,
+    from: env.SMTP_FROM,
     to: agency.email,
     subject: message,
-    html: `<p>${strings.HELLO}${agency.fullName},<br><br>${message}<br><br>${helper.joinURL(BACKEND_HOST, `booking?b=${bookingId}`)}<br><br>${strings.REGARDS}<br></p>`,
+    html: `<p>${strings.HELLO}${agency.fullName},<br><br>${message}<br><br>${Helper.joinURL(env.BACKEND_HOST, `booking?b=${bookingId}`)}<br><br>${strings.REGARDS}<br></p>`,
   }
 
-  await helper.sendMail(mailOptions)
+  await Helper.sendMail(mailOptions)
 }
 
 export async function book(req: Request, res: Response) {
@@ -85,15 +79,15 @@ export async function book(req: Request, res: Response) {
       strings.setLanguage(user.language)
 
       const mailOptions = {
-        from: SMTP_FROM,
+        from: env.SMTP_FROM,
         to: user.email,
         subject: strings.ACCOUNT_ACTIVATION_SUBJECT,
         html: `<p>${strings.HELLO}${user.fullName},<br><br>
         ${strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-        ${helper.joinURL(FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+        ${Helper.joinURL(env.FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${strings.REGARDS}<br></p>`,
       }
-      await helper.sendMail(mailOptions)
+      await Helper.sendMail(mailOptions)
 
       body.booking.renter = user._id.toString()
     } else {
@@ -134,7 +128,7 @@ export async function book(req: Request, res: Response) {
     }
 
     const mailOptions = {
-      from: SMTP_FROM,
+      from: env.SMTP_FROM,
       to: user.email,
       subject: `${strings.BOOKING_CONFIRMED_SUBJECT_PART1} ${booking._id} ${strings.BOOKING_CONFIRMED_SUBJECT_PART2}`,
       html:
@@ -146,10 +140,10 @@ export async function book(req: Request, res: Response) {
         `<br><br>${strings.BOOKING_CONFIRMED_PART8}<br><br>` +
         `${strings.BOOKING_CONFIRMED_PART9}${property.agency.fullName}${strings.BOOKING_CONFIRMED_PART10}${strings.BOOKING_CONFIRMED_PART11}` +
         `${to} ${strings.BOOKING_CONFIRMED_PART12}` +
-        `<br><br>${strings.BOOKING_CONFIRMED_PART13}<br><br>${strings.BOOKING_CONFIRMED_PART14}${FRONTEND_HOST}<br><br>
+        `<br><br>${strings.BOOKING_CONFIRMED_PART13}<br><br>${strings.BOOKING_CONFIRMED_PART14}${env.FRONTEND_HOST}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
-    await helper.sendMail(mailOptions)
+    await Helper.sendMail(mailOptions)
 
     // Notify agency
     const agency = await User.findById(booking.agency)
@@ -198,21 +192,21 @@ async function notifyDriver(booking: env.Booking) {
 
   // mail
   const mailOptions = {
-    from: SMTP_FROM,
+    from: env.SMTP_FROM,
     to: renter.email,
     subject: message,
     html: `<p>${strings.HELLO}${renter.fullName},<br><br>
     ${message}<br><br>
-    ${helper.joinURL(FRONTEND_HOST, `booking?b=${booking._id}`)}<br><br>
+    ${Helper.joinURL(env.FRONTEND_HOST, `booking?b=${booking._id}`)}<br><br>
     ${strings.REGARDS}<br></p>`,
   }
-  await helper.sendMail(mailOptions)
+  await Helper.sendMail(mailOptions)
 
   // push notification
   const pushNotification = await PushNotification.findOne({ user: renter._id })
   if (pushNotification) {
     const pushToken = pushNotification.token
-    const expo = new Expo({ accessToken: EXPO_ACCESS_TOKEN })
+    const expo = new Expo({ accessToken: env.EXPO_ACCESS_TOKEN })
 
     if (!Expo.isExpoPushToken(pushToken)) {
       console.log(`Push token ${pushToken} is not a valid Expo push token.`)

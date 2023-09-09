@@ -6,7 +6,7 @@ import compression from 'compression'
 import helmet from 'helmet'
 import nocache from 'nocache'
 import strings from './config/app.config'
-import * as helper from './common/helper'
+import * as Helper from './common/Helper'
 import agencyRoutes from './routes/agencyRoutes'
 import bookingRoutes from './routes/bookingRoutes'
 import locationRoutes from './routes/locationRoutes'
@@ -15,10 +15,10 @@ import propertyRoutes from './routes/propertyRoutes'
 import userRoutes from './routes/userRoutes'
 
 const DB_URI = String(process.env.MI_DB_URI)
-const DB_SSL = helper.StringToBoolean(String(process.env.MI_DB_SSL))
+const DB_SSL = Helper.StringToBoolean(String(process.env.MI_DB_SSL))
 const DB_SSL_CERT = String(process.env.MI_DB_SSL_CERT)
 const DB_SSL_CA = String(process.env.MI_DB_SSL_CA)
-const DB_DEBUG = helper.StringToBoolean(String(process.env.MI_DB_DEBUG))
+const DB_DEBUG = Helper.StringToBoolean(String(process.env.MI_DB_DEBUG))
 const DEFAULT_LANGUAGE = String(process.env.MI_DEFAULT_LANGUAGE)
 
 let options: ConnectOptions = {}

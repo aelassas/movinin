@@ -1,6 +1,5 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import process from 'node:process'
 import { v1 as uuid } from 'uuid'
 import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
@@ -9,11 +8,8 @@ import Booking from '../models/Booking.js'
 import Property from '../models/Property.js'
 import strings from '../config/app.config.js'
 import * as env from '../config/env.config.js'
-import * as Helper from '../common/helper.js'
+import * as Helper from '../common/Helper.js'
 import * as movininTypes from 'movinin-types'
-
-const CDN = String(process.env.MI_CDN_PROPERTIES)
-const CDN_TEMP = String(process.env.MI_CDN_TEMP_PROPERTIES)
 
 export async function create(req: Request, res: Response) {
   const body: movininTypes.CreatePropertyPayload = req.body
@@ -72,10 +68,10 @@ export async function create(req: Request, res: Response) {
     await property.save()
 
     // image
-    const _image = path.join(CDN_TEMP, imageFile)
+    const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
     if (await Helper.exists(_image)) {
       const filename = `${property._id}_${Date.now()}${path.extname(imageFile)}`
-      const newPath = path.join(CDN, filename)
+      const newPath = path.join(env.CDN_PROPERTIES, filename)
 
       await fs.rename(_image, newPath)
       property.image = filename
@@ -90,11 +86,11 @@ export async function create(req: Request, res: Response) {
     property.images = []
     for (let i = 0; i < images.length; i++) {
       const imageFile = images[i]
-      const _image = path.join(CDN_TEMP, imageFile)
+      const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
 
       if (await Helper.exists(_image)) {
         const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
-        const newPath = path.join(CDN, filename)
+        const newPath = path.join(env.CDN_PROPERTIES, filename)
 
         await fs.rename(_image, newPath)
         property.images.push(filename)
@@ -164,20 +160,20 @@ export async function update(req: Request, res: Response) {
       property.hidden = hidden
       property.cancellation = cancellation
 
-      if (!await Helper.exists(CDN)) {
-        await fs.mkdir(CDN, { recursive: true })
+      if (!await Helper.exists(env.CDN_PROPERTIES)) {
+        await fs.mkdir(env.CDN_PROPERTIES, { recursive: true })
       }
 
       if (image) {
-        const oldImage = path.join(CDN, property.image)
+        const oldImage = path.join(env.CDN_PROPERTIES, property.image)
         if (await Helper.exists(oldImage)) {
           await fs.unlink(oldImage)
         }
 
         const filename = `${property._id}_${Date.now()}${path.extname(image)}`
-        const filepath = path.join(CDN, filename)
+        const filepath = path.join(env.CDN_PROPERTIES, filename)
 
-        const tempImagePath = path.join(CDN_TEMP, image)
+        const tempImagePath = path.join(env.CDN_TEMP_PROPERTIES, image)
         await fs.rename(tempImagePath, filepath)
         property.image = filename
       }
@@ -186,7 +182,7 @@ export async function update(req: Request, res: Response) {
       if (property.images) {
         for (const image of property.images) {
           if (!images.includes(image)) {
-            const _image = path.join(CDN, image)
+            const _image = path.join(env.CDN_PROPERTIES, image)
             if (await Helper.exists(_image)) {
               await fs.unlink(_image)
             }
@@ -201,11 +197,11 @@ export async function update(req: Request, res: Response) {
       // add new images
       for (let i = 0; i < tempImages.length; i++) {
         const imageFile = tempImages[i]
-        const _image = path.join(CDN_TEMP, imageFile)
+        const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
 
         if (await Helper.exists(_image)) {
           const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
-          const newPath = path.join(CDN, filename)
+          const newPath = path.join(env.CDN_PROPERTIES, filename)
 
           await fs.rename(_image, newPath)
           property.images.push(filename)
@@ -249,7 +245,7 @@ export async function deleteProperty(req: Request, res: Response) {
     const property = await Property.findByIdAndDelete(id)
     if (property) {
       if (property.image) {
-        const image = path.join(CDN, property.image)
+        const image = path.join(env.CDN_PROPERTIES, property.image)
         if (await Helper.exists(image)) {
           await fs.unlink(image)
         }
@@ -273,12 +269,12 @@ export async function uploadImage(req: Request, res: Response) {
       return res.status(400).send(msg)
     }
 
-    if (!await Helper.exists(CDN_TEMP)) {
-      await fs.mkdir(CDN_TEMP, { recursive: true })
+    if (!await Helper.exists(env.CDN_TEMP_PROPERTIES)) {
+      await fs.mkdir(env.CDN_TEMP_PROPERTIES, { recursive: true })
     }
 
     const filename = `${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
-    const filepath = path.join(CDN_TEMP, filename)
+    const filepath = path.join(env.CDN_TEMP_PROPERTIES, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
     return res.json(filename)
@@ -290,7 +286,7 @@ export async function uploadImage(req: Request, res: Response) {
 
 export async function deleteTempImage(req: Request, res: Response) {
   try {
-    const _image = path.join(CDN_TEMP, req.params.fileName)
+    const _image = path.join(env.CDN_TEMP_PROPERTIES, req.params.fileName)
     if (await Helper.exists(_image)) {
       await fs.unlink(_image)
     }
@@ -311,7 +307,7 @@ export async function deleteImage(req: Request, res: Response) {
       const index = property.images.findIndex(i => i === imageFileName)
 
       if (index > -1) {
-        const _image = path.join(CDN, imageFileName)
+        const _image = path.join(env.CDN_PROPERTIES, imageFileName)
         if (await Helper.exists(_image)) {
           await fs.unlink(_image)
         }

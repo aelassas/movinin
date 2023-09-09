@@ -1,6 +1,5 @@
 import path from 'node:path'
 import fs from 'node:fs/promises'
-import process from 'node:process'
 import escapeStringRegexp from 'escape-string-regexp'
 import { Request, Response } from 'express'
 import strings from '../config/app.config'
@@ -10,11 +9,8 @@ import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Booking from '../models/Booking'
 import Property from '../models/Property'
-import * as helper from '../common/helper'
+import * as Helper from '../common/Helper'
 import * as movininTypes from 'movinin-types'
-
-const CDN = String(process.env.MI_CDN_USERS)
-const CDN_PROPERTIES = String(process.env.MI_CDN_PROPERTIES)
 
 export async function validate(req: Request, res: Response) {
   const body: movininTypes.ValidateAgencyPayload = req.body
@@ -68,8 +64,8 @@ export async function deleteAgency(req: Request, res: Response) {
     const agency = await User.findByIdAndDelete(id)
     if (agency) {
       if (agency.avatar) {
-        const avatar = path.join(CDN, agency.avatar)
-        if (await helper.exists(avatar)) {
+        const avatar = path.join(env.CDN_USERS, agency.avatar)
+        if (await Helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
 
@@ -79,14 +75,14 @@ export async function deleteAgency(req: Request, res: Response) {
         const properties = await Property.find({ agency: id })
         await Property.deleteMany({ agency: id })
         for (const property of properties) {
-          const image = path.join(CDN_PROPERTIES, property.image)
-          if (await helper.exists(image)) {
+          const image = path.join(env.CDN_PROPERTIES, property.image)
+          if (await Helper.exists(image)) {
             await fs.unlink(image)
           }
           if (property.images) {
             for (const imageFile of property.images) {
-              const image = path.join(CDN_PROPERTIES, imageFile)
-              if (await helper.exists(image)) {
+              const image = path.join(env.CDN_PROPERTIES, imageFile)
+              if (await Helper.exists(image)) {
                 await fs.unlink(image)
               }
             }
