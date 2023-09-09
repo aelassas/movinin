@@ -17,6 +17,7 @@ import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Property from '../models/Property'
 import * as movininTypes from 'movinin-types'
+import * as MailHelper from '../common/MailHelper'
 
 const getStatusMessage = (lang: string, msg: string): string =>
   `<!DOCTYPE html><html lang="' ${lang}'"><head></head><body><p>${msg}</p></body></html>`
@@ -68,7 +69,7 @@ export async function signup(req: Request, res: Response) {
         http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
-    await Helper.sendMail(mailOptions)
+    await MailHelper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.signup] ${strings.DB_ERROR} ${body}`, err)
@@ -128,7 +129,7 @@ export async function adminSignup(req: Request, res: Response) {
         ${strings.REGARDS}<br></p>`,
     }
 
-    await Helper.sendMail(mailOptions)
+    await MailHelper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.adminSignup] ${strings.DB_ERROR} ${body}`, err)
@@ -196,7 +197,7 @@ export async function create(req: Request, res: Response) {
         ${strings.REGARDS}<br></p>`,
     }
 
-    await Helper.sendMail(mailOptions)
+    await MailHelper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.create] ${strings.DB_ERROR} ${body}`, err)
@@ -302,7 +303,7 @@ export async function resend(req: Request, res: Response) {
             ${strings.REGARDS}<br></p>`,
         }
 
-        await Helper.sendMail(mailOptions)
+        await MailHelper.sendMail(mailOptions)
         return res.sendStatus(200)
       }
     } else {
@@ -537,7 +538,7 @@ export async function resendLink(req: Request, res: Response) {
           ${strings.REGARDS}<br></p>`,
       }
 
-      await Helper.sendMail(mailOptions)
+      await MailHelper.sendMail(mailOptions)
       return res.status(200).send(getStatusMessage(user.language, strings.ACCOUNT_ACTIVATION_EMAIL_SENT_PART_1 + user.email + strings.ACCOUNT_ACTIVATION_EMAIL_SENT_PART_2))
     }
   } catch (err) {

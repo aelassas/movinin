@@ -14,6 +14,7 @@ import PushNotification from '../models/PushNotification'
 import * as Helper from '../common/Helper'
 import * as env from '../config/env.config'
 import * as movininTypes from 'movinin-types'
+import * as MailHelper from '../common/MailHelper'
 
 export async function create(req: Request, res: Response) {
   try {
@@ -57,7 +58,7 @@ async function notifySupplier(user: env.User, bookingId: string, agency: env.Use
     html: `<p>${strings.HELLO}${agency.fullName},<br><br>${message}<br><br>${Helper.joinURL(env.BACKEND_HOST, `booking?b=${bookingId}`)}<br><br>${strings.REGARDS}<br></p>`,
   }
 
-  await Helper.sendMail(mailOptions)
+  await MailHelper.sendMail(mailOptions)
 }
 
 export async function book(req: Request, res: Response) {
@@ -87,7 +88,7 @@ export async function book(req: Request, res: Response) {
         ${Helper.joinURL(env.FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${strings.REGARDS}<br></p>`,
       }
-      await Helper.sendMail(mailOptions)
+      await MailHelper.sendMail(mailOptions)
 
       body.booking.renter = user._id.toString()
     } else {
@@ -143,7 +144,7 @@ export async function book(req: Request, res: Response) {
         `<br><br>${strings.BOOKING_CONFIRMED_PART13}<br><br>${strings.BOOKING_CONFIRMED_PART14}${env.FRONTEND_HOST}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
-    await Helper.sendMail(mailOptions)
+    await MailHelper.sendMail(mailOptions)
 
     // Notify agency
     const agency = await User.findById(booking.agency)
@@ -200,7 +201,7 @@ async function notifyDriver(booking: env.Booking) {
     ${Helper.joinURL(env.FRONTEND_HOST, `booking?b=${booking._id}`)}<br><br>
     ${strings.REGARDS}<br></p>`,
   }
-  await Helper.sendMail(mailOptions)
+  await MailHelper.sendMail(mailOptions)
 
   // push notification
   const pushNotification = await PushNotification.findOne({ user: renter._id })
