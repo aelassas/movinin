@@ -3,6 +3,6 @@ export default {
   update: '/api/update-agency',
   delete: '/api/delete-agency/:id',
   getAgency: '/api/agency/:id',
-  getAgencies: '/api/agencys/:page/:size',
+  getAgencies: '/api/agencies/:page/:size',
   getAllAgencies: '/api/all-agencies',
 }

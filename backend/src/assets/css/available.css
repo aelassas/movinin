@@ -1,0 +1,26 @@
+div.label {
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 2px 10px;
+    margin: 2px 0;
+    width: fit-content;
+    height: 22px;
+}
+
+div.label .label-icon {
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+div.available {
+    background-color: #1f9201;
+}
+
+div.unavailable {
+    background-color: #f44336;
+}

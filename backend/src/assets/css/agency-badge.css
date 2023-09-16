@@ -1,0 +1,23 @@
+div.agency-badge {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+div.agency-badge span.agency-badge-logo {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 32px;
+    margin-right: 5px;
+}
+
+div.agency-badge span.agency-badge-logo img {
+    max-width: 100%;
+    max-height: 100%;
+}

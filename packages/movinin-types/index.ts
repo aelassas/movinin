@@ -1,31 +1,51 @@
-export const enum UserType {
+export enum UserType {
     Admin = 'ADMIN',
     Agency = 'AGENCY',
     User = 'USER',
 }
 
-export const enum AppType {
+export enum AppType {
     Backend = 'BACKEND',
     Frontend = 'FRONTEND',
 }
 
-export const enum PropertyType {
-    House = 'HOUSE',
-    Apartment = 'APPARTMENT',
-    Townhouse = 'TOWNHOUSE',
-    Plot = 'PLOT',
-    Farm = 'FARM',
+export enum PropertyType {
+    Apartment = 'APARTMENT',
     Commercial = 'COMMERCIAL',
+    Farm = 'FARM',
+    House = 'HOUSE',
     Industrial = 'INDUSTRIAL',
+    Plot = 'PLOT',
+    Townhouse = 'TOWNHOUSE',
 }
 
-export const enum BookingStatus {
+export enum BookingStatus {
     Void = 'VOID',
     Pending = 'PENDING',
     Deposit = 'DEPOSIT',
     Paid = 'PAID',
     Reserved = 'RESERVED',
     Cancelled = 'CANCELLED'
+}
+
+export enum RecordType {
+    Admin = 'ADMIN',
+    Agency = 'AGENCY',
+    User = 'USER',
+    Property = 'PROPERTY',
+    Location = 'LOCATION'
+}
+
+export enum Availablity {
+    Available = 'AVAILABLE',
+    Unavailable = 'UNAVAILABLE'
+}
+
+export enum RentalTerm {
+    Monthly = 'MONTHLY',
+    Weekly = 'WEEKLY',
+    Daily = 'DAILY',
+    Yearly = 'YEARLY'
 }
 
 export interface BackendSignUpPayload {
@@ -45,25 +65,26 @@ export interface FrontendSignUpPayload extends BackendSignUpPayload {
 }
 
 export interface CreateUserPayload {
-    email: string
+    email?: string
     phone: string
     location: string
     bio: string
     fullName: string
-    type: string
-    avatar: string
-    birthDate: number | Date
-    language: string
-    agency: string
+    type?: string
+    avatar?: string
+    birthDate?: number | Date
+    language?: string
+    agency?: string
     password?: string
     verified?: boolean
     blacklisted?: boolean
+    payLater?: boolean
 }
 
 export interface UpdateUserPayload extends CreateUserPayload {
     _id: string
-    enableEmailNotifications: boolean
-    payLater: boolean
+    enableEmailNotifications?: boolean
+    payLater?: boolean
 }
 
 export interface changePasswordPayload {
@@ -87,19 +108,8 @@ export interface UpdateStatusPayload {
     status: string
 }
 
-export interface UpsertBookingPayload {
-    _id?: string
-    agency: string
-    property: string
-    renter: string
-    from: Date
-    to: Date
-    status: string
-    cancellation: boolean
-    price: number
-}
-
 export interface Renter {
+    _id?: string
     email: string
     phone: string
     fullName: string
@@ -110,14 +120,16 @@ export interface Renter {
 }
 
 export interface Booking {
-    agency: string
-    property: string
-    renter: string
+    _id?: string
+    agency: string | User
+    property: string | Property
+    renter: string | User
     from: Date
     to: Date
-    status: string
+    status: BookingStatus
     cancellation: boolean
-    price: number
+    price?: number
+    location: string | Location
 }
 
 export interface BookPayload {
@@ -126,8 +138,9 @@ export interface BookPayload {
 }
 
 export interface Filter {
-    from: Date
-    to: Date
+    from?: Date
+    to?: Date
+    location?: string
     keyword?: string
 }
 
@@ -137,33 +150,7 @@ export interface GetBookingsPayload {
     user?: string
     property?: string
     filter?: Filter
-}
-
-export interface CreatePropertyPayload {
-    name: string
-    type: string
-    agency: string
-    description: string
-    image: string
-    images: string[]
-    bedrooms: number
-    bathrooms: number
-    kitchens: number
-    parkingSpaces: number,
-    size: number
-    petsAllowed: boolean
-    furnished: boolean
-    minimumAge: number
-    location: string
-    address?: string
-    price: number
-    soldOut: boolean
-    hidden: boolean
-    cancellation: boolean
-}
-
-export interface UpdatePropertyPayload extends CreatePropertyPayload {
-    tempImages: string[]
+    language: string
 }
 
 export interface LocationName {
@@ -191,11 +178,6 @@ export interface ResendLinkPayload {
     email?: string
 }
 
-export interface UpdateEmailNotifications {
-    _id: string
-    enableEmailNotifications: boolean
-}
-
 export interface UpdateLanguage {
     id: string
     language: string
@@ -213,4 +195,170 @@ export interface ValidateLocationPayload {
 export interface GetBookingPropertiesPayload {
     agency: string
     location: string
+}
+
+export interface User {
+    _id?: string
+    agency?: User | string
+    fullName: string
+    email?: string
+    phone?: string
+    password?: string
+    birthDate?: Date
+    verified?: boolean
+    verifiedAt?: Date
+    active?: boolean
+    language?: string
+    enableEmailNotifications?: boolean
+    avatar?: string
+    bio?: string
+    location?: string
+    type?: string
+    blacklisted?: boolean
+    payLater?: boolean
+    accessToken?: string
+    checked?: boolean
+}
+
+export interface Option {
+    _id: string
+    name?: string
+    image?: string
+}
+
+export interface LocationValue {
+    language: string
+    value?: string
+    name?: string
+}
+
+export interface Location {
+    _id: string
+    name?: string
+    values?: LocationValue[]
+}
+
+export interface Property {
+    _id: string
+    name: string
+    type: PropertyType
+    agency: User
+    description: string
+    available: boolean
+    image: string
+    images?: string[]
+    bedrooms: number
+    bathrooms: number
+    kitchens: number
+    parkingSpaces: number,
+    size?: number
+    petsAllowed: boolean
+    furnished: boolean
+    aircon: boolean
+    minimumAge: number
+    location: Location
+    address?: string
+    price: number
+    soldOut: boolean
+    hidden: boolean
+    cancellation: number
+    rentalTerm: RentalTerm
+    [propKey: string]: any
+}
+
+export interface CreatePropertyPayload {
+    name: string
+    agency: string
+    type: string
+    description: string
+    image: string
+    images?: string[]
+    available: boolean
+    bedrooms: number
+    bathrooms: number
+    kitchens: number
+    parkingSpaces: number
+    size?: number
+    petsAllowed: boolean
+    furnished: boolean
+    aircon: boolean
+    minimumAge: number
+    location?: string
+    address: string
+    price: number
+    soldOut: boolean
+    hidden: boolean
+    cancellation: number
+    rentalTerm: string
+}
+
+export interface UpdatePropertyPayload extends CreatePropertyPayload {
+    _id: string
+}
+
+export interface Notification {
+    _id: string
+    user: string
+    message: string
+    booking?: string
+    isRead?: boolean
+    checked?: boolean
+    createdAt?: Date
+}
+
+export interface NotificationCounter {
+    _id: string
+    user: string
+    count: number
+}
+
+export interface ResultData<T> {
+    pageInfo: { totalRecords: number }
+    resultData: T[]
+}
+
+export type Result<T> = [ResultData<T>] | [] | undefined | null
+
+export interface Data<T> {
+    rows: T[]
+    rowCount: number
+}
+
+export interface ChangePasswordPayload {
+    _id: string
+    password: string
+    newPassword: string
+    strict: boolean
+}
+
+export interface UpdateEmailNotificationsPayload {
+    _id: string
+    enableEmailNotifications: boolean
+}
+
+export interface GetPropertiesPayload {
+    agencies: string[]
+    types?: PropertyType[]
+    availability?: Availablity[]
+}
+
+export interface UpdateLanguagePayload {
+    id: string
+    language: string
+}
+
+export interface GetUsersBody {
+    user: string
+    types: UserType[]
+}
+
+// 
+// React types
+//
+export type DataEvent<T> = (data?: Data<T>) => void
+
+export interface StatusFilterItem {
+    label: string
+    value: BookingStatus
+    checked?: boolean
 }

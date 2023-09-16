@@ -1,0 +1,98 @@
+.image-editor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-editor .main-image {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin: 15px;
+}
+
+.image-editor img.main-image {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.image-editor a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.image-editor .action {
+    cursor: pointer;
+    width: fit-content;
+    text-decoration: none;
+    color: #3498db;
+    margin-top: 5px;
+}
+
+.image-editor .action:hover {
+    text-decoration: underline;
+}
+
+.image-editor .icon {
+    margin-right: 5px;
+    font-size: 26px;
+    color: #030303;
+}
+
+div.images {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    flex-wrap: wrap;
+}
+
+div.images div.container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+div.images div.container div.image {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #D5DBDB;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+div.images div.image:hover {
+    border: 2px solid #FF8F00;
+}
+
+div.images img.image {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+div.images div.container div.ai-action {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    background-color: #D5DBDB;
+}
+
+div.images div.container div.ai-action span.button {
+    cursor: pointer;
+    padding: 0 2px;
+    display: flex;
+}
+
+div.images div.container div.ai-action svg.button {
+    font-size: 18px;
+    color: #030303;
+}

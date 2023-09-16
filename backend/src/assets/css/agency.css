@@ -1,0 +1,102 @@
+div.agency {
+  display: flex;
+}
+
+.agency div.col-1 .agency-name {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.agency div.col-1 .agency-info {
+  text-align: center;
+  font-weight: 400;
+  margin-top: 10px;
+  color: #676767;
+}
+
+.agency div.col-1 .agency-actions {
+  text-align: center;
+}
+
+.agency div.col-1 div.property-agency {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.agency div.col-1 div.property-agency span.property-agency-logo {
+  display: flex;
+  overflow: hidden;
+  vertical-align: text-bottom;
+}
+
+.agency div.col-1 div.property-agency span.property-agency-info {
+  color: #a8a8a8;
+  display: inline-block;
+  font-size: 0.9em;
+  line-height: 1em;
+  white-space: nowrap;
+  margin-left: 5px;
+}
+
+/* Device width is less than or equal to 960px */
+
+@media only screen and (max-width: 960px) {
+  div.agency {
+    flex-direction: column;
+  }
+
+  .agency div.col-1 {
+    padding: 10px 0;
+    background: #fefefe;
+    border-bottom: #eee solid 1px;
+  }
+
+  .agency div.col-1 section.agency-avatar-sec {
+    display: flex;
+    justify-content: center;
+  }
+
+  .agency div.col-1 .property-count {
+    display: none;
+  }
+
+  .agency div.col-2 {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* Device width is greater than or equal to 960px */
+
+@media only screen and (min-width: 960px) {
+  div.agency {
+    flex-direction: row;
+  }
+
+  .agency div.col-1 {
+    width: 300px;
+    min-height: 100vh;
+    padding-top: 20px;
+    background: #fefefe;
+    border-right: #eee solid 1px;
+  }
+
+  .agency div.col-1 section.agency-avatar-sec {
+    position: relative;
+    left: 50%;
+    transform: translateX(-30%);
+  }
+
+  .agency div.col-1 .property-count {
+    margin: 10px 10px 0;
+  }
+
+  .agency div.col-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1;
+  }
+}

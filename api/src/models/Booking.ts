@@ -9,6 +9,11 @@ const bookingSchema = new Schema<env.Booking>(
       required: [true, "can't be blank"],
       ref: 'User',
     },
+    location: {
+      type: Schema.Types.ObjectId,
+      required: [true, "can't be blank"],
+      ref: 'Location',
+    },
     property: {
       type: Schema.Types.ObjectId,
       required: [true, "can't be blank"],

@@ -25,7 +25,7 @@ export const DB_SSL_CERT = __env__('MI_DB_SSL_CERT', DB_SSL)
 export const DB_SSL_CA = __env__('MI_DB_SSL_CA', DB_SSL)
 export const DB_DEBUG = Helper.StringToBoolean(__env__('MI_DB_DEBUG', false, 'false'))
 
-export const JWT_SECRET = __env__('MI_JWT_SECRET', false, 'BookCars')
+export const JWT_SECRET = __env__('MI_JWT_SECRET', false, 'Movinin')
 export const JWT_EXPIRE_AT = Number.parseInt(__env__('MI_JWT_EXPIRE_AT', false, '86400'), 10) // in seconds (default: 1d)
 export const TOKEN_EXPIRE_AT = Number.parseInt(__env__('MI_TOKEN_EXPIRE_AT', false, '86400'), 10) // in seconds (default: 1d)
 
@@ -49,6 +49,7 @@ export const EXPO_ACCESS_TOKEN = __env__('MI_EXPO_ACCESS_TOKEN', false)
 
 export interface Booking extends Document {
     agency: Types.ObjectId
+    location: Types.ObjectId
     property: Types.ObjectId
     renter: Types.ObjectId
     from: Date
@@ -83,6 +84,7 @@ export interface LocationValue extends Document {
 }
 
 export interface LocationInfo extends Document {
+    _id?: Types.ObjectId
     name?: string
     values: LocationValue[]
 }
@@ -111,7 +113,7 @@ export interface Property extends Document {
     bathrooms: number
     kitchens?: number
     parkingSpaces?: number,
-    size: number
+    size?: number
     petsAllowed: boolean
     furnished: boolean
     minimumAge: number
@@ -120,7 +122,10 @@ export interface Property extends Document {
     price: number
     soldOut?: boolean
     hidden?: boolean
-    cancellation?: boolean
+    cancellation?: number
+    aircon?: boolean
+    available?: boolean
+    rentalTerm: movininTypes.RentalTerm
 }
 
 export interface PropertyInfo extends Document {
@@ -144,6 +149,7 @@ export interface PropertyInfo extends Document {
     soldOut?: boolean
     hidden?: boolean
     cancellation?: boolean
+    rentalTerm: movininTypes.RentalTerm
 }
 
 export interface PushNotification extends Document {

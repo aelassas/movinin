@@ -40,7 +40,9 @@ export async function create(req: Request, res: Response) {
       price,
       soldOut,
       hidden,
-      cancellation
+      cancellation,
+      aircon,
+      rentalTerm
     } = body
 
     const _property = {
@@ -61,13 +63,19 @@ export async function create(req: Request, res: Response) {
       price,
       soldOut,
       hidden,
-      cancellation
+      cancellation,
+      aircon,
+      rentalTerm
     }
 
     const property = new Property(_property)
     await property.save()
 
     // image
+    if (!await Helper.exists(env.CDN_PROPERTIES)) {
+      await fs.mkdir(env.CDN_PROPERTIES, { recursive: true })
+    }
+
     const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
     if (await Helper.exists(_image)) {
       const filename = `${property._id}_${Date.now()}${path.extname(imageFile)}`
@@ -84,23 +92,27 @@ export async function create(req: Request, res: Response) {
 
     // images
     property.images = []
-    for (let i = 0; i < images.length; i++) {
-      const imageFile = images[i]
-      const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        const imageFile = images[i]
+        const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
 
-      if (await Helper.exists(_image)) {
-        const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
-        const newPath = path.join(env.CDN_PROPERTIES, filename)
+        if (await Helper.exists(_image)) {
+          const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
+          const newPath = path.join(env.CDN_PROPERTIES, filename)
 
-        await fs.rename(_image, newPath)
-        property.images.push(filename)
-      } else {
-        await Property.deleteOne({ _id: property._id })
-        const err = 'Image file not found'
-        console.error(strings.ERROR, err)
-        return res.status(400).send(strings.ERROR + err)
+          await fs.rename(_image, newPath)
+          property.images.push(filename)
+        } else {
+          await Property.deleteOne({ _id: property._id })
+          const err = 'Image file not found'
+          console.error(strings.ERROR, err)
+          return res.status(400).send(strings.ERROR + err)
+        }
       }
     }
+
+    await property.save()
 
     return res.json(property)
   } catch (err) {
@@ -122,9 +134,9 @@ export async function update(req: Request, res: Response) {
         type,
         agency,
         description,
+        available,
         image,
         images,
-        tempImages,
         bedrooms,
         bathrooms,
         kitchens,
@@ -138,13 +150,16 @@ export async function update(req: Request, res: Response) {
         price,
         soldOut,
         hidden,
-        cancellation
+        cancellation,
+        aircon,
+        rentalTerm
       } = body
 
       property.name = name
       property.type = type as movininTypes.PropertyType
       property.agency = new mongoose.Types.ObjectId(agency)
       property.description = description
+      property.available = available
       property.bedrooms = bedrooms
       property.bathrooms = bathrooms
       property.kitchens = kitchens
@@ -159,12 +174,14 @@ export async function update(req: Request, res: Response) {
       property.soldOut = soldOut
       property.hidden = hidden
       property.cancellation = cancellation
+      property.aircon = aircon
+      property.rentalTerm = rentalTerm as movininTypes.RentalTerm
 
       if (!await Helper.exists(env.CDN_PROPERTIES)) {
         await fs.mkdir(env.CDN_PROPERTIES, { recursive: true })
       }
 
-      if (image) {
+      if (image && image !== property.image) {
         const oldImage = path.join(env.CDN_PROPERTIES, property.image)
         if (await Helper.exists(oldImage)) {
           await fs.unlink(oldImage)
@@ -179,32 +196,46 @@ export async function update(req: Request, res: Response) {
       }
 
       // delete deleted images
-      if (property.images) {
-        for (const image of property.images) {
-          if (!images.includes(image)) {
+      const _images: string[] = []
+      if (images && property.images) {
+
+        if (images.length === 0) {
+          for (const image of property.images) {
             const _image = path.join(env.CDN_PROPERTIES, image)
             if (await Helper.exists(_image)) {
               await fs.unlink(_image)
             }
-            const index = property.images.indexOf(image)
-            property.images.splice(index, 1)
+          }
+        } else {
+          for (const image of property.images) {
+            if (!images.includes(image)) {
+              const _image = path.join(env.CDN_PROPERTIES, image)
+              if (await Helper.exists(_image)) {
+                await fs.unlink(_image)
+              }
+            } else {
+              _images.push(image)
+            }
           }
         }
-      } else {
-        property.images = []
       }
+      property.images = _images
 
       // add new images
-      for (let i = 0; i < tempImages.length; i++) {
-        const imageFile = tempImages[i]
-        const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
+      if (images) {
+        for (let i = 0; i < images.length; i++) {
+          const imageFile = images[i]
+          if (!property.images.includes(imageFile)) {
+            const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
 
-        if (await Helper.exists(_image)) {
-          const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
-          const newPath = path.join(env.CDN_PROPERTIES, filename)
+            if (await Helper.exists(_image)) {
+              const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
+              const newPath = path.join(env.CDN_PROPERTIES, filename)
 
-          await fs.rename(_image, newPath)
-          property.images.push(filename)
+              await fs.rename(_image, newPath)
+              property.images.push(filename)
+            }
+          }
         }
       }
 
@@ -273,7 +304,8 @@ export async function uploadImage(req: Request, res: Response) {
       await fs.mkdir(env.CDN_TEMP_PROPERTIES, { recursive: true })
     }
 
-    const filename = `${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+    const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+    console.log(filename)
     const filepath = path.join(env.CDN_TEMP_PROPERTIES, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
@@ -332,9 +364,9 @@ export async function getProperty(req: Request, res: Response) {
 
   try {
     const property = await Property.findById(id)
-      .populate<{ agency: env.UserInfo }>('')
-      .populate<{ locations: env.LocationInfo[] }>({
-        path: 'locations',
+      .populate<{ agency: env.UserInfo }>('agency')
+      .populate<{ location: env.LocationInfo }>({
+        path: 'location',
         populate: {
           path: 'values',
           model: 'LocationValue',
@@ -348,10 +380,7 @@ export async function getProperty(req: Request, res: Response) {
         property.agency = { _id, fullName, avatar, payLater }
       }
 
-      for (let i = 0; i < property.locations.length; i++) {
-        const location = property.locations[i]
-        location.name = location.values.filter((value) => value.language === language)[0].value
-      }
+      property.location.name = property.location.values.filter((value) => value.language === language)[0].value
 
       return res.json(property)
     } else {
@@ -366,15 +395,31 @@ export async function getProperty(req: Request, res: Response) {
 
 export async function getProperties(req: Request, res: Response) {
   try {
-    const body: { agencies: string[] } = req.body
+    const body: movininTypes.GetPropertiesPayload = req.body
     const page = Number.parseInt(req.params.page)
     const size = Number.parseInt(req.params.size)
     const agencies = body.agencies.map((id) => new mongoose.Types.ObjectId(id))
     const keyword = escapeStringRegexp(String(req.query.s || ''))
+    const types = body.types
+    const availability = body.availability
     const options = 'i'
 
     const $match: mongoose.FilterQuery<any> = {
       $and: [{ name: { $regex: keyword, $options: options } }, { agency: { $in: agencies } }],
+    }
+
+    if ($match.$and) {
+      $match.$and.push({ type: { $in: types } })
+
+      if (availability) {
+        if (availability.length === 1 && availability[0] === movininTypes.Availablity.Available) {
+          $match.$and.push({ available: true })
+        } else if (availability.length === 1 && availability[0] === movininTypes.Availablity.Unavailable) {
+          $match.$and.push({ available: false })
+        } else if (availability.length === 0) {
+          return res.json([{ resultData: [], pageInfo: [] }])
+        }
+      }
     }
 
     const data = await Property.aggregate(

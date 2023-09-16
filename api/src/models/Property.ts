@@ -2,8 +2,6 @@ import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
 import * as movininTypes from 'movinin-types'
 
-const MINIMUM_AGE: number = Number.parseInt(String(process.env.MI_MINIMUM_AGE), 10)
-
 const propertySchema = new Schema<env.Property>(
     {
         name: {
@@ -31,6 +29,10 @@ const propertySchema = new Schema<env.Property>(
         description: {
             type: String,
             required: [true, "can't be blank"],
+        },
+        available: {
+            type: Boolean,
+            default: true
         },
         image: {
             type: String
@@ -71,12 +73,7 @@ const propertySchema = new Schema<env.Property>(
             },
         },
         size: {
-            type: Number,
-            required: [true, "can't be blank"],
-            validate: {
-                validator: Number.isInteger,
-                message: '{VALUE} is not an integer value',
-            },
+            type: Number
         },
         petsAllowed: {
             type: Boolean,
@@ -89,7 +86,7 @@ const propertySchema = new Schema<env.Property>(
         minimumAge: {
             type: Number,
             required: [true, "can't be blank"],
-            min: MINIMUM_AGE,
+            min: env.MINIMUM_AGE,
             max: 99,
         },
         location: {
@@ -113,8 +110,22 @@ const propertySchema = new Schema<env.Property>(
             default: false
         },
         cancellation: {
+            type: Number,
+            default: 0,
+        },
+        aircon: {
             type: Boolean,
             default: false,
+        },
+        rentalTerm: {
+            type: String,
+            enum: [
+                movininTypes.RentalTerm.Monthly,
+                movininTypes.RentalTerm.Weekly,
+                movininTypes.RentalTerm.Daily,
+                movininTypes.RentalTerm.Yearly
+            ],
+            required: [true, "can't be blank"],
         },
     },
     {

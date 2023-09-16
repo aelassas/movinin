@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# Next.js
+/.next
+
 # testing
 /coverage
 
@@ -13,7 +16,13 @@
 
 # misc
 .DS_Store
+.DS_Store?
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.docker
 
 npm-debug.log*
 yarn-debug.log*

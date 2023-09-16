@@ -11,14 +11,14 @@ import Property from '../models/Property'
 import Notification from '../models/Notification'
 import NotificationCounter from '../models/NotificationCounter'
 import PushNotification from '../models/PushNotification'
-import * as Helper from '../common/Helper'
 import * as env from '../config/env.config'
 import * as movininTypes from 'movinin-types'
 import * as MailHelper from '../common/MailHelper'
+import * as Helper from '../common/Helper'
 
 export async function create(req: Request, res: Response) {
   try {
-    const body: movininTypes.UpsertBookingPayload = req.body
+    const body: movininTypes.Booking = req.body
     const booking = new Booking(body)
 
     await booking.save()
@@ -85,7 +85,7 @@ export async function book(req: Request, res: Response) {
         subject: strings.ACCOUNT_ACTIVATION_SUBJECT,
         html: `<p>${strings.HELLO}${user.fullName},<br><br>
         ${strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-        ${Helper.joinURL(env.FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+        ${Helper.joinURL(env.FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${strings.REGARDS}<br></p>`,
       }
       await MailHelper.sendMail(mailOptions)
@@ -258,12 +258,13 @@ async function notifyDriver(booking: env.Booking) {
 
 export async function update(req: Request, res: Response) {
   try {
-    const body: movininTypes.UpsertBookingPayload = req.body
+    const body: movininTypes.Booking = req.body
     const booking = await Booking.findById(body._id)
 
     if (booking) {
       const {
         agency,
+        location,
         property,
         renter,
         from,
@@ -271,11 +272,12 @@ export async function update(req: Request, res: Response) {
         status,
         cancellation,
         price,
-      } = req.body.booking
+      } = req.body
 
       const previousStatus = booking.status
 
       booking.agency = agency
+      booking.location = location
       booking.property = property
       booking.renter = renter
       booking.from = from
@@ -345,6 +347,13 @@ export async function getBooking(req: Request, res: Response) {
   try {
     const booking = await Booking.findById(id)
       .populate<{ agency: env.UserInfo }>('agency')
+      .populate<{ location: env.LocationInfo }>({
+        path: 'location',
+        populate: {
+          path: 'values',
+          model: 'LocationValue',
+        },
+      })
       .populate<{ property: env.PropertyInfo }>({
         path: 'property',
         populate: {
@@ -356,6 +365,8 @@ export async function getBooking(req: Request, res: Response) {
       .lean()
 
     if (booking) {
+      const language = req.params.language
+
       if (booking.agency) {
         const { _id, fullName, avatar, payLater } = booking.agency
         booking.agency = { _id, fullName, avatar, payLater }
@@ -364,7 +375,7 @@ export async function getBooking(req: Request, res: Response) {
         const { _id, fullName, avatar, payLater } = booking.property.agency
         booking.property.agency = { _id, fullName, avatar, payLater }
       }
-
+      booking.location.name = booking.location.values.filter((value) => value.language === language)[0].value
       return res.json(booking)
     } else {
       console.error('[booking.getBooking] Property not found:', id)
@@ -389,6 +400,7 @@ export async function getBookings(req: Request, res: Response) {
     const to = (body.filter && body.filter.to && new Date(body.filter.to)) || null
     let keyword = (body.filter && body.filter.keyword) || ''
     const options = 'i'
+    const language = body.language
 
     const $match: mongoose.FilterQuery<any> = {
       $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }],
@@ -445,6 +457,40 @@ export async function getBookings(req: Request, res: Response) {
         },
       },
       { $unwind: { path: '$agency', preserveNullAndEmptyArrays: false } },
+      {
+        $lookup: {
+          from: 'Location',
+          let: { locationId: '$location' },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ['$_id', '$$locationId'] },
+              },
+            },
+            {
+              $lookup: {
+                from: 'LocationValue',
+                let: { values: '$values' },
+                pipeline: [
+                  {
+                    $match: {
+                      $and: [{ $expr: { $in: ['$_id', '$$values'] } }, { $expr: { $eq: ['$language', language] } }],
+                    },
+                  },
+                ],
+                as: 'value',
+              },
+            },
+            {
+              $addFields: { name: '$value.value' },
+            },
+          ],
+          as: 'location',
+        },
+      },
+      {
+        $unwind: { path: '$location', preserveNullAndEmptyArrays: false },
+      },
       {
         $lookup: {
           from: 'Property',

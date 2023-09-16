@@ -162,6 +162,9 @@ export async function create(req: Request, res: Response) {
         const newPath = path.join(env.CDN_USERS, filename)
 
         try {
+          if (!await Helper.exists(env.CDN_USERS)) {
+            await fs.mkdir(env.CDN_USERS, { recursive: true })
+          }
           await fs.rename(avatar, newPath)
           user.avatar = filename
           await user.save()
@@ -193,7 +196,7 @@ export async function create(req: Request, res: Response) {
         ${Helper.joinURL(
           user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.BACKEND_HOST,
           'activate',
-        )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+        )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
 
@@ -216,13 +219,14 @@ export async function checkToken(req: Request, res: Response) {
 
     if (user) {
       const type = req.params.type as movininTypes.AppType
+
       if (
         ![movininTypes.AppType.Frontend, movininTypes.AppType.Backend].includes(type) ||
         (type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User) ||
         (type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User) ||
         user.active
       ) {
-        return res.sendStatus(403)
+        return res.sendStatus(204)
       } else {
         const token = await Token.findOne({
           user: new mongoose.Types.ObjectId(req.params.userId),
@@ -236,7 +240,7 @@ export async function checkToken(req: Request, res: Response) {
         }
       }
     } else {
-      return res.sendStatus(403)
+      return res.sendStatus(204)
     }
   } catch (err) {
     console.error(`[user.checkToken] ${strings.DB_ERROR} ${req.params}`, err)
@@ -299,7 +303,7 @@ export async function resend(req: Request, res: Response) {
             ${Helper.joinURL(
               user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.BACKEND_HOST,
               reset ? 'reset-password' : 'activate',
-            )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(!!user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+            )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
             ${strings.REGARDS}<br></p>`,
         }
 
@@ -377,7 +381,7 @@ export async function signin(req: Request, res: Response) {
         const token = jwt.sign(payload, env.JWT_SECRET, options)
 
         return res.status(200).send({
-          id: user._id,
+          _id: user._id,
           email: user.email,
           fullName: user.fullName,
           language: user.language,
@@ -574,7 +578,7 @@ export async function update(req: Request, res: Response) {
       user.phone = phone
       user.location = location
       user.bio = bio
-      user.birthDate = new Date(birthDate)
+      user.birthDate = birthDate ? new Date(birthDate) : undefined
       if (type) {
         user.type = type as movininTypes.UserType
       }
@@ -595,7 +599,7 @@ export async function update(req: Request, res: Response) {
 }
 
 export async function updateEmailNotifications(req: Request, res: Response) {
-  const body: movininTypes.UpdateEmailNotifications = req.body
+  const body: movininTypes.UpdateEmailNotificationsPayload = req.body
 
   try {
     const { _id } = body

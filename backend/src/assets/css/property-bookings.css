@@ -1,0 +1,160 @@
+div.property {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow: auto;
+}
+
+div.property section.property-sec div.property-info ul.locations-list {
+  position: relative;
+  list-style: none;
+  padding: 0;
+}
+
+div.property section.property-sec div.property-info ul.locations-list li {
+  margin: 5px;
+  width: fit-content;
+}
+
+div.property section.property-sec div.property-info ul.locations-list span.property-info-list-text {
+  vertical-align: super;
+  margin-left: 3px;
+}
+
+div.property section.property-sec div.property-img {
+  height: 120px;
+}
+
+div.property section.property-sec div.property-img img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+div.property section.property-sec div.agency span.agency-logo {
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 32px;
+}
+
+div.property section.property-sec div.agency span.agency-logo img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+div.property section.property-sec div.property-img div.property-agency span.property-agency-logo {
+  width: 60px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+}
+
+div.property section.property-sec div.property-img div.property-agency span.property-agency-logo img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Device width is less than or equal to 960px */
+div.property section.property-sec {
+  color: #333;
+  font-size: 12px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+div.property section.property-sec div.name h2 {
+  font-size: 1.8em;
+  font-weight: 700;
+  text-size-adjust: none;
+  line-height: 1.3em;
+  margin: 10px 0;
+}
+
+div.property section.property-sec div.property-img div.property-agency {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+div.property section.property-sec div.property-img div.property-agency span.property-agency-info {
+  color: #a8a8a8;
+  display: inline-block;
+  font-size: 0.9em;
+  line-height: 1em;
+  white-space: nowrap;
+  margin-left: 5px;
+}
+
+div.property section.property-sec div.price {
+  text-align: right;
+  color: #383838;
+  font-size: 1.4em;
+  font-weight: 700;
+  white-space: nowrap;
+  margin-right: 10px;
+}
+
+div.property div.action {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+@media only screen and (max-width: 960px) {
+  div.property {
+    top: 56px;
+  }
+
+  div.property div.col-1 {
+    width: 100%;
+    padding-top: 5px;
+    background: #fefefe;
+    border-bottom: #eee solid 1px;
+  }
+
+  div.property div.col-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Device width is greater than or equal to 960px */
+
+@media only screen and (min-width: 960px) {
+  div.property {
+    top: 64px;
+  }
+
+  div.property div.col-1 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    padding-top: 20px;
+    background: #fefefe;
+    border-right: #eee solid 1px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  div.property div.col-2 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 400px;
+  }
+}

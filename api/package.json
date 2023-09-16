@@ -14,8 +14,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.6.0",
-    "@typescript-eslint/parser": "^6.6.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
     "eslint": "^8.49.0",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1"
@@ -28,7 +28,7 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/multer": "^1.4.7",
     "@types/node": "^20.6.0",
-    "@types/nodemailer": "^6.4.9",
+    "@types/nodemailer": "^6.4.10",
     "@types/uuid": "^9.0.3",
     "@types/validator": "^13.11.1",
     "bcrypt": "^5.1.1",
@@ -40,14 +40,15 @@
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
     "localized-strings": "^0.2.4",
-    "mongoose": "^7.5.0",
+    "mongoose": "^7.5.1",
+    "movinin-helper": "file:../packages/movinin-helper",
     "movinin-types": "file:../packages/movinin-types",
     "multer": "^1.4.5-lts.1",
     "nocache": "^4.0.0",
     "nodemailer": "^6.9.5",
     "rimraf": "^5.0.1",
     "typescript": "^5.2.2",
-    "uuid": "^9.0.0",
+    "uuid": "^9.0.1",
     "validator": "^13.11.0"
   }
 }

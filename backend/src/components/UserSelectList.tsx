@@ -1,0 +1,135 @@
+import React, { useState, useEffect } from 'react'
+import Env from '../config/env.config'
+import * as UserService from '../services/UserService'
+import * as Helper from '../common/Helper'
+import MultipleSelect from './MultipleSelect'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
+import { TextFieldVariants } from '@mui/material'
+
+const UserSelectList = (
+  {
+    multiple,
+    value,
+    label,
+    required,
+    variant,
+    onChange
+  }: {
+    multiple?: boolean
+    value?: movininTypes.Option | movininTypes.Option[]
+    label?: string
+    required?: boolean
+    variant?: TextFieldVariants
+    onChange: (values: movininTypes.Option[]) => void
+  }
+) => {
+  const [init, setInit] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [renters, setRenters] = useState<movininTypes.Option[]>([])
+  const [fetch, setFetch] = useState(false)
+  const [page, setPage] = useState(1)
+  const [keyword, setKeyword] = useState('')
+  const [selectedOptions, setSelectedOptions] = useState<movininTypes.Option[]>([])
+
+  useEffect(() => {
+    const _value = multiple ? value as movininTypes.Option[] : [value as movininTypes.Option]
+    if (value && !movininHelper.arrayEqual(selectedOptions, _value)) {
+      setSelectedOptions(_value)
+    }
+  }, [multiple, value, selectedOptions])
+
+  const getRenters = (users: movininTypes.User[]): movininTypes.Option[] =>
+    users.map((user) => {
+      const { _id, fullName, avatar } = user
+      return { _id: _id as string, name: fullName, image: avatar }
+    })
+
+  const _fetch = async (page: number, keyword: string, onFetch?: movininTypes.DataEvent<movininTypes.User>) => {
+    try {
+      setLoading(true)
+
+      const data = await UserService.getRenters(keyword, page, Env.PAGE_SIZE)
+
+      const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
+      if (!_data) {
+        Helper.error()
+        return
+      }
+
+      const renterOptionsList = getRenters(_data.resultData)
+      const _renters = page === 1 ? renterOptionsList : [...renters, ...renterOptionsList]
+
+      setRenters(_renters)
+      setFetch(renterOptionsList.length > 0)
+
+      if (onFetch) {
+        onFetch()
+      }
+    } catch (err) {
+      Helper.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleChange = (values: movininTypes.Option[]) => {
+    if (onChange) {
+      onChange(values)
+    }
+  }
+
+  return (
+    <MultipleSelect
+      loading={loading}
+      label={label || ''}
+      callbackFromMultipleSelect={handleChange}
+      options={renters}
+      selectedOptions={selectedOptions}
+      required={required || false}
+      multiple={multiple}
+      type={movininTypes.RecordType.User}
+      variant={variant || 'standard'}
+      ListboxProps={{
+        onScroll: (event) => {
+          const listboxNode = event.currentTarget
+          if (fetch && !loading && listboxNode.scrollTop + listboxNode.clientHeight >= listboxNode.scrollHeight - Env.PAGE_OFFSET) {
+            const p = page + 1
+            setPage(p)
+            _fetch(p, keyword)
+          }
+        },
+      }}
+      onFocus={() => {
+        if (!init) {
+          const p = 1
+          setPage(p)
+          setRenters([])
+          _fetch(p, keyword, () => {
+            setInit(true)
+          })
+        }
+      }}
+      onInputChange={(event) => {
+        const value = (event && event.target && 'value' in event.target && event.target.value as string) || ''
+
+        //if (event.target.type === 'text' && value !== keyword) {
+        if (value !== keyword) {
+          setRenters([])
+          setPage(1)
+          setKeyword(value)
+          _fetch(1, value)
+        }
+      }}
+      onClear={() => {
+        setRenters([])
+        setPage(1)
+        setKeyword('')
+        setFetch(true)
+        _fetch(1, '')
+      }}
+    />
+  )
+}
+
+export default UserSelectList

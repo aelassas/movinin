@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises'
+import path from 'node:path'
 
 export function StringToBoolean(input: string): boolean {
     try {
@@ -27,4 +28,8 @@ export function joinURL(part1: string, part2: string): string {
     }
 
     return `${part1}/${part2}`
+}
+
+export function getFilenameWithoutExtension(filename: string): string {
+    return path.parse(filename).name
 }

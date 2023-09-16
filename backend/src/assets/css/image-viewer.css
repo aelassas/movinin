@@ -1,0 +1,156 @@
+.wrapper {
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  box-sizing: border-box;
+}
+
+.popup {
+  width: 80%;
+  height: 80%;
+  background-color: #fff;
+  border-radius: 8px;
+  position: absolute;
+}
+
+.iv-content {
+  margin: auto;
+  padding: 130px 60px;
+  width: 90%;
+  height: 100%;
+  max-height: 100%;
+  text-align: center;
+}
+
+.slide {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.close {
+  color: black;
+  position: absolute;
+  top: 0;
+  right: 15px;
+  font-size: 35px;
+  font-weight: 400;
+  opacity: .6;
+  cursor: pointer;
+}
+
+.title {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+.navigation {
+  color: black;
+  cursor: pointer;
+  position: absolute;
+  top: calc(50% - 60px);
+  font-size: 50px;
+  line-height: 60px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  opacity: .6;
+  padding: 0 15px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.navigation:hover {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .navigation:hover {
+    opacity: 0.2;
+  }
+}
+
+.prev {
+  left: 0;
+}
+
+.next {
+  right: 0;
+}
+
+@media (max-width: 900px) {
+  .wrapper {
+    padding: 0;
+  }
+}
+
+div.thumbnailsContainer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  overflow-x: auto;
+}
+
+div.thumbnails {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  padding: 0 15px;
+}
+
+div.thumbnails div.thumbnail {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #D5DBDB;
+  margin-right: 10px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+div.thumbnails div.thumbnail:hover {
+  border: 2px solid #004b91;
+}
+
+div.thumbnails div.selected,
+div.thumbnails div.selected:hover {
+  border: 2px solid #FF8F00;
+}
+
+div.thumbnails img.thumbnail {
+  max-width: 100%;
+  max-height: 100%;
+}
