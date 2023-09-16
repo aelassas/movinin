@@ -62,7 +62,7 @@ const LocationList = (
   const _fetch = async (page: number, keyword?: string) => {
     try {
       setLoading(true)
-      console.log('fatch', page)
+
       const data = await LocationService.getLocations(keyword || '', page, Env.PAGE_SIZE)
       const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
       if (!_data) {
