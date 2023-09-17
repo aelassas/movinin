@@ -3,3 +3,9 @@
 
 # Movin' In
 Rental Property Management Platform with Mobile App
+
+# Status
+* API: done
+* Backend: done
+* Frontend: done
+* Mobile App: in progress...
