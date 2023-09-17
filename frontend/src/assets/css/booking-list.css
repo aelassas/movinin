@@ -2,6 +2,7 @@ div.bs-list {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 div.bs-list .data-grid {
@@ -11,10 +12,6 @@ div.bs-list .data-grid {
 div.bs-list .empty-list {
   text-align: center;
   width: 250px;
-}
-
-div.bs-list {
-  width: 100%;
 }
 
 div.bs-list div.cell-agency {
