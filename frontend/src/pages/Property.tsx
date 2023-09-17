@@ -63,15 +63,15 @@ const Property = () => {
             to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val)) : null
         }
 
-        if (!propertyId || !from || !to) {
+        if (!propertyId) {
             setNoMatch(true)
             return
         }
 
         setLoading(true)
-        setFrom(from)
-        setTo(to)
-        setMinDate(from)
+        setFrom(from || undefined)
+        setTo(to || undefined)
+        setMinDate(from || undefined)
 
         try {
             const property = await PropertyService.getProperty(propertyId)
@@ -144,42 +144,44 @@ const Property = () => {
 
                         <div className='footer'>
                             <AgencyBadge agency={property.agency} />
-                            <div className="action">
-                                <FormControl className="from">
-                                    <DatePicker
-                                        label={commonStrings.FROM}
-                                        value={from}
-                                        minDate={new Date()}
-                                        variant="outlined"
-                                        required
-                                        onChange={(from) => {
-                                            setFrom(from)
-                                        }}
-                                        language={UserService.getLanguage()}
-                                    />
-                                </FormControl>
-                                <FormControl className="to">
-                                    <DatePicker
-                                        label={commonStrings.TO}
-                                        value={to}
-                                        minDate={minDate}
-                                        variant="outlined"
-                                        required
-                                        onChange={(to) => {
-                                            setTo(to)
-                                        }}
-                                        language={UserService.getLanguage()}
-                                    />
-                                </FormControl>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    className="btn-action btn-book"
-                                    href={`/checkout?p=${property._id}&l=${property.location._id}&f=${from?.getTime()}&t=${to?.getTime()}`}
-                                >
-                                    {strings.BOOK}
-                                </Button>
-                            </div>
+                            {from && to &&
+                                <div className="action">
+                                    <FormControl className="from">
+                                        <DatePicker
+                                            label={commonStrings.FROM}
+                                            value={from}
+                                            minDate={new Date()}
+                                            variant="outlined"
+                                            required
+                                            onChange={(from) => {
+                                                setFrom(from)
+                                            }}
+                                            language={UserService.getLanguage()}
+                                        />
+                                    </FormControl>
+                                    <FormControl className="to">
+                                        <DatePicker
+                                            label={commonStrings.TO}
+                                            value={to}
+                                            minDate={minDate}
+                                            variant="outlined"
+                                            required
+                                            onChange={(to) => {
+                                                setTo(to)
+                                            }}
+                                            language={UserService.getLanguage()}
+                                        />
+                                    </FormControl>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        className="btn-action btn-book"
+                                        href={`/checkout?p=${property._id}&l=${property.location._id}&f=${from?.getTime()}&t=${to?.getTime()}`}
+                                    >
+                                        {strings.BOOK}
+                                    </Button>
+                                </div>
+                            }
                         </div>
 
                     </div>

@@ -193,7 +193,6 @@ const Booking = () => {
               className="property"
               properties={((property && [booking.property]) as movininTypes.Property[]) || []}
               hidePrice
-              hideActions
             />
           </div>
         </div>

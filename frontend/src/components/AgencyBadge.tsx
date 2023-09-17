@@ -18,9 +18,7 @@ const AgencyBadge = ({
                     alt={agency.fullName}
                 />
             </span>
-            <a href={`/agency?c=${agency._id}`} className="agency-badge-info">
-                {agency.fullName}
-            </a>
+            {agency.fullName}
         </div>
         : <></>
 )

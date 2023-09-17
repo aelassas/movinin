@@ -2,7 +2,10 @@ div.agency-badge {
     display: flex;
     align-items: center;
     margin-top: 5px;
-    font-size: 12px;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 1em;
+    line-height: 1em;
+    white-space: nowrap;
 }
 
 div.agency-badge span.agency-badge-logo {

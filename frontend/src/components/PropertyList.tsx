@@ -226,7 +226,7 @@ const PropertyList = (
                       <span className='per-rental-term'>{Helper.priceLabel(property)}</span>
                     </div>
                   )}
-
+                  {hidePrice && !hideActions && <span></span>}
                   {
                     !hideActions
                     && <div className="action">
