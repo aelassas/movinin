@@ -87,22 +87,21 @@ section.property-list article div.right-panel div.price {
   flex-direction: column;
 }
 
-section.property-list article div.right-panel div.price span.total {
+section.property-list article div.right-panel div.price label.price-main {
   color: #383838;
-  font-size: 2em;
+  font-size: 2.5em;
   font-weight: 700;
+  line-height: 1em;
   white-space: nowrap;
-  margin-bottom: 5px;
-  padding-right: 5px;
+  display: table-row;
   text-align: right;
 }
 
-section.property-list article div.right-panel div.price span.per-rental-term {
-  color: #484848;
-  font-size: 1.5em;
-  font-weight: 600;
-  white-space: nowrap;
-  padding-right: 5px;
+section.property-list article div.right-panel div.price label.price-days,
+section.property-list article div.right-panel div.price label.price-day {
+  font-size: 13px;
+  color: #a1a1a1;
+  display: table-row;
   text-align: right;
 }
 

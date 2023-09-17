@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Env from '../config/env.config'
 import Const from '../config/const'
 import { strings as commonStrings } from '../lang/common'
+import { strings as csStrings } from '../lang/properties'
 import { strings } from '../lang/properties'
 import * as Helper from '../common/Helper'
 import * as PropertyService from '../services/PropertyService'
@@ -181,6 +182,8 @@ const PropertyList = (
     location
   ])
 
+  const days = movininHelper.days(from, to)
+
   return (
     <>
       <section className={`${className ? `${className} ` : ''}property-list`}>
@@ -195,6 +198,8 @@ const PropertyList = (
             </Card>
           )
           : rows.map((property) => {
+            const price = from && to && Helper.price(property, from, to) || 0
+
             return (
               <article key={property._id}>
 
@@ -220,10 +225,11 @@ const PropertyList = (
                 </div>
 
                 <div className="right-panel">
-                  {!hidePrice && (
+                  {!hidePrice && from && to && (
                     <div className="price">
-                      {from && to && <span className='total'>{`${movininHelper.formatNumber(Helper.price(property, from, to))} ${commonStrings.CURRENCY}`}</span>}
-                      <span className='per-rental-term'>{Helper.priceLabel(property)}</span>
+                      <label className="price-days">{Helper.getDays(days)}</label>
+                      <label className="price-main">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</label>
+                      <label className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</label>
                     </div>
                   )}
                   {hidePrice && !hideActions && <span></span>}
