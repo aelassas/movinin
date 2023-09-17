@@ -277,7 +277,7 @@ const BookingList = (
         field: 'price',
         headerName: strings.PRICE,
         flex: 1,
-        valueGetter: (params: any) => `${movininHelper.formatNumber(params.value)} ${strings.CURRENCY}`,
+        valueGetter: (params: any) => `${movininHelper.formatNumber(params.value)} ${commonStrings.CURRENCY}`,
         renderCell: (params: any) => <span className="bp">{params.value}</span>,
       },
       {
@@ -421,12 +421,6 @@ const BookingList = (
                     <label className="booking-detail-title">{strings.PROPERTY}</label>
                     <div className="booking-detail-value">
                       <Link href={`property/?p=${(booking.property as movininTypes.Property)._id}`}>{(booking.property as movininTypes.Property).name}</Link>
-                    </div>
-                  </div>
-                  <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <label className="booking-detail-title">{strings.DRIVER}</label>
-                    <div className="booking-detail-value">
-                      <Link href={`user/?u=${(booking.renter as movininTypes.User)._id}`}>{(booking.renter as movininTypes.User).fullName}</Link>
                     </div>
                   </div>
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>

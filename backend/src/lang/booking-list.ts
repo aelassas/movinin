@@ -5,9 +5,8 @@ const strings = new LocalizedStrings({
   fr: {
     PROPERTY: 'Propriété',
     AGENCY: 'Agency',
-    DRIVER: 'Conducteur',
+    RENTER: 'Locataire',
     PRICE: 'Prix',
-    CURRENCY: 'DH',
     STATUS: 'Statut',
     UPDATE_SELECTION: 'Modifier la sélection',
     DELETE_SELECTION: 'Supprimer la sélection',
@@ -22,9 +21,8 @@ const strings = new LocalizedStrings({
   en: {
     PROPERTY: 'Property',
     AGENCY: 'Agency',
-    DRIVER: 'Renter',
+    RENTER: 'Renter',
     PRICE: 'Price',
-    CURRENCY: 'DH',
     STATUS: 'Status',
     UPDATE_SELECTION: 'Edit selection',
     DELETE_SELECTION: 'Delete selection',

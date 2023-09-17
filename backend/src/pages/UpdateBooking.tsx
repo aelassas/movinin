@@ -293,7 +293,7 @@ const UpdateBooking = () => {
               )}
 
               <UserSelectList
-                label={blStrings.DRIVER}
+                label={blStrings.RENTER}
                 required
                 variant="standard"
                 onChange={handleRenterChange}
