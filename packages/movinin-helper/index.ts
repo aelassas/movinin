@@ -122,3 +122,12 @@ export const extraToNumber = (extra: string) => (extra === '' ? -1 : Number(extr
 export const extraToString = (extra: number) => (extra === -1 ? '' : String(extra))
 
 export const trimCarriageReturn = (str: string) => str.replace(/[\n\r]+/g, '')
+
+export const totalDays = (date1: Date, date2: Date) =>
+    Math.ceil((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24))
+
+export const daysInMonth = (month: number, year: number) =>
+    new Date(year, month, 0).getDate()
+
+export const daysInYear = (year: number) =>
+    ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365

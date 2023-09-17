@@ -145,9 +145,10 @@ const Property = () => {
                             <div dangerouslySetInnerHTML={{ __html: property.description }} />
                         </div>
 
-                        {edit && (
-                            <div className='footer'>
-                                <AgencyBadge agency={property.agency} />
+
+                        <div className='footer'>
+                            <AgencyBadge agency={property.agency} />
+                            {edit && (
                                 <div className="action">
                                     <Tooltip title={strings.VIEW_BOOKINGS}>
                                         <IconButton href={`/property-bookings?p=${property._id}`}>
@@ -180,8 +181,9 @@ const Property = () => {
                                         </IconButton>
                                     </Tooltip>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
+
 
                         <Dialog disableEscapeKeyDown maxWidth="xs" open={openInfoDialog}>
                             <DialogTitle className="dialog-header">{commonStrings.INFO}</DialogTitle>

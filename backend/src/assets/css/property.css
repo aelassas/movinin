@@ -113,22 +113,21 @@ div.main div.property div.right-panel div.price {
     white-space: nowrap;
 }
 
-div.main div.property div.right-panel div.actions {
-    margin-top: 20px;
-}
-
-div.main div.property div.right-panel div.actions .button {
-    width: 100%;
-    height: 38px;
-}
-
 div.main div.footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-div.main div.agency {
+div.main div.footer div.action {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+
+div.main div.footer div.agency {
     display: flex;
     align-items: center;
 }
@@ -156,10 +155,4 @@ div.main div.agency a.agency-info {
     line-height: 1em;
     white-space: nowrap;
     margin-left: 5px;
-}
-
-div.main div.action {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
 }

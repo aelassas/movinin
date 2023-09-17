@@ -95,3 +95,6 @@ export const fr = (user) => (user && user.language === 'fr') || false;
 export const extraToNumber = (extra) => (extra === '' ? -1 : Number(extra));
 export const extraToString = (extra) => (extra === -1 ? '' : String(extra));
 export const trimCarriageReturn = (str) => str.replace(/[\n\r]+/g, '');
+export const totalDays = (date1, date2) => Math.ceil((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24));
+export const daysInMonth = (month, year) => new Date(year, month, 0).getDate();
+export const daysInYear = (year) => ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365;

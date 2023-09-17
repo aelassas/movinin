@@ -129,15 +129,6 @@ export const price = async (
   onSucess: (price: number) => void,
   onError: (err: unknown) => void
 ) => {
-  const totalDays = (date1: Date, date2: Date) =>
-    Math.ceil((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24))
-
-  const daysInMonth = (month: number, year: number) =>
-    new Date(year, month, 0).getDate()
-
-  const daysInYear = (year: number) =>
-    ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365
-
   try {
     if (!property) {
       property = await PropertyService.getProperty(booking.property as string)
@@ -146,19 +137,19 @@ export const price = async (
     if (property) {
       const from = new Date(booking.from)
       const to = new Date(booking.to)
-      const days = totalDays(from, to)
+      const days = movininHelper.totalDays(from, to)
 
       const now = new Date()
       let price = 0
 
       if (property.rentalTerm === movininTypes.RentalTerm.Monthly) {
-        price = property.price * days / daysInMonth(now.getMonth(), now.getFullYear())
+        price = property.price * days / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
       } else if (property.rentalTerm === movininTypes.RentalTerm.Weekly) {
         price = property.price * days / 7
       } else if (property.rentalTerm === movininTypes.RentalTerm.Daily) {
         price = property.price * days
       } else if (property.rentalTerm === movininTypes.RentalTerm.Yearly) {
-        price = property.price * days / daysInYear(now.getFullYear())
+        price = property.price * days / movininHelper.daysInYear(now.getFullYear())
       }
 
       if (booking.cancellation && property.cancellation > 0) {

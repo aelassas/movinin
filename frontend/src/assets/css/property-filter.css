@@ -1,0 +1,41 @@
+div.property-filter {
+  background: #fff;
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid #dadada;
+  font-size: 13px;
+}
+
+div.property-filter .pickup-location,
+div.property-filter .drop-off-location,
+div.property-filter .from,
+div.property-filter .to,
+div.property-filter .search,
+div.property-filter .chk-same-location {
+  padding: 5px;
+}
+
+div.property-filter .btn-search {
+  background: #0D63C9;
+  color: #fff;
+  margin: 5px 0;
+}
+
+div.property-filter .chk-same-location {
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 400;
+  line-height: 1.4em;
+  font-size: 0.9em;
+  display: inline-block;
+  width: 100%;
+}
+
+div.property-filter .chk-same-location label {
+  cursor: pointer;
+  padding: 2px;
+  vertical-align: top;
+}
+
+div.property-filter .chk-same-location input[type='checkbox'] {
+  cursor: pointer;
+}

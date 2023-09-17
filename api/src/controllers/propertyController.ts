@@ -38,7 +38,6 @@ export async function create(req: Request, res: Response) {
       location,
       address,
       price,
-      soldOut,
       hidden,
       cancellation,
       aircon,
@@ -61,7 +60,6 @@ export async function create(req: Request, res: Response) {
       location,
       address,
       price,
-      soldOut,
       hidden,
       cancellation,
       aircon,
@@ -148,7 +146,6 @@ export async function update(req: Request, res: Response) {
         location,
         address,
         price,
-        soldOut,
         hidden,
         cancellation,
         aircon,
@@ -171,7 +168,6 @@ export async function update(req: Request, res: Response) {
       property.location = new mongoose.Types.ObjectId(location)
       property.address = address
       property.price = price
-      property.soldOut = soldOut
       property.hidden = hidden
       property.cancellation = cancellation
       property.aircon = aircon
@@ -400,17 +396,22 @@ export async function getProperties(req: Request, res: Response) {
     const size = Number.parseInt(req.params.size)
     const agencies = body.agencies.map((id) => new mongoose.Types.ObjectId(id))
     const keyword = escapeStringRegexp(String(req.query.s || ''))
-    const types = body.types
-    const availability = body.availability
+    const types = body.types || []
+    const rentalTerms = body.rentalTerms || []
+    const availability = body.availability || []
     const options = 'i'
+    const language = body.language || env.DEFAULT_LANGUAGE
 
     const $match: mongoose.FilterQuery<any> = {
-      $and: [{ name: { $regex: keyword, $options: options } }, { agency: { $in: agencies } }],
+      $and: [
+        { name: { $regex: keyword, $options: options } },
+        { agency: { $in: agencies } },
+        { type: { $in: types } },
+        { rentalTerm: { $in: rentalTerms } }
+      ],
     }
 
     if ($match.$and) {
-      $match.$and.push({ type: { $in: types } })
-
       if (availability) {
         if (availability.length === 1 && availability[0] === movininTypes.Availablity.Available) {
           $match.$and.push({ available: true })
@@ -443,17 +444,35 @@ export async function getProperties(req: Request, res: Response) {
         {
           $lookup: {
             from: 'Location',
-            let: { location: '$location' },
+            let: { locationId: '$location' },
             pipeline: [
               {
                 $match: {
-                  $expr: { $eq: ['$_id', '$$location'] },
+                  $expr: { $eq: ['$_id', '$$locationId'] },
                 },
+              },
+              {
+                $lookup: {
+                  from: 'LocationValue',
+                  let: { values: '$values' },
+                  pipeline: [
+                    {
+                      $match: {
+                        $and: [{ $expr: { $in: ['$_id', '$$values'] } }, { $expr: { $eq: ['$language', language] } }],
+                      },
+                    },
+                  ],
+                  as: 'value',
+                },
+              },
+              {
+                $addFields: { name: '$value.value' },
               },
             ],
             as: 'location',
           },
         },
+        { $unwind: { path: '$location', preserveNullAndEmptyArrays: false } },
         {
           $facet: {
             resultData: [{ $sort: { name: 1 } }, { $skip: (page - 1) * size }, { $limit: size }],
@@ -520,14 +539,23 @@ export async function getBookingyProperties(req: Request, res: Response) {
 
 export async function getFrontendProperties(req: Request, res: Response) {
   try {
-    const body: { agencies: string[], location: string } = req.body
+    const body: movininTypes.GetPropertiesPayload = req.body
     const page = Number.parseInt(req.params.page)
     const size = Number.parseInt(req.params.size)
     const agencies = body.agencies.map((id) => new mongoose.Types.ObjectId(id))
     const location = new mongoose.Types.ObjectId(body.location)
+    const types = body.types || []
+    const rentalTerms = body.rentalTerms || []
 
-    const $match = {
-      $and: [{ agency: { $in: agencies } }, { location: location }]
+    const $match: mongoose.FilterQuery<any> = {
+      $and: [
+        { agency: { $in: agencies } },
+        { location: location },
+        { type: { $in: types } },
+        { rentalTerm: { $in: rentalTerms } },
+        { available: true },
+        { hidden: false }
+      ]
     }
 
     const data = await Property.aggregate(
@@ -555,7 +583,7 @@ export async function getFrontendProperties(req: Request, res: Response) {
             pipeline: [
               {
                 $match: {
-                  $expr: { $eq: ['$_id', '$$locatios'] },
+                  $expr: { $eq: ['$_id', '$$location'] },
                 },
               },
             ],

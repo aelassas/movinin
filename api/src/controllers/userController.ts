@@ -218,7 +218,7 @@ export async function checkToken(req: Request, res: Response) {
     })
 
     if (user) {
-      const type = req.params.type as movininTypes.AppType
+      const type = req.params.type.toUpperCase() as movininTypes.AppType
 
       if (
         ![movininTypes.AppType.Frontend, movininTypes.AppType.Backend].includes(type) ||
@@ -272,12 +272,13 @@ export async function resend(req: Request, res: Response) {
 
   try {
     const user = await User.findOne({ email })
-
+    const type = req.params.type.toUpperCase() as movininTypes.AppType
+    
     if (user) {
       if (
-        ![movininTypes.AppType.Frontend.toString(), movininTypes.AppType.Backend.toString()].includes(req.params.type.toUpperCase()) ||
-        (req.params.type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User) ||
-        (req.params.type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User)
+        ![movininTypes.AppType.Frontend.toString(), movininTypes.AppType.Backend.toString()].includes(type) ||
+        (type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User) ||
+        (type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User)
       ) {
         return res.sendStatus(403)
       } else {
@@ -356,7 +357,7 @@ export async function signin(req: Request, res: Response) {
 
   try {
     const user = await User.findOne({ email })
-    const type = req.params.type as movininTypes.AppType
+    const type = req.params.type.toUpperCase() as movininTypes.AppType
 
     if (
       !password ||

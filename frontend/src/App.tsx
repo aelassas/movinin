@@ -1,26 +1,53 @@
-import React from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { lazy, Suspense } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-function App() {
-  return (
+const SignIn = lazy(() => import('./pages/SignIn'))
+const SignUp = lazy(() => import('./pages/SignUp'))
+const Activate = lazy(() => import('./pages/Activate'))
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword'))
+const Home = lazy(() => import('./pages/Home'))
+const Properties = lazy(() => import('./pages/Properties'))
+const Property = lazy(() => import('./pages/Property'))
+const Checkout = lazy(() => import('./pages/Checkout'))
+const Bookings = lazy(() => import('./pages/Bookings'))
+const Booking = lazy(() => import('./pages/Booking'))
+const Settings = lazy(() => import('./pages/Settings'))
+const Notifications = lazy(() => import('./pages/Notifications'))
+const ToS = lazy(() => import('./pages/ToS'))
+const About = lazy(() => import('./pages/About'))
+const ChangePassword = lazy(() => import('./pages/ChangePassword'))
+const Contact = lazy(() => import('./pages/Contact'))
+const NoMatch = lazy(() => import('./pages/NoMatch'))
+
+const App = () => (
+  <Router>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Suspense fallback={<></>}>
+        <Routes>
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/activate" element={<Activate />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/properties" element={<Properties />} />
+          <Route path="/property" element={<Property />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/bookings" element={<Bookings />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/tos" element={<ToS />} />
+          <Route path="/contact" element={<Contact />} />
+
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+      </Suspense>
     </div>
-  )
-}
+  </Router>
+)
 
 export default App

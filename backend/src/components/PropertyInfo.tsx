@@ -22,7 +22,6 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import SoldOut from './SoldOut'
 import Hidden from './Hidden'
 import Available from './Available'
 
@@ -127,16 +126,6 @@ const PropertyInfo = (
                 )}
             </ul>
             <ul className="extras-list">
-                {edit && (
-                    <li className={property.available ? 'property-available' : 'property-unavailable'}>
-                        <Tooltip title={property.available ? strings.PROPERTY_AVAILABLE_TOOLTIP : strings.PROPERTY_UNAVAILABLE_TOOLTIP} placement="left">
-                            <div className="property-info-list-item">
-                                {property.available ? <CheckIcon /> : <UncheckIcon />}
-                                {property.available ? <span className="property-info-list-text">{strings.PROPERTY_AVAILABLE}</span> : <span className="property-info-list-text">{strings.PROPERTY_UNAVAILABLE}</span>}
-                            </div>
-                        </Tooltip>
-                    </li>
-                )}
                 <li>
                     <Tooltip title={booking ? '' : property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : Helper.getCancellation(property.cancellation, fr)} placement="left">
                         <div className="property-info-list-item">
@@ -173,13 +162,6 @@ const PropertyInfo = (
                         </div>
                     </Tooltip>
                 </li>
-                {edit && property.soldOut && (
-                    <li>
-                        <div className="property-info-list-item">
-                            <SoldOut />
-                        </div>
-                    </li>
-                )}
                 {edit && property.hidden && (
                     <li>
                         <div className="property-info-list-item">

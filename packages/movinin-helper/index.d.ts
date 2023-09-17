@@ -17,3 +17,6 @@ export declare const fr: (user?: movininTypes.User) => boolean;
 export declare const extraToNumber: (extra: string) => number;
 export declare const extraToString: (extra: number) => string;
 export declare const trimCarriageReturn: (str: string) => string;
+export declare const totalDays: (date1: Date, date2: Date) => number;
+export declare const daysInMonth: (month: number, year: number) => number;
+export declare const daysInYear: (year: number) => 366 | 365;

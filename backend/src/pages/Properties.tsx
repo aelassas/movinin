@@ -14,6 +14,7 @@ import { Button } from '@mui/material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import RentalTermFilter from '../components/RentalTermFilter'
+import Env from '../config/env.config'
 
 import '../assets/css/properties.css'
 
@@ -27,12 +28,12 @@ const Properties = () => {
   const [reload, setReload] = useState(false)
   const [loading, setLoading] = useState(true)
   const [propertyTypes, setPropertyTypes] = useState(Helper.getAllPropertyTypes())
+  const [rentalTerms, setRentalTerms] = useState(Helper.getAllRentalTerms())
   const [availability, setAvailability] = useState(
     [
       movininTypes.Availablity.Available,
       movininTypes.Availablity.Unavailable
     ])
-  const [rentalTerms, setRentalTerms] = useState(Helper.getAllRentalTerms())
 
   const handleSearch = (newKeyword: string) => {
     setKeyword(newKeyword)
@@ -94,13 +95,26 @@ const Properties = () => {
 
               {rowCount > 0 && <InfoBox value={`${rowCount} ${rowCount > 1 ? commonStrings.PROPERTIES : commonStrings.PROPERTY}`} className="property-count" />}
 
-              <AgencyFilter agencies={allAgencies} onChange={handleAgencyFilterChange} className="filter" />
+              <AgencyFilter
+                agencies={allAgencies}
+                onChange={handleAgencyFilterChange}
+                className="filter"
+              />
 
               {rowCount > -1 && (
                 <>
-                  <PropertyTypeFilter className="property-filter" onChange={handlePropertyTypeFilterChange} />
-                  <RentalTermFilter className="rental-term-filter" onChange={handleRentalTermFilterChange} />
-                  {admin && <AvailabilityFilter className="property-filter" onChange={handleAvailabilityFilterChange} />}
+                  <PropertyTypeFilter
+                    className="property-filter"
+                    onChange={handlePropertyTypeFilterChange} />
+                  <RentalTermFilter
+                    className="rental-term-filter"
+                    onChange={handleRentalTermFilterChange} />
+                  {
+                    admin &&
+                    <AvailabilityFilter
+                      className="property-filter"
+                      onChange={handleAvailabilityFilterChange} />
+                  }
                 </>
               )}
             </div>
@@ -110,10 +124,12 @@ const Properties = () => {
               user={user}
               agencies={agencies}
               types={propertyTypes}
+              rentalTerms={rentalTerms}
               availability={availability}
               keyword={keyword}
               reload={reload}
               loading={loading}
+              language={user.language || Env.DEFAULT_LANGUAGE}
               onLoad={handlePropertyListLoad}
               onDelete={handlePropertyDelete}
             />

@@ -35,6 +35,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
+import Env from '../config/env.config'
 
 import '../assets/css/booking.css'
 
@@ -418,6 +419,7 @@ const UpdateBooking = () => {
               user={user}
               booking={booking}
               properties={((property && [booking.property]) as movininTypes.Property[]) || []}
+              language={user?.language || Env.DEFAULT_LANGUAGE}
               hidePrice />
           </div>
 

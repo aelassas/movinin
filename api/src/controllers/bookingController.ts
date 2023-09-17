@@ -396,6 +396,7 @@ export async function getBookings(req: Request, res: Response) {
     const statuses = body.statuses
     const user = body.user
     const property = body.property
+    const location = (body.filter && body.filter.location) || null
     const from = (body.filter && body.filter.from && new Date(body.filter.from)) || null
     const to = (body.filter && body.filter.to && new Date(body.filter.to)) || null
     let keyword = (body.filter && body.filter.keyword) || ''
@@ -415,6 +416,9 @@ export async function getBookings(req: Request, res: Response) {
         $match.$and.push({
           'property._id': { $eq: new mongoose.Types.ObjectId(property) },
         })
+      }
+      if (location) {
+        $match.$and.push({ 'location._id': { $eq: new mongoose.Types.ObjectId(location) } })
       }
       if (from) {
         $match.$and.push({ from: { $gte: from } })
@@ -488,9 +492,7 @@ export async function getBookings(req: Request, res: Response) {
           as: 'location',
         },
       },
-      {
-        $unwind: { path: '$location', preserveNullAndEmptyArrays: false },
-      },
+      { $unwind: { path: '$location', preserveNullAndEmptyArrays: false } },
       {
         $lookup: {
           from: 'Property',

@@ -80,7 +80,7 @@ const strings = new LocalizedStrings({
     PARKING_SPACES_TOOLTIP_1: 'parking place',
     PARKING_SPACES_TOOLTIP_2: '',
     FURNISHED_TOOLTIP: 'This property is furnished',
-    YEARS: 'ans',
+    YEARS: 'years',
     VIEW_BOOKINGS: 'View bookings',
   },
 })

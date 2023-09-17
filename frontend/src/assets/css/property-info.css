@@ -1,0 +1,67 @@
+div.property div.property-agency a.property-agency-info {
+    color: #0064c8;
+    text-decoration: underline;
+    font-size: 0.9em;
+    line-height: 1em;
+    white-space: nowrap;
+    margin-left: 5px;
+}
+
+div.property-info {
+    float: left;
+    margin-top: 5px;
+}
+
+div.property-info ul.property-info-list {
+    position: relative;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+div.property-info ul.property-info-list li.property-type,
+div.property-info ul.property-info-list li.bedrooms,
+div.property-info ul.property-info-list li.bathrooms,
+div.property-info ul.property-info-list li.kitchens,
+div.property-info ul.property-info-list li.parking-spaces,
+div.property-info ul.property-info-list li.aircon {
+    min-width: 60px;
+    margin-bottom: 10px;
+    padding: 3px 5px 0 0;
+    box-shadow: 0 0 0 1px #ddd inset;
+    margin-left: 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+div.property-info ul.extras-list {
+    position: relative;
+    list-style: none;
+    padding: 0;
+}
+
+div.property-info ul.extras-list li {
+    margin: 5px;
+    width: 100%;
+}
+
+div.property-info ul.extras-list .extra-info {
+    color: rgba(0, 0, 0, 0.35);
+}
+
+div.property-info ul.extras-list span.property-info-list-text {
+    vertical-align: super;
+    margin-left: 3px;
+}
+
+div.property-info ul.property-info-list span.property-info-list-text {
+    vertical-align: super;
+    margin-left: 3px;
+}
+
+div.property-info ul.property-info-list li .property-bathrooms {
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+}

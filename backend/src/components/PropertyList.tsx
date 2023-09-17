@@ -33,18 +33,20 @@ import '../assets/css/property-list.css'
 
 const PropertyList = (
   {
-    agencies: propertyAgencies,
-    keyword: propertyKeyword,
-    types: propertyTypes,
-    availability: propertyAvailability,
+    agencies,
+    keyword,
+    types,
+    rentalTerms,
+    availability,
     reload,
     properties,
-    user: propertyUser,
+    user: propertyListUser,
     booking,
     className,
-    loading: propertyLoading,
+    loading: propertyListLoading,
     hideAgency,
     hidePrice,
+    language,
     onLoad,
     onDelete
   }:
@@ -52,6 +54,7 @@ const PropertyList = (
       agencies?: string[]
       keyword?: string
       types?: movininTypes.PropertyType[]
+      rentalTerms?: movininTypes.RentalTerm[]
       availability?: movininTypes.Availablity[]
       reload?: boolean
       properties?: movininTypes.Property[]
@@ -61,10 +64,10 @@ const PropertyList = (
       loading?: boolean
       hideAgency?: boolean
       hidePrice?: boolean
+      language: string
       onLoad?: movininTypes.DataEvent<movininTypes.Property>
       onDelete?: (rowCount: number) => void
     }
-
 ) => {
   const [user, setUser] = useState<movininTypes.User>()
   const [init, setInit] = useState(true)
@@ -97,19 +100,15 @@ const PropertyList = (
     }
   }, [fetch, loading, page])
 
-  const _fetch = async (
-    page: number,
-    agencies?: string[],
-    keyword?: string,
-    types?: movininTypes.PropertyType[],
-    availability?: movininTypes.Availablity[]
-  ) => {
+  const _fetch = async (page: number) => {
     try {
       setLoading(true)
       const payload: movininTypes.GetPropertiesPayload = {
         agencies: agencies ?? [],
-        types: types ?? [],
+        types,
+        rentalTerms,
         availability,
+        language
       }
       const data = await PropertyService.getProperties(keyword || '', payload, page, Env.PROPERTIES_PAGE_SIZE)
 
@@ -148,13 +147,9 @@ const PropertyList = (
   }
 
   useEffect(() => {
-    if (propertyAgencies) {
-      if (propertyAgencies.length > 0) {
-        _fetch(page,
-          propertyAgencies,
-          propertyKeyword,
-          propertyTypes,
-          propertyAvailability)
+    if (agencies) {
+      if (agencies.length > 0) {
+        _fetch(page)
       } else {
         setRows([])
         setRowCount(0)
@@ -167,10 +162,11 @@ const PropertyList = (
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     page,
-    propertyAgencies,
-    propertyKeyword,
-    propertyAvailability,
-    propertyTypes
+    agencies,
+    keyword,
+    availability,
+    types,
+    rentalTerms
   ])
 
   useEffect(() => {
@@ -188,32 +184,30 @@ const PropertyList = (
   useEffect(() => {
     setPage(1)
   }, [
-    propertyAgencies,
-    propertyKeyword,
-    propertyTypes,
-    propertyAvailability
+    agencies,
+    keyword,
+    types,
+    rentalTerms,
+    availability
   ])
 
   useEffect(() => {
     if (reload) {
       setPage(1)
-      _fetch(1,
-        propertyAgencies,
-        propertyKeyword,
-        propertyTypes,
-        propertyAvailability)
+      _fetch(1)
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     reload,
-    propertyAgencies,
-    propertyKeyword,
-    propertyTypes,
-    propertyAvailability
+    agencies,
+    keyword,
+    types,
+    rentalTerms,
+    availability
   ])
 
   useEffect(() => {
-    setUser(propertyUser)
-  }, [propertyUser])
+    setUser(propertyListUser)
+  }, [propertyListUser])
 
   const handleDelete = async (e: React.MouseEvent<HTMLElement>) => {
     try {
@@ -290,7 +284,7 @@ const PropertyList = (
           {rows.length === 0
             ? !init
             && !loading
-            && !propertyLoading && (
+            && !propertyListLoading && (
               <Card variant="outlined" className="empty-list">
                 <CardContent>
                   <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>

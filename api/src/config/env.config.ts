@@ -120,7 +120,6 @@ export interface Property extends Document {
     location: Types.ObjectId
     address?: string
     price: number
-    soldOut?: boolean
     hidden?: boolean
     cancellation?: number
     aircon?: boolean
@@ -146,7 +145,6 @@ export interface PropertyInfo extends Document {
     location: Types.ObjectId
     address?: string
     price: number
-    soldOut?: boolean
     hidden?: boolean
     cancellation?: boolean
     rentalTerm: movininTypes.RentalTerm

@@ -219,7 +219,7 @@ const RentalTermFilter = (
   }
 
   return (
-    <Accordion title={cpStrings.PROPERTY_TYPE} className={`${className ? `${className} ` : ''}property-type-filter`}>
+    <Accordion title={cpStrings.RENTAL_TERM} className={`${className ? `${className} ` : ''}property-type-filter`}>
       <div className="filter-elements">
         <div className="filter-element">
           <input ref={monthlyRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckMonthlyChange} />

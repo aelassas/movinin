@@ -63,7 +63,6 @@ const CreateProperty = () => {
   const [furnished, setFurnished] = useState(false)
   const [petsAllowed, setPetsAllowed] = useState(false)
   const [cancellation, setCancellation] = useState('')
-  const [soldOut, setSoldout] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [formError, setFormError] = useState(false)
   const [imageViewerOpen, setImageViewerOpen] = useState(false)
@@ -196,10 +195,6 @@ const CreateProperty = () => {
     setCancellation(e.target.value)
   }
 
-  const handleSoldOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSoldout(e.target.checked)
-  }
-
   const handleHiddenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHidden(e.target.checked)
   }
@@ -248,7 +243,6 @@ const CreateProperty = () => {
         location: location?._id,
         address,
         price: Number(price),
-        soldOut,
         hidden,
         cancellation: movininHelper.extraToNumber(cancellation),
         available,
@@ -522,20 +516,6 @@ const CreateProperty = () => {
                   <Switch
                     checked={petsAllowed}
                     onChange={handlePetsAllowedChange}
-                    color="primary"
-                  />
-                }
-                className="checkbox-fcl"
-              />
-            </FormControl>
-
-            <FormControl fullWidth margin="dense" className="checkbox-fc">
-              <FormControlLabel
-                label={strings.SOLD_OUT}
-                control={
-                  <Switch
-                    checked={soldOut}
-                    onChange={handleSoldOutChange}
                     color="primary"
                   />
                 }

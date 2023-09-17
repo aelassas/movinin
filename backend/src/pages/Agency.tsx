@@ -195,9 +195,10 @@ const Agency = () => {
               agencies={agencies}
               keyword=""
               reload={false}
+              language={user?.language || Env.DEFAULT_LANGUAGE}
+              hideAgency
               onLoad={handlePropertyListLoad}
               onDelete={handlePropertyDelete}
-              hideAgency
             />
           </div>
         </div>

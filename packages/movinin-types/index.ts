@@ -62,6 +62,7 @@ export interface BackendSignUpPayload {
 
 export interface FrontendSignUpPayload extends BackendSignUpPayload {
     birthDate: number | Date
+    phone: string
 }
 
 export interface CreateUserPayload {
@@ -123,18 +124,20 @@ export interface Booking {
     _id?: string
     agency: string | User
     property: string | Property
-    renter: string | User
+    renter?: string | User
     from: Date
     to: Date
     status: BookingStatus
     cancellation: boolean
     price?: number
     location: string | Location
+    cancelRequest?: boolean
 }
 
 export interface BookPayload {
-    renter: Renter
+    renter?: User
     booking: Booking
+    payLater?: boolean
 }
 
 export interface Filter {
@@ -259,7 +262,6 @@ export interface Property {
     location: Location
     address?: string
     price: number
-    soldOut: boolean
     hidden: boolean
     cancellation: number
     rentalTerm: RentalTerm
@@ -286,7 +288,6 @@ export interface CreatePropertyPayload {
     location?: string
     address: string
     price: number
-    soldOut: boolean
     hidden: boolean
     cancellation: number
     rentalTerm: string
@@ -339,7 +340,10 @@ export interface UpdateEmailNotificationsPayload {
 export interface GetPropertiesPayload {
     agencies: string[]
     types?: PropertyType[]
+    rentalTerms?: RentalTerm[]
     availability?: Availablity[]
+    location?: string
+    language?: string
 }
 
 export interface UpdateLanguagePayload {
@@ -352,6 +356,11 @@ export interface GetUsersBody {
     types: UserType[]
 }
 
+export interface PropertyOptions {
+    cancellation?: boolean
+}
+
+
 // 
 // React types
 //
@@ -362,3 +371,11 @@ export interface StatusFilterItem {
     value: BookingStatus
     checked?: boolean
 }
+
+export interface PropertyFilter {
+    location: Location
+    from: Date
+    to: Date
+}
+
+export type PropertyFilterSubmitEvent = (filter: PropertyFilter) => void

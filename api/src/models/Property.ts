@@ -101,10 +101,6 @@ const propertySchema = new Schema<env.Property>(
             type: Number,
             required: [true, "can't be blank"],
         },
-        soldOut: {
-            type: Boolean,
-            default: false
-        },
         hidden: {
             type: Boolean,
             default: false

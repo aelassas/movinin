@@ -1,0 +1,209 @@
+import React, { useState } from 'react'
+import { strings as commonStrings } from '../lang/common'
+import { strings as blStrings } from '../lang/booking-list'
+import { strings as bfStrings } from '../lang/booking-filter'
+import { strings as csStrings } from '../lang/properties'
+import * as Helper from '../common/Helper'
+import Master from '../components/Master'
+import * as UserService from '../services/UserService'
+import * as BookingService from '../services/BookingService'
+import Backdrop from '../components/SimpleBackdrop'
+import NoMatch from './NoMatch'
+import Error from './Error'
+import PropertyList from '../components/PropertyList'
+import AgencySelectList from '../components/AgencySelectList'
+import LocationSelectList from '../components/LocationSelectList'
+import PropertySelectList from '../components/PropertySelectList'
+import StatusList from '../components/StatusList'
+import DatePicker from '../components/DatePicker'
+import {
+  FormControl,
+  FormControlLabel,
+  Switch,
+} from '@mui/material'
+import {
+  Info as InfoIcon,
+} from '@mui/icons-material'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
+
+import '../assets/css/booking.css'
+
+const Booking = () => {
+  const [loading, setLoading] = useState(false)
+  const [noMatch, setNoMatch] = useState(false)
+  const [error, setError] = useState(false)
+  const [booking, setBooking] = useState<movininTypes.Booking>()
+  const [visible, setVisible] = useState(false)
+  const [isAgency, setIsAgency] = useState(false)
+  const [agency, setAgency] = useState<movininTypes.Option>()
+  const [property, setProperty] = useState<movininTypes.Property>()
+  const [price, setPrice] = useState<number>()
+  const [location, setLocation] = useState<movininTypes.Option>()
+  const [from, setFrom] = useState<Date>()
+  const [to, setTo] = useState<Date>()
+  const [status, setStatus] = useState<movininTypes.BookingStatus>()
+  const [cancellation, setCancellation] = useState(false)
+
+  const onLoad = async (user?: movininTypes.User) => {
+    if (user) {
+      setLoading(true)
+
+      const params = new URLSearchParams(window.location.search)
+      if (params.has('b')) {
+        const id = params.get('b')
+        if (id && id !== '') {
+          try {
+            const booking = await BookingService.getBooking(id)
+
+            if (booking) {
+              setBooking(booking)
+              setPrice(booking.price)
+              setLoading(false)
+              setVisible(true)
+              setIsAgency(user.type === movininTypes.RecordType.Agency)
+              const cmp = booking.agency as movininTypes.User
+              setAgency({
+                _id: cmp._id as string,
+                name: cmp.fullName,
+                image: cmp.avatar,
+              })
+              setProperty(booking.property as movininTypes.Property)
+              const loc = booking.location as movininTypes.Location
+              setLocation({
+                _id: loc._id,
+                name: loc.name || '',
+              })
+              setFrom(new Date(booking.from))
+              setTo(new Date(booking.to))
+              setStatus(booking.status)
+              setCancellation(booking.cancellation || false)
+            } else {
+              setLoading(false)
+              setNoMatch(true)
+            }
+          } catch (err) {
+            console.log(err)
+            setLoading(false)
+            setError(true)
+            setVisible(false)
+          }
+        } else {
+          setLoading(false)
+          setNoMatch(true)
+        }
+      } else {
+        setLoading(false)
+        setNoMatch(true)
+      }
+    }
+  }
+
+  const days = movininHelper.days(from, to)
+
+  return (
+    <Master onLoad={onLoad} strict>
+      {visible && booking && (
+        <div className="booking">
+          <div className="col-1">
+            <form>
+              {!isAgency && (
+                <FormControl fullWidth margin="dense">
+                  <AgencySelectList
+                    label={blStrings.AGENCY}
+                    required
+                    variant="standard"
+                    value={agency}
+                    readOnly
+                  />
+                </FormControl>
+              )}
+
+              <FormControl fullWidth margin="dense">
+                <LocationSelectList
+                  label={bfStrings.LOCATION}
+                  required
+                  variant="standard"
+                  value={location}
+                  readOnly
+                />
+              </FormControl>
+
+              <PropertySelectList
+                label={blStrings.PROPERTY}
+                agency={(agency && agency._id) || ''}
+                location={(location && location._id) || ''}
+                required
+                value={property}
+                readOnly
+              />
+
+              <FormControl fullWidth margin="dense">
+                <DatePicker
+                  label={commonStrings.FROM}
+                  value={from}
+                  required
+                  language={UserService.getLanguage()}
+                  readOnly
+                />
+              </FormControl>
+              <FormControl fullWidth margin="dense">
+                <DatePicker
+                  label={commonStrings.TO}
+                  value={to}
+                  required
+                  language={UserService.getLanguage()}
+                  readOnly
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <StatusList
+                  label={blStrings.STATUS}
+                  value={status}
+                  required
+                  readOnly
+                />
+              </FormControl>
+
+              <div className="info">
+                <InfoIcon />
+                <label>{commonStrings.OPTIONAL}</label>
+              </div>
+
+              <FormControl fullWidth margin="dense" className="checkbox-fc">
+                <FormControlLabel
+                  control={<Switch checked={cancellation} color="primary" readOnly />}
+                  label={csStrings.CANCELLATION}
+                  className="checkbox-fcl"
+                  disabled={!Helper.propertyOptionAvailable(property, 'cancellation')}
+                />
+              </FormControl>
+            </form>
+          </div>
+          <div className="col-2">
+            <div className="col-2-header">
+              <div className="price">
+                <label className="price-days">{Helper.getDays(days)}</label>
+                <label className="price-main">{`${movininHelper.formatNumber(price ?? 0)} ${commonStrings.CURRENCY}`}</label>
+                <label className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</label>
+              </div>
+            </div>
+            <PropertyList
+              className="property"
+              properties={((property && [booking.property]) as movininTypes.Property[]) || []}
+              hidePrice
+              hideActions
+            />
+          </div>
+        </div>
+      )}
+
+      {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
+      {noMatch && <NoMatch hideHeader />}
+      {error && <Error />}
+    </Master>
+  )
+}
+
+export default Booking

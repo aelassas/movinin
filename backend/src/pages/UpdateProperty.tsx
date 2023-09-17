@@ -69,7 +69,6 @@ const UpdateProperty = () => {
   const [furnished, setFurnished] = useState(false)
   const [petsAllowed, setPetsAllowed] = useState(false)
   const [cancellation, setCancellation] = useState('')
-  const [soldOut, setSoldout] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [formError, setFormError] = useState(false)
   const [imageViewerOpen, setImageViewerOpen] = useState(false)
@@ -195,10 +194,6 @@ const UpdateProperty = () => {
     setCancellation(e.target.value)
   }
 
-  const handleSoldOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSoldout(e.target.checked)
-  }
-
   const handleHiddenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHidden(e.target.checked)
   }
@@ -251,7 +246,6 @@ const UpdateProperty = () => {
         location: location?._id,
         address,
         price: Number(price),
-        soldOut,
         hidden,
         cancellation: movininHelper.extraToNumber(cancellation),
         available,
@@ -320,7 +314,6 @@ const UpdateProperty = () => {
               setLocation({ _id: property.location._id, name: property.location.name })
               setAddress(property.address || '')
               setPrice(property.price.toString())
-              setSoldout(property.soldOut)
               setHidden(property.hidden)
               setCancellation(movininHelper.extraToString(property.cancellation))
               setAvailable(property.available)
@@ -594,20 +587,6 @@ const UpdateProperty = () => {
                     <Switch
                       checked={petsAllowed}
                       onChange={handlePetsAllowedChange}
-                      color="primary"
-                    />
-                  }
-                  className="checkbox-fcl"
-                />
-              </FormControl>
-
-              <FormControl fullWidth margin="dense" className="checkbox-fc">
-                <FormControlLabel
-                  label={strings.SOLD_OUT}
-                  control={
-                    <Switch
-                      checked={soldOut}
-                      onChange={handleSoldOutChange}
                       color="primary"
                     />
                   }
