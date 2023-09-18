@@ -404,7 +404,6 @@ export async function getProperties(req: Request, res: Response) {
 
     const $match: mongoose.FilterQuery<any> = {
       $and: [
-        { name: { $regex: keyword, $options: options } },
         { agency: { $in: agencies } },
         { type: { $in: types } },
         { rentalTerm: { $in: rentalTerms } }
@@ -458,13 +457,18 @@ export async function getProperties(req: Request, res: Response) {
                   pipeline: [
                     {
                       $match: {
-                        $and: [{ $expr: { $in: ['$_id', '$$values'] } }, { $expr: { $eq: ['$language', language] } }],
+                        $and: [
+                          { $expr: { $in: ['$_id', '$$values'] } },
+                          { $expr: { $eq: ['$language', language] } }
+                        ],
                       },
                     },
                   ],
                   as: 'value',
                 },
+
               },
+              { $unwind: { path: '$value', preserveNullAndEmptyArrays: false } },
               {
                 $addFields: { name: '$value.value' },
               },
@@ -473,6 +477,14 @@ export async function getProperties(req: Request, res: Response) {
           },
         },
         { $unwind: { path: '$location', preserveNullAndEmptyArrays: false } },
+        {
+          $match: {
+            $or: [
+              { 'name': { $regex: keyword, $options: options } },
+              { 'location.name': { $regex: keyword, $options: options } }
+            ]
+          }
+        },
         {
           $facet: {
             resultData: [{ $sort: { name: 1 } }, { $skip: (page - 1) * size }, { $limit: size }],
@@ -503,7 +515,7 @@ export async function getProperties(req: Request, res: Response) {
   }
 }
 
-export async function getBookingyProperties(req: Request, res: Response) {
+export async function getBookingProperties(req: Request, res: Response) {
   try {
     const body: movininTypes.GetBookingPropertiesPayload = req.body
     const agency = new mongoose.Types.ObjectId(body.agency)

@@ -439,12 +439,13 @@ export async function getBookings(req: Request, res: Response) {
               { 'agency.fullName': { $regex: keyword, $options: options } },
               { 'renter.fullName': { $regex: keyword, $options: options } },
               { 'property.name': { $regex: keyword, $options: options } },
+              { 'location.name': { $regex: keyword, $options: options } },
             ],
           })
         }
       }
     }
-
+    console.log($match)
     const data = await Booking.aggregate([
       {
         $lookup: {
@@ -478,13 +479,17 @@ export async function getBookings(req: Request, res: Response) {
                 pipeline: [
                   {
                     $match: {
-                      $and: [{ $expr: { $in: ['$_id', '$$values'] } }, { $expr: { $eq: ['$language', language] } }],
+                      $and: [
+                        { $expr: { $in: ['$_id', '$$values'] } },
+                        { $expr: { $eq: ['$language', language] } }
+                      ],
                     },
                   },
                 ],
                 as: 'value',
               },
             },
+            { $unwind: { path: '$value', preserveNullAndEmptyArrays: false } },
             {
               $addFields: { name: '$value.value' },
             },

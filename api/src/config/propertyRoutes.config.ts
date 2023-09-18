@@ -7,7 +7,7 @@ export default {
   deleteImage: '/api/delete-property-image/:property/:image',
   getProperty: '/api/property/:id/:language',
   getProperties: '/api/properties/:page/:size',
-  getBookingyProperties: '/api/booking-properties/:page/:size',
+  getBookingProperties: '/api/booking-properties/:page/:size',
   getFrontendProperties: '/api/frontend-properties/:page/:size',
   checkProperty: '/api/check-property/:id',
 }
