@@ -570,7 +570,7 @@ const Checkout = () => {
 
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                       <label className="booking-detail-title">{strings.PROPERTY}</label>
-                      <div className="booking-detail-value">{`${property.name} (${property.price} ${csStrings.PROPERTY_CURRENCY})`}</div>
+                      <div className="booking-detail-value">{`${property.name} (${Helper.priceLabel(property)})`}</div>
                     </div>
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                       <label className="booking-detail-title">{commonStrings.AGENCY}</label>

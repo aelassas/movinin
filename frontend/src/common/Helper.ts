@@ -144,39 +144,6 @@ export const price = (property: movininTypes.Property, from: Date, to: Date, opt
   return price
 }
 
-export const getUserTypes = () => {
-  return [
-    {
-      value: movininTypes.UserType.Admin,
-      label: commonStrings.RECORD_TYPE_ADMIN
-    },
-    {
-      value: movininTypes.UserType.Agency,
-      label: commonStrings.RECORD_TYPE_AGENCY,
-    },
-    {
-      value: movininTypes.UserType.User,
-      label: commonStrings.RECORD_TYPE_USER
-    },
-  ]
-}
-
-export const getUserType = (status: string) => {
-  switch (status) {
-    case movininTypes.RecordType.Admin:
-      return commonStrings.RECORD_TYPE_ADMIN
-
-    case movininTypes.RecordType.Agency:
-      return commonStrings.RECORD_TYPE_AGENCY
-
-    case movininTypes.RecordType.User:
-      return commonStrings.RECORD_TYPE_USER
-
-    default:
-      return ''
-  }
-}
-
 export const getDays = (days: number) => `${strings.PRICE_DAYS_PART_1} ${days} ${strings.PRICE_DAYS_PART_2}${days > 1 ? 's' : ''}`
 
 export const getDaysShort = (days: number) => `${days} ${strings.PRICE_DAYS_PART_2}${days > 1 ? 's' : ''}`

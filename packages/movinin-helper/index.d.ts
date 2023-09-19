@@ -20,3 +20,5 @@ export declare const trimCarriageReturn: (str: string) => string;
 export declare const totalDays: (date1: Date, date2: Date) => number;
 export declare const daysInMonth: (month: number, year: number) => number;
 export declare const daysInYear: (year: number) => 366 | 365;
+export declare const getAllPropertyTypes: () => movininTypes.PropertyType[];
+export declare const getAllRentalTerms: () => movininTypes.RentalTerm[];

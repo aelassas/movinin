@@ -131,3 +131,22 @@ export const daysInMonth = (month: number, year: number) =>
 
 export const daysInYear = (year: number) =>
     ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365
+
+export const getAllPropertyTypes = () =>
+    [
+        movininTypes.PropertyType.Apartment,
+        movininTypes.PropertyType.Commercial,
+        movininTypes.PropertyType.Farm,
+        movininTypes.PropertyType.House,
+        movininTypes.PropertyType.Industrial,
+        movininTypes.PropertyType.Plot,
+        movininTypes.PropertyType.Townhouse
+    ]
+
+export const getAllRentalTerms = () =>
+    [
+        movininTypes.RentalTerm.Monthly,
+        movininTypes.RentalTerm.Weekly,
+        movininTypes.RentalTerm.Daily,
+        movininTypes.RentalTerm.Yearly,
+    ]

@@ -42,6 +42,7 @@ const strings = new LocalizedStrings({
     FURNISHED_TOOLTIP: 'Ce bien est meublé',
     YEARS: 'ans',
     VIEW_BOOKINGS: 'Voir les réservations',
+    PETS_ALLOWED_TOOLTIP: 'Animaux domestiques autorisés',
   },
   en: {
     NEW_PROPERTY: 'New property',
@@ -82,6 +83,7 @@ const strings = new LocalizedStrings({
     FURNISHED_TOOLTIP: 'This property is furnished',
     YEARS: 'years',
     VIEW_BOOKINGS: 'View bookings',
+    PETS_ALLOWED_TOOLTIP: 'Pets allowed',
   },
 })
 

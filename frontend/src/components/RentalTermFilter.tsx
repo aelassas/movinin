@@ -4,6 +4,7 @@ import { strings as propertyStrings } from '../lang/property'
 import { strings } from '../lang/rental-term'
 import Accordion from './Accordion'
 import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/rental-term-filter.css'
 
@@ -16,12 +17,8 @@ const RentalTermFilter = (
     onChange?: (values: movininTypes.RentalTerm[]) => void
   }
 ) => {
-  const allRentalTerms = [
-    movininTypes.RentalTerm.Monthly,
-    movininTypes.RentalTerm.Weekly,
-    movininTypes.RentalTerm.Daily,
-    movininTypes.RentalTerm.Yearly
-  ]
+  const allRentalTerms = movininHelper.getAllRentalTerms()
+
   const [allChecked, setAllChecked] = useState(true)
   const [values, setValues] = useState(allRentalTerms)
 

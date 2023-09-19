@@ -191,7 +191,7 @@ const Agency = () => {
           <div className="col-2">
             <PropertyList
               user={user}
-              types={Helper.getAllPropertyTypes()}
+              types={movininHelper.getAllPropertyTypes()}
               agencies={agencies}
               keyword=""
               reload={false}

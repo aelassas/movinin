@@ -229,7 +229,7 @@ const PropertyList = (
                     <div className="price">
                       <label className="price-days">{Helper.getDays(days)}</label>
                       <label className="price-main">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</label>
-                      <label className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</label>
+                      <label className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatNumber((price || 0) / days)} ${commonStrings.CURRENCY}`}</label>
                     </div>
                   )}
                   {hidePrice && !hideActions && <span></span>}

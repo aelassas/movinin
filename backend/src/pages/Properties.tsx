@@ -27,8 +27,8 @@ const Properties = () => {
   const [rowCount, setRowCount] = useState(0)
   const [reload, setReload] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [propertyTypes, setPropertyTypes] = useState(Helper.getAllPropertyTypes())
-  const [rentalTerms, setRentalTerms] = useState(Helper.getAllRentalTerms())
+  const [propertyTypes, setPropertyTypes] = useState(movininHelper.getAllPropertyTypes())
+  const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())
   const [availability, setAvailability] = useState(
     [
       movininTypes.Availablity.Available,

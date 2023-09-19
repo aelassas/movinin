@@ -11,14 +11,23 @@
     "sourceType": "module"
   },
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "react",
+    "react-hooks"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "ignorePatterns": [
+    "/**/*.js"
   ],
   "rules": {
+    "react/prop-types": "off",
+    "react-hooks/exhaustive-deps": "warn",
     "no-console": "off",
     "semi": [
       "error",
@@ -28,6 +37,12 @@
       "error",
       "1tbs"
     ],
-    "curly": "error"
+    "curly": "error",
+    "@typescript-eslint/no-explicit-any": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

@@ -38,6 +38,7 @@ const DatePicker = (
         readOnly={readOnly}
         onChange={(value) => {
           const date = value as Date
+          date.setHours(12, 0, 0)
           setValue(date)
           if (onChange) {
             onChange(date)

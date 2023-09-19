@@ -1,21 +1,14 @@
 import LocalizedStrings from 'react-localization'
 import * as LangHelper from '../common/LangHelper'
-import { strings as commonStrings } from '../lang/common'
 
 const strings = new LocalizedStrings({
   fr: {
-    PROPERTY_CURRENCY: ` ${commonStrings.CURRENCY}/mois`,
     CANCELLATION: 'Annulation',
     CANCELLATION_TOOLTIP: 'La réservation peut être annulée avant la date de commencement de la location.',
     INCLUDED: 'Inclus',
     AVAILABLE: 'Disponile',
     UNAVAILABLE: 'Indisponible',
-    PROPERTY_AVAILABLE: 'Disponible à la location',
-    PROPERTY_AVAILABLE_TOOLTIP: 'Cette propriété est disponible à la location.',
-    PROPERTY_UNAVAILABLE: 'Indisponible à la location',
-    PROPERTY_UNAVAILABLE_TOOLTIP: "Cette propriété n'est pas disponible à la location.",
     VIEW: 'Voir',
-    VIEW_PROPERTY: 'Voir cette propriété',
     EMPTY_LIST: 'Pas de propriétés.',
     AVAILABILITY: 'Disponibilité',
     PRICE_DAYS_PART_1: 'Prix pour',
@@ -40,20 +33,15 @@ const strings = new LocalizedStrings({
     FURNISHED_TOOLTIP: 'Ce bien est meublé',
     YEARS: 'ans',
     BOOK: 'Réserver',
+    PETS_ALLOWED_TOOLTIP: 'Animaux domestiques autorisés',
   },
   en: {
-    PROPERTY_CURRENCY: ` ${commonStrings.CURRENCY}/month`,
     CANCELLATION: 'Cancellation',
     CANCELLATION_TOOLTIP: 'The booking can be canceled before the start date of the rental.',
     INCLUDED: 'Included',
     AVAILABLE: 'Available',
     UNAVAILABLE: 'Unavailable',
-    PROPERTY_AVAILABLE: 'Available for rental',
-    PROPERTY_AVAILABLE_TOOLTIP: 'This property is available for rental.',
-    PROPERTY_UNAVAILABLE: 'Unavailable for rental',
-    PROPERTY_UNAVAILABLE_TOOLTIP: 'This property is unavailable for rental.',
     VIEW: 'View',
-    VIEW_PROPERTY: 'View this property',
     EMPTY_LIST: 'No properties.',
     AVAILABILITY: 'Availablity',
     PRICE_DAYS_PART_1: 'Price for',
@@ -78,6 +66,7 @@ const strings = new LocalizedStrings({
     FURNISHED_TOOLTIP: 'This property is furnished',
     YEARS: 'years',
     BOOK: 'Book now',
+    PETS_ALLOWED_TOOLTIP: 'Pets allowed',
   },
 })
 

@@ -12,10 +12,11 @@ import {
     AcUnit as AirconIcon,
     Countertops as KitchensIcon,
     DirectionsCar as ParkingSpacesIcon,
+    Chair as FurnishedIcon,
+    Pets as PetsAllowedIcon,
     Check as CheckIcon,
     Clear as UncheckIcon,
     Info as InfoIcon,
-    Chair as FurnishedIcon,
     Person as MinimumAgeIcon,
     LocationOn as LocationIcon,
     AttachMoney as RentalTermIcon
@@ -106,24 +107,39 @@ const PropertyInfo = (
                         </div>
                     </Tooltip>
                 </li>
-                {property.furnished && (
-                    <li className="aircon">
-                        <Tooltip title={strings.FURNISHED_TOOLTIP} placement="top">
-                            <div className="property-info-list-item">
-                                <FurnishedIcon />
-                            </div>
-                        </Tooltip>
-                    </li>
-                )}
-                {property.aircon && (
-                    <li className="aircon">
-                        <Tooltip title={strings.AIRCON_TOOLTIP} placement="top">
-                            <div className="property-info-list-item">
-                                <AirconIcon />
-                            </div>
-                        </Tooltip>
-                    </li>
-                )}
+                {
+                    property.furnished && (
+                        <li className="aircon">
+                            <Tooltip title={strings.FURNISHED_TOOLTIP} placement="top">
+                                <div className="property-info-list-item">
+                                    <FurnishedIcon />
+                                </div>
+                            </Tooltip>
+                        </li>
+                    )
+                }
+                {
+                    property.aircon && (
+                        <li className="aircon">
+                            <Tooltip title={strings.AIRCON_TOOLTIP} placement="top">
+                                <div className="property-info-list-item">
+                                    <AirconIcon />
+                                </div>
+                            </Tooltip>
+                        </li>
+                    )
+                }
+                {
+                    property.petsAllowed && (
+                        <li className="aircon">
+                            <Tooltip title={strings.PETS_ALLOWED_TOOLTIP} placement="top">
+                                <div className="property-info-list-item">
+                                    <PetsAllowedIcon />
+                                </div>
+                            </Tooltip>
+                        </li>
+                    )
+                }
             </ul>
             <ul className="extras-list">
                 <li>

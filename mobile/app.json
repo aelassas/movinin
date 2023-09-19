@@ -1,30 +1,48 @@
 {
   "expo": {
-    "name": "movinin",
-    "slug": "movinin",
+    "jsEngine": "hermes",
+    "name": "Movin' In",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "slug": "movinin",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
+      "backgroundColor": "#0D63C9",
+      "image": "./assets/splash.png"
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/icon.png"
+      },
+      "icon": "./assets/icon.png",
+      "splash": {
+        "backgroundColor": "#0D63C9",
+        "image": "./assets/splash.png"
+      },
+      "googleServicesFile": "./google-services.json",
+      "package": "com.movinin"
+    },
+    "ios": {
+      "buildNumber": "1.0.0",
+      "supportsTablet": true,
+      "icon": "./assets/icon.png",
+      "splash": {
+        "backgroundColor": "#0D63C9",
+        "image": "./assets/splash.png",
+        "tabletImage": "./assets/splash-tablet.png"
+      },
+      "bundleIdentifier": "com.movinin"
+    },
+    "plugins": ["expo-localization", "./plugins/usesCleartextTraffic"],
+    "owner": "aelassas",
+    "extra": {
+      "eas": {
+        "projectId": "68f84550-e978-45b5-9de1-da514eb547fe"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "updates": {
+      "url": "https://exp.host/@aelassas/movinin"
     }
   }
 }

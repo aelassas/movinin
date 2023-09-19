@@ -25,8 +25,8 @@ const Properties = () => {
   const [agencies, setAgencies] = useState<string[]>([])
   const [reload, setReload] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [propertyTypes, setPropertyTypes] = useState(Helper.getAllPropertyTypes())
-  const [rentalTerms, setRentalTerms] = useState(Helper.getAllRentalTerms())
+  const [propertyTypes, setPropertyTypes] = useState(movininHelper.getAllPropertyTypes())
+  const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())
 
   const handlePropertyListLoad = () => {
     setReload(false)
