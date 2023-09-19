@@ -37,3 +37,4 @@ export const PROPERTY_IMAGE_HEIGHT: number = Number.parseInt(MI_PROPERTY_IMAGE_H
 export const PROPERTY_OPTION_IMAGE_HEIGHT: number = 85
 export const SELECTED_PROPERTY_OPTION_IMAGE_HEIGHT: number = 30
 export const MINIMUM_AGE: number = Number.parseInt(MI_MINIMUM_AGE) || 21
+export const SIZE_UNIT = 'm²'

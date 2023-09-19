@@ -1,13 +1,13 @@
 version: "3.8"
 services:
   api:
-    build: 
+    build:
       context: .
       dockerfile: ./api/Dockerfile
     env_file: ./api/.env.docker
     restart: always
     ports:
-      - 4002:4002
+      - 4004:4004
     depends_on:
       - mongo
     volumes:
@@ -25,16 +25,16 @@ services:
       - 27017:27017
 
   backend:
-    build: 
+    build:
       context: .
       dockerfile: ./backend/Dockerfile
     depends_on:
       - api
     ports:
-      - 3001:3001
+      - 3003:3003
 
   frontend:
-    build: 
+    build:
       context: .
       dockerfile: ./frontend/Dockerfile
     depends_on:

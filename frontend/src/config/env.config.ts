@@ -16,8 +16,8 @@ const Env = {
   CDN_PROPERTIES: process.env.REACT_APP_MI_CDN_PROPERTIES,
   PAGE_OFFSET: 200,
   INFINITE_SCROLL_OFFSET: 40,
-  AGENCY_IMAGE_WIDTH: Number.parseInt(String(process.env.REACT_APP_MI_COMAPANY_IMAGE_WIDTH)) || 60,
-  AGENCY_IMAGE_HEIGHT: Number.parseInt(String(process.env.REACT_APP_MI_COMAPANY_IMAGE_HEIGHT)) || 30,
+  AGENCY_IMAGE_WIDTH: Number.parseInt(String(process.env.REACT_APP_MI_AGENCY_IMAGE_WIDTH)) || 60,
+  AGENCY_IMAGE_HEIGHT: Number.parseInt(String(process.env.REACT_APP_MI_AGENCY_IMAGE_HEIGHT)) || 30,
   PROPERTY_IMAGE_WIDTH: Number.parseInt(String(process.env.REACT_APP_MI_PROPERTY_IMAGE_WIDTH)) || 300,
   PROPERTY_IMAGE_HEIGHT: Number.parseInt(String(process.env.REACT_APP_MI_PROPERTY_IMAGE_HEIGHT)) || 200,
   PROPERTY_OPTION_IMAGE_HEIGHT: 85,
@@ -33,6 +33,7 @@ const Env = {
     (process.env.REACT_APP_MI_PAGINATION_MODE && process.env.REACT_APP_MI_PAGINATION_MODE.toUpperCase()) === Const.PAGINATION_MODE.INFINITE_SCROLL
       ? Const.PAGINATION_MODE.INFINITE_SCROLL
       : Const.PAGINATION_MODE.CLASSIC,
+  SIZE_UNIT: 'm²',
 }
 
 export default Env

@@ -28,7 +28,7 @@ const strings = new LocalizedStrings({
     SOLD_OUT: 'Épuisée',
     HIDDEN: 'Cachée',
     IMAGES: 'Images',
-    DESCRIPTION_REQUIRED:'Le champ description est requis',
+    DESCRIPTION_REQUIRED: 'Le champ description est requis',
     RENTAL_TERM: 'Durée de location'
   },
   en: {
@@ -56,7 +56,7 @@ const strings = new LocalizedStrings({
     SOLD_OUT: 'Sold out',
     HIDDEN: 'Hidden',
     IMAGES: 'Images',
-    DESCRIPTION_REQUIRED:'Description is required',
+    DESCRIPTION_REQUIRED: 'Description is required',
     RENTAL_TERM: 'Rental term',
   },
 })

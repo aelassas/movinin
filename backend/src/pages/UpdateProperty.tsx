@@ -530,7 +530,7 @@ const UpdateProperty = () => {
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <InputLabel>{strings.SIZE}</InputLabel>
+              <InputLabel>{`${strings.SIZE} (${Env.SIZE_UNIT})`}</InputLabel>
                 <Input
                   type="text"
                   value={size}

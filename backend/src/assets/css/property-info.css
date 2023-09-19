@@ -46,6 +46,12 @@ div.property-info ul.extras-list li {
     width: 100%;
 }
 
+div.property-info ul.extras-list div.property-info-list-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 div.property-info ul.extras-list .extra-info {
     color: rgba(0, 0, 0, 0.35);
 }

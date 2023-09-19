@@ -14,4 +14,4 @@ RUN rm -rf -- *
 COPY --from=build /movinin/backend/build .
 COPY ./backend/nginx.conf /etc/nginx/conf.d/default.conf
 CMD ["nginx", "-g", "daemon off;"]
-EXPOSE 3001
+EXPOSE 3003

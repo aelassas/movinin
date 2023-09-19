@@ -19,10 +19,12 @@ import {
     Clear as UncheckIcon,
     Info as InfoIcon,
     LocationOn as LocationIcon,
-    AttachMoney as RentalTermIcon
+    AttachMoney as RentalTermIcon,
+    PhotoSizeSelectSmall as SizeIcon
 } from '@mui/icons-material'
 import * as movininTypes from 'movinin-types'
 import * as LangHelper from '../common/LangHelper'
+import Env from '../config/env.config'
 
 import '../assets/css/property-info.css'
 
@@ -47,6 +49,8 @@ const PropertyInfo = (
                 ? <CheckIcon className="available" />
                 : <InfoIcon className="extra-info" />
     }
+
+    const size = `${property.size} ${Env.SIZE_UNIT}`
 
     return (
         property &&
@@ -127,6 +131,17 @@ const PropertyInfo = (
                 }
             </ul>
             <ul className="extras-list">
+                {
+                    property.size &&
+                    <li>
+                        <Tooltip title={size} placement='left'>
+                            <div className="property-info-list-item">
+                                <SizeIcon />
+                                <span className="property-info-list-text">{size}</span>
+                            </div>
+                        </Tooltip>
+                    </li>
+                }
                 <li>
                     <Tooltip title={property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : Helper.getCancellation(property.cancellation, fr)} placement="left">
                         <div className="property-info-list-item">

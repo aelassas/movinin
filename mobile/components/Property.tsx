@@ -95,6 +95,13 @@ const Property = (
         </View>
 
         <View style={styles.extras}>
+          {
+            property.size &&
+            <View style={styles.extra}>
+              <MaterialIcons name="photo-size-select-small" size={iconSize} style={styles.infoIcon} />
+              <Text style={styles.text}>{`${property.size} ${Env.SIZE_UNIT}`}</Text>
+            </View>
+          }
           <View style={styles.extra}>
             <MaterialIcons name={getExtraIcon(property.cancellation)} size={iconSize} style={styles.infoIcon} />
             <Text style={styles.text}>{Helper.getCancellation(property.cancellation, fr)}</Text>
