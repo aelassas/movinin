@@ -272,7 +272,10 @@ const BookingList = (
         field: 'renter',
         headerName: strings.RENTER,
         flex: 1,
-        renderCell: (params: any) => <Link href={`/user?u=${params.row.renter._id}`}>{params.value}</Link>,
+        renderCell: (params: any) =>
+          <Tooltip title={params.value} placement="left">
+            <Link href={`/user?u=${params.row.renter._id}`}>{params.value}</Link>
+          </Tooltip>,
         valueGetter: (params: any) => params.value.fullName,
       },
       {
@@ -366,7 +369,10 @@ const BookingList = (
         field: 'property',
         headerName: strings.PROPERTY,
         flex: 1,
-        renderCell: (params: any) => <Link href={`/property-bookings?p=${params.row.property._id}`}>{params.value}</Link>,
+        renderCell: (params: any) =>
+          <Tooltip title={params.value} placement="left">
+            <Link href={`/property-bookings?p=${params.row.property._id}`}>{params.value}</Link>
+          </Tooltip>,
         valueGetter: (params: any) => params.value.name,
       })
     }

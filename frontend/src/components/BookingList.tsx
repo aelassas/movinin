@@ -331,7 +331,11 @@ const BookingList = (
         field: 'property',
         headerName: strings.PROPERTY,
         flex: 1,
-        valueGetter: (params: any) => params.value.name
+        valueGetter: (params: any) => params.value.name,
+        renderCell: (params: any) =>
+          <Tooltip title={params.value} placement="left">
+            {params.value}
+          </Tooltip>
       })
     }
 
