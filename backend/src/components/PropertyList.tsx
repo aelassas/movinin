@@ -110,6 +110,7 @@ const PropertyList = (
         availability,
         language
       }
+
       const data = await PropertyService.getProperties(keyword || '', payload, page, Env.PROPERTIES_PAGE_SIZE)
 
       const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }

@@ -23,7 +23,7 @@ const Agency = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [agency, setAgency] = useState<movininTypes.User>()
-  const [agencies, setAgencies] = useState<string[]>([])
+  const [agencies, setAgencies] = useState<string[]>()
   const [error, setError] = useState(false)
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -192,6 +192,8 @@ const Agency = () => {
             <PropertyList
               user={user}
               types={movininHelper.getAllPropertyTypes()}
+              rentalTerms={movininHelper.getAllRentalTerms()}
+              availability={[movininTypes.Availablity.Available, movininTypes.Availablity.Unavailable]}
               agencies={agencies}
               keyword=""
               reload={false}
