@@ -1,12 +1,10 @@
 import LocalizedStrings from 'react-localization'
 import * as LangHelper from '../common/LangHelper'
-import { strings as commonStrings } from '../lang/common'
 
 const strings = new LocalizedStrings({
   fr: {
     NEW_PROPERTY: 'Nouvelle propriété',
     DELETE_PROPERTY: 'Êtes-vous sûr de vouloir supprimer cette propriété ?',
-    PROPERTY_CURRENCY: ` ${commonStrings.CURRENCY}/mois`,
     CANCELLATION: 'Annulation',
     CANCELLATION_TOOLTIP: 'La réservation peut être annulée avant la date de commencement de la location.',
     INCLUDED: 'Inclus',
@@ -47,7 +45,6 @@ const strings = new LocalizedStrings({
   en: {
     NEW_PROPERTY: 'New property',
     DELETE_PROPERTY: 'Are you sure you want to delete this property?',
-    PROPERTY_CURRENCY: ` ${commonStrings.CURRENCY}/month`,
     CANCELLATION: 'Cancellation',
     CANCELLATION_TOOLTIP: 'The booking can be canceled before the start date of the rental.',
     INCLUDED: 'Included',

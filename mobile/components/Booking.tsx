@@ -54,7 +54,7 @@ const Booking = (
         <Text style={styles.detailText}>{(booking.location as movininTypes.Location).name}</Text>
 
         <Text style={styles.detailTitle}>{i18n.t('PROPERTY')}</Text>
-        <Text style={styles.detailText}>{`${property.name} (${movininHelper.formatNumber(property.price)} ${i18n.t('PROPERTY_CURRENCY')})`}</Text>
+        <Text style={styles.detailText}>{`${property.name} (${Helper.priceLabel(property)})`}</Text>
 
         <Text style={styles.detailTitle}>{i18n.t('SUPPLIER')}</Text>
         <View style={styles.agency}>

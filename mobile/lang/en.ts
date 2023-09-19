@@ -115,7 +115,6 @@ export const en = {
   PASSWORD_UPDATE: 'Password changed successfully.',
   PASSWORD_UPDATE_ERROR: 'An error occurred while updating password.',
   EMPTY_PROPERTY_LIST: 'No properties.',
-  PROPERTY_CURRENCY: ' DH/day',
   CANCELLATION: 'Cancellation',
   INCLUDED: 'Included',
   UNAVAILABLE: 'Unavailable',

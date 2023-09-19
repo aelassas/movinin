@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, View, TextInput as ReactTextInput } from 'react
 import { useIsFocused } from '@react-navigation/native'
 import { intervalToDuration } from 'date-fns'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import * as movininTypes from  '../miscellaneous/movininTypes'
+import * as movininTypes from '../miscellaneous/movininTypes'
 
 import i18n from '../lang/i18n'
 import TextInput from '../components/TextInput'
@@ -194,7 +194,7 @@ const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
     }
   }
 
-  const onChangeBirthDate = (date: Date) => {
+  const onChangeBirthDate = (date: Date | undefined) => {
     setBirthDate(date)
     setBirthDateRequired(false)
     setBirthDateValid(true)

@@ -352,7 +352,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     }
   }
 
-  const onChangeBirthDate = (date: Date) => {
+  const onChangeBirthDate = (date: Date | undefined) => {
     setBirthDate(date)
     setBirthDateRequired(false)
     setBirthDateValid(true)
@@ -664,7 +664,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   <Text style={styles.detailText}>{location.name}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('PROPERTY')}</Text>
-                  <Text style={styles.detailText}>{`${property.name} (${property.price} ${i18n.t('PROPERTY_CURRENCY')})`}</Text>
+                  <Text style={styles.detailText}>{`${property.name} (${Helper.priceLabel(property)})`}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('SUPPLIER')}</Text>
                   <View style={styles.agency}>

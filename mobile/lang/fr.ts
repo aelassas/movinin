@@ -114,7 +114,6 @@ export const fr = {
   PASSWORD_UPDATE: 'Le mot de passe a été mofifié avec succès.',
   PASSWORD_UPDATE_ERROR: "Une erreur s'est produite lors de la modification du mot de passe.",
   EMPTY_PROPERTY_LIST: 'Pas de propriétés.',
-  PROPERTY_CURRENCY: ' DH/jour',
   CANCELLATION: 'Annulation',
   INCLUDED: 'Inclus',
   UNAVAILABLE: 'Indisponible',
