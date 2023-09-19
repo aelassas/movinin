@@ -1,0 +1,15 @@
+[Unit]
+Description=Movin' In API
+Wants=mongod.service
+After=mongod.service
+
+[Service]
+ExecStart=/usr/bin/npm start
+WorkingDirectory=/opt/movinin/api
+Type=simple
+Restart=always
+StandardOutput=append:/var/log/movinin.log
+StandardError=append:/var/log/movinin.log
+
+[Install]
+WantedBy=multi-user.target
