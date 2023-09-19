@@ -145,15 +145,7 @@ export async function getLocations(req: Request, res: Response) {
                   $and: [
                     { $expr: { $in: ['$_id', '$$values'] } },
                     { $expr: { $eq: ['$language', language] } },
-                    {
-                      $expr: {
-                        $regexMatch: {
-                          input: '$value',
-                          regex: keyword,
-                          options,
-                        },
-                      },
-                    },
+                    { $expr: { $regexMatch: { input: '$value', regex: keyword, options } } },
                   ],
                 },
               },
