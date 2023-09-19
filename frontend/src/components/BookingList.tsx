@@ -334,7 +334,7 @@ const BookingList = (
         valueGetter: (params: any) => params.value.name,
         renderCell: (params: any) =>
           <Tooltip title={params.value} placement="left">
-            {params.value}
+            <span>{params.value}</span>
           </Tooltip>
       })
     }
