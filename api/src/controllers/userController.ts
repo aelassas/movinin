@@ -273,7 +273,7 @@ export async function resend(req: Request, res: Response) {
   try {
     const user = await User.findOne({ email })
     const type = req.params.type.toUpperCase() as movininTypes.AppType
-    
+
     if (user) {
       if (
         ![movininTypes.AppType.Frontend.toString(), movininTypes.AppType.Backend.toString()].includes(type) ||
@@ -685,7 +685,7 @@ export async function createAvatar(req: Request, res: Response) {
       await fs.mkdir(env.CDN_TEMP_USERS, { recursive: true })
     }
 
-    const filename = `${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+    const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
     await fs.writeFile(filepath, req.file.buffer)

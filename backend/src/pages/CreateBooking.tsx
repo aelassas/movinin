@@ -26,6 +26,7 @@ import {
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
+import Backdrop from '../components/SimpleBackdrop'
 
 import '../assets/css/create-booking.css'
 
@@ -42,6 +43,7 @@ const CreateBooking = () => {
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [cancellation, setCancellation] = useState(false)
   const [minDate, setMinDate] = useState(new Date())
+  const [loading, setLoading] = useState(false)
 
   const handleAgencyChange = (values: movininTypes.Option[]) => {
     setAgency(values.length > 0 ? values[0]._id : '')
@@ -82,6 +84,8 @@ const CreateBooking = () => {
       return
     }
 
+    setLoading(true)
+
     const booking: movininTypes.Booking = {
       agency,
       property: property._id,
@@ -108,10 +112,13 @@ const CreateBooking = () => {
           }
         } catch (err) {
           Helper.error(err)
+        } finally {
+          setLoading(false)
         }
       },
       (err) => {
         Helper.error(err)
+        setLoading(false)
       },
     )
   }
@@ -228,6 +235,7 @@ const CreateBooking = () => {
           </form>
         </Paper>
       </div>
+      {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
     </Master>
   )
 }

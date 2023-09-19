@@ -202,6 +202,8 @@ const CreateAgency = () => {
         return
       }
 
+      setLoading(true)
+
       const data: movininTypes.CreateUserPayload = {
         email,
         fullName,
@@ -223,6 +225,8 @@ const CreateAgency = () => {
       }
     } catch (err) {
       Helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 

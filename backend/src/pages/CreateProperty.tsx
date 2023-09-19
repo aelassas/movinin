@@ -30,6 +30,7 @@ import ImageEditor from '../components/ImageEditor'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import RentalTermList from '../components/RentalTermList'
+import Backdrop from '../components/SimpleBackdrop'
 
 import '../assets/css/create-property.css'
 
@@ -68,6 +69,7 @@ const CreateProperty = () => {
   const [imageViewerOpen, setImageViewerOpen] = useState(false)
   const [editorState, setEditorState] = useState<EditorState>()
   const [rentalTerm, setRentalTerm] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const createPropertyRef = useRef<HTMLDivElement>(null)
 
@@ -224,6 +226,8 @@ const CreateProperty = () => {
         return
       }
 
+      setLoading(true)
+
       const data = {
         name,
         agency,
@@ -259,6 +263,8 @@ const CreateProperty = () => {
       }
     } catch (err) {
       Helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -565,6 +571,7 @@ const CreateProperty = () => {
           </form>
         </Paper>
       </div>
+      {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
     </Master>
   )
 }
