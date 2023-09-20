@@ -1,13 +1,13 @@
 [![Backend CI](https://github.com/aelassas/movinin/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/backend.yml)
 [![Frontend CI](https://github.com/aelassas/movinin/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/frontend.yml) [![CodeFactor](https://www.codefactor.io/repository/github/aelassas/movinin/badge)](https://www.codefactor.io/repository/github/aelassas/movinin) ![](https://img.shields.io/badge/iOS-4630EB.svg?logo=APPLE&labelColor=999999&logoColor=fff) ![](https://img.shields.io/badge/Android-4630EB.svg?&logo=ANDROID&labelColor=A4C639&logoColor=fff) ![](https://img.shields.io/badge/web-4630EB.svg?logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff) 
 
-Movin' In is an open source Rental Property Management Platform with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
+Movin' In is a Rental Property Management Platform with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
-Movin' In is designed to work with multiple agencies. Each agency can manage its properties and bookings from the backend. Movin' In can also work with only one agency as well.
+Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency as well.
 
-From the backend, admins can create and manage agencies, properties, locations, users and bookings.
+From the backend, administrators can create and manage agencies, properties, locations, users and bookings.
 
-When new agencies are created, they receive an email prompting them to create their account in order to access the backend and manage their properties, customers and bookings.
+When new agencies are created, they receive an email prompting them to create their account to access the backend and manage their properties, customers and bookings.
 
 Customers can sign up from the frontend or the mobile app, search for available properties based on location point and time, choose a property and complete the checkout process.
 
