@@ -14,7 +14,7 @@ const __env__ = (name: string, required?: boolean, defaultValue?: string): strin
     return String(value)
 }
 
-export const PORT = Number.parseInt(__env__('MI_PORT', false, '4003'), 10)
+export const PORT = Number.parseInt(__env__('MI_PORT', false, '4004'), 10)
 export const HTTPS = Helper.StringToBoolean(__env__('MI_HTTPS'))
 export const PRIVATE_KEY = __env__('MI_PRIVATE_KEY', HTTPS)
 export const CERTIFICATE = __env__('MI_CERTIFICATE', HTTPS)
