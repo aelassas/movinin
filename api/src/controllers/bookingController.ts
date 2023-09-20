@@ -164,7 +164,7 @@ export async function book(req: Request, res: Response) {
   }
 }
 
-async function notifyDriver(booking: env.Booking) {
+async function notifyRenter(booking: env.Booking) {
   const renter = await User.findById(booking.renter)
   if (!renter) {
     console.log(`Renter ${booking.renter} not found`)
@@ -290,7 +290,7 @@ export async function update(req: Request, res: Response) {
 
       if (previousStatus !== status) {
         // notify renter
-        await notifyDriver(booking)
+        await notifyRenter(booking)
       }
 
       return res.sendStatus(200)
@@ -316,7 +316,7 @@ export async function updateStatus(req: Request, res: Response) {
     await bulk.execute()
     bookings.forEach(async (booking) => {
       if (booking.status !== status) {
-        await notifyDriver(booking)
+        await notifyRenter(booking)
       }
     })
 

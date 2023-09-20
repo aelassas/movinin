@@ -948,7 +948,7 @@ export async function deleteUsers(req: Request, res: Response) {
           }
         }
       } else if (user.type === movininTypes.UserType.User) {
-        await Booking.deleteMany({ driver: id })
+        await Booking.deleteMany({ renter: id })
       }
 
       await NotificationCounter.deleteMany({ user: id })

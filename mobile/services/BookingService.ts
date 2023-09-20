@@ -36,11 +36,11 @@ export const getBooking = async (id: string): Promise<movininTypes.Booking> => {
     .then((res) => res.data)
 }
 
-export const hasBookings = async (driver: string): Promise<number> => {
+export const hasBookings = async (renter: string): Promise<number> => {
   const headers = await UserService.authHeader()
   return axios
     .get(
-      `${Env.API_HOST}/api/has-bookings/${encodeURIComponent(driver)}`,
+      `${Env.API_HOST}/api/has-bookings/${encodeURIComponent(renter)}`,
       { headers }
     )
     .then((res) => res.status)
