@@ -9,8 +9,10 @@
     "ios": "expo start --ios",
     "build:android": "cross-env EAS_NO_VCS=1 eas build --profile production --platform android",
     "build:android:local": "cross-env EAS_NO_VCS=1 eas build --profile production --platform android --local",
+    "build:android:preview": "cross-env EAS_NO_VCS=1 eas build --profile preview --platform android",
     "build:ios": "cross-env EAS_NO_VCS=1 eas build --profile production --platform ios",
     "build:ios:local": "cross-env EAS_NO_VCS=1 eas build --profile production --platform ios --local",
+    "build:ios:preview": "cross-env EAS_NO_VCS=1 eas build --profile preview --platform android",
     "ts:check": "tsc",
     "lint": "eslint --ext .ts,.tsx ."
   },
