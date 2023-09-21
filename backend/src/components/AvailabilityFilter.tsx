@@ -4,6 +4,7 @@ import { strings } from '../lang/properties'
 import Accordion from './Accordion'
 import * as Helper from '../common/Helper'
 import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/availability-filter.css'
 
@@ -54,7 +55,7 @@ const AvailabilityFilter = (
       setValues(values)
 
       if (onChange) {
-        onChange(values)
+        onChange(movininHelper.clone(values))
       }
     } else {
       Helper.error()
@@ -91,7 +92,7 @@ const AvailabilityFilter = (
       setValues(values)
 
       if (onChange) {
-        onChange(values)
+        onChange(movininHelper.clone(values))
       }
     } else {
       Helper.error()
@@ -126,7 +127,7 @@ const AvailabilityFilter = (
         setValues(values)
 
         if (onChange) {
-          onChange(values)
+          onChange(movininHelper.clone(values))
         }
       }
     } else {

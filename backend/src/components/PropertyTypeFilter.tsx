@@ -4,6 +4,7 @@ import { strings as cpStrings } from '../lang/create-property'
 import { strings } from '../lang/properties'
 import Accordion from './Accordion'
 import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/property-type-filter.css'
 
@@ -77,7 +78,7 @@ const PropertyTypeFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 
@@ -110,7 +111,7 @@ const PropertyTypeFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 
@@ -143,7 +144,7 @@ const PropertyTypeFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 
@@ -176,7 +177,7 @@ const PropertyTypeFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 
@@ -209,7 +210,7 @@ const PropertyTypeFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 
@@ -242,7 +243,7 @@ const PropertyTypeFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 
@@ -275,7 +276,7 @@ const PropertyTypeFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 

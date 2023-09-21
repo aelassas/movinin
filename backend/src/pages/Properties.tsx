@@ -25,7 +25,6 @@ const Properties = () => {
   const [agencies, setAgencies] = useState<string[]>([])
   const [keyword, setKeyword] = useState('')
   const [rowCount, setRowCount] = useState(0)
-  const [reload, setReload] = useState(false)
   const [loading, setLoading] = useState(true)
   const [propertyTypes, setPropertyTypes] = useState(movininHelper.getAllPropertyTypes())
   const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())
@@ -37,12 +36,10 @@ const Properties = () => {
 
   const handleSearch = (newKeyword: string) => {
     setKeyword(newKeyword)
-    setReload(newKeyword === keyword)
   }
 
   const handlePropertyListLoad: movininTypes.DataEvent<movininTypes.Property> = (data) => {
     if (data) {
-      setReload(false)
       setRowCount(data.rowCount)
     }
   }
@@ -53,22 +50,18 @@ const Properties = () => {
 
   const handleAgencyFilterChange = (newAgencies: string[]) => {
     setAgencies(newAgencies)
-    setReload(movininHelper.arrayEqual(newAgencies, agencies))
   }
 
   const handlePropertyTypeFilterChange = (values: movininTypes.PropertyType[]) => {
     setPropertyTypes(values)
-    setReload(movininHelper.arrayEqual(values, propertyTypes))
   }
 
   const handleRentalTermFilterChange = (values: movininTypes.RentalTerm[]) => {
     setRentalTerms(values)
-    setReload(movininHelper.arrayEqual(values, rentalTerms))
   }
 
   const handleAvailabilityFilterChange = (values: movininTypes.Availablity[]) => {
     setAvailability(values)
-    setReload(movininHelper.arrayEqual(values, availability))
   }
 
   const onLoad = async (user?: movininTypes.User) => {
@@ -127,7 +120,6 @@ const Properties = () => {
               rentalTerms={rentalTerms}
               availability={availability}
               keyword={keyword}
-              reload={reload}
               loading={loading}
               language={user.language || Env.DEFAULT_LANGUAGE}
               onLoad={handlePropertyListLoad}

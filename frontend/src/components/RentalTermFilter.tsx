@@ -62,7 +62,7 @@ const RentalTermFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 
@@ -95,7 +95,7 @@ const RentalTermFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 
@@ -128,7 +128,7 @@ const RentalTermFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 
@@ -161,7 +161,7 @@ const RentalTermFilter = (
     setValues(values)
 
     if (onChange) {
-      onChange(values)
+      onChange(movininHelper.clone(values))
     }
   }
 

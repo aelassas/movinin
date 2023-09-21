@@ -9,11 +9,11 @@ import PropertyFilter from '../components/PropertyFilter'
 import AgencyFilter from '../components/AgencyFilter'
 import RentalTermFilter from '../components/RentalTermFilter'
 import PropertyList from '../components/PropertyList'
+import PropertyTypeFilter from '../components/PropertyTypeFilter'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/properties.css'
-import PropertyTypeFilter from '../components/PropertyTypeFilter'
 
 const Properties = () => {
   const [visible, setVisible] = useState(false)
@@ -23,35 +23,26 @@ const Properties = () => {
   const [to, setTo] = useState<Date>()
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
   const [agencies, setAgencies] = useState<string[]>([])
-  const [reload, setReload] = useState(false)
   const [loading, setLoading] = useState(true)
   const [propertyTypes, setPropertyTypes] = useState(movininHelper.getAllPropertyTypes())
   const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())
 
-  const handlePropertyListLoad = () => {
-    setReload(false)
-  }
-
   const handleAgencyFilterChange = (newAgencies: string[]) => {
     setAgencies(newAgencies)
-    setReload(movininHelper.arrayEqual(newAgencies, agencies))
   }
 
   const handlePropertyFilterSubmit = (filter: movininTypes.PropertyFilter) => {
     setLocation(filter.location)
     setFrom(filter.from)
     setTo(filter.to)
-    setReload((location && location._id === filter.location._id) || false)
   }
 
   const handlePropertyTypeFilterChange = (values: movininTypes.PropertyType[]) => {
     setPropertyTypes(values)
-    setReload(movininHelper.arrayEqual(values, propertyTypes))
   }
 
   const handleRentalTermFilterChange = (values: movininTypes.RentalTerm[]) => {
     setRentalTerms(values)
-    setReload(movininHelper.arrayEqual(values, rentalTerms))
   }
 
   const onLoad = async (user?: movininTypes.User) => {
@@ -138,11 +129,9 @@ const Properties = () => {
               types={propertyTypes}
               rentalTerms={rentalTerms}
               location={location._id}
-              reload={reload}
               loading={loading}
               from={from}
               to={to}
-              onLoad={handlePropertyListLoad}
             />
           </div>
         </div>

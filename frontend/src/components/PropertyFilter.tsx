@@ -49,7 +49,8 @@ const PropertyFilter = (
     }
 
     if (onSubmit) {
-      onSubmit({ location, from, to })
+      const filter: movininTypes.PropertyFilter = { location, from, to }
+      onSubmit(filter)
     }
   }
 
