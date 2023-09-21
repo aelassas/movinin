@@ -144,9 +144,6 @@ const DateTimePicker = (
                 if (onChange) {
                   onChange(undefined)
                 }
-                // if (_ref && _ref.current) {
-                //   _ref.current.focus()
-                // }
               }}
             />
           )}
@@ -157,13 +154,11 @@ const DateTimePicker = (
             mode={mode}
             value={value || now}
             minimumDate={minimumDate}
-            onChange={(event, date) => {
+            onChange={(_, date) => {
               setShow(false)
-              if (date && date.getTime() !== now.getTime()) {
-                setValue(date)
-                if (onChange) {
-                  onChange(date)
-                }
+              setValue(date)
+              if (onChange) {
+                onChange(date)
               }
             }}
           />
