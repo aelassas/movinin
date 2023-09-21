@@ -157,8 +157,9 @@ const DrawerNavigator = () => {
             drawerItems={drawerItems}
             loggedIn={loggedIn}
             language={language}
-            activeBackgroundColor="#feeee4"
+            activeBackgroundColor="rgba(13, 99, 201, 0.3)"
             activeTintColor="#0D63C9"
+            pressColor="rgba(13, 99, 201, 0.3)"
             // buildLink={buildLink}
             props={props}
           />

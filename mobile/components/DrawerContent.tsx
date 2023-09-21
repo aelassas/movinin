@@ -20,7 +20,7 @@ import i18n from '../lang/i18n'
 import * as Env from '../config/env.config'
 import * as Helper from '../common/Helper'
 import * as UserService from '../services/UserService'
-import * as movininTypes from  '../miscellaneous/movininTypes'
+import * as movininTypes from '../miscellaneous/movininTypes'
 
 let yOffset = 0
 
@@ -34,6 +34,7 @@ const DrawerContent = (
     inactiveTintColor,
     activeBackgroundColor,
     inactiveBackgroundColor,
+    pressColor,
     labelStyle,
     itemStyle,
     props
@@ -46,6 +47,7 @@ const DrawerContent = (
     inactiveTintColor?: string
     activeBackgroundColor?: string
     inactiveBackgroundColor?: string
+    pressColor?: string
     labelStyle?: StyleProp<ViewStyle>
     itemStyle?: StyleProp<ViewStyle>
     props: DrawerContentComponentProps
@@ -127,6 +129,7 @@ const DrawerContent = (
                 inactiveTintColor={inactiveTintColor}
                 activeBackgroundColor={activeBackgroundColor}
                 inactiveBackgroundColor={inactiveBackgroundColor}
+                pressColor={pressColor}
                 labelStyle={labelStyle}
                 style={itemStyle}
                 // to={buildLink(route.name, route.params)}
