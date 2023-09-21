@@ -142,6 +142,9 @@ const DrawerNavigator = () => {
     },
   })
 
+  const menuColor = "rgba(13, 99, 201, 0.3)"
+  const iconColor = "rgba(0, 0, 0, 0.54)"
+
   return (
     <View style={styles.container}>
       <Drawer.Navigator
@@ -157,9 +160,9 @@ const DrawerNavigator = () => {
             drawerItems={drawerItems}
             loggedIn={loggedIn}
             language={language}
-            activeBackgroundColor="rgba(13, 99, 201, 0.3)"
+            activeBackgroundColor={menuColor}
             activeTintColor="#0D63C9"
-            pressColor="rgba(13, 99, 201, 0.3)"
+            pressColor={menuColor}
             // buildLink={buildLink}
             props={props}
           />
@@ -181,7 +184,7 @@ const DrawerNavigator = () => {
                   <MaterialIcons
                     name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                     size={24}
-                    color="rgba(0, 0, 0, 0.54)"
+                    color={iconColor}
                   />,
                 headerShown: false,
               }}
@@ -200,7 +203,7 @@ const DrawerNavigator = () => {
                     <MaterialIcons
                       name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                       size={24}
-                      color="rgba(0, 0, 0, 0.54)"
+                      color={iconColor}
                     />,
                   headerShown: false,
                 }}
@@ -219,7 +222,7 @@ const DrawerNavigator = () => {
                       <MaterialIcons
                         name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                         size={24}
-                        color="rgba(0, 0, 0, 0.54)"
+                        color={iconColor}
                       />,
                     headerShown: false,
                   }}
@@ -238,7 +241,7 @@ const DrawerNavigator = () => {
                         <MaterialIcons
                           name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                           size={24}
-                          color="rgba(0, 0, 0, 0.54)"
+                          color={iconColor}
                         />,
                       headerShown: false,
                     }}
@@ -257,7 +260,7 @@ const DrawerNavigator = () => {
                           <MaterialIcons
                             name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                             size={24}
-                            color="rgba(0, 0, 0, 0.54)"
+                            color={iconColor}
                           />,
                         headerShown: false,
                       }}
@@ -276,7 +279,7 @@ const DrawerNavigator = () => {
                             <MaterialIcons
                               name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                               size={24}
-                              color="rgba(0, 0, 0, 0.54)"
+                              color={iconColor}
                             />,
                           headerShown: false,
                         }}
@@ -295,7 +298,7 @@ const DrawerNavigator = () => {
                               <MaterialIcons
                                 name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                                 size={24}
-                                color="rgba(0, 0, 0, 0.54)"
+                                color={iconColor}
                               />,
                             headerShown: false,
                           }}
@@ -314,7 +317,7 @@ const DrawerNavigator = () => {
                                 <MaterialIcons
                                   name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                                   size={24}
-                                  color="rgba(0, 0, 0, 0.54)"
+                                  color={iconColor}
                                 />,
                               headerShown: false,
                             }}
@@ -333,7 +336,7 @@ const DrawerNavigator = () => {
                                   <MaterialIcons
                                     name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                                     size={24}
-                                    color="rgba(0, 0, 0, 0.54)"
+                                    color={iconColor}
                                   />,
                                 headerShown: false,
                               }}
@@ -352,7 +355,7 @@ const DrawerNavigator = () => {
                                     <MaterialIcons
                                       name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                                       size={24}
-                                      color="rgba(0, 0, 0, 0.54)"
+                                      color={iconColor}
                                     />,
                                   headerShown: false,
                                 }}
@@ -371,7 +374,7 @@ const DrawerNavigator = () => {
                                       <MaterialIcons
                                         name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                                         size={24}
-                                        color="rgba(0, 0, 0, 0.54)"
+                                        color={iconColor}
                                       />,
                                     headerShown: false,
                                   }}
@@ -390,7 +393,7 @@ const DrawerNavigator = () => {
                                         <MaterialIcons
                                           name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                                           size={24}
-                                          color="rgba(0, 0, 0, 0.54)"
+                                          color={iconColor}
                                         />,
                                       headerShown: false,
                                     }}
@@ -409,7 +412,7 @@ const DrawerNavigator = () => {
                                           <MaterialIcons
                                             name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                                             size={24}
-                                            color="rgba(0, 0, 0, 0.54)"
+                                            color={iconColor}
                                           />,
                                         headerShown: false,
                                       }}
@@ -428,7 +431,7 @@ const DrawerNavigator = () => {
                                             <MaterialIcons
                                               name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
                                               size={24}
-                                              color="rgba(0, 0, 0, 0.54)"
+                                              color={iconColor}
                                             />,
                                           headerShown: false,
                                         }}
