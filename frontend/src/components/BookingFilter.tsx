@@ -15,6 +15,7 @@ import {
 } from '@mui/icons-material'
 import Accordion from '../components/Accordion'
 import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/booking-filter.css'
 
@@ -59,7 +60,7 @@ const BookingFilter = ({
       filter = null
     }
     if (onSubmit) {
-      onSubmit(filter)
+      onSubmit(movininHelper.clone(filter))
     }
   }
 

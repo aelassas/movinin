@@ -78,8 +78,8 @@ const BookingList = (
   const [selectedId, setSelectedId] = useState('')
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [selectedIndex, setSelectedIndex] = useState(-1)
-  const [agencies, setAgencies] = useState<string[]>(bookingAgencies || [])
-  const [statuses, setStatuses] = useState<string[]>(bookingStatuses || [])
+  const [agencies, setAgencies] = useState<string[] | undefined>(bookingAgencies)
+  const [statuses, setStatuses] = useState<string[] | undefined>(bookingStatuses)
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [filter, setFilter] = useState<movininTypes.Filter | undefined | null>(bookingFilter)
   const [reload, setReload] = useState(bookingReload)
@@ -106,18 +106,20 @@ const BookingList = (
     try {
       const _pageSize = Env.isMobile() ? Env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
 
-      if (agencies.length > 0) {
+      if (agencies && statuses) {
         setLoading(true)
 
+        const payload: movininTypes.GetBookingsPayload = {
+          agencies,
+          statuses,
+          filter: filter || undefined,
+          property,
+          user: (user && user._id) || undefined,
+          language: loggedUser?.language || Env.DEFAULT_LANGUAGE
+        }
+
         const data = await BookingService.getBookings(
-          {
-            agencies,
-            statuses,
-            filter: filter || undefined,
-            property,
-            user: (user && user._id) || undefined,
-            language: loggedUser?.language || Env.DEFAULT_LANGUAGE
-          },
+          payload,
           page,
           _pageSize,
         )
@@ -161,15 +163,15 @@ const BookingList = (
   }
 
   useEffect(() => {
-    setAgencies(bookingAgencies || [])
+    setAgencies(bookingAgencies)
   }, [bookingAgencies])
 
   useEffect(() => {
-    setStatuses(bookingStatuses || [])
+    setStatuses(bookingStatuses)
   }, [bookingStatuses])
 
   useEffect(() => {
-    setFilter(bookingFilter || null)
+    setFilter(bookingFilter)
   }, [bookingFilter])
 
   useEffect(() => {
@@ -189,24 +191,24 @@ const BookingList = (
   }, [bookingUser])
 
   useEffect(() => {
+    if (load) {
+      _fetch(page, user)
+      setLoad(false)
+    }
+  }, [load]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
     if (reload) {
       setPage(0)
       paginationModel.page = 0
       setPaginationModel(paginationModel)
       _fetch(0, user)
-      setLoad(false)
-      setReload(false)
-      return
-    }
-    if (load) {
-      _fetch(page, user)
-      setLoad(false)
       setReload(false)
     }
-  }, [load, reload]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [reload]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (agencies.length > 0 && statuses.length > 0) {
+    if (agencies && statuses && page > 0) {
       const columns = getColumns()
       setColumns(columns)
       setLoad(true)
@@ -214,7 +216,7 @@ const BookingList = (
   }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (agencies.length > 0 && statuses.length > 0) {
+    if (agencies && statuses) {
       const columns = getColumns()
       setColumns(columns)
       setReload(true)
@@ -222,7 +224,7 @@ const BookingList = (
   }, [pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (agencies.length > 0 && statuses.length > 0) {
+    if (agencies && statuses) {
       const columns = getColumns()
       setColumns(columns)
       setReload(true)

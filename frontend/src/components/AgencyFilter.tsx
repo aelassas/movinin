@@ -69,7 +69,7 @@ const AgencyFilter = (
     setCheckedAgencies(checkedAgencies)
 
     if (onChange) {
-      onChange(checkedAgencies)
+      onChange(movininHelper.clone(checkedAgencies))
     }
   }
 
@@ -97,7 +97,7 @@ const AgencyFilter = (
       setCheckedAgencies(agencyIds)
 
       if (onChange) {
-        onChange(agencyIds)
+        onChange(movininHelper.clone(agencyIds))
       }
     }
   }

@@ -15,10 +15,9 @@ import '../assets/css/bookings.css'
 const Bookings = () => {
   const [user, setUser] = useState<movininTypes.User>()
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
-  const [agencies, setAgencies] = useState<string[]>([])
+  const [agencies, setAgencies] = useState<string[]>()
   const [statuses, setStatuses] = useState(Helper.getBookingStatuses().map((status) => status.value))
   const [filter, setFilter] = useState<movininTypes.Filter | null>()
-  const [reload, setReload] = useState(false)
   const [loadingAgencies, setLoadingAgencies] = useState(true)
   const [offset, setOffset] = useState(0)
 
@@ -33,21 +32,14 @@ const Bookings = () => {
 
   const handleAgencyFilterChange = (newAgencies: string[]) => {
     setAgencies(newAgencies)
-    setReload(movininHelper.arrayEqual(agencies, newAgencies))
   }
 
   const handleStatusFilterChange = (newStatuses: movininTypes.BookingStatus[]) => {
     setStatuses(newStatuses)
-    setReload(movininHelper.arrayEqual(statuses, newStatuses))
   }
 
   const handleBookingFilterSubmit = (newFilter: movininTypes.Filter | null) => {
     setFilter(newFilter)
-    setReload(movininHelper.filterEqual(filter, newFilter))
-  }
-
-  const handleBookingListLoad = () => {
-    setReload(false)
   }
 
   const onLoad = async (user?: movininTypes.User) => {
@@ -82,8 +74,6 @@ const Bookings = () => {
               statuses={statuses}
               filter={filter}
               loading={loadingAgencies}
-              reload={reload}
-              onLoad={handleBookingListLoad}
               hideDates={Env.isMobile()}
               checkboxSelection={false}
             />
