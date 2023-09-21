@@ -34,16 +34,16 @@ const Bookings = () => {
     }
   }, [user])
 
-  const handleAgencyFilterChange = (newAgencies: string[]) => {
-    setAgencies(newAgencies)
+  const handleAgencyFilterChange = (agencies: string[]) => {
+    setAgencies(agencies)
   }
 
-  const handleStatusFilterChange = (newStatuses: movininTypes.BookingStatus[]) => {
-    setStatuses(newStatuses)
+  const handleStatusFilterChange = (statuses: movininTypes.BookingStatus[]) => {
+    setStatuses(statuses)
   }
 
-  const handleBookingFilterSubmit = (newFilter: movininTypes.Filter | null) => {
-    setFilter(newFilter)
+  const handleBookingFilterSubmit = (filter: movininTypes.Filter | null) => {
+    setFilter(filter)
   }
 
   const onLoad = async (user?: movininTypes.User) => {

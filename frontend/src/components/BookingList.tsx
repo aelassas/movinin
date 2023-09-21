@@ -115,7 +115,7 @@ const BookingList = (
           user: (user && user._id) || undefined,
           language: user?.language || Env.DEFAULT_LANGUAGE
         }
-        
+
         const data = await BookingService.getBookings(
           payload,
           page,
@@ -197,9 +197,9 @@ const BookingList = (
 
   useEffect(() => {
     if (reload) {
-      setPage(0)
-      paginationModel.page = 0
-      setPaginationModel(paginationModel)
+      const _paginationModel = movininHelper.clone(paginationModel)
+      _paginationModel.page = 0
+      setPaginationModel(_paginationModel)
       _fetch(0, user)
       setReload(false)
     }
