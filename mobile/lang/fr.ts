@@ -14,8 +14,8 @@ export const fr = {
   PHONE: 'Téléphone',
   LOCATION: 'Localisation',
   LOCATION_EMPTY: 'Veuillez saisir le lieu.',
-  FROM_DATE_EMPTY:'Veuillez saisir la date de début de location.',
-  TO_DATE_EMPTY:'Veuillez saisir la date de fin de location.',
+  FROM_DATE_EMPTY: 'Veuillez saisir la date de début de location.',
+  TO_DATE_EMPTY: 'Veuillez saisir la date de fin de location.',
   BIO: 'Bio',
   IMAGE_REQUIRED: 'Veuillez ajouter une image.',
   LOADING: 'Chargement...',
@@ -162,7 +162,6 @@ export const fr = {
   PAY_ONLINE: 'Payer en ligne',
   PAY_ONLINE_INFO: 'Modification et annulation sous conditions',
   PAY_LATER_SUCCESS: 'Votre réservation a été effectué avec succès. Nous vous avons envoyé un e-mail de confirmation.',
-
   VIEW: 'Voir',
   HOUSE: 'Maison',
   APARTMENT: 'Appartement',
@@ -181,12 +180,11 @@ export const fr = {
   WEEK: 'semaine',
   DAY: 'jour',
   YEAR: 'an',
-
   FURNISHED: 'Meublée',
-  AIRCON:'Climatisation',
-  PETS_ALLOWED:'Animaux autorisés',
-
-  PROPERTY_TYPE:'Type de propriété',
+  AIRCON: 'Climatisation',
+  PETS_ALLOWED: 'Animaux autorisés',
+  PROPERTY_TYPE: 'Type de propriété',
+  SELECT_FROM_DATE: 'Veuillez saisir la date de début de location',
 }
 
 export default fr

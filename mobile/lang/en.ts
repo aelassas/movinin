@@ -162,9 +162,7 @@ export const en = {
   PAY_ONLINE: 'Pay online',
   PAY_ONLINE_INFO: 'Amendments and cancellation under conditions',
   PAY_LATER_SUCCESS: 'Your booking were successfully done. We have sent you a confirmation email.',
-
   VIEW: 'View',
-
   HOUSE: 'House',
   APARTMENT: 'Apartment',
   PLOT: 'Plot',
@@ -172,7 +170,6 @@ export const en = {
   COMMERCIAL: 'Commercial',
   INDUSTRIAL: 'Industrial',
   TOWN_HOUSE: 'Town House',
-
   RENTAL_TERM: 'Rental Term',
   YEARS: 'years',
   MONTHLY: 'Monthly',
@@ -183,10 +180,9 @@ export const en = {
   WEEK: 'week',
   DAY: 'day',
   YEAR: 'year',
-
   FURNISHED: 'Furnished',
   AIRCON: 'Aircon',
   PETS_ALLOWED: 'Pets allowed',
-
-  PROPERTY_TYPE:'Property type',
+  PROPERTY_TYPE: 'Property type',
+  SELECT_FROM_DATE: 'Please enter rental start date',
 }

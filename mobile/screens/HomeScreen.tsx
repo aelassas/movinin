@@ -21,6 +21,7 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
   const [closeLocation, setCloseLocation] = useState(false)
   const [fromDate, setFromDate] = useState<Date>()
   const [toDate, setToDate] = useState<Date>()
+  const [minimumDate, setMinimumDate] = useState(new Date())
   const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
   const [blur, setBlur] = useState(false)
   const [reload, setReload] = useState(false)
@@ -140,7 +141,17 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
               minimumDate={now}
               onChange={(date: Date | undefined) => {
                 if (date) {
-                  date.setHours(12, 0, 0)
+                  date.setHours(12, 0, 0, 0)
+                  const minimumDate = new Date(date)
+                  minimumDate.setDate(date.getDate() + 1)
+                  setMinimumDate(minimumDate)
+
+                  if (toDate && toDate.getTime() < date.getTime()) {
+                    setToDate(undefined)
+                  }
+                } else {
+                  setMinimumDate(new Date())
+                  setToDate(undefined)
                 }
                 setFromDate(date)
               }}
@@ -153,14 +164,16 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
               style={styles.component}
               label={i18n.t('TO_DATE')}
               value={toDate}
-              minimumDate={fromDate || now}
+              minimumDate={minimumDate}
               onChange={(date: Date | undefined) => {
                 if (date) {
-                  date.setHours(12, 0, 0)
+                  date.setHours(12, 0, 0, 0)
                 }
                 setToDate(date)
               }}
               onPress={blurLocations}
+              hidePicker={!fromDate}
+              hidePickerMessage={i18n.t('SELECT_FROM_DATE')}
             />
 
             <Button style={styles.component} label={i18n.t('SEARCH')} onPress={handleSearch} />

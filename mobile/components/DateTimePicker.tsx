@@ -6,6 +6,7 @@ import { enUS, fr } from 'date-fns/locale'
 import * as movininHelper from '../miscellaneous/movininHelper'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Env from '../config/env.config'
+import * as Helper from '../common/Helper'
 
 const DateTimePicker = (
   {
@@ -21,6 +22,8 @@ const DateTimePicker = (
     minimumDate,
     readOnly,
     hideClearButton,
+    hidePicker,
+    hidePickerMessage,
     onPress,
     onChange
   }: {
@@ -36,6 +39,8 @@ const DateTimePicker = (
     minimumDate?: Date
     readOnly?: boolean
     hideClearButton?: boolean
+    hidePicker?: boolean
+    hidePickerMessage?: string
     onPress?: () => void
     onChange?: (date: Date | undefined) => void
   }
@@ -56,8 +61,12 @@ const DateTimePicker = (
 
   useEffect(() => {
     setValue(dateTimeValue)
-    setLabel((value && movininHelper.capitalize(format(value, _format, { locale }))) || dateTimeLabel)
+    setLabel((dateTimeValue && movininHelper.capitalize(format(dateTimeValue, _format, { locale }))) || dateTimeLabel)
   }, [dateTimeValue]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+
+  }, [dateTimeValue])
 
   const styles = StyleSheet.create({
     container: {
@@ -118,9 +127,14 @@ const DateTimePicker = (
         <Pressable
           style={styles.dateButton}
           onPress={() => {
-            setShow(true)
-            if (onPress) {
-              onPress()
+            if (hidePicker && hidePickerMessage) {
+              Helper.toast(hidePickerMessage)
+            } else {
+              setShow(true)
+
+              if (onPress) {
+                onPress()
+              }
             }
           }}
         >
@@ -154,11 +168,13 @@ const DateTimePicker = (
             mode={mode}
             value={value || now}
             minimumDate={minimumDate}
-            onChange={(_, date) => {
+            onChange={(event, date) => {
               setShow(false)
-              setValue(date)
-              if (onChange) {
-                onChange(date)
+              if (event.type === 'set') {
+                setValue(date)
+                if (onChange) {
+                  onChange(date)
+                }
               }
             }}
           />
