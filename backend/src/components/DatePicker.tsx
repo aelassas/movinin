@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -22,10 +22,14 @@ const DatePicker = (
       required?: boolean
       language?: string
       variant?: TextFieldVariants
-      onChange: (value: Date) => void
+      onChange: (value: Date | null) => void
     }
 ) => {
   const [value, setValue] = useState(dateValue || null)
+
+  useEffect(() => {
+    setValue(dateValue || null)
+  }, [dateValue])
 
   return (
     <LocalizationProvider adapterLocale={language === 'fr' ? fr : enUS} dateAdapter={AdapterDateFns}>
@@ -33,11 +37,15 @@ const DatePicker = (
         label={label}
         views={['year', 'month', 'day']}
         value={value}
-        onChange={(value) => {
-          const date = value as Date
-          setValue(date)
+        onAccept={(value) => {
+          if (value) {
+            const date = value as Date
+            date.setHours(12, 0, 0)
+          }
+          setValue(value)
+
           if (onChange) {
-            onChange(date)
+            onChange(value)
           }
         }}
         minDate={minDate}

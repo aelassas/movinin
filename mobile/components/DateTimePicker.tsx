@@ -19,7 +19,7 @@ const DateTimePicker = (
     error,
     style,
     helperText,
-    minimumDate,
+    minDate,
     readOnly,
     hideClearButton,
     hidePicker,
@@ -36,7 +36,7 @@ const DateTimePicker = (
     error?: boolean
     style?: object
     helperText?: string
-    minimumDate?: Date
+    minDate?: Date
     readOnly?: boolean
     hideClearButton?: boolean
     hidePicker?: boolean
@@ -167,7 +167,7 @@ const DateTimePicker = (
           <ReactDateTimePicker
             mode={mode}
             value={value || now}
-            minimumDate={minimumDate}
+            minimumDate={minDate}
             onChange={(event, date) => {
               setShow(false)
               if (event.type === 'set') {

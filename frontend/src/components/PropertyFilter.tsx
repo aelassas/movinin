@@ -22,8 +22,12 @@ const PropertyFilter = (
     className?: string
     onSubmit: movininTypes.PropertyFilterSubmitEvent
   }) => {
-  const [from, setFrom] = useState<Date>(filterFrom)
-  const [to, setTo] = useState<Date>(filterTo)
+
+  const _minDate = new Date()
+  _minDate.setDate(_minDate.getDate() + 1)
+
+  const [from, setFrom] = useState<Date | undefined>(filterFrom)
+  const [to, setTo] = useState<Date | undefined>(filterTo)
   const [minDate, setMinDate] = useState<Date>()
   const [location, setLocation] = useState<movininTypes.Location | null | undefined>(filterLocation)
 
@@ -44,7 +48,7 @@ const PropertyFilter = (
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!location) {
+    if (!location || !from || !to) {
       return
     }
 
@@ -76,12 +80,21 @@ const PropertyFilter = (
             minDate={new Date()}
             variant="standard"
             required
-            onChange={(from) => {
-              const minDate = new Date(from)
-              minDate.setDate(from.getDate() + 1)
+            onChange={(date) => {
+              if (date) {
 
-              setFrom(from)
-              setMinDate(minDate)
+                if (to && to.getTime() <= date.getTime()) {
+                  setTo(undefined)
+                }
+
+                const minDate = new Date(date)
+                minDate.setDate(date.getDate() + 1)
+                setMinDate(minDate)
+
+                setFrom(date)
+              } else {
+                setMinDate(_minDate)
+              }
             }}
             language={UserService.getLanguage()}
           />
@@ -93,8 +106,8 @@ const PropertyFilter = (
             minDate={minDate}
             variant="standard"
             required
-            onChange={(to) => {
-              setTo(to)
+            onChange={(date) => {
+              setTo(date || undefined)
             }}
             language={UserService.getLanguage()}
           />

@@ -42,7 +42,7 @@ const CreateBooking = () => {
   const [to, setTo] = useState<Date>()
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [cancellation, setCancellation] = useState(false)
-  const [minDate, setMinDate] = useState(new Date())
+  const [minDate, setMinDate] = useState<Date>()
   const [loading, setLoading] = useState(false)
 
   const handleAgencyChange = (values: movininTypes.Option[]) => {
@@ -175,14 +175,22 @@ const CreateBooking = () => {
               <DatePicker
                 label={commonStrings.FROM}
                 value={from}
-                minDate={new Date()}
                 required
-                onChange={(from: Date) => {
-                  setFrom(from)
+                onChange={(date) => {
+                  if (date) {
 
-                  const minDate = new Date(from)
-                  minDate.setDate(minDate.getDate() + 1)
-                  setMinDate(minDate)
+                    if (to && to.getTime() <= date.getTime()) {
+                      setTo(undefined)
+                    }
+
+                    const minDate = new Date(date)
+                    minDate.setDate(minDate.getDate() + 1)
+                    setMinDate(minDate)
+
+                    setFrom(date)
+                  } else {
+                    setMinDate(undefined)
+                  }
                 }}
                 language={UserService.getLanguage()}
               />
@@ -194,8 +202,8 @@ const CreateBooking = () => {
                 value={to}
                 minDate={minDate}
                 required
-                onChange={(to: Date) => {
-                  setTo(to)
+                onChange={(to) => {
+                  setTo(to || undefined)
                 }}
                 language={UserService.getLanguage()}
               />

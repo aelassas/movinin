@@ -29,6 +29,7 @@ const BookingFilter = (
   const [closeLocation, setCloseLocation] = useState(false)
   const [location, setLocation] = useState<string>()
   const [keyword, setKeyword] = useState('')
+  const [minDate, setMinDate] = useState<Date>()
   const searchRef = useRef<ReactTextInput>(null)
 
   const _init = async () => {
@@ -81,7 +82,22 @@ const BookingFilter = (
             size="small"
             label={i18n.t('FROM')}
             value={from}
-            onChange={(date) => setFrom(date)}
+            onChange={(date) => {
+              if (date) {
+                date.setHours(12, 0, 0, 0)
+
+                if (to && to.getTime() <= date.getTime()) {
+                  setTo(undefined)
+                }
+
+                const minDate = new Date(date)
+                minDate.setDate(date.getDate() + 1)
+                setMinDate(minDate)
+              } else {
+                setMinDate(undefined)
+              }
+              setFrom(date)
+            }}
             onPress={blurLocations}
           />
 
@@ -93,8 +109,13 @@ const BookingFilter = (
             size="small"
             label={i18n.t('TO')}
             value={to}
-            minimumDate={from}
-            onChange={(date) => setTo(date)}
+            minDate={minDate}
+            onChange={(date) => {
+              if (date) {
+                date.setHours(12, 0, 0, 0)
+              }
+              setTo(date)
+            }}
             onPress={blurLocations}
           />
 

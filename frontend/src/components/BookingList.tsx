@@ -104,7 +104,6 @@ const BookingList = (
       const _pageSize = Env.isMobile() ? Env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
 
       if (agencies && statuses) {
-        console.log('fetch', page)
         setLoading(true)
 
         const payload: movininTypes.GetBookingsPayload = {

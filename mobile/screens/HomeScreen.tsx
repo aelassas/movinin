@@ -15,13 +15,16 @@ import DateTimePicker from '../components/DateTimePicker'
 const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Home'>) => {
   const isFocused = useIsFocused()
 
+  const _minDate = new Date()
+  _minDate.setDate(_minDate.getDate() + 1)
+
   const [init, setInit] = useState(false)
   const [visible, setVisible] = useState(false)
   const [location, setLocation] = useState('')
   const [closeLocation, setCloseLocation] = useState(false)
-  const [fromDate, setFromDate] = useState<Date>()
-  const [toDate, setToDate] = useState<Date>()
-  const [minimumDate, setMinimumDate] = useState(new Date())
+  const [from, setFrom] = useState<Date>()
+  const [to, setTo] = useState<Date>()
+  const [minDate, setMinDate] = useState(_minDate)
   const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
   const [blur, setBlur] = useState(false)
   const [reload, setReload] = useState(false)
@@ -32,8 +35,8 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
     setLanguage(language)
 
     setLocation('')
-    setFromDate(undefined)
-    setToDate(undefined)
+    setFrom(undefined)
+    setTo(undefined)
 
     Keyboard.addListener('keyboardDidHide', () => {
       setBlur(true)
@@ -76,18 +79,18 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
       return Helper.toast(i18n.t('LOCATION_EMPTY'))
     }
 
-    if (!fromDate) {
+    if (!from) {
       return Helper.toast(i18n.t('FROM_DATE_EMPTY'))
     }
 
-    if (!toDate) {
+    if (!to) {
       return Helper.toast(i18n.t('TO_DATE_EMPTY'))
     }
 
     const params = {
       location,
-      from: fromDate.getTime(),
-      to: toDate.getTime(),
+      from: from.getTime(),
+      to: to.getTime(),
     }
     navigation.navigate('Properties', params)
   }
@@ -137,23 +140,23 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
               locale={language}
               style={styles.component}
               label={i18n.t('FROM_DATE')}
-              value={fromDate}
-              minimumDate={now}
+              value={from}
+              minDate={now}
               onChange={(date: Date | undefined) => {
                 if (date) {
                   date.setHours(12, 0, 0, 0)
-                  const minimumDate = new Date(date)
-                  minimumDate.setDate(date.getDate() + 1)
-                  setMinimumDate(minimumDate)
 
-                  if (toDate && toDate.getTime() < date.getTime()) {
-                    setToDate(undefined)
+                  if (to && to.getTime() <= date.getTime()) {
+                    setTo(undefined)
                   }
+
+                  const minDate = new Date(date)
+                  minDate.setDate(date.getDate() + 1)
+                  setMinDate(minDate)
                 } else {
-                  setMinimumDate(new Date())
-                  setToDate(undefined)
+                  setMinDate(_minDate)
                 }
-                setFromDate(date)
+                setFrom(date)
               }}
               onPress={blurLocations}
             />
@@ -163,16 +166,16 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
               locale={language}
               style={styles.component}
               label={i18n.t('TO_DATE')}
-              value={toDate}
-              minimumDate={minimumDate}
+              value={to}
+              minDate={minDate}
               onChange={(date: Date | undefined) => {
                 if (date) {
                   date.setHours(12, 0, 0, 0)
                 }
-                setToDate(date)
+                setTo(date)
               }}
               onPress={blurLocations}
-              hidePicker={!fromDate}
+              hidePicker={!from}
               hidePickerMessage={i18n.t('SELECT_FROM_DATE')}
             />
 

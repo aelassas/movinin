@@ -41,6 +41,7 @@ import '../assets/css/booking.css'
 
 const UpdateBooking = () => {
   const navigate = useNavigate()
+
   const [user, setUser] = useState<movininTypes.User>()
   const [loading, setLoading] = useState(false)
   const [noMatch, setNoMatch] = useState(false)
@@ -58,7 +59,7 @@ const UpdateBooking = () => {
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [cancellation, setCancellation] = useState(false)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
-  const [minDate, setMinDate] = useState(new Date())
+  const [minDate, setMinDate] = useState<Date>()
 
   const handleAgencyChange = (values: movininTypes.Option[]) => {
     setAgency(values.length > 0 ? values[0] : undefined)
@@ -249,6 +250,9 @@ const UpdateBooking = () => {
                 name: loc.name || '',
               })
               setFrom(new Date(booking.from))
+              const minDate = new Date(booking.from)
+              minDate.setDate(minDate.getDate() + 1)
+              setMinDate(minDate)
               setTo(new Date(booking.to))
               setStatus(booking.status)
               setCancellation(booking.cancellation || false)
@@ -323,9 +327,9 @@ const UpdateBooking = () => {
                   label={commonStrings.FROM}
                   value={from}
                   required
-                  onChange={(from: Date) => {
-                    if (from) {
-                      booking.from = from
+                  onChange={(date) => {
+                    if (date) {
+                      booking.from = date
 
                       Helper.price(
                         booking,
@@ -333,13 +337,22 @@ const UpdateBooking = () => {
                         (price) => {
                           setBooking(booking)
                           setPrice(price)
-                          setFrom(from)
-                          setMinDate(from)
+                          setFrom(date)
+
+                          const minDate = new Date(date)
+                          minDate.setDate(minDate.getDate() + 1)
+                          setMinDate(minDate)
+
+                          if (to && to.getTime() <= date.getTime()) {
+                            setTo(undefined)
+                          }
                         },
                         (err) => {
                           toastErr(err)
                         },
                       )
+                    } else {
+                      setMinDate(undefined)
                     }
                   }}
                   language={UserService.getLanguage()}
@@ -351,7 +364,7 @@ const UpdateBooking = () => {
                   value={to}
                   minDate={minDate}
                   required
-                  onChange={(to: Date) => {
+                  onChange={(to) => {
                     if (to) {
                       booking.to = to
 

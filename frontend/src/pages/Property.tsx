@@ -21,6 +21,10 @@ import * as UserService from '../services/UserService'
 import '../assets/css/property.css'
 
 const Property = () => {
+
+    const _minDate = new Date()
+    _minDate.setDate(_minDate.getDate() + 1)
+
     const [loading, setLoading] = useState(false)
     const [noMatch, setNoMatch] = useState(false)
     const [property, setProperty] = useState<movininTypes.Property>()
@@ -153,8 +157,22 @@ const Property = () => {
                                             minDate={new Date()}
                                             variant="outlined"
                                             required
-                                            onChange={(from) => {
-                                                setFrom(from)
+                                            onChange={(date) => {
+                                                if (date) {
+
+                                                    if (to && to.getTime() <= date.getTime()) {
+                                                        setTo(undefined)
+                                                    }
+
+                                                    const minDate = new Date(date)
+                                                    minDate.setDate(date.getDate() + 1)
+                                                    setMinDate(minDate)
+
+                                                    setFrom(date)
+                                                } else {
+                                                    setMinDate(_minDate)
+                                                    setTo(undefined)
+                                                }
                                             }}
                                             language={UserService.getLanguage()}
                                         />
@@ -166,8 +184,8 @@ const Property = () => {
                                             minDate={minDate}
                                             variant="outlined"
                                             required
-                                            onChange={(to) => {
-                                                setTo(to)
+                                            onChange={(date) => {
+                                                setTo(date || undefined)
                                             }}
                                             language={UserService.getLanguage()}
                                         />

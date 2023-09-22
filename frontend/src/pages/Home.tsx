@@ -14,10 +14,14 @@ import '../assets/css/home.css'
 
 const Home = () => {
   const navigate = useNavigate()
+
+  const _minDate = new Date()
+  _minDate.setDate(_minDate.getDate() + 1)
+
   const [location, setLocation] = useState('')
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
-  const [minDate, setMinDate] = useState<Date>()
+  const [minDate, setMinDate] = useState<Date>(_minDate)
 
   useEffect(() => {
     if (from) {
@@ -71,8 +75,21 @@ const Home = () => {
                   minDate={new Date()}
                   variant="outlined"
                   required
-                  onChange={(from) => {
-                    setFrom(from)
+                  onChange={(date) => {
+                    if (date) {
+
+                      if (to && to.getTime() <= date.getTime()) {
+                        setTo(undefined)
+                      }
+
+                      const minDate = new Date(date)
+                      minDate.setDate(date.getDate() + 1)
+                      setMinDate(minDate)
+
+                      setFrom(date)
+                    } else {
+                      setMinDate(_minDate)
+                    }
                   }}
                   language={UserService.getLanguage()}
                 />
@@ -84,8 +101,8 @@ const Home = () => {
                   minDate={minDate}
                   variant="outlined"
                   required
-                  onChange={(to) => {
-                    setTo(to)
+                  onChange={(date) => {
+                    setTo(date || undefined)
                   }}
                   language={UserService.getLanguage()}
                 />
