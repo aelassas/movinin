@@ -40,7 +40,7 @@ const DatePicker = (
         onAccept={(value) => {
           if (value) {
             const date = value as Date
-            date.setHours(12, 0, 0)
+            date.setHours(12, 0, 0, 0)
           }
           setValue(value)
 
