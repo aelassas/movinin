@@ -67,7 +67,7 @@ const Property = () => {
             to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val)) : null
         }
 
-        if (!propertyId) {
+        if (!propertyId || !from || !to) {
             setNoMatch(true)
             return
         }
@@ -148,58 +148,58 @@ const Property = () => {
 
                         <div className='footer'>
                             <AgencyBadge agency={property.agency} />
-                            {from && to &&
-                                <div className="action">
-                                    <FormControl className="from">
-                                        <DatePicker
-                                            label={commonStrings.FROM}
-                                            value={from}
-                                            minDate={new Date()}
-                                            variant="outlined"
-                                            required
-                                            onChange={(date) => {
-                                                if (date) {
 
-                                                    if (to && to.getTime() <= date.getTime()) {
-                                                        setTo(undefined)
-                                                    }
+                            <div className="action">
+                                <FormControl className="from">
+                                    <DatePicker
+                                        label={commonStrings.FROM}
+                                        value={from}
+                                        minDate={new Date()}
+                                        variant="outlined"
+                                        required
+                                        onChange={(date) => {
+                                            if (date) {
 
-                                                    const minDate = new Date(date)
-                                                    minDate.setDate(date.getDate() + 1)
-                                                    setMinDate(minDate)
-
-                                                    setFrom(date)
-                                                } else {
-                                                    setMinDate(_minDate)
+                                                if (to && to.getTime() <= date.getTime()) {
                                                     setTo(undefined)
                                                 }
-                                            }}
-                                            language={UserService.getLanguage()}
-                                        />
-                                    </FormControl>
-                                    <FormControl className="to">
-                                        <DatePicker
-                                            label={commonStrings.TO}
-                                            value={to}
-                                            minDate={minDate}
-                                            variant="outlined"
-                                            required
-                                            onChange={(date) => {
-                                                setTo(date || undefined)
-                                            }}
-                                            language={UserService.getLanguage()}
-                                        />
-                                    </FormControl>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        className="btn-action btn-book"
-                                        href={`/checkout?p=${property._id}&l=${property.location._id}&f=${from?.getTime()}&t=${to?.getTime()}`}
-                                    >
-                                        {strings.BOOK}
-                                    </Button>
-                                </div>
-                            }
+
+                                                const minDate = new Date(date)
+                                                minDate.setDate(date.getDate() + 1)
+                                                setMinDate(minDate)
+
+                                                setFrom(date)
+                                            } else {
+                                                setMinDate(_minDate)
+                                                setTo(undefined)
+                                            }
+                                        }}
+                                        language={UserService.getLanguage()}
+                                    />
+                                </FormControl>
+                                <FormControl className="to">
+                                    <DatePicker
+                                        label={commonStrings.TO}
+                                        value={to}
+                                        minDate={minDate}
+                                        variant="outlined"
+                                        required
+                                        onChange={(date) => {
+                                            setTo(date || undefined)
+                                        }}
+                                        language={UserService.getLanguage()}
+                                    />
+                                </FormControl>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    className="btn-action btn-book"
+                                    href={`/checkout?p=${property._id}&l=${property.location._id}&f=${from?.getTime()}&t=${to?.getTime()}`}
+                                >
+                                    {strings.BOOK}
+                                </Button>
+                            </div>
+
                         </div>
 
                     </div>

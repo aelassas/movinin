@@ -5,7 +5,7 @@ div.agency-badge {
     color: rgba(0, 0, 0, 0.6);
     font-size: 1em;
     line-height: 1em;
-    white-space: nowrap;
+    max-width: 300px;
 }
 
 div.agency-badge span.agency-badge-logo {
