@@ -55,8 +55,11 @@ const DatePicker = (
         defaultCalendarMonth={minDate}
         slotProps={{
           textField: {
-            variant: (variant as TextFieldVariants) || 'standard',
+            variant: variant || 'standard',
             required: required,
+            inputProps: {
+              content:'zz'
+            }
           },
           actionBar: {
             actions: ['accept', 'cancel', 'today', 'clear'],

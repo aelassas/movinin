@@ -25,7 +25,7 @@ const DatePicker = (
       onChange: (value: Date | null) => void
     }
 ) => {
-  const [value, setValue] = useState(dateValue || null)
+  const [value, setValue] = useState<Date | null>(null)
 
   useEffect(() => {
     setValue(dateValue || null)
@@ -52,7 +52,7 @@ const DatePicker = (
         defaultCalendarMonth={minDate}
         slotProps={{
           textField: {
-            variant: (variant as TextFieldVariants) || 'standard',
+            variant: variant || 'standard',
             required: required,
           },
           actionBar: {

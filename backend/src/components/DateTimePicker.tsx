@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker as MuiDateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
@@ -22,10 +22,14 @@ const DateTimePicker = (
       required?: boolean
       language?: string
       variant?: TextFieldVariants
-      onChange: (value: Date) => void
+      onChange: (value: Date | null) => void
     }
 ) => {
-  const [value, setValue] = useState(dateTimeValue || null)
+  const [value, setValue] = useState<Date | null>(null)
+
+  useEffect(() => {
+    setValue(dateTimeValue || null)
+  }, [dateTimeValue])
 
   return (
     <LocalizationProvider adapterLocale={language === 'fr' ? fr : enUS} dateAdapter={AdapterDateFns}>
@@ -33,18 +37,18 @@ const DateTimePicker = (
         label={label}
         // showToolbar
         value={value}
-        onChange={(value) => {
-          const date = value as Date
-          setValue(date)
+        onAccept={(value) => {
+          setValue(value)
+
           if (onChange) {
-            onChange(date)
+            onChange(value)
           }
         }}
         minDate={minDate}
         defaultCalendarMonth={minDate}
         slotProps={{
           textField: {
-            variant: (variant as TextFieldVariants) || 'standard',
+            variant: variant || 'standard',
             required: required,
           },
           actionBar: {
