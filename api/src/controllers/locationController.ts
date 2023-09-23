@@ -8,6 +8,15 @@ import LocationValue from '../models/LocationValue'
 import Property from '../models/Property'
 import * as movininTypes from 'movinin-types'
 
+/**
+ * Validate a Location name with language code.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function validate(req: Request, res: Response) {
   const body: movininTypes.ValidateLocationPayload = req.body
   const { language, name } = body
@@ -27,6 +36,15 @@ export async function validate(req: Request, res: Response) {
   }
 }
 
+/**
+ * Create a Location.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function create(req: Request, res: Response) {
   const body: movininTypes.LocationName[] = req.body
   const names = body
@@ -52,6 +70,15 @@ export async function create(req: Request, res: Response) {
   }
 }
 
+/**
+ * Update a Location.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function update(req: Request, res: Response) {
   const { id } = req.params
 
@@ -87,6 +114,15 @@ export async function update(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete a Location.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteLocation(req: Request, res: Response) {
   const { id } = req.params
 
@@ -105,6 +141,15 @@ export async function deleteLocation(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get a Location by ID.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getLocation(req: Request, res: Response) {
   const { id } = req.params
 
@@ -125,6 +170,15 @@ export async function getLocation(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Locations.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getLocations(req: Request, res: Response) {
   try {
     const page = Number.parseInt(req.params.page)
@@ -176,13 +230,22 @@ export async function getLocations(req: Request, res: Response) {
   }
 }
 
+/**
+ * Check if a Location is used by a Property.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function checkLocation(req: Request, res: Response) {
   const { id } = req.params
 
   try {
     const _id = new mongoose.Types.ObjectId(id)
 
-    const count = await Property.find({ locations: _id }).limit(1).count()
+    const count = await Property.find({ location: _id }).limit(1).count()
 
     if (count === 1) {
       return res.sendStatus(200)
