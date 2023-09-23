@@ -71,7 +71,7 @@ export const fr = {
   BIRTH_DATE_NOT_VALID: 'Vous devez avoir au moins ' + Env.MINIMUM_AGE + ' ans.',
   BIRTH_DATE_NOT_VALID_PART1: 'Le conducteur doit avoir au moins',
   BIRTH_DATE_NOT_VALID_PART2: 'ans.',
-  SUPPLIER: 'Fournisseur',
+  AGENCY: 'Fournisseur',
   COPYRIGHT_PART1: COPYRIGHT,
   COPYRIGHT_PART2: REGISTERED,
   COPYRIGHT_PART3: '. Tous droits réservés.',

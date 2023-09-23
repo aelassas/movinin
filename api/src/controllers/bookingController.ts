@@ -16,6 +16,15 @@ import * as movininTypes from 'movinin-types'
 import * as MailHelper from '../common/MailHelper'
 import * as Helper from '../common/Helper'
 
+/**
+ * Create a Booking.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function create(req: Request, res: Response) {
   try {
     const body: movininTypes.Booking = req.body
@@ -29,7 +38,17 @@ export async function create(req: Request, res: Response) {
   }
 }
 
-async function notifySupplier(user: env.User, bookingId: string, agency: env.User, notificationMessage: string) {
+/**
+ * Notify a agency.
+ *
+ * @async
+ * @param {env.User} user
+ * @param {string} bookingId
+ * @param {env.User} agency
+ * @param {string} notificationMessage
+ * @returns {*}
+ */
+async function notifyAgency(user: env.User, bookingId: string, agency: env.User, notificationMessage: string) {
   // notification
   const message = `${user.fullName} ${notificationMessage} ${bookingId}.`
   const notification = new Notification({
@@ -61,6 +80,15 @@ async function notifySupplier(user: env.User, bookingId: string, agency: env.Use
   await MailHelper.sendMail(mailOptions)
 }
 
+/**
+ * Complete checkout process and create Booking.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function book(req: Request, res: Response) {
   try {
     let user: env.User | null
@@ -155,7 +183,7 @@ export async function book(req: Request, res: Response) {
     if (agency.language) {
       strings.setLanguage(agency.language)
     }
-    await notifySupplier(user, booking._id.toString(), agency, strings.BOOKING_NOTIFICATION)
+    await notifyAgency(user, booking._id.toString(), agency, strings.BOOKING_NOTIFICATION)
 
     return res.sendStatus(200)
   } catch (err) {
@@ -164,6 +192,13 @@ export async function book(req: Request, res: Response) {
   }
 }
 
+/**
+ * Notify customer and send push notification.
+ *
+ * @async
+ * @param {env.Booking} booking
+ * @returns {*}
+ */
 async function notifyRenter(booking: env.Booking) {
   const renter = await User.findById(booking.renter)
   if (!renter) {
@@ -256,6 +291,15 @@ async function notifyRenter(booking: env.Booking) {
   }
 }
 
+/**
+ * Update Booking.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function update(req: Request, res: Response) {
   try {
     const body: movininTypes.Booking = req.body
@@ -304,6 +348,15 @@ export async function update(req: Request, res: Response) {
   }
 }
 
+/**
+ * Update Booking Status.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function updateStatus(req: Request, res: Response) {
   try {
     const body: movininTypes.UpdateStatusPayload = req.body
@@ -327,6 +380,15 @@ export async function updateStatus(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete Bookings.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteBookings(req: Request, res: Response) {
   try {
     const body: string[] = req.body
@@ -341,6 +403,15 @@ export async function deleteBookings(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Booking by ID.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getBooking(req: Request, res: Response) {
   const { id } = req.params
 
@@ -387,6 +458,15 @@ export async function getBooking(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Bookings.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getBookings(req: Request, res: Response) {
   try {
     const body: movininTypes.GetBookingsPayload = req.body
@@ -559,6 +639,15 @@ export async function getBookings(req: Request, res: Response) {
   }
 }
 
+/**
+ * Check if a customer has Bookings.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function hasBookings(req: Request, res: Response) {
   const { renter } = req.params
 
@@ -580,6 +669,15 @@ export async function hasBookings(req: Request, res: Response) {
   }
 }
 
+/**
+ * Cancel a Booking.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function cancelBooking(req: Request, res: Response) {
   const { id } = req.params
 
@@ -594,8 +692,8 @@ export async function cancelBooking(req: Request, res: Response) {
       booking.cancelRequest = true
       await booking.save()
 
-      // Notify supplier
-      await notifySupplier(booking.renter, booking.id.toString(), booking.agency, strings.CANCEL_BOOKING_NOTIFICATION)
+      // Notify agency
+      await notifyAgency(booking.renter, booking.id.toString(), booking.agency, strings.CANCEL_BOOKING_NOTIFICATION)
 
       return res.sendStatus(200)
     }

@@ -72,7 +72,7 @@ export const en = {
   BIRTH_DATE_NOT_VALID: 'You must be at least ' + Env.MINIMUM_AGE + ' years old.',
   BIRTH_DATE_NOT_VALID_PART1: 'The renter must be at least',
   BIRTH_DATE_NOT_VALID_PART2: 'years old.',
-  SUPPLIER: 'Agency',
+  AGENCY: 'Agency',
   COPYRIGHT_PART1: COPYRIGHT,
   COPYRIGHT_PART2: REGISTERED,
   COPYRIGHT_PART3: '. All rights reserved.',

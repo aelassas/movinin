@@ -666,7 +666,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   <Text style={styles.detailTitle}>{i18n.t('PROPERTY')}</Text>
                   <Text style={styles.detailText}>{`${property.name} (${Helper.priceLabel(property)})`}</Text>
 
-                  <Text style={styles.detailTitle}>{i18n.t('SUPPLIER')}</Text>
+                  <Text style={styles.detailTitle}>{i18n.t('AGENCY')}</Text>
                   <View style={styles.agency}>
                     <Image
                       style={styles.agencyImg}

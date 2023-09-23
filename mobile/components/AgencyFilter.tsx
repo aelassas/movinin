@@ -57,7 +57,7 @@ const AgencyFilter = (
   return (
     visible && agencies.length > 1 && (
       <View style={{ ...styles.container, ...style }}>
-        <Accordion style={styles.accordion} title={i18n.t('SUPPLIER')}>
+        <Accordion style={styles.accordion} title={i18n.t('AGENCY')}>
           <View style={styles.agencies}>
             {agencies.map((agency) => (
               agency._id && typeof agency.checked !== 'undefined' &&
