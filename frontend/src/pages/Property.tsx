@@ -171,7 +171,6 @@ const Property = () => {
                                                 setFrom(date)
                                             } else {
                                                 setMinDate(_minDate)
-                                                setTo(undefined)
                                             }
                                         }}
                                         language={UserService.getLanguage()}
