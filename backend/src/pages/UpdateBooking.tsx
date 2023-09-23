@@ -353,6 +353,7 @@ const UpdateBooking = () => {
                       )
                     } else {
                       setMinDate(undefined)
+                      setFrom(undefined)
                     }
                   }}
                   language={UserService.getLanguage()}
