@@ -12,6 +12,15 @@ import Property from '../models/Property'
 import * as Helper from '../common/Helper'
 import * as movininTypes from 'movinin-types'
 
+/**
+ * Validate Agency by fullname.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function validate(req: Request, res: Response) {
   const body: movininTypes.ValidateAgencyPayload = req.body
   const { fullName } = body
@@ -30,6 +39,15 @@ export async function validate(req: Request, res: Response) {
   }
 }
 
+/**
+ * Update Agency.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function update(req: Request, res: Response) {
   const body: movininTypes.UpdateAgencyPayload = req.body
   const { _id } = body
@@ -57,6 +75,15 @@ export async function update(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete Agency by ID.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteAgency(req: Request, res: Response) {
   const { id } = req.params
 
@@ -99,6 +126,15 @@ export async function deleteAgency(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Agency by ID.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getAgency(req: Request, res: Response) {
   const { id } = req.params
 
@@ -127,6 +163,15 @@ export async function getAgency(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Agencies.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getAgencies(req: Request, res: Response) {
   try {
     const page = Number.parseInt(req.params.page)
@@ -170,6 +215,15 @@ export async function getAgencies(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get all Agencies.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getAllAgencies(req: Request, res: Response) {
   try {
     let data = await User.aggregate(
