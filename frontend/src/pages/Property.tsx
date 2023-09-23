@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import {
-    Button, FormControl,
+    Button,
+    FormControl,
 } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import Backdrop from '../components/SimpleBackdrop'
 import Master from '../components/Master'
 import Env from '../config/env.config'
@@ -21,6 +23,7 @@ import * as UserService from '../services/UserService'
 import '../assets/css/property.css'
 
 const Property = () => {
+    const navigate = useNavigate()
 
     const _minDate = new Date()
     _minDate.setDate(_minDate.getDate() + 1)
@@ -149,7 +152,13 @@ const Property = () => {
                         <div className='footer'>
                             <AgencyBadge agency={property.agency} />
 
-                            <div className="action">
+                            <form
+                                className="action"
+                                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                                    e.preventDefault()
+                                    const url = `/checkout?p=${property._id}&l=${property.location._id}&f=${from?.getTime()}&t=${to?.getTime()}`
+                                    navigate(url)
+                                }}>
                                 <FormControl className="from">
                                     <DatePicker
                                         label={commonStrings.FROM}
@@ -167,11 +176,11 @@ const Property = () => {
                                                 const minDate = new Date(date)
                                                 minDate.setDate(date.getDate() + 1)
                                                 setMinDate(minDate)
-
-                                                setFrom(date)
                                             } else {
                                                 setMinDate(_minDate)
                                             }
+
+                                            setFrom(date || undefined)
                                         }}
                                         language={UserService.getLanguage()}
                                     />
@@ -193,11 +202,10 @@ const Property = () => {
                                     type="submit"
                                     variant="contained"
                                     className="btn-action btn-book"
-                                    href={`/checkout?p=${property._id}&l=${property.location._id}&f=${from?.getTime()}&t=${to?.getTime()}`}
                                 >
                                     {strings.BOOK}
                                 </Button>
-                            </div>
+                            </form>
 
                         </div>
 

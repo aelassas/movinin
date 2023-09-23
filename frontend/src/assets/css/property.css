@@ -119,27 +119,26 @@ div.main div.footer {
     justify-content: space-between;
 }
 
-div.main div.footer div.action {
+div.main div.footer form.action {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     margin-top: 20px;
 }
 
-
-div.main div.footer div.action .from {
+div.main div.footer form.action .from {
     margin-right: 5px;
 }
 
-div.main div.footer div.action .to {
+div.main div.footer form.action .to {
     margin-right: 7px;
 }
 
-div.main div.footer div.action .btn-book {
+div.main div.footer form.action .btn-book {
     margin: 1px;
 }
 
-div.main div.footer div.action .button {
+div.main div.footer form.action .button {
     width: 100%;
     height: 38px;
 }
