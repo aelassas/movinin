@@ -19,9 +19,25 @@ import Property from '../models/Property'
 import * as movininTypes from 'movinin-types'
 import * as MailHelper from '../common/MailHelper'
 
+/**
+ * Get status message as HTML.
+ *
+ * @param {string} lang
+ * @param {string} msg
+ * @returns {string}
+ */
 const getStatusMessage = (lang: string, msg: string): string =>
   `<!DOCTYPE html><html lang="' ${lang}'"><head></head><body><p>${msg}</p></body></html>`
 
+/**
+ * Frontend Sign Up.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function signup(req: Request, res: Response) {
   const body: movininTypes.FrontendSignUpPayload = req.body
 
@@ -77,6 +93,15 @@ export async function signup(req: Request, res: Response) {
   }
 }
 
+/**
+ * Backend Sign Up.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function adminSignup(req: Request, res: Response) {
   const body: movininTypes.BackendSignUpPayload = req.body
 
@@ -137,6 +162,15 @@ export async function adminSignup(req: Request, res: Response) {
   }
 }
 
+/**
+ * Create a User.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function create(req: Request, res: Response) {
   const body: movininTypes.CreateUserPayload = req.body
 
@@ -208,6 +242,15 @@ export async function create(req: Request, res: Response) {
   }
 }
 
+/**
+ * Check a Validation Token.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function checkToken(req: Request, res: Response) {
   const { userId, email } = req.params
 
@@ -248,6 +291,15 @@ export async function checkToken(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete Validation Tokens.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteTokens(req: Request, res: Response) {
   const { userId } = req.params
 
@@ -267,6 +319,15 @@ export async function deleteTokens(req: Request, res: Response) {
   }
 }
 
+/**
+ * Resend Validation email.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function resend(req: Request, res: Response) {
   const { email } = req.params
 
@@ -320,6 +381,15 @@ export async function resend(req: Request, res: Response) {
   }
 }
 
+/**
+ * Activate a User and set his Password.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function activate(req: Request, res: Response) {
   const body: movininTypes.ActivatePayload = req.body
   const { userId } = body
@@ -351,6 +421,15 @@ export async function activate(req: Request, res: Response) {
   }
 }
 
+/**
+ * Sign In.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function signin(req: Request, res: Response) {
   const body: movininTypes.SignInPayload = req.body
   const { email, password, stayConnected } = body
@@ -401,6 +480,15 @@ export async function signin(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Push Notification Token.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function pushToken(req: Request, res: Response) {
   const { userId } = req.params
 
@@ -417,6 +505,15 @@ export async function pushToken(req: Request, res: Response) {
   }
 }
 
+/**
+ * Create Push Notification Token.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function createPushToken(req: Request, res: Response) {
   const { userId, token } = req.params
 
@@ -439,6 +536,15 @@ export async function createPushToken(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete Push Notification Token.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deletePushToken(req: Request, res: Response) {
   const { userId } = req.params
 
@@ -451,6 +557,15 @@ export async function deletePushToken(req: Request, res: Response) {
   }
 }
 
+/**
+ * Validate email.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function validateEmail(req: Request, res: Response) {
   const body: movininTypes.ValidateEmailPayload = req.body
   const { email } = body
@@ -470,8 +585,24 @@ export async function validateEmail(req: Request, res: Response) {
   }
 }
 
+/**
+ * Validate JWT token.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {*}
+ */
 export const validateAccessToken = (req: Request, res: Response) => res.sendStatus(200)
 
+/**
+ * Get Validation result as HTML.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function confirmEmail(req: Request, res: Response) {
   try {
     const { token: _token, email: _email } = req.params
@@ -510,6 +641,15 @@ export async function confirmEmail(req: Request, res: Response) {
   }
 }
 
+/**
+ * Resend Validation email.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function resendLink(req: Request, res: Response) {
   const body: movininTypes.ResendLinkPayload = req.body
   const { email } = body
@@ -552,6 +692,15 @@ export async function resendLink(req: Request, res: Response) {
   }
 }
 
+/**
+ * Update User.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function update(req: Request, res: Response) {
   try {
     const body: movininTypes.UpdateUserPayload = req.body
@@ -599,6 +748,15 @@ export async function update(req: Request, res: Response) {
   }
 }
 
+/**
+ * Update email notifications setting.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function updateEmailNotifications(req: Request, res: Response) {
   const body: movininTypes.UpdateEmailNotificationsPayload = req.body
 
@@ -620,6 +778,15 @@ export async function updateEmailNotifications(req: Request, res: Response) {
   }
 }
 
+/**
+ * Update language.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function updateLanguage(req: Request, res: Response) {
   try {
     const body: movininTypes.UpdateLanguage = req.body
@@ -641,6 +808,15 @@ export async function updateLanguage(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get User by ID.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getUser(req: Request, res: Response) {
   const { id } = req.params
   try {
@@ -673,6 +849,15 @@ export async function getUser(req: Request, res: Response) {
   }
 }
 
+/**
+ * Upload avatar to temp folder.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function createAvatar(req: Request, res: Response) {
   try {
     if (!req.file) {
@@ -696,6 +881,15 @@ export async function createAvatar(req: Request, res: Response) {
   }
 }
 
+/**
+ * Update avatar.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function updateAvatar(req: Request, res: Response) {
   const { userId } = req.params
 
@@ -738,6 +932,15 @@ export async function updateAvatar(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete avatar.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteAvatar(req: Request, res: Response) {
   const { userId } = req.params
 
@@ -765,6 +968,15 @@ export async function deleteAvatar(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete temp avatar.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteTempAvatar(req: Request, res: Response) {
   const { avatar } = req.params
 
@@ -781,6 +993,15 @@ export async function deleteTempAvatar(req: Request, res: Response) {
   }
 }
 
+/**
+ * Change password.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function changePassword(req: Request, res: Response) {
   const body: movininTypes.changePasswordPayload = req.body
   const { _id, password: currentPassword, newPassword, strict } = body
@@ -822,6 +1043,15 @@ export async function changePassword(req: Request, res: Response) {
   }
 }
 
+/**
+ * Check password.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function checkPassword(req: Request, res: Response) {
   const { id, password } = req.params
 
@@ -850,6 +1080,15 @@ export async function checkPassword(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Users.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getUsers(req: Request, res: Response) {
   try {
     const keyword: string = escapeStringRegexp(String(req.query.s || ''))
@@ -917,6 +1156,15 @@ export async function getUsers(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete Users.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteUsers(req: Request, res: Response) {
   try {
     const body: string[] = req.body
