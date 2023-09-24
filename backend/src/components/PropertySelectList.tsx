@@ -101,8 +101,11 @@ const PropertySelectList = (
 
   const _fetch = async (page: number, keyword: string, agency: string, location: string) => {
     try {
+      if (!location) {
+        return
+      }
       const payload: movininTypes.GetBookingPropertiesPayload = { agency, location }
-      
+
       if (closeDialog) {
         setCloseDialog(false)
       }

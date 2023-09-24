@@ -11,6 +11,15 @@ import * as env from '../config/env.config.js'
 import * as Helper from '../common/Helper.js'
 import * as movininTypes from 'movinin-types'
 
+/**
+ * Create a Property.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function create(req: Request, res: Response) {
   const body: movininTypes.CreatePropertyPayload = req.body
 
@@ -119,6 +128,15 @@ export async function create(req: Request, res: Response) {
   }
 }
 
+/**
+ * Update a Property.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function update(req: Request, res: Response) {
   const body: movininTypes.UpdatePropertyPayload = req.body
   const _id = body
@@ -247,6 +265,15 @@ export async function update(req: Request, res: Response) {
   }
 }
 
+/**
+ * Check if a Property is related to a Booking.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function checkProperty(req: Request, res: Response) {
   const { id } = req.params
 
@@ -265,6 +292,15 @@ export async function checkProperty(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete a Property.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteProperty(req: Request, res: Response) {
   const { id } = req.params
 
@@ -288,6 +324,15 @@ export async function deleteProperty(req: Request, res: Response) {
   }
 }
 
+/**
+ * Upload a Property image to temp folder.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function uploadImage(req: Request, res: Response) {
   try {
     if (!req.file) {
@@ -312,6 +357,15 @@ export async function uploadImage(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete a temp Property image.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteTempImage(req: Request, res: Response) {
   try {
     const _image = path.join(env.CDN_TEMP_PROPERTIES, req.params.fileName)
@@ -325,6 +379,15 @@ export async function deleteTempImage(req: Request, res: Response) {
   }
 }
 
+/**
+ * Delete a Property image.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function deleteImage(req: Request, res: Response) {
   try {
     const { property: propertyId, image: imageFileName } = req.params
@@ -355,6 +418,15 @@ export async function deleteImage(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get a Property by ID.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getProperty(req: Request, res: Response) {
   const { id, language } = req.params
 
@@ -389,6 +461,15 @@ export async function getProperty(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Properties.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getProperties(req: Request, res: Response) {
   try {
     const body: movininTypes.GetPropertiesPayload = req.body
@@ -515,8 +596,18 @@ export async function getProperties(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Properties by Agency and Location.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getBookingProperties(req: Request, res: Response) {
   try {
+
     const body: movininTypes.GetBookingPropertiesPayload = req.body
     const agency = new mongoose.Types.ObjectId(body.agency)
     const location = new mongoose.Types.ObjectId(body.location)
@@ -549,6 +640,15 @@ export async function getBookingProperties(req: Request, res: Response) {
   }
 }
 
+/**
+ * Get Properties available for rental.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export async function getFrontendProperties(req: Request, res: Response) {
   try {
     const body: movininTypes.GetPropertiesPayload = req.body
