@@ -3,6 +3,14 @@ import { Document, Types } from 'mongoose'
 import * as movininTypes from 'movinin-types'
 import * as Helper from '../common/Helper'
 
+/**
+ * Get environment variable value. 
+ *
+ * @param {string} name
+ * @param {?boolean} [required]
+ * @param {?string} [defaultValue]
+ * @returns {string}
+ */
 const __env__ = (name: string, required?: boolean, defaultValue?: string): string => {
     const value = process.env[name]
     if (required && !value) {
@@ -14,39 +22,196 @@ const __env__ = (name: string, required?: boolean, defaultValue?: string): strin
     return String(value)
 }
 
+/**
+ * Server Port. Default is 4004.
+ *
+ * @type {number}
+ */
 export const PORT = Number.parseInt(__env__('MI_PORT', false, '4004'), 10)
+
+/**
+ * Indicate whether HTTPS is enabled or not.
+ *
+ * @type {boolean}
+ */
 export const HTTPS = Helper.StringToBoolean(__env__('MI_HTTPS'))
+
+/**
+ * Private SSL key filepath.
+ *
+ * @type {string}
+ */
 export const PRIVATE_KEY = __env__('MI_PRIVATE_KEY', HTTPS)
+
+/**
+ * Private SSL certificate filepath.
+ *
+ * @type {string}
+ */
 export const CERTIFICATE = __env__('MI_CERTIFICATE', HTTPS)
 
+/**
+ * MongoDB database URI. Default is: mongodb://127.0.0.1:27017/movinin?authSource=admin&appName=movinin
+ *
+ * @type {string}
+ */
 export const DB_URI = __env__('MI_DB_URI', false, 'mongodb://127.0.0.1:27017/movinin?authSource=admin&appName=movinin')
+
+/**
+ * Indicate whether MongoDB SSL is enabled or not.
+ *
+ * @type {boolean}
+ */
 export const DB_SSL = Helper.StringToBoolean(__env__('MI_DB_SSL', false, 'false'))
+
+/**
+ * MongoDB SSL certificate filepath.
+ *
+ * @type {string}
+ */
 export const DB_SSL_CERT = __env__('MI_DB_SSL_CERT', DB_SSL)
+
+/**
+ * MongoDB SSL CA certificate filepath.
+ *
+ * @type {string}
+ */
 export const DB_SSL_CA = __env__('MI_DB_SSL_CA', DB_SSL)
+
+/**
+ * Indicate whether MongoDB debug is enabled or not.
+ *
+ * @type {boolean}
+ */
 export const DB_DEBUG = Helper.StringToBoolean(__env__('MI_DB_DEBUG', false, 'false'))
 
+/**
+ * JWT secret. It should at least be 32 characters long, but the longer the better.
+ *
+ * @type {string}
+ */
 export const JWT_SECRET = __env__('MI_JWT_SECRET', false, 'Movinin')
+
+/**
+ * JWT expiration in seconds. Dedault is 86400 seconds.
+ *
+ * @type {number}
+ */
 export const JWT_EXPIRE_AT = Number.parseInt(__env__('MI_JWT_EXPIRE_AT', false, '86400'), 10) // in seconds (default: 1d)
+
+/**
+ * Validation Token expiration in seconds. Dedault is 86400 seconds.
+ *
+ * @type {number}
+ */
 export const TOKEN_EXPIRE_AT = Number.parseInt(__env__('MI_TOKEN_EXPIRE_AT', false, '86400'), 10) // in seconds (default: 1d)
 
+/**
+ * SMTP host.
+ *
+ * @type {string}
+ */
 export const SMTP_HOST = __env__('MI_SMTP_HOST', true)
+
+/**
+ * SMTP port.
+ *
+ * @type {number}
+ */
 export const SMTP_PORT = Number.parseInt(__env__('MI_SMTP_PORT', true), 10)
+
+/**
+ * SMTP username.
+ *
+ * @type {string}
+ */
 export const SMTP_USER = __env__('MI_SMTP_USER', true)
+
+/**
+ * SMTP password.
+ *
+ * @type {string}
+ */
 export const SMTP_PASS = __env__('MI_SMTP_PASS', true)
+
+/**
+ * SMTP from email.
+ *
+ * @type {string}
+ */
 export const SMTP_FROM = __env__('MI_SMTP_FROM', true)
 
+/**
+ * Users' cdn folder path.
+ *
+ * @type {string}
+ */
 export const CDN_USERS = __env__('MI_CDN_USERS', true)
+
+/**
+ * Users' temp cdn folder path.
+ *
+ * @type {string}
+ */
 export const CDN_TEMP_USERS = __env__('MI_CDN_TEMP_USERS', true)
+
+/**
+ * Properties' cdn folder path.
+ *
+ * @type {string}
+ */
 export const CDN_PROPERTIES = __env__('MI_CDN_PROPERTIES', true)
+
+/**
+ * Properties' temp cdn folder path.
+ *
+ * @type {string}
+ */
 export const CDN_TEMP_PROPERTIES = __env__('MI_CDN_TEMP_PROPERTIES', true)
 
+/**
+ * Backend host.
+ *
+ * @type {string}
+ */
 export const BACKEND_HOST = __env__('MI_BACKEND_HOST', true)
+
+/**
+ * Frontend host.
+ *
+ * @type {string}
+ */
 export const FRONTEND_HOST = __env__('MI_FRONTEND_HOST', true)
 
+/**
+ * Default language. Default is en. Available options: en, fr.
+ *
+ * @type {string}
+ */
 export const DEFAULT_LANGUAGE = __env__('MI_DEFAULT_LANGUAGE', false, 'en')
+
+/**
+ * Default Minimum age for rental. Default is 21 years.
+ *
+ * @type {number}
+ */
 export const MINIMUM_AGE = Number.parseInt(__env__('MI_MINIMUM_AGE', false, '21'), 10)
+
+/**
+ * Expo push access token.
+ *
+ * @type {string}
+ */
 export const EXPO_ACCESS_TOKEN = __env__('MI_EXPO_ACCESS_TOKEN', false)
 
+/**
+ * Booking Document.
+ *
+ * @export
+ * @interface Booking
+ * @typedef {Booking}
+ * @extends {Document}
+ */
 export interface Booking extends Document {
     agency: Types.ObjectId
     location: Types.ObjectId
@@ -60,6 +225,13 @@ export interface Booking extends Document {
     price: number
 }
 
+/**
+ * BookingInfo.
+ *
+ * @export
+ * @interface BookingInfo
+ * @typedef {BookingInfo}
+ */
 export interface BookingInfo {
     _id?: Types.ObjectId
     agency: UserInfo
@@ -74,15 +246,39 @@ export interface BookingInfo {
 }
 
 
+/**
+ * Location Document.
+ *
+ * @export
+ * @interface Location
+ * @typedef {Location}
+ * @extends {Document}
+ */
 export interface Location extends Document {
     values: Types.ObjectId[]
 }
 
+/**
+ * LocationValue Document.
+ *
+ * @export
+ * @interface LocationValue
+ * @typedef {LocationValue}
+ * @extends {Document}
+ */
 export interface LocationValue extends Document {
     language: string
     value: string
 }
 
+/**
+ * LocationInfo.
+ *
+ * @export
+ * @interface LocationInfo
+ * @typedef {LocationInfo}
+ * @extends {Document}
+ */
 export interface LocationInfo extends Document {
     _id?: Types.ObjectId
     name?: string
@@ -90,6 +286,14 @@ export interface LocationInfo extends Document {
 }
 
 
+/**
+ * Notification Document.
+ *
+ * @export
+ * @interface Notification
+ * @typedef {Notification}
+ * @extends {Document}
+ */
 export interface Notification extends Document {
     user: Types.ObjectId
     message: string
@@ -97,11 +301,27 @@ export interface Notification extends Document {
     isRead?: boolean
 }
 
+/**
+ * NotificationCounter Document.
+ *
+ * @export
+ * @interface NotificationCounter
+ * @typedef {NotificationCounter}
+ * @extends {Document}
+ */
 export interface NotificationCounter extends Document {
     user: Types.ObjectId
     count?: number
 }
 
+/**
+ * Property Document.
+ *
+ * @export
+ * @interface Property
+ * @typedef {Property}
+ * @extends {Document}
+ */
 export interface Property extends Document {
     name: string
     type: movininTypes.PropertyType
@@ -127,6 +347,14 @@ export interface Property extends Document {
     rentalTerm: movininTypes.RentalTerm
 }
 
+/**
+ * PropertyInfo.
+ *
+ * @export
+ * @interface PropertyInfo
+ * @typedef {PropertyInfo}
+ * @extends {Document}
+ */
 export interface PropertyInfo extends Document {
     name: string
     type: movininTypes.PropertyType
@@ -150,17 +378,41 @@ export interface PropertyInfo extends Document {
     rentalTerm: movininTypes.RentalTerm
 }
 
+/**
+ * PushNotification Document.
+ *
+ * @export
+ * @interface PushNotification
+ * @typedef {PushNotification}
+ * @extends {Document}
+ */
 export interface PushNotification extends Document {
     user: Types.ObjectId
     token: string
 }
 
+/**
+ * Token Document.
+ *
+ * @export
+ * @interface Token
+ * @typedef {Token}
+ * @extends {Document}
+ */
 export interface Token extends Document {
     user: Types.ObjectId
     token: string
     expireAt?: Date
 }
 
+/**
+ * User Document.
+ *
+ * @export
+ * @interface User
+ * @typedef {User}
+ * @extends {Document}
+ */
 export interface User extends Document {
     agency?: Types.ObjectId
     fullName: string
@@ -181,6 +433,13 @@ export interface User extends Document {
     payLater?: boolean
 }
 
+/**
+ * UserInfo.
+ *
+ * @export
+ * @interface UserInfo
+ * @typedef {UserInfo}
+ */
 export interface UserInfo {
     _id?: Types.ObjectId
     agency?: Types.ObjectId
