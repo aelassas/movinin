@@ -240,7 +240,7 @@ const PropertyList = (
                         type="submit"
                         variant="contained"
                         className="btn-action btn-margin-bottom"
-                        href={`/property?p=${property._id}&f=${from?.getTime()}&t=${to?.getTime()}`}
+                        href={`/property?p=${property._id}${(from && `&f=${from?.getTime()}`) || ''}${(to && `&t=${to?.getTime()}`) || ''}`}
                       >
                         {strings.VIEW}
                       </Button>

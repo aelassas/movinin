@@ -38,6 +38,7 @@ const Property = () => {
     const [from, setFrom] = useState<Date>()
     const [to, setTo] = useState<Date>()
     const [minDate, setMinDate] = useState<Date>()
+    const [hideAction, setHideAction] = useState(true)
 
     useEffect(() => {
         const src = (image: string) => movininHelper.joinURL(Env.CDN_PROPERTIES, image)
@@ -70,9 +71,13 @@ const Property = () => {
             to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val)) : null
         }
 
-        if (!propertyId || !from || !to) {
+        if (!propertyId) {
             setNoMatch(true)
             return
+        }
+
+        if (from || to) {
+            setHideAction(false)
         }
 
         setLoading(true)
@@ -152,60 +157,63 @@ const Property = () => {
                         <div className='footer'>
                             <AgencyBadge agency={property.agency} />
 
-                            <form
-                                className="action"
-                                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                                    e.preventDefault()
-                                    const url = `/checkout?p=${property._id}&l=${property.location._id}&f=${from?.getTime()}&t=${to?.getTime()}`
-                                    navigate(url)
-                                }}>
-                                <FormControl className="from">
-                                    <DatePicker
-                                        label={commonStrings.FROM}
-                                        value={from}
-                                        minDate={new Date()}
-                                        variant="outlined"
-                                        required
-                                        onChange={(date) => {
-                                            if (date) {
+                            {
+                                !hideAction &&
+                                <form
+                                    className="action"
+                                    onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                                        e.preventDefault()
+                                        const url = `/checkout?p=${property._id}&l=${property.location._id}&f=${from?.getTime()}&t=${to?.getTime()}`
+                                        navigate(url)
+                                    }}>
+                                    <FormControl className="from">
+                                        <DatePicker
+                                            label={commonStrings.FROM}
+                                            value={from}
+                                            minDate={new Date()}
+                                            variant="outlined"
+                                            required
+                                            onChange={(date) => {
+                                                if (date) {
 
-                                                if (to && to.getTime() <= date.getTime()) {
-                                                    setTo(undefined)
+                                                    if (to && to.getTime() <= date.getTime()) {
+                                                        setTo(undefined)
+                                                    }
+
+                                                    const minDate = new Date(date)
+                                                    minDate.setDate(date.getDate() + 1)
+                                                    setMinDate(minDate)
+                                                } else {
+                                                    setMinDate(_minDate)
                                                 }
 
-                                                const minDate = new Date(date)
-                                                minDate.setDate(date.getDate() + 1)
-                                                setMinDate(minDate)
-                                            } else {
-                                                setMinDate(_minDate)
-                                            }
-
-                                            setFrom(date || undefined)
-                                        }}
-                                        language={UserService.getLanguage()}
-                                    />
-                                </FormControl>
-                                <FormControl className="to">
-                                    <DatePicker
-                                        label={commonStrings.TO}
-                                        value={to}
-                                        minDate={minDate}
-                                        variant="outlined"
-                                        required
-                                        onChange={(date) => {
-                                            setTo(date || undefined)
-                                        }}
-                                        language={UserService.getLanguage()}
-                                    />
-                                </FormControl>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    className="btn-action btn-book"
-                                >
-                                    {strings.BOOK}
-                                </Button>
-                            </form>
+                                                setFrom(date || undefined)
+                                            }}
+                                            language={UserService.getLanguage()}
+                                        />
+                                    </FormControl>
+                                    <FormControl className="to">
+                                        <DatePicker
+                                            label={commonStrings.TO}
+                                            value={to}
+                                            minDate={minDate}
+                                            variant="outlined"
+                                            required
+                                            onChange={(date) => {
+                                                setTo(date || undefined)
+                                            }}
+                                            language={UserService.getLanguage()}
+                                        />
+                                    </FormControl>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        className="btn-action btn-book"
+                                    >
+                                        {strings.BOOK}
+                                    </Button>
+                                </form>
+                            }
 
                         </div>
 
