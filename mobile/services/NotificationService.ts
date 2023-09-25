@@ -6,6 +6,13 @@ import * as movininTypes from  '../miscellaneous/movininTypes'
 
 AxiosHelper.init(axios)
 
+/**
+ * Get a NotificationCounter by UserID.
+ *
+ * @async
+ * @param {string} userId
+ * @returns {Promise<movininTypes.NotificationCounter>}
+ */
 export const getNotificationCounter = async (userId: string): Promise<movininTypes.NotificationCounter> => {
   const headers = await UserService.authHeader()
   return axios
@@ -16,6 +23,14 @@ export const getNotificationCounter = async (userId: string): Promise<movininTyp
     .then((res) => res.data)
 }
 
+/**
+ * Mark notifications as read.
+ *
+ * @async
+ * @param {string} userId
+ * @param {string[]} ids
+ * @returns {Promise<number>}
+ */
 export const markAsRead = async (userId: string, ids: string[]): Promise<number> => {
   const headers = await UserService.authHeader()
   return axios
@@ -27,6 +42,14 @@ export const markAsRead = async (userId: string, ids: string[]): Promise<number>
     .then((res) => res.status)
 }
 
+/**
+ * Mark notifications as unread.
+ *
+ * @async
+ * @param {string} userId
+ * @param {string[]} ids
+ * @returns {Promise<number>}
+ */
 export const markAsUnread = async (userId: string, ids: string[]): Promise<number> => {
   const headers = await UserService.authHeader()
   return axios
@@ -37,6 +60,14 @@ export const markAsUnread = async (userId: string, ids: string[]): Promise<numbe
     .then((res) => res.status)
 }
 
+/**
+ * Delete notifications.
+ *
+ * @async
+ * @param {string} userId
+ * @param {string[]} ids
+ * @returns {Promise<number>}
+ */
 export const deleteNotifications = async (userId: string, ids: string[]): Promise<number> => {
   const headers = await UserService.authHeader()
   return axios
@@ -48,6 +79,14 @@ export const deleteNotifications = async (userId: string, ids: string[]): Promis
     .then((res) => res.status)
 }
 
+/**
+ * Get Notifications.
+ *
+ * @async
+ * @param {string} userId
+ * @param {number} page
+ * @returns {Promise<movininTypes.Result<movininTypes.Notification>>}
+ */
 export const getNotifications = async (userId: string, page: number): Promise<movininTypes.Result<movininTypes.Notification>> => {
   const headers = await UserService.authHeader()
   return axios

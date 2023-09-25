@@ -5,6 +5,11 @@ import * as movininTypes from  '../miscellaneous/movininTypes'
 
 AxiosHelper.init(axios)
 
+/**
+ * Get all agencies.
+ *
+ * @returns {Promise<movininTypes.User[]>}
+ */
 export const getAllAgencies = (): Promise<movininTypes.User[]> =>
   axios
     .get(

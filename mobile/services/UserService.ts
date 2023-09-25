@@ -10,6 +10,12 @@ import * as movininTypes from '../miscellaneous/movininTypes'
 
 AxiosHelper.init(axios)
 
+/**
+ * Get authentication header.
+ *
+ * @async
+ * @returns {unknown}
+ */
 export const authHeader = async () => {
   const user = await getCurrentUser()
 
@@ -20,6 +26,12 @@ export const authHeader = async () => {
   }
 }
 
+/**
+ * Sign up.
+ *
+ * @param {movininTypes.FrontendSignUpPayload} data
+ * @returns {Promise<number>}
+ */
 export const signup = (data: movininTypes.FrontendSignUpPayload): Promise<number> =>
   axios
     .post(
@@ -27,6 +39,14 @@ export const signup = (data: movininTypes.FrontendSignUpPayload): Promise<number
       data)
     .then((res) => res.status)
 
+/**
+ * Check validation tocken.
+ *
+ * @param {string} userId
+ * @param {string} email
+ * @param {string} token
+ * @returns {Promise<number>}
+ */
 export const checkToken = (userId: string, email: string, token: string): Promise<number> =>
   axios
     .get(
@@ -34,12 +54,25 @@ export const checkToken = (userId: string, email: string, token: string): Promis
     )
     .then((res) => res.status)
 
+/**
+ * Delete validation tokens.
+ *
+ * @param {string} userId
+ * @returns {Promise<number>}
+ */
 export const deleteTokens = (userId: string): Promise<number> =>
   axios
     .delete(`${Env.API_HOST}/api/delete-tokens/${encodeURIComponent(userId)}`
     )
     .then((res) => res.status)
 
+/**
+ * Resend validation email.
+ *
+ * @param {string} email
+ * @param {boolean} [reset=false]
+ * @returns {Promise<number>}
+ */
 export const resend = (email: string, reset = false): Promise<number> =>
   axios
     .post(
@@ -47,6 +80,13 @@ export const resend = (email: string, reset = false): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Activate an account.
+ *
+ * @async
+ * @param {movininTypes.ActivatePayload} data
+ * @returns {Promise<number>}
+ */
 export const activate = async (data: movininTypes.ActivatePayload): Promise<number> => {
   const headers = await authHeader()
   return axios
@@ -58,6 +98,12 @@ export const activate = async (data: movininTypes.ActivatePayload): Promise<numb
     .then((res) => res.status)
 }
 
+/**
+ * Validate an email.
+ *
+ * @param {movininTypes.ValidateEmailPayload} data
+ * @returns {Promise<number>}
+ */
 export const validateEmail = (data: movininTypes.ValidateEmailPayload): Promise<number> =>
   axios
     .post(
@@ -66,6 +112,13 @@ export const validateEmail = (data: movininTypes.ValidateEmailPayload): Promise<
     )
     .then((res) => res.status)
 
+/**
+ * Sign in.
+ *
+ * @async
+ * @param {movininTypes.SignInPayload} data
+ * @returns {Promise<{ status: number, data: movininTypes.User }>}
+ */
 export const signin = async (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> =>
   axios
     .post(
@@ -79,6 +132,13 @@ export const signin = async (data: movininTypes.SignInPayload): Promise<{ status
       return { status: res.status, data: res.data }
     })
 
+/**
+ * Get push token.
+ *
+ * @async
+ * @param {string} userId
+ * @returns {Promise<{ status: number, data: string }>}
+ */
 export const getPushToken = async (userId: string): Promise<{ status: number, data: string }> => {
   const headers = await authHeader()
   return axios
@@ -89,6 +149,14 @@ export const getPushToken = async (userId: string): Promise<{ status: number, da
     .then((res) => ({ status: res.status, data: res.data }))
 }
 
+/**
+ * Create a notification push token.
+ *
+ * @async
+ * @param {string} userId
+ * @param {string} token
+ * @returns {Promise<number>}
+ */
 export const createPushToken = async (userId: string, token: string): Promise<number> => {
   const headers = await authHeader()
   return axios
@@ -100,6 +168,13 @@ export const createPushToken = async (userId: string, token: string): Promise<nu
     .then((res) => res.status)
 }
 
+/**
+ * Delete a push token.
+ *
+ * @async
+ * @param {string} userId
+ * @returns {Promise<number>}
+ */
 export const deletePushToken = async (userId: string): Promise<number> => {
   const headers = await authHeader()
   return axios.post(
@@ -110,6 +185,15 @@ export const deletePushToken = async (userId: string): Promise<number> => {
     .then((res) => res.status)
 }
 
+/**
+ * Sign out.
+ *
+ * @async
+ * @param {NativeStackNavigationProp<StackParams, keyof StackParams>} navigation
+ * @param {boolean} [redirect=true]
+ * @param {boolean} [redirectSignin=false]
+ * @returns {*}
+ */
 export const signout = async (
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
   redirect = true,
@@ -124,6 +208,12 @@ export const signout = async (
   }
 }
 
+/**
+ * Validate authentication access token.
+ *
+ * @async
+ * @returns {Promise<number>}
+ */
 export const validateAccessToken = async (): Promise<number> => {
   const headers = await authHeader()
   return axios
@@ -135,12 +225,26 @@ export const validateAccessToken = async (): Promise<number> => {
     .then((res) => res.status)
 }
 
+/**
+ * Confirm an email.
+ *
+ * @param {string} email
+ * @param {string} token
+ * @returns {Promise<number>}
+ */
 export const confirmEmail = (email: string, token: string): Promise<number> =>
   axios.post(
     `${Env.API_HOST}/api/confirm-email/` + encodeURIComponent(email) + '/' + encodeURIComponent(token)
   )
     .then((res) => res.status)
 
+/**
+ * Resend validation email.
+ *
+ * @async
+ * @param {movininTypes.ResendLinkPayload} data
+ * @returns {Promise<number>}
+ */
 export const resendLink = async (data: movininTypes.ResendLinkPayload): Promise<number> => {
   const headers = await authHeader()
   return axios
@@ -152,6 +256,12 @@ export const resendLink = async (data: movininTypes.ResendLinkPayload): Promise<
     .then((res) => res.status)
 }
 
+/**
+ * Get current language.
+ *
+ * @async
+ * @returns {unknown}
+ */
 export const getLanguage = async () => {
   const user = await AsyncStorage.getObject<movininTypes.User>('mi-user')
 
@@ -163,12 +273,19 @@ export const getLanguage = async () => {
     if (lang && lang.length === 2) {
       return lang
     }
-    
+
     lang = Localization.locale.includes(Env.LANGUAGE.FR) ? Env.LANGUAGE.FR : Env.DEFAULT_LANGUAGE
     return lang
   }
 }
 
+/**
+ * Update user's langauge.
+ *
+ * @async
+ * @param {movininTypes.UpdateLanguagePayload} data
+ * @returns {unknown}
+ */
 export const updateLanguage = async (data: movininTypes.UpdateLanguagePayload) => {
   const headers = await authHeader()
   return axios.post(`${Env.API_HOST}/api/update-language`, data, { headers: headers }).then(async (res) => {
@@ -185,10 +302,23 @@ export const updateLanguage = async (data: movininTypes.UpdateLanguagePayload) =
   })
 }
 
+/**
+ * Set language.
+ *
+ * @async
+ * @param {string} lang
+ * @returns {*}
+ */
 export const setLanguage = async (lang: string) => {
   await AsyncStorage.storeString('mi-language', lang)
 }
 
+/**
+ * Get current User.
+ *
+ * @async
+ * @returns {unknown}
+ */
 export const getCurrentUser = async () => {
   const user = await AsyncStorage.getObject<movininTypes.User>('mi-user')
   if (user && user.accessToken) {
@@ -197,6 +327,13 @@ export const getCurrentUser = async () => {
   return null
 }
 
+/**
+ * Get User by ID.
+ *
+ * @async
+ * @param {string} id
+ * @returns {Promise<movininTypes.User>}
+ */
 export const getUser = async (id: string): Promise<movininTypes.User> => {
   const headers = await authHeader()
   return axios
@@ -206,6 +343,13 @@ export const getUser = async (id: string): Promise<movininTypes.User> => {
     .then((res) => res.data)
 }
 
+/**
+ * Update a User.
+ *
+ * @async
+ * @param {movininTypes.UpdateUserPayload} data
+ * @returns {Promise<number>}
+ */
 export const updateUser = async (data: movininTypes.UpdateUserPayload): Promise<number> => {
   const headers = await authHeader()
   return axios
@@ -217,6 +361,13 @@ export const updateUser = async (data: movininTypes.UpdateUserPayload): Promise<
     .then((res) => res.status)
 }
 
+/**
+ * Update email notifications flag.
+ *
+ * @async
+ * @param {movininTypes.UpdateEmailNotificationsPayload} data
+ * @returns {Promise<number>}
+ */
 export const updateEmailNotifications = async (data: movininTypes.UpdateEmailNotificationsPayload): Promise<number> => {
   const headers = await authHeader()
   return axios
@@ -236,6 +387,14 @@ export const updateEmailNotifications = async (data: movininTypes.UpdateEmailNot
     })
 }
 
+/**
+ * Check password.
+ *
+ * @async
+ * @param {string} id
+ * @param {string} pass
+ * @returns {Promise<number>}
+ */
 export const checkPassword = async (id: string, pass: string): Promise<number> => {
   const headers = await authHeader()
   return axios
@@ -246,6 +405,13 @@ export const checkPassword = async (id: string, pass: string): Promise<number> =
     .then((res) => res.status)
 }
 
+/**
+ * Change password.
+ *
+ * @async
+ * @param {movininTypes.ChangePasswordPayload} data
+ * @returns {Promise<number>}
+ */
 export const changePassword = async (data: movininTypes.ChangePasswordPayload): Promise<number> => {
   const headers = await authHeader()
   return axios
@@ -257,6 +423,14 @@ export const changePassword = async (data: movininTypes.ChangePasswordPayload): 
     .then((res) => res.status)
 }
 
+/**
+ * Update avatar.
+ *
+ * @async
+ * @param {string} userId
+ * @param {BlobInfo} file
+ * @returns {Promise<number | undefined>}
+ */
 export const updateAvatar = async (userId: string, file: BlobInfo): Promise<number | undefined> => {
   async function _updateAvatar() {
     const user = await AsyncStorage.getObject<movininTypes.User>('mi-user')
@@ -294,6 +468,13 @@ export const updateAvatar = async (userId: string, file: BlobInfo): Promise<numb
   }
 }
 
+/**
+ * Delete avatar.
+ *
+ * @async
+ * @param {string} userId
+ * @returns {Promise<number>}
+ */
 export const deleteAvatar = async (userId: string): Promise<number> => {
   const headers = await authHeader()
   return axios
@@ -305,6 +486,12 @@ export const deleteAvatar = async (userId: string): Promise<number> => {
     .then((res) => res.status)
 }
 
+/**
+ * Check whether the current user is logged in or not.
+ *
+ * @async
+ * @returns {unknown}
+ */
 export const loggedIn = async () => {
   const currentUser = await getCurrentUser()
   if (currentUser) {
