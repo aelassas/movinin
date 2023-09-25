@@ -42,7 +42,7 @@ export const getBookings = async (payload: movininTypes.GetBookingsPayload, page
 }
 
 /**
- * Get a booking.
+ * Get a Booking by ID.
  *
  * @async
  * @param {string} id
@@ -59,7 +59,7 @@ export const getBooking = async (id: string): Promise<movininTypes.Booking> => {
 }
 
 /**
- * Wheck whether a customer has bookings or not.
+ * Check whether a customer has bookings or not.
  *
  * @async
  * @param {string} renter

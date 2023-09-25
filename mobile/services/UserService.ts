@@ -40,7 +40,7 @@ export const signup = (data: movininTypes.FrontendSignUpPayload): Promise<number
     .then((res) => res.status)
 
 /**
- * Check validation tocken.
+ * Check validation token.
  *
  * @param {string} userId
  * @param {string} email
@@ -133,7 +133,7 @@ export const signin = async (data: movininTypes.SignInPayload): Promise<{ status
     })
 
 /**
- * Get push token.
+ * Get push notification token.
  *
  * @async
  * @param {string} userId
@@ -150,7 +150,7 @@ export const getPushToken = async (userId: string): Promise<{ status: number, da
 }
 
 /**
- * Create a notification push token.
+ * Create a push notification token.
  *
  * @async
  * @param {string} userId
@@ -192,7 +192,7 @@ export const deletePushToken = async (userId: string): Promise<number> => {
  * @param {NativeStackNavigationProp<StackParams, keyof StackParams>} navigation
  * @param {boolean} [redirect=true]
  * @param {boolean} [redirectSignin=false]
- * @returns {*}
+ * @returns {void}
  */
 export const signout = async (
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
@@ -233,9 +233,10 @@ export const validateAccessToken = async (): Promise<number> => {
  * @returns {Promise<number>}
  */
 export const confirmEmail = (email: string, token: string): Promise<number> =>
-  axios.post(
-    `${Env.API_HOST}/api/confirm-email/` + encodeURIComponent(email) + '/' + encodeURIComponent(token)
-  )
+  axios
+    .post(
+      `${Env.API_HOST}/api/confirm-email/` + encodeURIComponent(email) + '/' + encodeURIComponent(token)
+    )
     .then((res) => res.status)
 
 /**
@@ -307,7 +308,7 @@ export const updateLanguage = async (data: movininTypes.UpdateLanguagePayload) =
  *
  * @async
  * @param {string} lang
- * @returns {*}
+ * @returns {void}
  */
 export const setLanguage = async (lang: string) => {
   await AsyncStorage.storeString('mi-language', lang)
@@ -317,7 +318,7 @@ export const setLanguage = async (lang: string) => {
  * Get current User.
  *
  * @async
- * @returns {unknown}
+ * @returns {movininTypes.User|null}
  */
 export const getCurrentUser = async () => {
   const user = await AsyncStorage.getObject<movininTypes.User>('mi-user')
