@@ -147,7 +147,7 @@ export const en = {
   OPTIONS: 'Options',
   CANCEL_BOOKING_BTN: 'Cancel this booking',
   CANCEL_BOOKING: 'Are you sure you want to cancel this booking?',
-  CANCEL_BOOKING_REQUEST_SENT: 'Your cancel request hes been submited. We will contact you to finalize the cancellation procedure.',
+  CANCEL_BOOKING_REQUEST_SENT: 'Your cancel request has been submited. We will contact you to finalize the cancellation procedure.',
   OF: 'of',
   EMPTY_NOTIFICATION_LIST: 'No notifications',
   DELETE_NOTIFICATION: 'Are you sure you want to delete this notification?',

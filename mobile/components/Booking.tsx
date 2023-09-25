@@ -35,6 +35,12 @@ const Booking = (
   const property = booking.property as movininTypes.Property
   const agency = booking.agency as movininTypes.User
 
+  const today = new Date()
+  today.setHours(0)
+  today.setMinutes(0)
+  today.setSeconds(0)
+  today.setMilliseconds(0)
+
   return (
     <View key={booking._id} style={styles.bookingContainer}>
       <View style={styles.booking}>
@@ -88,7 +94,7 @@ const Booking = (
         {booking.cancellation
           && !booking.cancelRequest
           && booking.status !== movininTypes.BookingStatus.Cancelled
-          && new Date(booking.from) > new Date()
+          && new Date(booking.from) >= today
           && (
             <Button
               size="small"

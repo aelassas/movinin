@@ -301,6 +301,12 @@ const BookingList = (
             setOpenCancelDialog(true)
           }
 
+          const today = new Date()
+          today.setHours(0)
+          today.setMinutes(0)
+          today.setSeconds(0)
+          today.setMilliseconds(0)
+
           return (
             <>
               <Tooltip title={strings.VIEW}>
@@ -311,7 +317,7 @@ const BookingList = (
               {params.row.cancellation &&
                 !params.row.cancelRequest &&
                 params.row.status !== movininTypes.BookingStatus.Cancelled &&
-                new Date(params.row.from) > new Date() && (
+                new Date(params.row.from) >= today && (
                   <Tooltip title={strings.CANCEL}>
                     <IconButton onClick={cancelBooking}>
                       <CancelIcon />
