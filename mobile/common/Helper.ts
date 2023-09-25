@@ -12,23 +12,63 @@ import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 import * as ToasHelper from './ToastHelper'
 
+/**
+ * Indicate whether Platform OS is Android.
+ *
+ * @type {boolean}
+ */
 const ANDROID = Platform.OS === 'android'
 
+/**
+ * Indicate whether Platform OS is Android.
+ *
+ * @returns {boolean}
+ */
 export const android = () => ANDROID
 
+/**
+ * Toast message.
+ *
+ * @param {string} message
+ */
 export const toast = (message: string) => {
   ToasHelper.toast(message)
 }
 
+/**
+ * Toast error message.
+ *
+ * @param {?unknown} [err]
+ * @param {boolean} [__toast__=true]
+ */
 export const error = (err?: unknown, __toast__ = true) => {
   ToasHelper.error(err, __toast__)
 }
 
 
+/**
+ * Get filename.
+ *
+ * @param {string} path
+ * @returns {string}
+ */
 export const getFileName = (path: string) => path.replace(/^.*[\\/]/, '')
 
+/**
+ * Get MIME type.
+ *
+ * @param {string} fileName
+ * @returns {string|null}
+ */
 export const getMimeType = (fileName: string) => mime.getType(fileName)
 
+/**
+ * Register push token.
+ *
+ * @async
+ * @param {string} userId
+ * @returns {void}
+ */
 export const registerPushToken = async (userId: string) => {
   async function registerForPushNotificationsAsync() {
     let token
@@ -86,6 +126,13 @@ export const registerPushToken = async (userId: string) => {
   }
 }
 
+/**
+ * Add time to date.
+ *
+ * @param {Date} date
+ * @param {Date} time
+ * @returns {Date}
+ */
 export const dateTime = (date: Date, time: Date) => {
   const dateTime = new Date(date)
   dateTime.setHours(time.getHours())
@@ -95,6 +142,13 @@ export const dateTime = (date: Date, time: Date) => {
   return dateTime
 }
 
+/**
+ * Get cancellation label.
+ *
+ * @param {number} cancellation
+ * @param {boolean} fr
+ * @returns {string}
+ */
 export const getCancellation = (cancellation: number, fr: boolean) => {
   if (cancellation === -1) {
     return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${i18n.t('UNAVAILABLE')}`
@@ -105,15 +159,36 @@ export const getCancellation = (cancellation: number, fr: boolean) => {
   }
 }
 
+/**
+ * Get days label.
+ *
+ * @param {number} days
+ * @returns {string}
+ */
 export const getDays = (days: number) => {
   return `${i18n.t('PRICE_DAYS_PART_1')} ${days} ${i18n.t('PRICE_DAYS_PART_2')}${days > 1 ? 's' : ''}`
 }
 
+/**
+ * Get short days label.
+ *
+ * @param {number} days
+ * @returns {string}
+ */
 export const getDaysShort = (days: number) => {
   return `${days} ${i18n.t('PRICE_DAYS_PART_2')}${days > 1 ? 's' : ''}`
 }
 
 
+/**
+ * Get price.
+ *
+ * @param {movininTypes.Property} property
+ * @param {Date} from
+ * @param {Date} to
+ * @param {?movininTypes.PropertyOptions} [options]
+ * @returns {number}
+ */
 export const price = (property: movininTypes.Property, from: Date, to: Date, options?: movininTypes.PropertyOptions) => {
   const now = new Date()
   const days = movininHelper.days(from, to)
@@ -139,6 +214,14 @@ export const price = (property: movininTypes.Property, from: Date, to: Date, opt
   return price
 }
 
+/**
+ * Get cancellation option label.
+ *
+ * @param {number} cancellation
+ * @param {boolean} fr
+ * @param {?boolean} [hidePlus]
+ * @returns {*}
+ */
 export const getCancellationOption = (cancellation: number, fr: boolean, hidePlus?: boolean) => {
   if (cancellation === -1) {
     return i18n.t('UNAVAILABLE')
@@ -148,6 +231,12 @@ export const getCancellationOption = (cancellation: number, fr: boolean, hidePlu
     return `${hidePlus ? '' : '+ '}${movininHelper.formatNumber(cancellation)} ${i18n.t('CURRENCY')}`
   }
 }
+
+/**
+ * Get all booking statuses.
+ *
+ * @returns {movininTypes.StatusFilterItem[]}
+ */
 export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => [
   {
     value: movininTypes.BookingStatus.Void,
@@ -175,7 +264,13 @@ export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => [
   },
 ]
 
-export const getBookingStatus = (status: string) => {
+/**
+ * Get booking status label.
+ *
+ * @param {string} status
+ * @returns {*}
+ */
+export const getBookingStatus = (status: movininTypes.BookingStatus) => {
   switch (status) {
     case movininTypes.BookingStatus.Void:
       return i18n.t('BOOKING_STATUS_VOID')
@@ -200,9 +295,21 @@ export const getBookingStatus = (status: string) => {
   }
 }
 
+/**
+ * Get birth date error label.
+ *
+ * @param {number} minimumAge
+ * @returns {string}
+ */
 export const getBirthDateError = (minimumAge: number) =>
   `${i18n.t('BIRTH_DATE_NOT_VALID_PART1')} ${minimumAge} ${i18n.t('BIRTH_DATE_NOT_VALID_PART2')} `
 
+/**
+ * Get rental term label.
+ *
+ * @param {movininTypes.RentalTerm} term
+ * @returns {string}
+ */
 export const rentalTerm = (term: movininTypes.RentalTerm): string => {
   switch (term) {
     case movininTypes.RentalTerm.Monthly:
@@ -218,6 +325,12 @@ export const rentalTerm = (term: movininTypes.RentalTerm): string => {
   }
 }
 
+/**
+ * Get rental term unit.
+ *
+ * @param {movininTypes.RentalTerm} term
+ * @returns {string}
+ */
 export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
   switch (term) {
     case movininTypes.RentalTerm.Monthly:
@@ -233,14 +346,33 @@ export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
   }
 }
 
+/**
+ * Get price label.
+ *
+ * @param {movininTypes.Property} property
+ * @returns {string}
+ */
 export const priceLabel = (property: movininTypes.Property): string =>
   `${movininHelper.formatNumber(property.price)} ${i18n.t('CURRENCY')}/${rentalTermUnit(property.rentalTerm)}`
 
 
+/**
+ * Check whether property option is available or not.
+ *
+ * @param {(movininTypes.Property | undefined)} property
+ * @param {string} option
+ * @returns {boolean}
+ */
 export const propertyOptionAvailable = (property: movininTypes.Property | undefined, option: string) =>
   property && option in property && (property[option] as number) > -1
 
-export const getPropertyType = (type: string) => {
+/**
+ * Get property type label.
+ *
+ * @param {movininTypes.PropertyType} type
+ * @returns {*}
+ */
+export const getPropertyType = (type: movininTypes.PropertyType) => {
   switch (type) {
     case movininTypes.PropertyType.Apartment:
       return i18n.t('APARTMENT')
@@ -267,6 +399,12 @@ export const getPropertyType = (type: string) => {
   }
 }
 
+/**
+ * Navigate to a screen.
+ *
+ * @param {RouteProp<StackParams, keyof StackParams>} route
+ * @param {NativeStackNavigationProp<StackParams, keyof StackParams>} navigation
+ */
 export const navigate = (
   route: RouteProp<StackParams, keyof StackParams>,
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
