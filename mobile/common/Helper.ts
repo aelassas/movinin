@@ -15,16 +15,9 @@ import * as ToasHelper from './ToastHelper'
 /**
  * Indicate whether Platform OS is Android or not.
  *
- * @type {boolean}
- */
-const ANDROID = Platform.OS === 'android'
-
-/**
- * Indicate whether Platform OS is Android or not.
- *
  * @returns {boolean}
  */
-export const android = () => ANDROID
+export const android = () => Platform.OS === 'android'
 
 /**
  * Toast message.
