@@ -67,7 +67,7 @@ export const deleteTokens = (userId: string): Promise<number> =>
     .then((res) => res.status)
 
 /**
- * Resend validation email.
+ * Resend a forgotten password or activation email.
  *
  * @param {string} email
  * @param {boolean} [reset=false]
