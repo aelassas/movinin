@@ -6,10 +6,21 @@ import { toast } from 'react-toastify'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 
+/**
+ * Toast info message.
+ *
+ * @param {string} message
+ */
 export const info = (message: string) => {
   toast(message, { type: 'info' })
 }
 
+/**
+ * Toast error message.
+ *
+ * @param {?unknown} [err]
+ * @param {?string} [message]
+ */
 export const error = (err?: unknown, message?: string) => {
   if (err && console && console.error) {
     console.error(err)
@@ -21,6 +32,12 @@ export const error = (err?: unknown, message?: string) => {
   }
 }
 
+/**
+ * Get property type label.
+ *
+ * @param {string} type
+ * @returns {string}
+ */
 export const getPropertyType = (type: string) => {
   switch (type) {
     case movininTypes.PropertyType.Apartment:
@@ -48,10 +65,22 @@ export const getPropertyType = (type: string) => {
   }
 }
 
+/**
+ * Check wether a user is an administrator or not.
+ *
+ * @param {?movininTypes.User} [user]
+ * @returns {boolean}
+ */
 export const admin = (user?: movininTypes.User): boolean =>
   (user && user.type === movininTypes.RecordType.Admin) ?? false
 
-export const getBookingStatus = (status: string) => {
+/**
+ * Get booking status label.
+ *
+ * @param {string} status
+ * @returns {string}
+ */
+export const getBookingStatus = (status: movininTypes.BookingStatus) => {
   switch (status) {
     case movininTypes.BookingStatus.Void:
       return commonStrings.BOOKING_STATUS_VOID
@@ -76,6 +105,11 @@ export const getBookingStatus = (status: string) => {
   }
 }
 
+/**
+ * Get all booking statuses.
+ *
+ * @returns {movininTypes.StatusFilterItem[]}
+ */
 export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => {
   return [
     {
@@ -105,24 +139,61 @@ export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => {
   ]
 }
 
+/**
+ * Get bedrooms tooltip.
+ *
+ * @param {number} bedrooms
+ * @param {?boolean} [fr]
+ * @returns {string}
+ */
 export const getBedroomsTooltip = (bedrooms: number, fr?: boolean) =>
   `${strings.TOOLTIP_1}${bedrooms} ${fr
     ? bedrooms > 1 ? strings.BEDROOMS_TOOLTIP_2 : strings.BEDROOMS_TOOLTIP_1
     : strings.BEDROOMS_TOOLTIP_1 + (bedrooms > 1 ? 's' : '')}`
 
+/**
+ * Get bathrooms tooltip.
+ *
+ * @param {number} bathrooms
+ * @param {?boolean} [fr]
+ * @returns {string}
+ */
 export const getBathroomsTooltip = (bathrooms: number, fr?: boolean) =>
   `${strings.TOOLTIP_1}${bathrooms} ${fr
     ? bathrooms > 1 ? strings.BATHROOMS_TOOLTIP_2 : strings.BATHROOMS_TOOLTIP_1
     : strings.BATHROOMS_TOOLTIP_1 + (bathrooms > 1 ? 's' : '')}`
 
+/**
+ * Get kitchens tooltip.
+ *
+ * @param {number} bathrooms
+ * @returns {string}
+ */
 export const getKitchensTooltip = (bathrooms: number) =>
   `${strings.TOOLTIP_1}${bathrooms} ${strings.KITCHENS_TOOLTIP_1 + (bathrooms > 1 ? 's' : '')}`
 
+/**
+ * Get parking spaces tooltip.
+ *
+ * @param {number} parkingSpaces
+ * @param {?boolean} [fr]
+ * @returns {string}
+ */
 export const getKParkingSpacesTooltip = (parkingSpaces: number, fr?: boolean) =>
   `${strings.TOOLTIP_1}${parkingSpaces} ${fr
     ? parkingSpaces > 1 ? strings.PARKING_SPACES_TOOLTIP_2 : strings.PARKING_SPACES_TOOLTIP_1
     : strings.PARKING_SPACES_TOOLTIP_1 + (parkingSpaces > 1 ? 's' : '')}`
 
+/**
+ * Get price.
+ *
+ * @async
+ * @param {movininTypes.Booking} booking
+ * @param {(movininTypes.Property | undefined | null)} property
+ * @param {(price: number) => void} onSucess
+ * @param {(err: unknown) => void} onError
+ * @returns {void, onError: (err: unknown) => void) => any}
+ */
 export const price = async (
   booking: movininTypes.Booking,
   property: movininTypes.Property | undefined | null,
@@ -171,6 +242,11 @@ export const price = async (
   }
 }
 
+/**
+ * Get all user types.
+ *
+ * @returns {{}}
+ */
 export const getUserTypes = () => {
   return [
     {
@@ -188,15 +264,21 @@ export const getUserTypes = () => {
   ]
 }
 
-export const getUserType = (status: string) => {
-  switch (status) {
-    case movininTypes.RecordType.Admin:
+/**
+ * Get user type label.
+ *
+ * @param {string} type
+ * @returns {*}
+ */
+export const getUserType = (type: movininTypes.UserType) => {
+  switch (type) {
+    case movininTypes.UserType.Admin:
       return commonStrings.RECORD_TYPE_ADMIN
 
-    case movininTypes.RecordType.Agency:
+    case movininTypes.UserType.Agency:
       return commonStrings.RECORD_TYPE_AGENCY
 
-    case movininTypes.RecordType.User:
+    case movininTypes.UserType.User:
       return commonStrings.RECORD_TYPE_USER
 
     default:
@@ -204,10 +286,30 @@ export const getUserType = (status: string) => {
   }
 }
 
-export const getDays = (days: number) => `${strings.PRICE_DAYS_PART_1} ${days} ${strings.PRICE_DAYS_PART_2}${days > 1 ? 's' : ''}`
+/**
+ * Get days label.
+ *
+ * @param {number} days
+ * @returns {string}
+ */
+export const getDays = (days: number) =>
+  `${strings.PRICE_DAYS_PART_1} ${days} ${strings.PRICE_DAYS_PART_2}${days > 1 ? 's' : ''}`
 
+/**
+ * Get short days label.
+ *
+ * @param {number} days
+ * @returns {string}
+ */
 export const getDaysShort = (days: number) => `${days} ${strings.PRICE_DAYS_PART_2}${days > 1 ? 's' : ''}`
 
+/**
+ * Get cancellation label.
+ *
+ * @param {number} cancellation
+ * @param {boolean} fr
+ * @returns {string}
+ */
 export const getCancellation = (cancellation: number, fr: boolean) => {
   if (cancellation === -1) {
     return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${strings.UNAVAILABLE}`
@@ -218,6 +320,14 @@ export const getCancellation = (cancellation: number, fr: boolean) => {
   }
 }
 
+/**
+ * Get cancellation option label.
+ *
+ * @param {number} cancellation
+ * @param {boolean} fr
+ * @param {boolean} hidePlus
+ * @returns {string}
+ */
 export const getCancellationOption = (cancellation: number, fr: boolean, hidePlus: boolean) => {
   if (cancellation === -1) {
     return strings.UNAVAILABLE
@@ -228,12 +338,30 @@ export const getCancellationOption = (cancellation: number, fr: boolean, hidePlu
   }
 }
 
+/**
+ * Get birthdate error message.
+ *
+ * @param {number} minimumAge
+ * @returns {string}
+ */
 export const getBirthDateError = (minimumAge: number) =>
   `${commonStrings.BIRTH_DATE_NOT_VALID_PART1} ${minimumAge} ${commonStrings.BIRTH_DATE_NOT_VALID_PART2}`
 
+/**
+ * Check wether a property option is available or not.
+ *
+ * @param {(movininTypes.Property | undefined)} property
+ * @param {string} option
+ * @returns {boolean}
+ */
 export const propertyOptionAvailable = (property: movininTypes.Property | undefined, option: string) =>
   property && option in property && (property[option] as number) > -1
 
+/**
+ * Get all property types.
+ *
+ * @returns {movininTypes.PropertyType[]}
+ */
 export const getAllPropertyTypes = () =>
   [
     movininTypes.PropertyType.Apartment,
@@ -245,6 +373,11 @@ export const getAllPropertyTypes = () =>
     movininTypes.PropertyType.Townhouse
   ]
 
+/**
+ * Get all rental terms.
+ *
+ * @returns {movininTypes.RentalTerm[]}
+ */
 export const getAllRentalTerms = () =>
   [
     movininTypes.RentalTerm.Monthly,
@@ -253,6 +386,12 @@ export const getAllRentalTerms = () =>
     movininTypes.RentalTerm.Yearly,
   ]
 
+/**
+ * Get rental term label.
+ *
+ * @param {movininTypes.RentalTerm} term
+ * @returns {string}
+ */
 export const rentalTerm = (term: movininTypes.RentalTerm): string => {
   switch (term) {
     case movininTypes.RentalTerm.Monthly:
@@ -268,6 +407,12 @@ export const rentalTerm = (term: movininTypes.RentalTerm): string => {
   }
 }
 
+/**
+ * Get rental term unit.
+ *
+ * @param {movininTypes.RentalTerm} term
+ * @returns {string}
+ */
 export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
   switch (term) {
     case movininTypes.RentalTerm.Monthly:
@@ -283,5 +428,11 @@ export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
   }
 }
 
+/**
+ * Get price label.
+ *
+ * @param {movininTypes.Property} property
+ * @returns {string}
+ */
 export const priceLabel = (property: movininTypes.Property): string =>
   `${movininHelper.formatNumber(property.price)} ${commonStrings.CURRENCY}/${rentalTermUnit(property.rentalTerm)}`
