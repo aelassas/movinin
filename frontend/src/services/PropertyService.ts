@@ -3,6 +3,14 @@ import Env from '../config/env.config'
 import * as UserService from './UserService'
 import * as movininTypes from 'movinin-types'
 
+/**
+ * Get properties.
+ *
+ * @param {movininTypes.GetPropertiesPayload} data
+ * @param {number} page
+ * @param {number} size
+ * @returns {Promise<movininTypes.Result<movininTypes.Property>>}
+ */
 export const getProperties = (data: movininTypes.GetPropertiesPayload, page: number, size: number): Promise<movininTypes.Result<movininTypes.Property>> =>
   axios
     .post(
@@ -10,6 +18,12 @@ export const getProperties = (data: movininTypes.GetPropertiesPayload, page: num
       data
     ).then((res) => res.data)
 
+/**
+ * Get a Property by ID.
+ *
+ * @param {string} id
+ * @returns {Promise<movininTypes.Property>}
+ */
 export const getProperty = (id: string): Promise<movininTypes.Property> =>
   axios
     .get(
@@ -17,6 +31,15 @@ export const getProperty = (id: string): Promise<movininTypes.Property> =>
     )
     .then((res) => res.data)
 
+/**
+ * Get properties by agency and location.
+ *
+ * @param {string} keyword
+ * @param {movininTypes.GetBookingPropertiesPayload} data
+ * @param {number} page
+ * @param {number} size
+ * @returns {Promise<movininTypes.Property[]>}
+ */
 export const getBookingProperties = (keyword: string, data: movininTypes.GetBookingPropertiesPayload, page: number, size: number): Promise<movininTypes.Property[]> =>
   axios
     .post(

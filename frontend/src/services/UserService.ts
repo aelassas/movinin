@@ -2,6 +2,11 @@ import axios from 'axios'
 import Env from '../config/env.config'
 import * as movininTypes from 'movinin-types'
 
+/**
+ * Get authentication header
+ *
+ * @returns {unknown}
+ */
 export const authHeader = () => {
   const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null')
 
@@ -12,6 +17,12 @@ export const authHeader = () => {
   }
 }
 
+/**
+ * Sign up.
+ *
+ * @param {movininTypes.BackendSignUpPayload} data
+ * @returns {Promise<number>}
+ */
 export const signup = (data: movininTypes.BackendSignUpPayload): Promise<number> =>
   axios
     .post(`${Env.API_HOST}/api/sign-up/ `,
@@ -19,6 +30,14 @@ export const signup = (data: movininTypes.BackendSignUpPayload): Promise<number>
     )
     .then((res) => res.status)
 
+/**
+ * Check validation token.
+ *
+ * @param {string} userId
+ * @param {string} email
+ * @param {string} token
+ * @returns {Promise<number>}
+ */
 export const checkToken = (userId: string, email: string, token: string): Promise<number> =>
   axios
     .get(
@@ -26,6 +45,12 @@ export const checkToken = (userId: string, email: string, token: string): Promis
     )
     .then((res) => res.status)
 
+/**
+ * Delete validation tokens.
+ *
+ * @param {string} userId
+ * @returns {Promise<number>}
+ */
 export const deleteTokens = (userId: string): Promise<number> =>
   axios
     .delete(
@@ -33,6 +58,13 @@ export const deleteTokens = (userId: string): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Resend validation email.
+ *
+ * @param {?string} [email]
+ * @param {boolean} [reset=false]
+ * @returns {Promise<number>}
+ */
 export const resend = (email?: string, reset = false): Promise<number> =>
   axios
     .post(
@@ -40,6 +72,12 @@ export const resend = (email?: string, reset = false): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Activate account.
+ *
+ * @param {movininTypes.ActivatePayload} data
+ * @returns {Promise<number>}
+ */
 export const activate = (data: movininTypes.ActivatePayload): Promise<number> =>
   axios
     .post(
@@ -49,6 +87,12 @@ export const activate = (data: movininTypes.ActivatePayload): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Validate email.
+ *
+ * @param {movininTypes.ValidateEmailPayload} data
+ * @returns {Promise<number>}
+ */
 export const validateEmail = (data: movininTypes.ValidateEmailPayload): Promise<number> =>
   axios
     .post(
@@ -57,6 +101,12 @@ export const validateEmail = (data: movininTypes.ValidateEmailPayload): Promise<
     )
     .then((exist) => exist.status)
 
+/**
+ * Sign in.
+ *
+ * @param {movininTypes.SignInPayload} data
+ * @returns {Promise<{ status: number, data: movininTypes.User }>}
+ */
 export const signin = (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> =>
   axios
     .post(
@@ -70,6 +120,12 @@ export const signin = (data: movininTypes.SignInPayload): Promise<{ status: numb
       return { status: res.status, data: res.data }
     })
 
+/**
+ * Sign out.
+ *
+ * @param {boolean} [redirect=true]
+ * @param {boolean} [redirectSignin=false]
+ */
 export const signout = (redirect = true, redirectSignin = false) => {
   const _signout = () => {
     const deleteAllCookies = () => {
@@ -98,6 +154,11 @@ export const signout = (redirect = true, redirectSignin = false) => {
   _signout()
 }
 
+/**
+ * Validate authentication access token.
+ *
+ * @returns {Promise<number>}
+ */
 export const validateAccessToken = (): Promise<number> =>
   axios
     .post(
@@ -108,6 +169,13 @@ export const validateAccessToken = (): Promise<number> =>
     .then((res) => res.status)
 
 
+/**
+ * Confirm email.
+ *
+ * @param {string} email
+ * @param {string} token
+ * @returns {Promise<number>}
+ */
 export const confirmEmail = (email: string, token: string): Promise<number> => (
   axios
     .post(
@@ -116,6 +184,12 @@ export const confirmEmail = (email: string, token: string): Promise<number> => (
     .then((res) => res.status)
 )
 
+/**
+ * Resend validation email.
+ *
+ * @param {movininTypes.ResendLinkPayload} data
+ * @returns {Promise<number>}
+ */
 export const resendLink = (data: movininTypes.ResendLinkPayload): Promise<number> =>
   axios
     .post(
@@ -125,6 +199,11 @@ export const resendLink = (data: movininTypes.ResendLinkPayload): Promise<number
     )
     .then((res) => res.status)
 
+/**
+ * Get current language.
+ *
+ * @returns {string}
+ */
 export const getLanguage = () => {
   const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null')
 
@@ -139,6 +218,11 @@ export const getLanguage = () => {
   }
 }
 
+/**
+ * Get language from query strings.
+ *
+ * @returns {string}
+ */
 export const getQueryLanguage = () => {
   const params = new URLSearchParams(window.location.search)
   if (params.has('l')) {
@@ -147,6 +231,12 @@ export const getQueryLanguage = () => {
   return ''
 }
 
+/**
+ * Update language.
+ *
+ * @param {movininTypes.UpdateLanguagePayload} data
+ * @returns {*}
+ */
 export const updateLanguage = (data: movininTypes.UpdateLanguagePayload) =>
   axios
     .post(`${Env.API_HOST}/api/update-language`, data, {
@@ -162,26 +252,53 @@ export const updateLanguage = (data: movininTypes.UpdateLanguagePayload) =>
     })
 
 
+/**
+ * Set language.
+ *
+ * @param {string} lang
+ */
 export const setLanguage = (lang: string) => {
   localStorage.setItem('bc-language', lang)
 }
 
-export const getCurrentUser = () => {
-  const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null')
+/**
+ * Get current user.
+ *
+ * @returns {*}
+ */
+export const getCurrentUser = (): movininTypes.User | null => {
+  const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null') as movininTypes.User | null
   if (user && user.accessToken) {
     return user
   }
   return null
 }
 
-export const getUser = (id: string): Promise<movininTypes.User> =>
-  axios
-    .get(
-      `${Env.API_HOST}/api/user/` + encodeURIComponent(id),
-      { headers: authHeader() }
-    )
-    .then((res) => res.data)
+/**
+ * Get a User by ID.
+ *
+ * @param {string} id
+ * @returns {Promise<movininTypes.User>}
+ */
+export const getUser = (id?: string): Promise<movininTypes.User | null> => {
+  if (id) {
+    return axios
+      .get(
+        `${Env.API_HOST}/api/user/` + encodeURIComponent(id),
+        { headers: authHeader() }
+      )
+      .then((res) => res.data)
+  } else {
+    return new Promise((resolve) => resolve(null))
+  }
+}
 
+/**
+ * Update a User.
+ *
+ * @param {movininTypes.UpdateUserPayload} data
+ * @returns {Promise<number>}
+ */
 export const updateUser = (data: movininTypes.UpdateUserPayload): Promise<number> =>
   axios
     .post(
@@ -192,6 +309,12 @@ export const updateUser = (data: movininTypes.UpdateUserPayload): Promise<number
     .then((res) => res.status)
 
 
+/**
+ * Update email notifications flag.
+ *
+ * @param {movininTypes.UpdateEmailNotificationsPayload} data
+ * @returns {Promise<number>}
+ */
 export const updateEmailNotifications = (data: movininTypes.UpdateEmailNotificationsPayload): Promise<number> =>
   axios
     .post(
@@ -202,13 +325,22 @@ export const updateEmailNotifications = (data: movininTypes.UpdateEmailNotificat
     .then((res) => {
       if (res.status === 200) {
         const user = getCurrentUser()
-        user.enableEmailNotifications = data.enableEmailNotifications
-        localStorage.setItem('bc-user', JSON.stringify(user))
+        if (user) {
+          user.enableEmailNotifications = data.enableEmailNotifications
+          localStorage.setItem('bc-user', JSON.stringify(user))
+        }
       }
       return res.status
     })
 
 
+/**
+ * Update avatar.
+ *
+ * @param {string} userId
+ * @param {Blob} file
+ * @returns {Promise<number>}
+ */
 export const updateAvatar = (userId: string, file: Blob): Promise<number> => {
   const user = getCurrentUser()
   const formData = new FormData()
@@ -230,6 +362,12 @@ export const updateAvatar = (userId: string, file: Blob): Promise<number> => {
     .then((res) => res.status)
 }
 
+/**
+ * Delete avatar.
+ *
+ * @param {string} userId
+ * @returns {Promise<number>}
+ */
 export const deleteAvatar = (userId: string): Promise<number> =>
   axios
     .post(
@@ -239,6 +377,13 @@ export const deleteAvatar = (userId: string): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Check password.
+ *
+ * @param {string} id
+ * @param {string} pass
+ * @returns {Promise<number>}
+ */
 export const checkPassword = (id: string, pass: string): Promise<number> =>
   axios
     .get(
@@ -247,6 +392,12 @@ export const checkPassword = (id: string, pass: string): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Change password.
+ *
+ * @param {movininTypes.ChangePasswordPayload} data
+ * @returns {Promise<number>}
+ */
 export const changePassword = (data: movininTypes.ChangePasswordPayload): Promise<number> =>
   axios
     .post(
