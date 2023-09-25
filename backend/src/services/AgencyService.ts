@@ -3,6 +3,12 @@ import Env from '../config/env.config'
 import * as UserService from './UserService'
 import * as movininTypes from 'movinin-types'
 
+/**
+ * Validate an Agency name.
+ *
+ * @param {movininTypes.ValidateAgencyPayload} data
+ * @returns {Promise<number>}
+ */
 export const validate = (data: movininTypes.ValidateAgencyPayload): Promise<number> =>
   axios
     .post(
@@ -12,6 +18,12 @@ export const validate = (data: movininTypes.ValidateAgencyPayload): Promise<numb
     )
     .then((res) => res.status)
 
+/**
+ * Update an Agency.
+ *
+ * @param {movininTypes.UpdateAgencyPayload} data
+ * @returns {Promise<number>}
+ */
 export const update = (data: movininTypes.UpdateAgencyPayload): Promise<number> =>
   axios
     .put(
@@ -21,6 +33,12 @@ export const update = (data: movininTypes.UpdateAgencyPayload): Promise<number> 
     )
     .then((res) => res.status)
 
+/**
+ * Delete an Agency.
+ *
+ * @param {string} id
+ * @returns {Promise<number>}
+ */
 export const deleteAgency = (id: string): Promise<number> =>
   axios
     .delete(
@@ -29,6 +47,12 @@ export const deleteAgency = (id: string): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Get an Agency by ID.
+ *
+ * @param {string} id
+ * @returns {Promise<movininTypes.User>}
+ */
 export const getAgency = (id: string): Promise<movininTypes.User> =>
   axios
     .get(
@@ -37,7 +61,16 @@ export const getAgency = (id: string): Promise<movininTypes.User> =>
     )
     .then((res) => res.data)
 
-export const getAgencies = (keyword: string, page: number, size: number): Promise<movininTypes.Result<movininTypes.User>> =>
+/**
+ * Get Agencies.
+ *
+ * @param {string} keyword
+ * @param {number} page
+ * @param {number} size
+ * @returns {Promise<movininTypes.Result<movininTypes.User>>}
+ */
+export const getAgencies = (keyword: string, page: number, size: number)
+  : Promise<movininTypes.Result<movininTypes.User>> =>
   axios
     .get(
       `${Env.API_HOST}/api/agencies/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
@@ -45,6 +78,11 @@ export const getAgencies = (keyword: string, page: number, size: number): Promis
     )
     .then((res) => res.data)
 
+/**
+ * Get all Agencies.
+ *
+ * @returns {Promise<movininTypes.User[]>}
+ */
 export const getAllAgencies = (): Promise<movininTypes.User[]> =>
   axios
     .get(

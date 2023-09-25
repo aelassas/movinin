@@ -3,6 +3,12 @@ import Env from '../config/env.config'
 import * as UserService from './UserService'
 import * as movininTypes from 'movinin-types'
 
+/**
+ * Create a Property.
+ *
+ * @param {movininTypes.CreatePropertyPayload} data
+ * @returns {Promise<movininTypes.Property>}
+ */
 export const create = (data: movininTypes.CreatePropertyPayload): Promise<movininTypes.Property> =>
   axios
     .post(
@@ -12,6 +18,12 @@ export const create = (data: movininTypes.CreatePropertyPayload): Promise<movini
     )
     .then((res) => res.data)
 
+/**
+ * Update a Property.
+ *
+ * @param {movininTypes.UpdatePropertyPayload} data
+ * @returns {Promise<number>}
+ */
 export const update = (data: movininTypes.UpdatePropertyPayload): Promise<number> =>
   axios
     .put(
@@ -21,6 +33,12 @@ export const update = (data: movininTypes.UpdatePropertyPayload): Promise<number
     )
     .then((res) => res.status)
 
+/**
+ * Check if a property is related to a Booking.
+ *
+ * @param {string} id
+ * @returns {Promise<number>}
+ */
 export const check = (id: string): Promise<number> =>
   axios
     .get(
@@ -29,6 +47,12 @@ export const check = (id: string): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Delete a Property.
+ *
+ * @param {string} id
+ * @returns {Promise<number>}
+ */
 export const deleteProperty = (id: string): Promise<number> =>
   axios
     .delete(
@@ -37,6 +61,12 @@ export const deleteProperty = (id: string): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Upload a temporary Property image.
+ *
+ * @param {Blob} file
+ * @returns {Promise<string>}
+ */
 export const uploadImage = (file: Blob): Promise<string> => {
   const user = UserService.getCurrentUser()
   const formData = new FormData()
@@ -58,6 +88,12 @@ export const uploadImage = (file: Blob): Promise<string> => {
     .then((res) => res.data)
 }
 
+/**
+ * Delete a Property image.
+ *
+ * @param {string} id
+ * @returns {Promise<number>}
+ */
 export const deleteImage = (id: string): Promise<number> =>
   axios
     .post(
@@ -67,6 +103,12 @@ export const deleteImage = (id: string): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Delete a temporary Property image.
+ *
+ * @param {string} image
+ * @returns {Promise<number>}
+ */
 export const deleteTempImage = (image: string): Promise<number> =>
   axios
     .post(
@@ -76,6 +118,12 @@ export const deleteTempImage = (image: string): Promise<number> =>
     )
     .then((res) => res.status)
 
+/**
+ * Get a Property by ID.
+ *
+ * @param {string} id
+ * @returns {Promise<movininTypes.Property>}
+ */
 export const getProperty = (id: string): Promise<movininTypes.Property> =>
   axios
     .get(
@@ -84,6 +132,15 @@ export const getProperty = (id: string): Promise<movininTypes.Property> =>
     )
     .then((res) => res.data)
 
+/**
+ * Get Properties.
+ *
+ * @param {string} keyword
+ * @param {movininTypes.GetPropertiesPayload} data
+ * @param {number} page
+ * @param {number} size
+ * @returns {Promise<movininTypes.Result<movininTypes.Property>>}
+ */
 export const getProperties = (keyword: string, data: movininTypes.GetPropertiesPayload, page: number, size: number): Promise<movininTypes.Result<movininTypes.Property>> =>
   axios
     .post(
@@ -93,6 +150,15 @@ export const getProperties = (keyword: string, data: movininTypes.GetPropertiesP
     )
     .then((res) => res.data)
 
+/**
+ * Get Properties by Agency and Location.
+ *
+ * @param {string} keyword
+ * @param {movininTypes.GetBookingPropertiesPayload} data
+ * @param {number} page
+ * @param {number} size
+ * @returns {Promise<movininTypes.Property[]>}
+ */
 export const getBookingProperties = (keyword: string, data: movininTypes.GetBookingPropertiesPayload, page: number, size: number): Promise<movininTypes.Property[]> =>
   axios
     .post(
