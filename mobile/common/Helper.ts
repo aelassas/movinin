@@ -13,14 +13,14 @@ import * as movininHelper from '../miscellaneous/movininHelper'
 import * as ToasHelper from './ToastHelper'
 
 /**
- * Indicate whether Platform OS is Android.
+ * Indicate whether Platform OS is Android or not.
  *
  * @type {boolean}
  */
 const ANDROID = Platform.OS === 'android'
 
 /**
- * Indicate whether Platform OS is Android.
+ * Indicate whether Platform OS is Android or not.
  *
  * @returns {boolean}
  */
