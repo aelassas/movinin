@@ -271,7 +271,7 @@ export const setLanguage = (lang: string) => {
 /**
  * Get current User.
  *
- * @returns {movininTypes.User}
+ * @returns {movininTypes.User|null}
  */
 export const getCurrentUser = (): movininTypes.User | null => {
   const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null') as movininTypes.User | null
