@@ -66,7 +66,7 @@ export const getPropertyType = (type: string) => {
 }
 
 /**
- * Check wether a user is an administrator or not.
+ * Check whether a user is an administrator or not.
  *
  * @param {?movininTypes.User} [user]
  * @returns {boolean}
@@ -348,7 +348,7 @@ export const getBirthDateError = (minimumAge: number) =>
   `${commonStrings.BIRTH_DATE_NOT_VALID_PART1} ${minimumAge} ${commonStrings.BIRTH_DATE_NOT_VALID_PART2}`
 
 /**
- * Check wether a property option is available or not.
+ * Check whether a property option is available or not.
  *
  * @param {(movininTypes.Property | undefined)} property
  * @param {string} option
