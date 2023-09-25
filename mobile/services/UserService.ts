@@ -285,7 +285,7 @@ export const getLanguage = async () => {
  *
  * @async
  * @param {movininTypes.UpdateLanguagePayload} data
- * @returns {unknown}
+ * @returns {Promise<number>}
  */
 export const updateLanguage = async (data: movininTypes.UpdateLanguagePayload) => {
   const headers = await authHeader()
