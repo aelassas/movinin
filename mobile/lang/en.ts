@@ -124,7 +124,6 @@ export const en = {
   BOOKING_OPTIONS: 'Your booking options',
   BOOKING_DETAILS: 'Your booking details',
   DAYS: 'Days',
-  AGENCY: 'Company',
   COST: 'COST',
   RENTER_DETAILS: 'Customer details',
   EMAIL_INFO: 'You will receive a confirmation email at this address.',

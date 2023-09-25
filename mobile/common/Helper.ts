@@ -38,7 +38,6 @@ export const error = (err?: unknown, __toast__ = true) => {
   ToasHelper.error(err, __toast__)
 }
 
-
 /**
  * Get filename.
  *
