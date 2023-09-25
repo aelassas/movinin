@@ -212,7 +212,7 @@ export const price = (property: movininTypes.Property, from: Date, to: Date, opt
  * @param {number} cancellation
  * @param {boolean} fr
  * @param {?boolean} [hidePlus]
- * @returns {*}
+ * @returns {string}
  */
 export const getCancellationOption = (cancellation: number, fr: boolean, hidePlus?: boolean) => {
   if (cancellation === -1) {
@@ -260,7 +260,7 @@ export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => [
  * Get booking status label.
  *
  * @param {string} status
- * @returns {*}
+ * @returns {string}
  */
 export const getBookingStatus = (status: movininTypes.BookingStatus) => {
   switch (status) {
@@ -362,7 +362,7 @@ export const propertyOptionAvailable = (property: movininTypes.Property | undefi
  * Get property type label.
  *
  * @param {movininTypes.PropertyType} type
- * @returns {*}
+ * @returns {string}
  */
 export const getPropertyType = (type: movininTypes.PropertyType) => {
   switch (type) {

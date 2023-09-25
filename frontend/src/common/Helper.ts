@@ -32,10 +32,10 @@ export const error = (err?: unknown, message?: string) => {
 }
 
 /**
- * Get property type.
+ * Get property type label.
  *
  * @param {string} type
- * @returns {*}
+ * @returns {string}
  */
 export const getPropertyType = (type: string) => {
   switch (type) {
@@ -68,7 +68,7 @@ export const getPropertyType = (type: string) => {
  * Get booking status label.
  *
  * @param {string} status
- * @returns {*}
+ * @returns {string}
  */
 export const getBookingStatus = (status: movininTypes.BookingStatus) => {
   switch (status) {
@@ -247,7 +247,7 @@ export const getCancellation = (cancellation: number, fr: boolean) => {
  * @param {number} cancellation
  * @param {boolean} fr
  * @param {?boolean} [hidePlus]
- * @returns {*}
+ * @returns {string}
  */
 export const getCancellationOption = (cancellation: number, fr: boolean, hidePlus?: boolean) => {
   if (cancellation === -1) {

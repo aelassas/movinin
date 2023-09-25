@@ -5,7 +5,7 @@ import * as UserService from '../services/UserService'
 /**
  * Get current language.
  *
- * @returns {*}
+ * @returns {string}
  */
 export const getLanguage = () => {
   let language = UserService.getQueryLanguage() ?? ''

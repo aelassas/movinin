@@ -235,7 +235,7 @@ export const getQueryLanguage = () => {
  * Update language.
  *
  * @param {movininTypes.UpdateLanguagePayload} data
- * @returns {*}
+ * @returns {Promise<number>}
  */
 export const updateLanguage = (data: movininTypes.UpdateLanguagePayload) =>
   axios
@@ -251,7 +251,6 @@ export const updateLanguage = (data: movininTypes.UpdateLanguagePayload) =>
       return res.status
     })
 
-
 /**
  * Set language.
  *
@@ -264,7 +263,7 @@ export const setLanguage = (lang: string) => {
 /**
  * Get current user.
  *
- * @returns {*}
+ * @returns {movininTypes.User | null}
  */
 export const getCurrentUser = (): movininTypes.User | null => {
   const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null') as movininTypes.User | null
@@ -278,7 +277,7 @@ export const getCurrentUser = (): movininTypes.User | null => {
  * Get a User by ID.
  *
  * @param {string} id
- * @returns {Promise<movininTypes.User>}
+ * @returns {Promise<movininTypes.User|null>}
  */
 export const getUser = (id?: string): Promise<movininTypes.User | null> => {
   if (id) {

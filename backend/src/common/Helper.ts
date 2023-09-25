@@ -268,7 +268,7 @@ export const getUserTypes = () => {
  * Get user type label.
  *
  * @param {string} type
- * @returns {*}
+ * @returns {string}
  */
 export const getUserType = (type: movininTypes.UserType) => {
   switch (type) {

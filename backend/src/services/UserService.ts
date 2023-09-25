@@ -285,7 +285,7 @@ export const getCurrentUser = (): movininTypes.User | null => {
  * Get User by ID.
  *
  * @param {string} id
- * @returns {Promise<movininTypes.User>}
+ * @returns {Promise<movininTypes.User|null>}
  */
 export const getUser = (id?: string): Promise<movininTypes.User | null> => {
   if (id) {
