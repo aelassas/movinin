@@ -45,7 +45,7 @@ const StatusList = ({
     <div style={style}>
       {disabled ? (
         <span className={`bs-s-sv bs-s-${value.toLowerCase()}`} style={{ marginTop: 5 }}>
-          {Helper.getBookingStatus(value)}
+          {Helper.getBookingStatus(value as movininTypes.BookingStatus)}
         </span>
       ) : (
         <>
@@ -58,7 +58,11 @@ const StatusList = ({
             required={required}
             readOnly={readOnly}
             fullWidth
-            renderValue={(value) => <span className={`bs-s-sv bs-s-${value.toLowerCase()}`}>{Helper.getBookingStatus(value)}</span>}
+            renderValue={(value) =>
+              <span className={`bs-s-sv bs-s-${value.toLowerCase()}`}>
+                {Helper.getBookingStatus(value as movininTypes.BookingStatus)}
+              </span>
+            }
           >
             <MenuItem value={movininTypes.BookingStatus.Void} className="bs-s bs-s-void">
               {commonStrings.BOOKING_STATUS_VOID}

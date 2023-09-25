@@ -296,7 +296,7 @@ export const getBookingStatus = (status: movininTypes.BookingStatus) => {
 }
 
 /**
- * Get birth date error label.
+ * Get birthdate error message.
  *
  * @param {number} minimumAge
  * @returns {string}
