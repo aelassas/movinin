@@ -13,7 +13,7 @@ import * as Helper from '../common/Helper'
 import * as movininTypes from 'movinin-types'
 
 /**
- * Validate Agency by fullname.
+ * Validate Agency fullname.
  *
  * @export
  * @async
