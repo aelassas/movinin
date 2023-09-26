@@ -202,13 +202,14 @@ const BookingList = (
       const _paginationModel = movininHelper.clone(paginationModel)
       _paginationModel.page = 0
       setPaginationModel(_paginationModel)
-      _fetch(0, user)
+      setPage(0)
+      setLoad(true)
       setReload(false)
     }
   }, [reload]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (agencies && statuses && page > 0) {
+    if (agencies && statuses) {
       const columns = getColumns()
       setColumns(columns)
       setLoad(true)
