@@ -37,7 +37,6 @@ const BookingList = (
     agencies: bookingAgencies,
     statuses: bookingStatuses,
     filter: bookingFilter,
-    reload: bookingReload,
     property: bookingProperty,
     offset: bookingOffset,
     user: bookingUser,
@@ -54,7 +53,6 @@ const BookingList = (
     agencies?: string[]
     statuses?: string[]
     filter?: movininTypes.Filter | null
-    reload?: boolean
     property?: string
     offset?: number
     user?: movininTypes.User
@@ -82,7 +80,6 @@ const BookingList = (
   const [statuses, setStatuses] = useState<string[] | undefined>(bookingStatuses)
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [filter, setFilter] = useState<movininTypes.Filter | undefined | null>(bookingFilter)
-  const [reload, setReload] = useState(bookingReload)
   const [property, setProperty] = useState<string>(bookingProperty || '')
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false)
   const [openDeleteDialog, setopenDeleteDialog] = useState(false)
@@ -93,7 +90,6 @@ const BookingList = (
   })
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(Env.isMobile() ? Env.BOOKINGS_MOBILE_PAGE_SIZE : Env.BOOKINGS_PAGE_SIZE)
-  const [load, setLoad] = useState(false)
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
 
@@ -157,7 +153,6 @@ const BookingList = (
       Helper.error(err)
     } finally {
       setLoading(false)
-      setLoad(false)
       setInit(false)
     }
   }
@@ -183,44 +178,22 @@ const BookingList = (
   }, [bookingOffset])
 
   useEffect(() => {
-    setReload(bookingReload || false)
-  }, [bookingReload])
-
-  useEffect(() => {
     setUser(bookingUser)
   }, [bookingUser])
 
   useEffect(() => {
-    if (load) {
+    if (agencies && statuses && !loading) {
       _fetch(page, user)
-      setLoad(false)
-    }
-  }, [load]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (reload) {
-      const _paginationModel = movininHelper.clone(paginationModel)
-      _paginationModel.page = 0
-      setPaginationModel(_paginationModel)
-      setPage(0)
-      setLoad(true)
-      setReload(false)
-    }
-  }, [reload]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (agencies && statuses) {
-      const columns = getColumns()
-      setColumns(columns)
-      setLoad(true)
     }
   }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (agencies && statuses) {
-      const columns = getColumns()
-      setColumns(columns)
-      setReload(true)
+      const _paginationModel = movininHelper.clone(paginationModel)
+      _paginationModel.page = 0
+      setPaginationModel(_paginationModel)
+
+      _fetch(0, user)
     }
   }, [pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -228,7 +201,12 @@ const BookingList = (
     if (agencies && statuses) {
       const columns = getColumns()
       setColumns(columns)
-      setReload(true)
+
+      const _paginationModel = movininHelper.clone(paginationModel)
+      _paginationModel.page = 0
+      setPaginationModel(_paginationModel)
+
+      _fetch(0, user)
     }
   }, [agencies, statuses, filter]) // eslint-disable-line react-hooks/exhaustive-deps
 
