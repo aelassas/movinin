@@ -179,18 +179,20 @@ const BookingList = (
   }, [bookingUser])
 
   useEffect(() => {
-    if (agencies && statuses && !loading) {
+    if (agencies && statuses) {
       _fetch(page, user)
     }
   }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (agencies && statuses) {
-      const _paginationModel = movininHelper.clone(paginationModel)
-      _paginationModel.page = 0
-      setPaginationModel(_paginationModel)
-
-      _fetch(0, user)
+      if (page === 0) {
+        _fetch(0, user)
+      } else {
+        const _paginationModel = movininHelper.clone(paginationModel)
+        _paginationModel.page = 0
+        setPaginationModel(_paginationModel)
+      }
     }
   }, [pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -199,11 +201,13 @@ const BookingList = (
       const columns = getColumns()
       setColumns(columns)
 
-      const _paginationModel = movininHelper.clone(paginationModel)
-      _paginationModel.page = 0
-      setPaginationModel(_paginationModel)
-
-      _fetch(0, user)
+      if (page === 0) {
+        _fetch(0, user)
+      } else {
+        const _paginationModel = movininHelper.clone(paginationModel)
+        _paginationModel.page = 0
+        setPaginationModel(_paginationModel)
+      }
     }
   }, [agencies, statuses, filter]) // eslint-disable-line react-hooks/exhaustive-deps
 
