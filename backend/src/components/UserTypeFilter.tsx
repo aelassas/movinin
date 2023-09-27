@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { strings as commonStrings } from '../lang/common'
 import * as Helper from '../common/Helper'
 import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/user-type-filter.css'
 
@@ -10,7 +11,7 @@ const UserTypeFilter = ({
   onChange
 }: {
   className?: string,
-  onChange: (types: movininTypes.UserType[]) => void
+  onChange?: (types: movininTypes.UserType[]) => void
 }) => {
   const userTypes = Helper.getUserTypes()
   const [checkedUserTypes, setCheckedUserTypes] = useState<movininTypes.UserType[]>(userTypes.map((user) => user.value))
@@ -53,7 +54,7 @@ const UserTypeFilter = ({
     setCheckedUserTypes(checkedUserTypes)
 
     if (onChange) {
-      onChange(checkedUserTypes)
+      onChange(movininHelper.clone(checkedUserTypes))
     }
   }
 
@@ -77,7 +78,7 @@ const UserTypeFilter = ({
       setCheckedUserTypes(_userTypes)
 
       if (onChange) {
-        onChange(_userTypes)
+        onChange(movininHelper.clone(_userTypes))
       }
     }
   }

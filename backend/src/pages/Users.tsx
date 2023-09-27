@@ -8,7 +8,6 @@ import Search from '../components/Search'
 import UserList from '../components/UserList'
 import { Button } from '@mui/material'
 import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/users.css'
 
@@ -17,20 +16,13 @@ const Users = () => {
   const [admin, setAdmin] = useState(false)
   const [types, setTypes] = useState<movininTypes.UserType[]>([])
   const [keyword, setKeyword] = useState('')
-  const [reload, setReload] = useState(false)
-
-  const handleUserListLoad = () => {
-    setReload(false)
-  }
 
   const handleUserTypeFilterChange = (newTypes: movininTypes.UserType[]) => {
     setTypes(newTypes)
-    setReload(movininHelper.arrayEqual(types, newTypes))
   }
 
   const handleSearch = (newKeyword: string) => {
     setKeyword(newKeyword)
-    setReload(keyword === newKeyword)
   }
 
   const onLoad = (user?: movininTypes.User) => {
@@ -70,8 +62,6 @@ const Users = () => {
               keyword={keyword}
               checkboxSelection={!Env.isMobile() && admin}
               hideDesktopColumns={Env.isMobile()}
-              reload={reload}
-              onLoad={handleUserListLoad}
             />
           </div>
         </div>
