@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:18-alpine
+FROM node:lts-alpine
 WORKDIR /movinin/api
 COPY ./api ./
 COPY ./packages /movinin/packages
