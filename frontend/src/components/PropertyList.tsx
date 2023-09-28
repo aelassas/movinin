@@ -138,6 +138,7 @@ const PropertyList = (
         if (onLoad) {
           onLoad({ rows: [], rowCount: 0 })
         }
+        setInit(false)
       }
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
