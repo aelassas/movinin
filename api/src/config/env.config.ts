@@ -4,7 +4,7 @@ import * as movininTypes from 'movinin-types'
 import * as Helper from '../common/Helper'
 
 /**
- * Get environment variable value. 
+ * Get environment variable value.
  *
  * @param {string} name
  * @param {?boolean} [required]
@@ -205,6 +205,62 @@ export const MINIMUM_AGE = Number.parseInt(__env__('MI_MINIMUM_AGE', false, '21'
 export const EXPO_ACCESS_TOKEN = __env__('MI_EXPO_ACCESS_TOKEN', false)
 
 /**
+ * User Document.
+ *
+ * @export
+ * @interface User
+ * @typedef {User}
+ * @extends {Document}
+ */
+export interface User extends Document {
+    agency?: Types.ObjectId
+    fullName: string
+    email: string
+    phone?: string
+    password?: string
+    birthDate?: Date
+    verified?: boolean
+    verifiedAt?: Date
+    active?: boolean
+    language: string
+    enableEmailNotifications?: boolean
+    avatar?: string
+    bio?: string
+    location?: string
+    type?: movininTypes.UserType
+    blacklisted?: boolean
+    payLater?: boolean
+}
+
+/**
+ * UserInfo.
+ *
+ * @export
+ * @interface UserInfo
+ * @typedef {UserInfo}
+ */
+export interface UserInfo {
+    _id?: Types.ObjectId
+    agency?: Types.ObjectId
+    fullName: string
+    email?: string
+    phone?: string
+    password?: string
+    birthDate?: Date
+    verified?: boolean
+    verifiedAt?: Date
+    active?: boolean
+    language?: string
+    enableEmailNotifications?: boolean
+    avatar?: string
+    bio?: string
+    location?: string
+    type?: string
+    blacklisted?: boolean
+    payLater?: boolean
+}
+
+/**
  * Booking Document.
  *
  * @export
@@ -245,7 +301,6 @@ export interface BookingInfo {
     price: number
 }
 
-
 /**
  * Location Document.
  *
@@ -284,7 +339,6 @@ export interface LocationInfo extends Document {
     name?: string
     values: LocationValue[]
 }
-
 
 /**
  * Notification Document.
@@ -403,60 +457,4 @@ export interface Token extends Document {
     user: Types.ObjectId
     token: string
     expireAt?: Date
-}
-
-/**
- * User Document.
- *
- * @export
- * @interface User
- * @typedef {User}
- * @extends {Document}
- */
-export interface User extends Document {
-    agency?: Types.ObjectId
-    fullName: string
-    email: string
-    phone?: string
-    password?: string
-    birthDate?: Date
-    verified?: boolean
-    verifiedAt?: Date
-    active?: boolean
-    language: string
-    enableEmailNotifications?: boolean
-    avatar?: string
-    bio?: string
-    location?: string
-    type?: movininTypes.UserType
-    blacklisted?: boolean
-    payLater?: boolean
-}
-
-/**
- * UserInfo.
- *
- * @export
- * @interface UserInfo
- * @typedef {UserInfo}
- */
-export interface UserInfo {
-    _id?: Types.ObjectId
-    agency?: Types.ObjectId
-    fullName: string
-    email?: string
-    phone?: string
-    password?: string
-    birthDate?: Date
-    verified?: boolean
-    verifiedAt?: Date
-    active?: boolean
-    language?: string
-    enableEmailNotifications?: boolean
-    avatar?: string
-    bio?: string
-    location?: string
-    type?: string
-    blacklisted?: boolean
-    payLater?: boolean
 }

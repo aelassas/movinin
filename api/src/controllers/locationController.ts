@@ -1,12 +1,12 @@
 import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
+import * as movininTypes from 'movinin-types'
 import * as env from '../config/env.config'
 import strings from '../config/app.config'
 import Location from '../models/Location'
 import LocationValue from '../models/LocationValue'
 import Property from '../models/Property'
-import * as movininTypes from 'movinin-types'
 
 /**
  * Validate a Location name with language code.
@@ -18,7 +18,7 @@ import * as movininTypes from 'movinin-types'
  * @returns {unknown}
  */
 export async function validate(req: Request, res: Response) {
-  const body: movininTypes.ValidateLocationPayload = req.body
+  const { body }: { body: movininTypes.ValidateLocationPayload } = req
   const { language, name } = body
 
   try {
@@ -46,13 +46,12 @@ export async function validate(req: Request, res: Response) {
  * @returns {unknown}
  */
 export async function create(req: Request, res: Response) {
-  const body: movininTypes.LocationName[] = req.body
+  const { body }: { body: movininTypes.LocationName[] } = req
   const names = body
 
   try {
     const values = []
-    for (let i = 0; i < names.length; i++) {
-      const name = names[i]
+    for (const name of names) {
       const locationValue = new LocationValue({
         language: name.language,
         value: name.name,
@@ -86,28 +85,28 @@ export async function update(req: Request, res: Response) {
     const location = await Location.findById(id).populate<{ values: env.LocationValue[] }>('values')
 
     if (location) {
-      const names = req.body
-      for (let i = 0; i < names.length; i++) {
-        const name = names[i]
+      const names: movininTypes.LocationName[] = req.body
+
+      for (const name of names) {
         const locationValue = location.values.filter((value) => value.language === name.language)[0]
         if (locationValue) {
           locationValue.value = name.name
           await locationValue.save()
         } else {
-          const locationValue = new LocationValue({
+          const lv = new LocationValue({
             language: name.language,
             value: name.name,
           })
-          await locationValue.save()
-          location.values.push(locationValue)
+          await lv.save()
+          location.values.push(lv)
           await location.save()
         }
       }
       return res.sendStatus(200)
-    } else {
-      console.error('[location.update] Location not found:', id)
-      return res.sendStatus(204)
     }
+
+    console.error('[location.update] Location not found:', id)
+    return res.sendStatus(204)
   } catch (err) {
     console.error(`[location.update] ${strings.DB_ERROR} ${req.body}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
@@ -160,10 +159,10 @@ export async function getLocation(req: Request, res: Response) {
       const name = (location.values as env.LocationValue[]).filter((value) => value.language === req.params.language)[0].value
       const l = { ...location, name }
       return res.json(l)
-    } else {
-      console.error('[location.getLocation] Location not found:', id)
-      return res.sendStatus(204)
     }
+
+    console.error('[location.getLocation] Location not found:', id)
+    return res.sendStatus(204)
   } catch (err) {
     console.error(`[location.getLocation] ${strings.DB_ERROR} ${id}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
@@ -181,9 +180,9 @@ export async function getLocation(req: Request, res: Response) {
  */
 export async function getLocations(req: Request, res: Response) {
   try {
-    const page = Number.parseInt(req.params.page)
-    const size = Number.parseInt(req.params.size)
-    const language = req.params.language
+    const page = Number.parseInt(req.params.page, 10)
+    const size = Number.parseInt(req.params.size, 10)
+    const { language } = req.params
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
 

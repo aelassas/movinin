@@ -2,6 +2,7 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 import escapeStringRegexp from 'escape-string-regexp'
 import { Request, Response } from 'express'
+import * as movininTypes from 'movinin-types'
 import strings from '../config/app.config'
 import * as env from '../config/env.config'
 import User from '../models/User'
@@ -10,7 +11,6 @@ import Notification from '../models/Notification'
 import Booking from '../models/Booking'
 import Property from '../models/Property'
 import * as Helper from '../common/Helper'
-import * as movininTypes from 'movinin-types'
 
 /**
  * Validate Agency fullname.
@@ -22,7 +22,7 @@ import * as movininTypes from 'movinin-types'
  * @returns {unknown}
  */
 export async function validate(req: Request, res: Response) {
-  const body: movininTypes.ValidateAgencyPayload = req.body
+  const { body }: { body: movininTypes.ValidateAgencyPayload } = req
   const { fullName } = body
 
   try {
@@ -49,14 +49,20 @@ export async function validate(req: Request, res: Response) {
  * @returns {unknown}
  */
 export async function update(req: Request, res: Response) {
-  const body: movininTypes.UpdateAgencyPayload = req.body
+  const { body }: { body: movininTypes.UpdateAgencyPayload } = req
   const { _id } = body
 
   try {
     const agency = await User.findById(_id)
 
     if (agency) {
-      const { fullName, phone, location, bio, payLater } = body
+      const {
+        fullName,
+        phone,
+        location,
+        bio,
+        payLater,
+      } = body
       agency.fullName = fullName
       agency.phone = phone
       agency.location = location
@@ -65,10 +71,10 @@ export async function update(req: Request, res: Response) {
 
       await agency.save()
       return res.sendStatus(200)
-    } else {
-      console.error('[agency.update] Agency not found:', _id)
-      return res.sendStatus(204)
     }
+
+    console.error('[agency.update] Agency not found:', _id)
+    return res.sendStatus(204)
   } catch (err) {
     console.error(`[agency.update] ${strings.DB_ERROR} ${_id}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
@@ -108,9 +114,9 @@ export async function deleteAgency(req: Request, res: Response) {
           }
           if (property.images) {
             for (const imageFile of property.images) {
-              const image = path.join(env.CDN_PROPERTIES, imageFile)
-              if (await Helper.exists(image)) {
-                await fs.unlink(image)
+              const additionalImage = path.join(env.CDN_PROPERTIES, imageFile)
+              if (await Helper.exists(additionalImage)) {
+                await fs.unlink(additionalImage)
               }
             }
           }
@@ -144,19 +150,29 @@ export async function getAgency(req: Request, res: Response) {
     if (!user) {
       console.error('[agency.getAgency] Agency not found:', id)
       return res.sendStatus(204)
-    } else {
-      const { _id, email, fullName, avatar, phone, location, bio, payLater } = user
-      return res.json({
-        _id,
-        email,
-        fullName,
-        avatar,
-        phone,
-        location,
-        bio,
-        payLater,
-      })
     }
+
+    const {
+      _id,
+      email,
+      fullName,
+      avatar,
+      phone,
+      location,
+      bio,
+      payLater,
+    } = user
+
+    return res.json({
+      _id,
+      email,
+      fullName,
+      avatar,
+      phone,
+      location,
+      bio,
+      payLater,
+    })
   } catch (err) {
     console.error(`[agency.getAgency] ${strings.DB_ERROR} ${id}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
@@ -174,8 +190,8 @@ export async function getAgency(req: Request, res: Response) {
  */
 export async function getAgencies(req: Request, res: Response) {
   try {
-    const page = Number.parseInt(req.params.page)
-    const size = Number.parseInt(req.params.size)
+    const page = Number.parseInt(req.params.page, 10)
+    const size = Number.parseInt(req.params.size, 10)
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
 

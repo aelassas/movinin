@@ -4,12 +4,12 @@ import { v1 as uuid } from 'uuid'
 import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
+import * as movininTypes from 'movinin-types'
 import Booking from '../models/Booking.js'
 import Property from '../models/Property.js'
 import strings from '../config/app.config.js'
 import * as env from '../config/env.config.js'
 import * as Helper from '../common/Helper.js'
-import * as movininTypes from 'movinin-types'
 
 /**
  * Create a Property.
@@ -21,7 +21,7 @@ import * as movininTypes from 'movinin-types'
  * @returns {unknown}
  */
 export async function create(req: Request, res: Response) {
-  const body: movininTypes.CreatePropertyPayload = req.body
+  const { body }: { body: movininTypes.CreatePropertyPayload } = req
 
   try {
     if (!body.image) {
@@ -50,7 +50,7 @@ export async function create(req: Request, res: Response) {
       hidden,
       cancellation,
       aircon,
-      rentalTerm
+      rentalTerm,
     } = body
 
     const _property = {
@@ -72,7 +72,7 @@ export async function create(req: Request, res: Response) {
       hidden,
       cancellation,
       aircon,
-      rentalTerm
+      rentalTerm,
     }
 
     const property = new Property(_property)
@@ -99,16 +99,16 @@ export async function create(req: Request, res: Response) {
 
     // images
     property.images = []
+    let i = 1
     if (images) {
-      for (let i = 0; i < images.length; i++) {
-        const imageFile = images[i]
-        const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
+      for (const img of images) {
+        const _img = path.join(env.CDN_TEMP_PROPERTIES, img)
 
-        if (await Helper.exists(_image)) {
-          const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
+        if (await Helper.exists(_img)) {
+          const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(img)}`
           const newPath = path.join(env.CDN_PROPERTIES, filename)
 
-          await fs.rename(_image, newPath)
+          await fs.rename(_img, newPath)
           property.images.push(filename)
         } else {
           await Property.deleteOne({ _id: property._id })
@@ -116,6 +116,7 @@ export async function create(req: Request, res: Response) {
           console.error(strings.ERROR, err)
           return res.status(400).send(strings.ERROR + err)
         }
+        i += 1
       }
     }
 
@@ -138,7 +139,7 @@ export async function create(req: Request, res: Response) {
  * @returns {unknown}
  */
 export async function update(req: Request, res: Response) {
-  const body: movininTypes.UpdatePropertyPayload = req.body
+  const { body }: { body: movininTypes.UpdatePropertyPayload } = req
   const _id = body
 
   try {
@@ -167,7 +168,7 @@ export async function update(req: Request, res: Response) {
         hidden,
         cancellation,
         aircon,
-        rentalTerm
+        rentalTerm,
       } = body
 
       property.name = name
@@ -212,23 +213,22 @@ export async function update(req: Request, res: Response) {
       // delete deleted images
       const _images: string[] = []
       if (images && property.images) {
-
         if (images.length === 0) {
-          for (const image of property.images) {
-            const _image = path.join(env.CDN_PROPERTIES, image)
+          for (const img of property.images) {
+            const _image = path.join(env.CDN_PROPERTIES, img)
             if (await Helper.exists(_image)) {
               await fs.unlink(_image)
             }
           }
         } else {
-          for (const image of property.images) {
-            if (!images.includes(image)) {
-              const _image = path.join(env.CDN_PROPERTIES, image)
+          for (const img of property.images) {
+            if (!images.includes(img)) {
+              const _image = path.join(env.CDN_PROPERTIES, img)
               if (await Helper.exists(_image)) {
                 await fs.unlink(_image)
               }
             } else {
-              _images.push(image)
+              _images.push(img)
             }
           }
         }
@@ -237,28 +237,29 @@ export async function update(req: Request, res: Response) {
 
       // add new images
       if (images) {
-        for (let i = 0; i < images.length; i++) {
-          const imageFile = images[i]
-          if (!property.images.includes(imageFile)) {
-            const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
+        let i = 1
+        for (const img of images) {
+          if (!property.images.includes(img)) {
+            const _image = path.join(env.CDN_TEMP_PROPERTIES, img)
 
             if (await Helper.exists(_image)) {
-              const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(imageFile)}`
+              const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(img)}`
               const newPath = path.join(env.CDN_PROPERTIES, filename)
 
               await fs.rename(_image, newPath)
               property.images.push(filename)
             }
           }
+          i += 1
         }
       }
 
       await property.save()
       return res.sendStatus(200)
-    } else {
-      console.error('[property.update] Property not found:', _id)
-      return res.sendStatus(204)
     }
+
+    console.error('[property.update] Property not found:', _id)
+    return res.sendStatus(204)
   } catch (err) {
     console.error(`[property.update] ${strings.DB_ERROR} ${_id}`, err)
     return res.status(400).send(strings.ERROR + err)
@@ -336,7 +337,7 @@ export async function deleteProperty(req: Request, res: Response) {
 export async function uploadImage(req: Request, res: Response) {
   try {
     if (!req.file) {
-      const msg = `[property.uploadImage] req.file not found`
+      const msg = '[property.uploadImage] req.file not found'
       console.error(msg)
       return res.status(400).send(msg)
     }
@@ -395,7 +396,7 @@ export async function deleteImage(req: Request, res: Response) {
     const property = await Property.findById(propertyId)
 
     if (property && property.images) {
-      const index = property.images.findIndex(i => i === imageFileName)
+      const index = property.images.findIndex((i) => i === imageFileName)
 
       if (index > -1) {
         const _image = path.join(env.CDN_PROPERTIES, imageFileName)
@@ -405,13 +406,12 @@ export async function deleteImage(req: Request, res: Response) {
         property.images.splice(index, 1)
         await property.save()
         return res.sendStatus(200)
-      } else {
-        return res.sendStatus(204)
       }
 
-    } else {
       return res.sendStatus(204)
     }
+
+    return res.sendStatus(204)
   } catch (err) {
     console.error(strings.ERROR, err)
     return res.status(400).send(strings.ERROR + err)
@@ -444,17 +444,27 @@ export async function getProperty(req: Request, res: Response) {
 
     if (property) {
       if (property.agency) {
-        const { _id, fullName, avatar, payLater } = property.agency
-        property.agency = { _id, fullName, avatar, payLater }
+        const {
+          _id,
+          fullName,
+          avatar,
+          payLater,
+        } = property.agency
+        property.agency = {
+          _id,
+          fullName,
+          avatar,
+          payLater,
+        }
       }
 
       property.location.name = property.location.values.filter((value) => value.language === language)[0].value
 
       return res.json(property)
-    } else {
-      console.error('[property.getProperty] Property not found:', id)
-      return res.sendStatus(204)
     }
+
+    console.error('[property.getProperty] Property not found:', id)
+    return res.sendStatus(204)
   } catch (err) {
     console.error(`[property.getProperty] ${strings.DB_ERROR} ${id}`, err)
     return res.status(400).send(strings.ERROR + err)
@@ -472,9 +482,9 @@ export async function getProperty(req: Request, res: Response) {
  */
 export async function getProperties(req: Request, res: Response) {
   try {
-    const body: movininTypes.GetPropertiesPayload = req.body
-    const page = Number.parseInt(req.params.page)
-    const size = Number.parseInt(req.params.size)
+    const { body }: { body: movininTypes.GetPropertiesPayload } = req
+    const page = Number.parseInt(req.params.page, 10)
+    const size = Number.parseInt(req.params.size, 10)
     const agencies = body.agencies.map((id) => new mongoose.Types.ObjectId(id))
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const types = body.types || []
@@ -487,7 +497,7 @@ export async function getProperties(req: Request, res: Response) {
       $and: [
         { agency: { $in: agencies } },
         { type: { $in: types } },
-        { rentalTerm: { $in: rentalTerms } }
+        { rentalTerm: { $in: rentalTerms } },
       ],
     }
 
@@ -540,7 +550,7 @@ export async function getProperties(req: Request, res: Response) {
                       $match: {
                         $and: [
                           { $expr: { $in: ['$_id', '$$values'] } },
-                          { $expr: { $eq: ['$language', language] } }
+                          { $expr: { $eq: ['$language', language] } },
                         ],
                       },
                     },
@@ -561,10 +571,10 @@ export async function getProperties(req: Request, res: Response) {
         {
           $match: {
             $or: [
-              { 'name': { $regex: keyword, $options: options } },
-              { 'location.name': { $regex: keyword, $options: options } }
-            ]
-          }
+              { name: { $regex: keyword, $options: options } },
+              { 'location.name': { $regex: keyword, $options: options } },
+            ],
+          },
         },
         {
           $facet: {
@@ -581,12 +591,12 @@ export async function getProperties(req: Request, res: Response) {
     )
 
     if (data.length > 0) {
-      data[0].resultData.forEach((property: env.PropertyInfo) => {
+      for (const property of data[0].resultData) {
         if (property.agency) {
           const { _id, fullName, avatar } = property.agency
           property.agency = { _id, fullName, avatar }
         }
-      })
+      }
     }
 
     return res.json(data)
@@ -607,14 +617,13 @@ export async function getProperties(req: Request, res: Response) {
  */
 export async function getBookingProperties(req: Request, res: Response) {
   try {
-
-    const body: movininTypes.GetBookingPropertiesPayload = req.body
+    const { body }: { body: movininTypes.GetBookingPropertiesPayload } = req
     const agency = new mongoose.Types.ObjectId(body.agency)
     const location = new mongoose.Types.ObjectId(body.location)
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
-    const page = Number.parseInt(req.params.page)
-    const size = Number.parseInt(req.params.size)
+    const page = Number.parseInt(req.params.page, 10)
+    const size = Number.parseInt(req.params.size, 10)
 
     const propertys = await Property.aggregate(
       [
@@ -622,8 +631,8 @@ export async function getBookingProperties(req: Request, res: Response) {
           $match: {
             $and: [
               { agency: { $eq: agency } },
-              { location: location },
-              { name: { $regex: keyword, $options: options } }]
+              { location },
+              { name: { $regex: keyword, $options: options } }],
           },
         },
         { $sort: { name: 1 } },
@@ -651,9 +660,9 @@ export async function getBookingProperties(req: Request, res: Response) {
  */
 export async function getFrontendProperties(req: Request, res: Response) {
   try {
-    const body: movininTypes.GetPropertiesPayload = req.body
-    const page = Number.parseInt(req.params.page)
-    const size = Number.parseInt(req.params.size)
+    const { body }: { body: movininTypes.GetPropertiesPayload } = req
+    const page = Number.parseInt(req.params.page, 10)
+    const size = Number.parseInt(req.params.size, 10)
     const agencies = body.agencies.map((id) => new mongoose.Types.ObjectId(id))
     const location = new mongoose.Types.ObjectId(body.location)
     const types = body.types || []
@@ -662,12 +671,12 @@ export async function getFrontendProperties(req: Request, res: Response) {
     const $match: mongoose.FilterQuery<any> = {
       $and: [
         { agency: { $in: agencies } },
-        { location: location },
+        { location },
         { type: { $in: types } },
         { rentalTerm: { $in: rentalTerms } },
         { available: true },
-        { hidden: false }
-      ]
+        { hidden: false },
+      ],
     }
 
     const data = await Property.aggregate(
@@ -717,12 +726,12 @@ export async function getFrontendProperties(req: Request, res: Response) {
     )
 
     if (data.length > 0) {
-      data[0].resultData.forEach((property: env.PropertyInfo) => {
+      for (const property of data[0].resultData) {
         if (property.agency) {
           const { _id, fullName, avatar } = property.agency
           property.agency = { _id, fullName, avatar }
         }
-      })
+      }
     }
 
     return res.json(data)

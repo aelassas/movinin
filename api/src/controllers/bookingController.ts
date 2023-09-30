@@ -3,6 +3,7 @@ import escapeStringRegexp from 'escape-string-regexp'
 import { v1 as uuid } from 'uuid'
 import { Expo, ExpoPushMessage } from 'expo-server-sdk'
 import { Request, Response } from 'express'
+import * as movininTypes from 'movinin-types'
 import strings from '../config/app.config'
 import Booking from '../models/Booking'
 import User from '../models/User'
@@ -12,7 +13,6 @@ import Notification from '../models/Notification'
 import NotificationCounter from '../models/NotificationCounter'
 import PushNotification from '../models/PushNotification'
 import * as env from '../config/env.config'
-import * as movininTypes from 'movinin-types'
 import * as MailHelper from '../common/MailHelper'
 import * as Helper from '../common/Helper'
 
@@ -27,7 +27,7 @@ import * as Helper from '../common/Helper'
  */
 export async function create(req: Request, res: Response) {
   try {
-    const body: movininTypes.Booking = req.body
+    const { body }: { body: movininTypes.Booking } = req
     const booking = new Booking(body)
 
     await booking.save()
@@ -54,13 +54,13 @@ async function notifyAgency(user: env.User, bookingId: string, agency: env.User,
   const notification = new Notification({
     user: agency._id,
     message,
-    booking: bookingId
+    booking: bookingId,
   })
 
   await notification.save()
   let counter = await NotificationCounter.findOne({ user: agency._id })
   if (counter && typeof counter.count !== 'undefined') {
-    counter.count++
+    counter.count += 1
     await counter.save()
   } else {
     counter = new NotificationCounter({ user: agency._id, count: 1 })
@@ -74,7 +74,11 @@ async function notifyAgency(user: env.User, bookingId: string, agency: env.User,
     from: env.SMTP_FROM,
     to: agency.email,
     subject: message,
-    html: `<p>${strings.HELLO}${agency.fullName},<br><br>${message}<br><br>${Helper.joinURL(env.BACKEND_HOST, `booking?b=${bookingId}`)}<br><br>${strings.REGARDS}<br></p>`,
+    html: `<p>${strings.HELLO}${agency.fullName},
+    <br><br>${message}
+    <br><br>${Helper.joinURL(env.BACKEND_HOST, `booking?b=${bookingId}`)}
+    <br><br>${strings.REGARDS}
+    <br></p>`,
   }
 
   await MailHelper.sendMail(mailOptions)
@@ -92,7 +96,7 @@ async function notifyAgency(user: env.User, bookingId: string, agency: env.User,
 export async function book(req: Request, res: Response) {
   try {
     let user: env.User | null
-    const body: movininTypes.BookPayload = req.body
+    const { body }: { body: movininTypes.BookPayload } = req
     const { renter } = body
 
     if (renter) {
@@ -162,14 +166,15 @@ export async function book(req: Request, res: Response) {
       subject: `${strings.BOOKING_CONFIRMED_SUBJECT_PART1} ${booking._id} ${strings.BOOKING_CONFIRMED_SUBJECT_PART2}`,
       html:
         `<p>${strings.HELLO}${user.fullName},<br><br>
-        ${!req.body.payLater ? `${strings.BOOKING_CONFIRMED_PART1} ${booking._id} ${strings.BOOKING_CONFIRMED_PART2}` + '<br><br>' : ''}
-        ${strings.BOOKING_CONFIRMED_PART3}${property.agency.fullName}${strings.BOOKING_CONFIRMED_PART4}${strings.BOOKING_CONFIRMED_PART5}` +
-        `${from} ${strings.BOOKING_CONFIRMED_PART6}` +
-        `${property.name}${strings.BOOKING_CONFIRMED_PART7}` +
-        `<br><br>${strings.BOOKING_CONFIRMED_PART8}<br><br>` +
-        `${strings.BOOKING_CONFIRMED_PART9}${property.agency.fullName}${strings.BOOKING_CONFIRMED_PART10}${strings.BOOKING_CONFIRMED_PART11}` +
-        `${to} ${strings.BOOKING_CONFIRMED_PART12}` +
-        `<br><br>${strings.BOOKING_CONFIRMED_PART13}<br><br>${strings.BOOKING_CONFIRMED_PART14}${env.FRONTEND_HOST}<br><br>
+        ${!body.payLater ? `${strings.BOOKING_CONFIRMED_PART1} ${booking._id} ${strings.BOOKING_CONFIRMED_PART2}`
+          + '<br><br>' : ''}
+        ${strings.BOOKING_CONFIRMED_PART3}${property.agency.fullName}${strings.BOOKING_CONFIRMED_PART4}${strings.BOOKING_CONFIRMED_PART5}`
+        + `${from} ${strings.BOOKING_CONFIRMED_PART6}`
+        + `${property.name}${strings.BOOKING_CONFIRMED_PART7}`
+        + `<br><br>${strings.BOOKING_CONFIRMED_PART8}<br><br>`
+        + `${strings.BOOKING_CONFIRMED_PART9}${property.agency.fullName}${strings.BOOKING_CONFIRMED_PART10}${strings.BOOKING_CONFIRMED_PART11}`
+        + `${to} ${strings.BOOKING_CONFIRMED_PART12}`
+        + `<br><br>${strings.BOOKING_CONFIRMED_PART13}<br><br>${strings.BOOKING_CONFIRMED_PART14}${env.FRONTEND_HOST}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
     await MailHelper.sendMail(mailOptions)
@@ -219,7 +224,7 @@ async function notifyRenter(booking: env.Booking) {
 
   let counter = await NotificationCounter.findOne({ user: renter._id })
   if (counter && typeof counter.count !== 'undefined') {
-    counter.count++
+    counter.count += 1
     await counter.save()
   } else {
     counter = new NotificationCounter({ user: renter._id, count: 1 })
@@ -302,7 +307,7 @@ async function notifyRenter(booking: env.Booking) {
  */
 export async function update(req: Request, res: Response) {
   try {
-    const body: movininTypes.Booking = req.body
+    const { body }: { body: movininTypes.Booking } = req
     const booking = await Booking.findById(body._id)
 
     if (booking) {
@@ -316,19 +321,19 @@ export async function update(req: Request, res: Response) {
         status,
         cancellation,
         price,
-      } = req.body
+      } = body
 
       const previousStatus = booking.status
 
-      booking.agency = agency
-      booking.location = location
-      booking.property = property
-      booking.renter = renter
+      booking.agency = new mongoose.Types.ObjectId(agency as string)
+      booking.location = new mongoose.Types.ObjectId(location as string)
+      booking.property = new mongoose.Types.ObjectId(property as string)
+      booking.renter = new mongoose.Types.ObjectId(renter as string)
       booking.from = from
       booking.to = to
       booking.status = status
       booking.cancellation = cancellation
-      booking.price = price
+      booking.price = price as number
 
       await booking.save()
 
@@ -338,10 +343,10 @@ export async function update(req: Request, res: Response) {
       }
 
       return res.sendStatus(200)
-    } else {
-      console.error('[booking.update] Booking not found:', req.body._id)
-      return res.sendStatus(204)
     }
+
+    console.error('[booking.update] Booking not found:', body._id)
+    return res.sendStatus(204)
   } catch (err) {
     console.error(`[booking.update]  ${strings.DB_ERROR} ${req.body}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
@@ -359,7 +364,7 @@ export async function update(req: Request, res: Response) {
  */
 export async function updateStatus(req: Request, res: Response) {
   try {
-    const body: movininTypes.UpdateStatusPayload = req.body
+    const { body }: { body: movininTypes.UpdateStatusPayload } = req
     const { ids: _ids, status } = body
     const ids = _ids.map((id) => new mongoose.Types.ObjectId(id))
     const bulk = Booking.collection.initializeOrderedBulkOp()
@@ -391,7 +396,7 @@ export async function updateStatus(req: Request, res: Response) {
  */
 export async function deleteBookings(req: Request, res: Response) {
   try {
-    const body: string[] = req.body
+    const { body }: { body: string[] } = req
     const ids = body.map((id) => new mongoose.Types.ObjectId(id))
 
     await Booking.deleteMany({ _id: { $in: ids } })
@@ -436,22 +441,42 @@ export async function getBooking(req: Request, res: Response) {
       .lean()
 
     if (booking) {
-      const language = req.params.language
+      const { language } = req.params
 
       if (booking.agency) {
-        const { _id, fullName, avatar, payLater } = booking.agency
-        booking.agency = { _id, fullName, avatar, payLater }
+        const {
+          _id,
+          fullName,
+          avatar,
+          payLater,
+        } = booking.agency
+        booking.agency = {
+          _id,
+          fullName,
+          avatar,
+          payLater,
+        }
       }
       if (booking.property.agency) {
-        const { _id, fullName, avatar, payLater } = booking.property.agency
-        booking.property.agency = { _id, fullName, avatar, payLater }
+        const {
+          _id,
+          fullName,
+          avatar,
+          payLater,
+        } = booking.property.agency
+        booking.property.agency = {
+          _id,
+          fullName,
+          avatar,
+          payLater,
+        }
       }
       booking.location.name = booking.location.values.filter((value) => value.language === language)[0].value
       return res.json(booking)
-    } else {
-      console.error('[booking.getBooking] Property not found:', id)
-      return res.sendStatus(204)
     }
+
+    console.error('[booking.getBooking] Property not found:', id)
+    return res.sendStatus(204)
   } catch (err) {
     console.error(`[booking.getBooking]  ${strings.DB_ERROR} ${id}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
@@ -469,19 +494,21 @@ export async function getBooking(req: Request, res: Response) {
  */
 export async function getBookings(req: Request, res: Response) {
   try {
-    const body: movininTypes.GetBookingsPayload = req.body
-    const page = Number.parseInt(req.params.page) + 1
-    const size = Number.parseInt(req.params.size)
+    const { body }: { body: movininTypes.GetBookingsPayload } = req
+    const page = Number.parseInt(req.params.page, 10) + 1
+    const size = Number.parseInt(req.params.size, 10)
     const agencies = body.agencies.map((id: string) => new mongoose.Types.ObjectId(id))
-    const statuses = body.statuses
-    const user = body.user
-    const property = body.property
+    const {
+      statuses,
+      user,
+      property,
+      language,
+    } = body
     const location = (body.filter && body.filter.location) || null
     const from = (body.filter && body.filter.from && new Date(body.filter.from)) || null
     const to = (body.filter && body.filter.to && new Date(body.filter.to)) || null
     let keyword = (body.filter && body.filter.keyword) || ''
     const options = 'i'
-    const language = body.language
 
     const $match: mongoose.FilterQuery<any> = {
       $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }],
@@ -561,7 +588,7 @@ export async function getBookings(req: Request, res: Response) {
                     $match: {
                       $and: [
                         { $expr: { $in: ['$_id', '$$values'] } },
-                        { $expr: { $eq: ['$language', language] } }
+                        { $expr: { $eq: ['$language', language] } },
                       ],
                     },
                   },

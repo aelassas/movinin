@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
-import * as env from '../config/env.config'
 import * as movininTypes from 'movinin-types'
+import * as env from '../config/env.config'
 
 const propertySchema = new Schema<env.Property>(
     {
@@ -17,7 +17,7 @@ const propertySchema = new Schema<env.Property>(
                 movininTypes.PropertyType.Plot,
                 movininTypes.PropertyType.Farm,
                 movininTypes.PropertyType.Commercial,
-                movininTypes.PropertyType.Industrial
+                movininTypes.PropertyType.Industrial,
             ],
             required: [true, "can't be blank"],
         },
@@ -32,13 +32,13 @@ const propertySchema = new Schema<env.Property>(
         },
         available: {
             type: Boolean,
-            default: true
+            default: true,
         },
         image: {
-            type: String
+            type: String,
         },
         images: {
-            type: [String]
+            type: [String],
         },
         bedrooms: {
             type: Number,
@@ -73,7 +73,7 @@ const propertySchema = new Schema<env.Property>(
             },
         },
         size: {
-            type: Number
+            type: Number,
         },
         petsAllowed: {
             type: Boolean,
@@ -103,7 +103,7 @@ const propertySchema = new Schema<env.Property>(
         },
         hidden: {
             type: Boolean,
-            default: false
+            default: false,
         },
         cancellation: {
             type: Number,
@@ -119,7 +119,7 @@ const propertySchema = new Schema<env.Property>(
                 movininTypes.RentalTerm.Monthly,
                 movininTypes.RentalTerm.Weekly,
                 movininTypes.RentalTerm.Daily,
-                movininTypes.RentalTerm.Yearly
+                movininTypes.RentalTerm.Yearly,
             ],
             required: [true, "can't be blank"],
         },

@@ -30,7 +30,7 @@ export default new LocalizedStringsDefault({
         BOOKING_CONFIRMED_PART5: ' on ',
         BOOKING_CONFIRMED_PART6: ' (local time) to pick up your keys ',
         BOOKING_CONFIRMED_PART7: '.',
-        BOOKING_CONFIRMED_PART8: "Please bring your ID and warranty check with you.",
+        BOOKING_CONFIRMED_PART8: 'Please bring your ID and warranty check with you.',
         BOOKING_CONFIRMED_PART9: 'You must drop-off the keys to our agency ',
         BOOKING_CONFIRMED_PART10: ' ',
         BOOKING_CONFIRMED_PART11: ' on ',
