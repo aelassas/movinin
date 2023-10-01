@@ -1,21 +1,24 @@
-
 import React from 'react'
-import { strings } from '../lang/hidden'
 import { VisibilityOff as HiddenIcon } from '@mui/icons-material'
+import { strings } from '../lang/hidden'
 
 import '../assets/css/hidden.css'
 
-const Hidden = (
-    {
+function Hidden({
         className
     }: {
         className?: string
-    }
-) => (
-    <div className={`label hidden${className ? ` ${className}` : ''}`} title={strings.HIDDEN_INFO} >
-        <HiddenIcon className="label-icon" />
-        <span> {strings.HIDDEN} </span>
+    }) {
+  return (
+    <div className={`label hidden${className ? ` ${className}` : ''}`} title={strings.HIDDEN_INFO}>
+      <HiddenIcon className="label-icon" />
+      <span>
+        {' '}
+        {strings.HIDDEN}
+        {' '}
+      </span>
     </div>
-)
+  )
+}
 
 export default Hidden

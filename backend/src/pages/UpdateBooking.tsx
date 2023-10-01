@@ -1,4 +1,20 @@
 import React, { useState, useCallback } from 'react'
+import {
+  FormControl,
+  FormControlLabel,
+  Switch,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material'
+import {
+  Info as InfoIcon,
+} from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings as blStrings } from '../lang/booking-list'
 import { strings as bfStrings } from '../lang/booking-filter'
@@ -19,27 +35,11 @@ import LocationSelectList from '../components/LocationSelectList'
 import PropertySelectList from '../components/PropertySelectList'
 import StatusList from '../components/StatusList'
 import DatePicker from '../components/DatePicker'
-import {
-  FormControl,
-  FormControlLabel,
-  Switch,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material'
-import {
-  Info as InfoIcon,
-} from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 import Env from '../config/env.config'
 
 import '../assets/css/booking.css'
 
-const UpdateBooking = () => {
+function UpdateBooking() {
   const navigate = useNavigate()
 
   const [user, setUser] = useState<movininTypes.User>()
@@ -80,16 +80,16 @@ const UpdateBooking = () => {
 
         if ((!property && newProperty) || (property && newProperty && property._id !== newProperty._id)) {
           // property changed
-          const property = await PropertyService.getProperty(newProperty._id)
+          const _property = await PropertyService.getProperty(newProperty._id)
 
-          if (property) {
+          if (_property) {
             const _booking = movininHelper.clone(booking)
-            _booking.property = property
+            _booking.property = _property
             Helper.price(
               _booking,
-              property,
-              (price) => {
-                setPrice(price)
+              _property,
+              (_price) => {
+                setPrice(_price)
               },
               (err) => {
                 Helper.error(err)
@@ -125,9 +125,9 @@ const UpdateBooking = () => {
       Helper.price(
         booking,
         booking.property as movininTypes.Property,
-        (price) => {
+        (_price) => {
           setBooking(booking)
-          setPrice(price)
+          setPrice(_price)
           setCancellation(booking.cancellation || false)
         },
         (err) => {
@@ -157,9 +157,9 @@ const UpdateBooking = () => {
       try {
         setOpenDeleteDialog(false)
 
-        const status = await BookingService.deleteBookings([booking._id])
+        const _status = await BookingService.deleteBookings([booking._id])
 
-        if (status === 200) {
+        if (_status === 200) {
           navigate('/')
         } else {
           toastErr(true)
@@ -175,7 +175,6 @@ const UpdateBooking = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault()
-
 
       if (!booking || !agency || !property || !renter || !location || !from || !to || !status) {
         Helper.error()
@@ -207,9 +206,9 @@ const UpdateBooking = () => {
     }
   }
 
-  const onLoad = async (user?: movininTypes.User) => {
-    if (user) {
-      setUser(user)
+  const onLoad = async (_user?: movininTypes.User) => {
+    if (_user) {
+      setUser(_user)
       setLoading(true)
 
       const params = new URLSearchParams(window.location.search)
@@ -217,45 +216,45 @@ const UpdateBooking = () => {
         const id = params.get('b')
         if (id && id !== '') {
           try {
-            const booking = await BookingService.getBooking(id)
+            const _booking = await BookingService.getBooking(id)
 
-            if (booking) {
-              if (!Helper.admin(user) && (booking.agency as movininTypes.User)._id !== user._id) {
+            if (_booking) {
+              if (!Helper.admin(_user) && (_booking.agency as movininTypes.User)._id !== _user._id) {
                 setLoading(false)
                 setNoMatch(true)
                 return
               }
 
-              setBooking(booking)
-              setPrice(booking.price)
+              setBooking(_booking)
+              setPrice(_booking.price)
               setLoading(false)
               setVisible(true)
-              setIsAgency(user.type === movininTypes.RecordType.Agency)
-              const cmp = booking.agency as movininTypes.User
+              setIsAgency(_user.type === movininTypes.RecordType.Agency)
+              const cmp = _booking.agency as movininTypes.User
               setAgency({
                 _id: cmp._id as string,
                 name: cmp.fullName,
                 image: cmp.avatar,
               })
-              setProperty(booking.property as movininTypes.Property)
-              const rtn = booking.renter as movininTypes.User
+              setProperty(_booking.property as movininTypes.Property)
+              const rtn = _booking.renter as movininTypes.User
               setRenter({
                 _id: rtn._id as string,
                 name: rtn.fullName,
                 image: rtn.avatar,
               })
-              const loc = booking.location as movininTypes.Location
+              const loc = _booking.location as movininTypes.Location
               setLocation({
                 _id: loc._id,
                 name: loc.name || '',
               })
-              setFrom(new Date(booking.from))
-              const minDate = new Date(booking.from)
-              minDate.setDate(minDate.getDate() + 1)
-              setMinDate(minDate)
-              setTo(new Date(booking.to))
-              setStatus(booking.status)
-              setCancellation(booking.cancellation || false)
+              setFrom(new Date(_booking.from))
+              const _minDate = new Date(_booking.from)
+              _minDate.setDate(_minDate.getDate() + 1)
+              setMinDate(_minDate)
+              setTo(new Date(_booking.to))
+              setStatus(_booking.status)
+              setCancellation(_booking.cancellation || false)
             } else {
               setLoading(false)
               setNoMatch(true)
@@ -292,7 +291,8 @@ const UpdateBooking = () => {
                     required
                     variant="standard"
                     onChange={handleAgencyChange}
-                    value={agency} />
+                    value={agency}
+                  />
                 </FormControl>
               )}
 
@@ -310,7 +310,8 @@ const UpdateBooking = () => {
                   required
                   variant="standard"
                   onChange={handleLocationChange}
-                  value={location} />
+                  value={location}
+                />
               </FormControl>
 
               <PropertySelectList
@@ -334,14 +335,14 @@ const UpdateBooking = () => {
                       Helper.price(
                         booking,
                         booking.property as movininTypes.Property,
-                        (price) => {
+                        (_price) => {
                           setBooking(booking)
-                          setPrice(price)
+                          setPrice(_price)
                           setFrom(date)
 
-                          const minDate = new Date(date)
-                          minDate.setDate(minDate.getDate() + 1)
-                          setMinDate(minDate)
+                          const _minDate = new Date(date)
+                          _minDate.setDate(_minDate.getDate() + 1)
+                          setMinDate(_minDate)
 
                           if (to && to.getTime() <= date.getTime()) {
                             setTo(undefined)
@@ -365,17 +366,17 @@ const UpdateBooking = () => {
                   value={to}
                   minDate={minDate}
                   required
-                  onChange={(to) => {
-                    if (to) {
-                      booking.to = to
+                  onChange={(_to) => {
+                    if (_to) {
+                      booking.to = _to
 
                       Helper.price(
                         booking,
                         booking.property as movininTypes.Property,
-                        (price) => {
+                        (_price) => {
                           setBooking(booking)
-                          setPrice(price)
-                          setTo(to)
+                          setPrice(_price)
+                          setTo(_to)
                         },
                         (err) => {
                           toastErr(err)
@@ -393,7 +394,7 @@ const UpdateBooking = () => {
 
               <div className="info">
                 <InfoIcon />
-                <label>{commonStrings.OPTIONAL}</label>
+                <span>{commonStrings.OPTIONAL}</span>
               </div>
 
               <FormControl fullWidth margin="dense" className="checkbox-fc">
@@ -423,9 +424,9 @@ const UpdateBooking = () => {
           <div className="col-2">
             <div className="col-2-header">
               <div className="price">
-                <label className="price-days">{Helper.getDays(days)}</label>
-                <label className="price-main">{`${movininHelper.formatNumber(price ?? 0)} ${commonStrings.CURRENCY}`}</label>
-                <label className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</label>
+                <span className="price-days">{Helper.getDays(days)}</span>
+                <span className="price-main">{`${movininHelper.formatNumber(price ?? 0)} ${commonStrings.CURRENCY}`}</span>
+                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</span>
               </div>
             </div>
             <PropertyList
@@ -434,7 +435,8 @@ const UpdateBooking = () => {
               booking={booking}
               properties={((property && [booking.property]) as movininTypes.Property[]) || []}
               language={user?.language || Env.DEFAULT_LANGUAGE}
-              hidePrice />
+              hidePrice
+            />
           </div>
 
           <Dialog disableEscapeKeyDown maxWidth="xs" open={openDeleteDialog}>

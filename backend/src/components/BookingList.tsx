@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Env from '../config/env.config'
-import { strings as commonStrings } from '../lang/common'
-import { strings as csStrings } from '../lang/properties'
-import { strings } from '../lang/booking-list'
-import * as Helper from '../common/Helper'
-import * as BookingService from '../services/BookingService'
-import StatusList from './StatusList'
-import { DataGrid, frFR, enUS, GridPaginationModel, GridColDef, GridRowId } from '@mui/x-data-grid'
+import {
+  DataGrid, frFR, enUS, GridPaginationModel, GridColDef, GridRowId
+} from '@mui/x-data-grid'
 import {
   Tooltip,
   IconButton,
@@ -29,44 +24,49 @@ import { format } from 'date-fns'
 import { fr as dfnsFR, enUS as dfnsENUS } from 'date-fns/locale'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
+import Env from '../config/env.config'
+import { strings as commonStrings } from '../lang/common'
+import { strings as csStrings } from '../lang/properties'
+import { strings } from '../lang/booking-list'
+import * as Helper from '../common/Helper'
+import * as BookingService from '../services/BookingService'
+import StatusList from './StatusList'
 
 import '../assets/css/booking-list.css'
 
-const BookingList = (
-  {
-    agencies: bookingAgencies,
-    statuses: bookingStatuses,
-    filter: bookingFilter,
-    property: bookingProperty,
-    offset: bookingOffset,
-    user: bookingUser,
-    loggedUser: bookingLoggedUser,
-    containerClassName,
-    hideDates,
-    hidePropertyColumn,
-    hideAgencyColumn,
-    language,
-    loading: bookingLoading,
-    checkboxSelection,
-    onLoad,
-  }: {
-    agencies?: string[]
-    statuses?: string[]
-    filter?: movininTypes.Filter | null
-    property?: string
-    offset?: number
-    user?: movininTypes.User
-    loggedUser?: movininTypes.User
-    containerClassName?: string
-    hideDates?: boolean
-    hidePropertyColumn?: boolean
-    hideAgencyColumn?: boolean
-    language?: string
-    loading?: boolean
-    checkboxSelection?: boolean
-    onLoad?: movininTypes.DataEvent<movininTypes.Booking>
-  }
-) => {
+function BookingList({
+  agencies: bookingAgencies,
+  statuses: bookingStatuses,
+  filter: bookingFilter,
+  property: bookingProperty,
+  offset: bookingOffset,
+  user: bookingUser,
+  loggedUser: bookingLoggedUser,
+  containerClassName,
+  hideDates,
+  hidePropertyColumn,
+  hideAgencyColumn,
+  language,
+  loading: bookingLoading,
+  checkboxSelection,
+  onLoad,
+}: {
+  agencies?: string[]
+  statuses?: string[]
+  filter?: movininTypes.Filter | null
+  property?: string
+  offset?: number
+  user?: movininTypes.User
+  loggedUser?: movininTypes.User
+  containerClassName?: string
+  hideDates?: boolean
+  hidePropertyColumn?: boolean
+  hideAgencyColumn?: boolean
+  language?: string
+  loading?: boolean
+  checkboxSelection?: boolean
+  onLoad?: movininTypes.DataEvent<movininTypes.Booking>
+}) {
   const [loggedUser, setLoggedUser] = useState<movininTypes.User>()
   const [user, setUser] = useState<movininTypes.User>()
   const [columns, setColumns] = useState<GridColDef<movininTypes.Booking>[]>([])
@@ -98,7 +98,7 @@ const BookingList = (
     setPageSize(paginationModel.pageSize)
   }, [paginationModel])
 
-  const _fetch = async (page: number, user?: movininTypes.User) => {
+  const _fetch = async (_page: number, _user?: movininTypes.User) => {
     try {
       const _pageSize = Env.isMobile() ? Env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
 
@@ -110,13 +110,13 @@ const BookingList = (
           statuses,
           filter: filter || undefined,
           property,
-          user: (user && user._id) || undefined,
+          user: (_user && _user._id) || undefined,
           language: loggedUser?.language || Env.DEFAULT_LANGUAGE
         }
 
         const data = await BookingService.getBookings(
           payload,
-          page,
+          _page,
           _pageSize,
         )
 
@@ -128,7 +128,7 @@ const BookingList = (
         const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
         if (Env.isMobile()) {
-          const _rows = page === 0 ? _data.resultData : [...rows, ..._data.resultData]
+          const _rows = _page === 0 ? _data.resultData : [...rows, ..._data.resultData]
           setRows(_rows)
           setRowCount(totalRecords)
           setFetch(_data.resultData.length > 0)
@@ -199,68 +199,22 @@ const BookingList = (
     }
   }, [pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (agencies && statuses) {
-      const columns = getColumns()
-      setColumns(columns)
-
-      if (page === 0) {
-        _fetch(0, user)
-      } else {
-        const _paginationModel = movininHelper.clone(paginationModel)
-        _paginationModel.page = 0
-        setPaginationModel(_paginationModel)
-      }
-    }
-  }, [agencies, statuses, filter]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    const columns = getColumns()
-    setColumns(columns)
-  }, [selectedIds]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    setLoggedUser(bookingLoggedUser || undefined)
-  }, [bookingLoggedUser])
-
-  useEffect(() => {
-    if (Env.isMobile()) {
-      const element: HTMLDivElement | null =
-        containerClassName
-          ? document.querySelector(`.${containerClassName}`)
-          : document.querySelector('div.bookings')
-
-      if (element) {
-        element.onscroll = (event: Event) => {
-          if (fetch && !loading) {
-            const target = event.target as HTMLDivElement
-
-            if (target.scrollTop > 0
-              && target.offsetHeight + target.scrollTop + Env.INFINITE_SCROLL_OFFSET >= target.scrollHeight) {
-              setLoading(true)
-              setPage(page + 1)
-            }
-          }
-        }
-      }
-    }
-  }, [containerClassName, page, fetch, loading, offset]) // eslint-disable-line react-hooks/exhaustive-deps
-
   const getDate = (date: Date) => {
     const d = new Date(date)
     return `${movininHelper.formatDatePart(d.getDate())}-${movininHelper.formatDatePart(d.getMonth() + 1)}-${d.getFullYear()}`
   }
 
   const getColumns = () => {
-    const columns = [
+    const _columns = [
       {
         field: 'renter',
         headerName: strings.RENTER,
         flex: 1,
-        renderCell: (params: any) =>
+        renderCell: (params: any) => (
           <Tooltip title={params.value} placement="left">
             <Link href={`/user?u=${params.row.renter._id}`}>{params.value}</Link>
-          </Tooltip>,
+          </Tooltip>
+        ),
         valueGetter: (params: any) => params.value.fullName,
       },
       {
@@ -316,54 +270,53 @@ const BookingList = (
             </div>
           )
         },
-        renderHeader: () => {
-          return selectedIds.length > 0 ? (
-            <div>
-              <Tooltip title={strings.UPDATE_SELECTION}>
-                <IconButton
-                  onClick={() => {
-                    setOpenUpdateDialog(true)
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title={strings.DELETE_SELECTION}>
-                <IconButton
-                  onClick={() => {
-                    setopenDeleteDialog(true)
-                  }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-          ) : (
-            <></>
-          )
-        },
+        renderHeader: () => (selectedIds.length > 0 ? (
+          <div>
+            <Tooltip title={strings.UPDATE_SELECTION}>
+              <IconButton
+                onClick={() => {
+                  setOpenUpdateDialog(true)
+                }}
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={strings.DELETE_SELECTION}>
+              <IconButton
+                onClick={() => {
+                  setopenDeleteDialog(true)
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+        ) : (
+          <></>
+        )),
       },
     ]
 
     if (hideDates) {
-      columns.splice(1, 2)
+      _columns.splice(1, 2)
     }
 
     if (!hidePropertyColumn) {
-      columns.unshift({
+      _columns.unshift({
         field: 'property',
         headerName: strings.PROPERTY,
         flex: 1,
-        renderCell: (params: any) =>
+        renderCell: (params: any) => (
           <Tooltip title={params.value} placement="left">
             <Link href={`/property-bookings?p=${params.row.property._id}`}>{params.value}</Link>
-          </Tooltip>,
+          </Tooltip>
+        ),
         valueGetter: (params: any) => params.value.name,
       })
     }
 
     if (Helper.admin(loggedUser) && !hideAgencyColumn) {
-      columns.unshift({
+      _columns.unshift({
         field: 'agency',
         headerName: commonStrings.AGENCY,
         flex: 1,
@@ -376,15 +329,61 @@ const BookingList = (
       })
     }
 
-    return columns
+    return _columns
   }
+
+  useEffect(() => {
+    if (agencies && statuses) {
+      const _columns = getColumns()
+      setColumns(_columns)
+
+      if (page === 0) {
+        _fetch(0, user)
+      } else {
+        const _paginationModel = movininHelper.clone(paginationModel)
+        _paginationModel.page = 0
+        setPaginationModel(_paginationModel)
+      }
+    }
+  }, [agencies, statuses, filter]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const _columns = getColumns()
+    setColumns(_columns)
+  }, [selectedIds]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    setLoggedUser(bookingLoggedUser || undefined)
+  }, [bookingLoggedUser])
+
+  useEffect(() => {
+    if (Env.isMobile()) {
+      const element: HTMLDivElement | null = containerClassName
+        ? document.querySelector(`.${containerClassName}`)
+        : document.querySelector('div.bookings')
+
+      if (element) {
+        element.onscroll = (event: Event) => {
+          if (fetch && !loading) {
+            const target = event.target as HTMLDivElement
+
+            if (target.scrollTop > 0
+              && target.offsetHeight + target.scrollTop + Env.INFINITE_SCROLL_OFFSET >= target.scrollHeight) {
+              setLoading(true)
+              setPage(page + 1)
+            }
+          }
+        }
+      }
+    }
+  }, [containerClassName, page, fetch, loading, offset]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCancelUpdate = () => {
     setOpenUpdateDialog(false)
   }
 
-  const handleStatusChange = (status: movininTypes.BookingStatus) => {
-    setStatus(status)
+  const handleStatusChange = (_status: movininTypes.BookingStatus) => {
+    setStatus(_status)
   }
 
   const handleConfirmUpdate = async () => {
@@ -416,14 +415,14 @@ const BookingList = (
   }
 
   const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
-    const selectedId = e.currentTarget.getAttribute('data-id') as string
-    const selectedIndex = Number(e.currentTarget.getAttribute('data-index') as string)
+    const _selectedId = e.currentTarget.getAttribute('data-id') as string
+    const _selectedIndex = Number(e.currentTarget.getAttribute('data-index') as string)
 
-    setSelectedId(selectedId)
-    setSelectedIndex(selectedIndex)
+    setSelectedId(_selectedId)
+    setSelectedIndex(_selectedIndex)
     setopenDeleteDialog(true)
-    setSelectedId(selectedId)
-    setSelectedIndex(selectedIndex)
+    setSelectedId(_selectedId)
+    setSelectedIndex(_selectedIndex)
   }
 
   const handleCancelDelete = () => {
@@ -436,9 +435,9 @@ const BookingList = (
       if (Env.isMobile()) {
         const ids = [selectedId]
 
-        const status = await BookingService.deleteBookings(ids)
+        const _status = await BookingService.deleteBookings(ids)
 
-        if (status === 200) {
+        if (_status === 200) {
           rows.splice(selectedIndex, 1)
           setRows(rows)
           setSelectedId('')
@@ -451,9 +450,9 @@ const BookingList = (
       } else {
         const ids = selectedIds.length > 0 ? selectedIds : [selectedId]
 
-        const status = await BookingService.deleteBookings(ids)
+        const _status = await BookingService.deleteBookings(ids)
 
-        if (status === 200) {
+        if (_status === 200) {
           if (selectedIds.length > 0) {
             setRows(rows.filter((row) => row._id && !selectedIds.includes(row._id)))
           } else {
@@ -477,16 +476,18 @@ const BookingList = (
 
   return (
     <div className="bs-list">
-      {loggedUser &&
-        (rows.length === 0 ? (
-          !loading &&
-          !init &&
-          !bookingLoading &&
-          <Card variant="outlined" className="empty-list">
-            <CardContent>
-              <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-            </CardContent>
-          </Card>
+      {loggedUser
+        && (rows.length === 0 ? (
+          !loading
+          && !init
+          && !bookingLoading
+          && (
+            <Card variant="outlined" className="empty-list">
+              <CardContent>
+                <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
+              </CardContent>
+            </Card>
+          )
         ) : Env.isMobile() ? (
           <>
             {rows.map((booking, index) => {
@@ -496,36 +497,38 @@ const BookingList = (
               return (
                 <div key={booking._id} className="booking-details">
                   <div className={`bs bs-${booking.status.toLowerCase()}`}>
-                    <label>{Helper.getBookingStatus(booking.status)}</label>
+                    <span>{Helper.getBookingStatus(booking.status)}</span>
                   </div>
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <label className="booking-detail-title">{strings.PROPERTY}</label>
+                    <span className="booking-detail-title">{strings.PROPERTY}</span>
                     <div className="booking-detail-value">
                       <Link href={`property/?p=${(booking.property as movininTypes.Property)._id}`}>{(booking.property as movininTypes.Property).name}</Link>
                     </div>
                   </div>
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <label className="booking-detail-title">{strings.RENTER}</label>
+                    <span className="booking-detail-title">{strings.RENTER}</span>
                     <div className="booking-detail-value">
                       <Link href={`user/?u=${(booking.renter as movininTypes.User)._id}`}>{(booking.renter as movininTypes.User).fullName}</Link>
                     </div>
                   </div>
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <label className="booking-detail-title">{strings.DAYS}</label>
-                    <div className="booking-detail-value">{`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
-                      format(from, _format, { locale: _locale }),
-                    )} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`}</div>
+                    <span className="booking-detail-title">{strings.DAYS}</span>
+                    <div className="booking-detail-value">
+                      {`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
+                        format(from, _format, { locale: _locale }),
+                      )} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`}
+                    </div>
                   </div>
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <label className="booking-detail-title">{commonStrings.LOCATION}</label>
+                    <span className="booking-detail-title">{commonStrings.LOCATION}</span>
                     <div className="booking-detail-value">{((booking.property as movininTypes.Property).location as movininTypes.Location).name}</div>
                   </div>
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <label className="booking-detail-title">{commonStrings.AGENCY}</label>
+                    <span className="booking-detail-title">{commonStrings.AGENCY}</span>
                     <div className="booking-detail-value">
                       <div className="property-agency">
                         <img src={movininHelper.joinURL(Env.CDN_USERS, (booking.agency as movininTypes.User).avatar)} alt={(booking.agency as movininTypes.User).fullName} />
-                        <label className="property-agency-name">{(booking.agency as movininTypes.User).fullName}</label>
+                        <span className="property-agency-name">{(booking.agency as movininTypes.User).fullName}</span>
                       </div>
                     </div>
                   </div>
@@ -533,12 +536,12 @@ const BookingList = (
                   {booking.cancellation && (
                     <>
                       <div className="extras">
-                        <label className="extras-title">{commonStrings.OPTIONS}</label>
+                        <span className="extras-title">{commonStrings.OPTIONS}</span>
                         {booking.cancellation && (
                           <div className="extra">
                             <CheckIcon className="extra-icon" />
-                            <label className="extra-title">{csStrings.CANCELLATION}</label>
-                            <label className="extra-text">{Helper.getCancellationOption((booking.property as movininTypes.Property).cancellation, _fr, true)}</label>
+                            <span className="extra-title">{csStrings.CANCELLATION}</span>
+                            <span className="extra-text">{Helper.getCancellationOption((booking.property as movininTypes.Property).cancellation, _fr, true)}</span>
                           </div>
                         )}
 
@@ -547,7 +550,7 @@ const BookingList = (
                   )}
 
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <label className="booking-detail-title">{strings.COST}</label>
+                    <span className="booking-detail-title">{strings.COST}</span>
                     <div className="booking-detail-value booking-price">{`${movininHelper.formatNumber(booking.price)} ${commonStrings.CURRENCY}`}</div>
                   </div>
 
@@ -556,7 +559,8 @@ const BookingList = (
                       variant="contained"
                       className="btn-primary"
                       size="small"
-                      href={`update-booking?b=${booking._id}`}>
+                      href={`update-booking?b=${booking._id}`}
+                    >
                       {commonStrings.UPDATE}
                     </Button>
                     <Button
@@ -565,7 +569,8 @@ const BookingList = (
                       size="small"
                       data-id={booking._id}
                       data-index={index}
-                      onClick={handleDelete}>
+                      onClick={handleDelete}
+                    >
                       {commonStrings.DELETE}
                     </Button>
                   </div>
@@ -592,8 +597,8 @@ const BookingList = (
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
             localeText={(loggedUser.language === 'fr' ? frFR : enUS).components.MuiDataGrid.defaultProps.localeText}
-            onRowSelectionModelChange={(selectedIds) => {
-              setSelectedIds(Array.from(new Set(selectedIds)).map(id => id.toString()))
+            onRowSelectionModelChange={(_selectedIds) => {
+              setSelectedIds(Array.from(new Set(_selectedIds)).map((id) => id.toString()))
             }}
             disableRowSelectionOnClick
           />

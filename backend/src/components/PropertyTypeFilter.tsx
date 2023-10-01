@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings as cpStrings } from '../lang/create-property'
 import { strings } from '../lang/properties'
 import Accordion from './Accordion'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/property-type-filter.css'
 
-const PropertyTypeFilter = (
-  {
-    className,
-    onChange
-  }: {
-    className?: string
-    onChange?: (values: movininTypes.PropertyType[]) => void
-  }
-) => {
+function PropertyTypeFilter({
+  className,
+  onChange
+}: {
+  className?: string
+  onChange?: (values: movininTypes.PropertyType[]) => void
+}) {
   const allPropertyTypes = [
     movininTypes.PropertyType.Apartment,
     movininTypes.PropertyType.Commercial,
@@ -352,35 +350,35 @@ const PropertyTypeFilter = (
       <div className="filter-elements">
         <div className="filter-element">
           <input ref={apartmentRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckApartmentChange} />
-          <label onClick={handleApartmentClick}>{strings.APARTMENT}</label>
+          <span role="button" tabIndex={0} onClick={handleApartmentClick}>{strings.APARTMENT}</span>
         </div>
         <div className="filter-element">
           <input ref={commercialRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckCommercialChange} />
-          <label onClick={handleCommercialClick}>{strings.COMMERCIAL}</label>
+          <span role="button" tabIndex={0} onClick={handleCommercialClick}>{strings.COMMERCIAL}</span>
         </div>
         <div className="filter-element">
           <input ref={farmRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckFarmChange} />
-          <label onClick={handleFarmClick}>{strings.FARM}</label>
+          <span role="button" tabIndex={0} onClick={handleFarmClick}>{strings.FARM}</span>
         </div>
         <div className="filter-element">
           <input ref={houseRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckHouseChange} />
-          <label onClick={handleHouseClick}>{strings.HOUSE}</label>
+          <span role="button" tabIndex={0} onClick={handleHouseClick}>{strings.HOUSE}</span>
         </div>
         <div className="filter-element">
           <input ref={industrialRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckIndustrialChange} />
-          <label onClick={handleIndustrialClick}>{strings.INDUSTRIAL}</label>
+          <span role="button" tabIndex={0} onClick={handleIndustrialClick}>{strings.INDUSTRIAL}</span>
         </div>
         <div className="filter-element">
           <input ref={plotRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckPlotChange} />
-          <label onClick={handlePlotClick}>{strings.PLOT}</label>
+          <span role="button" tabIndex={0} onClick={handlePlotClick}>{strings.PLOT}</span>
         </div>
         <div className="filter-element">
           <input ref={townhouseRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckTownhouseChange} />
-          <label onClick={handleTownhouseClick}>{strings.TOWN_HOUSE}</label>
+          <span role="button" tabIndex={0} onClick={handleTownhouseClick}>{strings.TOWN_HOUSE}</span>
         </div>
       </div>
       <div className="filter-actions">
-        <span onClick={handleUncheckAllChange} className="uncheckall">
+        <span role="button" tabIndex={0} onClick={handleUncheckAllChange} className="uncheckall">
           {allChecked ? commonStrings.UNCHECK_ALL : commonStrings.CHECK_ALL}
         </span>
       </div>

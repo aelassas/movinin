@@ -1,7 +1,7 @@
 import axios from 'axios'
+import * as movininTypes from 'movinin-types'
 import Env from '../config/env.config'
 import * as UserService from './UserService'
-import * as movininTypes from 'movinin-types'
 
 /**
  * Validate an Agency name.
@@ -87,5 +87,6 @@ export const getAllAgencies = (): Promise<movininTypes.User[]> =>
   axios
     .get(
       `${Env.API_HOST}/api/all-agencies`,
-      { headers: UserService.authHeader() })
+      { headers: UserService.authHeader() }
+)
     .then((res) => res.data)

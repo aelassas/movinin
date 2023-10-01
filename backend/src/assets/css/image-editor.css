@@ -26,12 +26,25 @@
     align-items: center;
 }
 
+.image-editor .image-control {
+    display: flex;
+    flex-direction: column;
+}
+
 .image-editor .action {
     cursor: pointer;
+    width: -moz-fit-content;
     width: fit-content;
     text-decoration: none;
     color: #3498db;
     margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 5px;
+    border: 0;
+    background: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .image-editor .action:hover {

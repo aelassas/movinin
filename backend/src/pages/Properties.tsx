@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { Button } from '@mui/material'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import * as Helper from '../common/Helper'
 import { strings } from '../lang/properties'
 import { strings as commonStrings } from '../lang/common'
@@ -10,15 +13,12 @@ import PropertyTypeFilter from '../components/PropertyTypeFilter'
 import AvailabilityFilter from '../components/AvailabilityFilter'
 import PropertyList from '../components/PropertyList'
 import * as AgencyService from '../services/AgencyService'
-import { Button } from '@mui/material'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 import RentalTermFilter from '../components/RentalTermFilter'
 import Env from '../config/env.config'
 
 import '../assets/css/properties.css'
 
-const Properties = () => {
+function Properties() {
   const [user, setUser] = useState<movininTypes.User>()
   const [admin, setAdmin] = useState(false)
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
@@ -32,7 +32,8 @@ const Properties = () => {
     [
       movininTypes.Availablity.Available,
       movininTypes.Availablity.Unavailable
-    ])
+    ]
+)
 
   const handleSearch = (newKeyword: string) => {
     setKeyword(newKeyword)
@@ -44,8 +45,8 @@ const Properties = () => {
     }
   }
 
-  const handlePropertyDelete = (rowCount: number) => {
-    setRowCount(rowCount)
+  const handlePropertyDelete = (_rowCount: number) => {
+    setRowCount(_rowCount)
   }
 
   const handleAgencyFilterChange = (newAgencies: string[]) => {
@@ -64,13 +65,13 @@ const Properties = () => {
     setAvailability(values)
   }
 
-  const onLoad = async (user?: movininTypes.User) => {
-    setUser(user)
-    setAdmin(Helper.admin(user))
-    const allAgencies = await AgencyService.getAllAgencies()
-    const agencies = movininHelper.flattenAgencies(allAgencies)
-    setAllAgencies(allAgencies)
-    setAgencies(agencies)
+  const onLoad = async (_user?: movininTypes.User) => {
+    setUser(_user)
+    setAdmin(Helper.admin(_user))
+    const _allAgencies = await AgencyService.getAllAgencies()
+    const _agencies = movininHelper.flattenAgencies(_allAgencies)
+    setAllAgencies(_allAgencies)
+    setAgencies(_agencies)
     setLoading(false)
   }
 
@@ -98,15 +99,20 @@ const Properties = () => {
                 <>
                   <PropertyTypeFilter
                     className="property-filter"
-                    onChange={handlePropertyTypeFilterChange} />
+                    onChange={handlePropertyTypeFilterChange}
+                  />
                   <RentalTermFilter
                     className="rental-term-filter"
-                    onChange={handleRentalTermFilterChange} />
+                    onChange={handleRentalTermFilterChange}
+                  />
                   {
-                    admin &&
+                    admin
+                    && (
                     <AvailabilityFilter
                       className="property-filter"
-                      onChange={handleAvailabilityFilterChange} />
+                      onChange={handleAvailabilityFilterChange}
+                    />
+)
                   }
                 </>
               )}

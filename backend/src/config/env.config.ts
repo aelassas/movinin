@@ -1,5 +1,5 @@
-import Const from './const'
 import * as movininTypes from 'movinin-types'
+import Const from './const'
 
 const Env = {
   isMobile: () => window.innerWidth <= 960,

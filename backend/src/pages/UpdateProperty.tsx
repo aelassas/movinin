@@ -1,16 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Master from '../components/Master'
-import Env from '../config/env.config'
-import { strings as commonStrings } from '../lang/common'
-import { strings as csStrings } from '../lang/properties'
-import { strings } from '../lang/create-property'
-import * as PropertyService from '../services/PropertyService'
-import * as Helper from '../common/Helper'
-import Error from '../components/Error'
-import Backdrop from '../components/SimpleBackdrop'
-import AgencySelectList from '../components/AgencySelectList'
-import LocationSelectList from '../components/LocationSelectList'
-import PropertyTypeList from '../components/PropertyTypeList'
 import {
   Input,
   InputLabel,
@@ -23,19 +11,31 @@ import {
   FormHelperText
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import ImageEditor from '../components/ImageEditor'
 import { Editor } from 'react-draft-wysiwyg'
 import { EditorState, convertToRaw, ContentState } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
+import Master from '../components/Master'
+import Env from '../config/env.config'
+import { strings as commonStrings } from '../lang/common'
+import { strings as csStrings } from '../lang/properties'
+import { strings } from '../lang/create-property'
+import * as PropertyService from '../services/PropertyService'
+import * as Helper from '../common/Helper'
+import Error from '../components/Error'
+import Backdrop from '../components/SimpleBackdrop'
+import AgencySelectList from '../components/AgencySelectList'
+import LocationSelectList from '../components/LocationSelectList'
+import PropertyTypeList from '../components/PropertyTypeList'
+import ImageEditor from '../components/ImageEditor'
 import RentalTermList from '../components/RentalTermList'
 
 import '../assets/css/create-property.css'
 import '../assets/css/update-property.css'
 
-const UpdateProperty = () => {
+function UpdateProperty() {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [loading, setLoading] = useState(false)
@@ -117,27 +117,26 @@ const UpdateProperty = () => {
 
   const validateMinimumAge = (age: string, updateState = true) => {
     if (age) {
-      const _age = Number.parseInt(age)
-      const minimumAgeValid = _age >= Env.MINIMUM_AGE && _age <= 99
+      const _age = Number.parseInt(age, 10)
+      const _minimumAgeValid = _age >= Env.MINIMUM_AGE && _age <= 99
       if (updateState) {
-        setMinimumAgeValid(minimumAgeValid)
+        setMinimumAgeValid(_minimumAgeValid)
       }
-      if (minimumAgeValid) {
+      if (_minimumAgeValid) {
         setFormError(false)
       }
-      return minimumAgeValid
-    } else {
+      return _minimumAgeValid
+    }
       setMinimumAgeValid(true)
       setFormError(false)
       return true
-    }
   }
 
   const handleMinimumAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMinimumAge(e.target.value)
 
-    const minimumAgeValid = validateMinimumAge(e.target.value, false)
-    if (minimumAgeValid) {
+    const _minimumAgeValid = validateMinimumAge(e.target.value, false)
+    if (_minimumAgeValid) {
       setMinimumAgeValid(true)
       setFormError(false)
     }
@@ -189,7 +188,6 @@ const UpdateProperty = () => {
     setPetsAllowed(e.target.checked)
   }
 
-
   const handleCancellationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCancellation(e.target.value)
   }
@@ -207,8 +205,8 @@ const UpdateProperty = () => {
         return
       }
 
-      const minimumAgeValid = validateMinimumAge(minimumAge)
-      if (!minimumAgeValid) {
+      const _minimumAgeValid = validateMinimumAge(minimumAge)
+      if (!_minimumAgeValid) {
         setFormError(true)
         setImageError(false)
         return
@@ -234,15 +232,15 @@ const UpdateProperty = () => {
         description,
         image,
         images,
-        bedrooms: Number.parseInt(bedrooms),
-        bathrooms: Number.parseInt(bathrooms),
-        kitchens: Number.parseInt(kitchens),
-        parkingSpaces: Number.parseInt(parkingSpaces),
+        bedrooms: Number.parseInt(bedrooms, 10),
+        bathrooms: Number.parseInt(bathrooms, 10),
+        kitchens: Number.parseInt(kitchens, 10),
+        parkingSpaces: Number.parseInt(parkingSpaces, 10),
         size: size ? Number(size) : undefined,
         petsAllowed,
         furnished,
         aircon,
-        minimumAge: Number.parseInt(minimumAge),
+        minimumAge: Number.parseInt(minimumAge, 10),
         location: location?._id,
         address,
         price: Number(price),
@@ -264,59 +262,59 @@ const UpdateProperty = () => {
     }
   }
 
-  const onLoad = async (user?: movininTypes.User) => {
-    if (user && user.verified) {
+  const onLoad = async (_user?: movininTypes.User) => {
+    if (_user && _user.verified) {
       setLoading(true)
-      setUser(user)
+      setUser(_user)
 
       const params = new URLSearchParams(window.location.search)
       if (params.has('p')) {
         const id = params.get('p')
         if (id && id !== '') {
           try {
-            const property = await PropertyService.getProperty(id)
+            const _property = await PropertyService.getProperty(id)
 
-            if (property) {
-              if (user.type === movininTypes.RecordType.Agency && user._id !== property.agency._id) {
+            if (_property) {
+              if (_user.type === movininTypes.RecordType.Agency && _user._id !== _property.agency._id) {
                 setLoading(false)
                 setNoMatch(true)
                 return
               }
 
-              const agency = {
-                _id: property.agency._id as string,
-                name: property.agency.fullName,
-                image: property.agency.avatar,
+              const _agency = {
+                _id: _property.agency._id as string,
+                name: _property.agency.fullName,
+                image: _property.agency.avatar,
               }
 
-              setProperty(property)
-              setImageRequired(!property.image)
-              setName(property.name)
-              setAgency(agency)
-              setDescription(property.description)
-              const contentBlock = htmlToDraft(property.description)
+              setProperty(_property)
+              setImageRequired(!_property.image)
+              setName(_property.name)
+              setAgency(_agency)
+              setDescription(_property.description)
+              const contentBlock = htmlToDraft(_property.description)
               const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks)
-              const editorState = EditorState.createWithContent(contentState)
-              setEditorState(editorState)
-              setType(property.type)
-              setRentalTerm(property.rentalTerm)
-              setImage(property.image)
-              setImages(property.images || [])
-              setBedrooms(property.bedrooms.toString())
-              setBathrooms(property.bathrooms.toString())
-              setKitchens(property.kitchens.toString())
-              setParkingSpaces(property.parkingSpaces.toString())
-              setSize(property.size?.toString() || '')
-              setPetsAllowed(property.petsAllowed)
-              setFurnished(property.furnished)
-              setAircon(property.aircon)
-              setMinimumAge(property.minimumAge.toString())
-              setLocation({ _id: property.location._id, name: property.location.name })
-              setAddress(property.address || '')
-              setPrice(property.price.toString())
-              setHidden(property.hidden)
-              setCancellation(movininHelper.extraToString(property.cancellation))
-              setAvailable(property.available)
+              const _editorState = EditorState.createWithContent(contentState)
+              setEditorState(_editorState)
+              setType(_property.type)
+              setRentalTerm(_property.rentalTerm)
+              setImage(_property.image)
+              setImages(_property.images || [])
+              setBedrooms(_property.bedrooms.toString())
+              setBathrooms(_property.bathrooms.toString())
+              setKitchens(_property.kitchens.toString())
+              setParkingSpaces(_property.parkingSpaces.toString())
+              setSize(_property.size?.toString() || '')
+              setPetsAllowed(_property.petsAllowed)
+              setFurnished(_property.furnished)
+              setAircon(_property.aircon)
+              setMinimumAge(_property.minimumAge.toString())
+              setLocation({ _id: _property.location._id, name: _property.location.name })
+              setAddress(_property.address || '')
+              setPrice(_property.price.toString())
+              setHidden(_property.hidden)
+              setCancellation(movininHelper.extraToString(_property.cancellation))
+              setAvailable(_property.available)
 
               setVisible(true)
               setLoading(false)
@@ -324,7 +322,6 @@ const UpdateProperty = () => {
               setLoading(false)
               setNoMatch(true)
             }
-
           } catch (err) {
             Helper.error(err)
             setLoading(false)
@@ -364,7 +361,7 @@ const UpdateProperty = () => {
                 onImageViewerOpen={() => setImageViewerOpen(true)}
                 onImageViewerClose={() => setImageViewerOpen(false)}
                 image={{ filename: property?.image || '', temp: false }}
-                images={property?.images?.map(image => ({ filename: image || '', temp: false }))}
+                images={property?.images?.map((_image) => ({ filename: _image || '', temp: false }))}
               />
 
               <FormControl fullWidth margin="dense">
@@ -374,7 +371,8 @@ const UpdateProperty = () => {
                   required
                   value={name}
                   autoComplete="off"
-                  onChange={handleNameChange} />
+                  onChange={handleNameChange}
+                />
               </FormControl>
 
               {admin && (
@@ -384,7 +382,8 @@ const UpdateProperty = () => {
                     required
                     variant="standard"
                     value={agency}
-                    onChange={handleAgencyChange} />
+                    onChange={handleAgencyChange}
+                  />
                 </FormControl>
               )}
 
@@ -404,7 +403,8 @@ const UpdateProperty = () => {
                   type="text"
                   value={address}
                   autoComplete="off"
-                  onChange={handleAddressChange} />
+                  onChange={handleAddressChange}
+                />
               </FormControl>
 
               <FormControl fullWidth margin="dense">
@@ -456,16 +456,18 @@ const UpdateProperty = () => {
                 </FormHelperText>
               </FormControl>
 
-
               <FormControl fullWidth margin="dense" className="checkbox-fc">
                 <FormControlLabel
-                  control={
+                  control={(
                     <Switch
                       checked={available}
                       onChange={handleAvailableChange}
                       color="primary"
                     />
-                  } label={strings.AVAILABLE} className="checkbox-fcl" />
+                  )}
+                  label={strings.AVAILABLE}
+                  className="checkbox-fcl"
+                />
               </FormControl>
 
               <FormControl fullWidth margin="dense" className="editor-field">
@@ -530,7 +532,7 @@ const UpdateProperty = () => {
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-              <InputLabel>{`${strings.SIZE} (${Env.SIZE_UNIT})`}</InputLabel>
+                <InputLabel>{`${strings.SIZE} (${Env.SIZE_UNIT})`}</InputLabel>
                 <Input
                   type="text"
                   value={size}
@@ -555,13 +557,13 @@ const UpdateProperty = () => {
               <FormControl fullWidth margin="dense" className="checkbox-fc">
                 <FormControlLabel
                   label={strings.AIRCON}
-                  control={
+                  control={(
                     <Switch
                       checked={aircon}
                       onChange={handleAirconChange}
                       color="primary"
                     />
-                  }
+                  )}
                   className="checkbox-fcl"
                 />
               </FormControl>
@@ -569,13 +571,13 @@ const UpdateProperty = () => {
               <FormControl fullWidth margin="dense" className="checkbox-fc">
                 <FormControlLabel
                   label={strings.FURNISHED}
-                  control={
+                  control={(
                     <Switch
                       checked={furnished}
                       onChange={handleFurnishedChange}
                       color="primary"
                     />
-                  }
+                  )}
                   className="checkbox-fcl"
                 />
               </FormControl>
@@ -583,13 +585,13 @@ const UpdateProperty = () => {
               <FormControl fullWidth margin="dense" className="checkbox-fc">
                 <FormControlLabel
                   label={strings.PETS_ALLOWED}
-                  control={
+                  control={(
                     <Switch
                       checked={petsAllowed}
                       onChange={handlePetsAllowedChange}
                       color="primary"
                     />
-                  }
+                  )}
                   className="checkbox-fcl"
                 />
               </FormControl>
@@ -597,17 +599,16 @@ const UpdateProperty = () => {
               <FormControl fullWidth margin="dense" className="checkbox-fc">
                 <FormControlLabel
                   label={strings.HIDDEN}
-                  control={
+                  control={(
                     <Switch
                       checked={hidden}
                       onChange={handleHiddenChange}
                       color="primary"
                     />
-                  }
+                  )}
                   className="checkbox-fcl"
                 />
               </FormControl>
-
 
               <div className="buttons">
                 <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">

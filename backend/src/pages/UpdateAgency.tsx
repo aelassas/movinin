@@ -1,4 +1,18 @@
 import React, { useState } from 'react'
+import {
+  Input,
+  InputLabel,
+  FormControl,
+  FormHelperText,
+  Button,
+  Paper,
+  FormControlLabel,
+  Switch
+} from '@mui/material'
+import { Info as InfoIcon } from '@mui/icons-material'
+import validator from 'validator'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import Master from '../components/Master'
 import Env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
@@ -10,25 +24,10 @@ import Error from '../components/Error'
 import Backdrop from '../components/SimpleBackdrop'
 import NoMatch from './NoMatch'
 import Avatar from '../components/Avatar'
-import {
-  Input,
-  InputLabel,
-  FormControl,
-  FormHelperText,
-  Button,
-  Paper,
-  Link,
-  FormControlLabel,
-  Switch
-} from '@mui/material'
-import { Info as InfoIcon } from '@mui/icons-material'
-import validator from 'validator'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/update-agency.css'
 
-const UpdateAgency = () => {
+function UpdateAgency() {
   const [user, setUser] = useState<movininTypes.User>()
   const [agency, setAgency] = useState<movininTypes.User>()
   const [fullName, setFullName] = useState('')
@@ -54,23 +53,23 @@ const UpdateAgency = () => {
     }
   }
 
-  const validateFullName = async (fullName: string) => {
-    if (agency && fullName) {
-      if (agency.fullName !== fullName) {
+  const validateFullName = async (_fullName: string) => {
+    if (agency && _fullName) {
+      if (agency.fullName !== _fullName) {
         try {
-          const status = await AgencyService.validate({ fullName })
+          const status = await AgencyService.validate({ fullName: _fullName })
 
           if (status === 200) {
             setFullNameError(false)
             return true
-          } else {
-            setFullNameError(true)
-            setAvatarError(false)
-            setError(false)
-            return false
           }
+          setFullNameError(true)
+          setAvatarError(false)
+          setError(false)
+          return false
         } catch (err) {
           Helper.error(err)
+          return false
         }
       } else {
         setFullNameError(false)
@@ -98,17 +97,16 @@ const UpdateAgency = () => {
     }
   }
 
-  const validatePhone = (phone?: string) => {
-    if (phone) {
-      const phoneValid = validator.isMobilePhone(phone)
-      setPhoneValid(phoneValid)
+  const validatePhone = (_phone?: string) => {
+    if (_phone) {
+      const _phoneValid = validator.isMobilePhone(_phone)
+      setPhoneValid(_phoneValid)
 
-      return phoneValid
-    } else {
-      setPhoneValid(true)
-
-      return true
+      return _phoneValid
     }
+    setPhoneValid(true)
+
+    return true
   }
 
   const handlePhoneBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -127,21 +125,21 @@ const UpdateAgency = () => {
     setLoading(true)
   }
 
-  const onAvatarChange = (avatar: string) => {
+  const onAvatarChange = (_avatar: string) => {
     if (agency && user) {
       const _agency = movininHelper.clone(agency)
-      _agency.avatar = avatar
+      _agency.avatar = _avatar
 
       if (user._id === agency._id) {
         const _user = movininHelper.clone(user)
-        _user.avatar = avatar
+        _user.avatar = _avatar
         setUser(_user)
       }
 
       setLoading(false)
       setAgency(_agency)
 
-      if (avatar) {
+      if (_avatar) {
         setAvatarError(false)
       }
     } else {
@@ -165,27 +163,27 @@ const UpdateAgency = () => {
     }
   }
 
-  const onLoad = async (user?: movininTypes.User) => {
-    if (user && user.verified) {
+  const onLoad = async (_user?: movininTypes.User) => {
+    if (_user && _user.verified) {
       setLoading(true)
-      setUser(user)
+      setUser(_user)
 
       const params = new URLSearchParams(window.location.search)
       if (params.has('c')) {
         const id = params.get('c')
         if (id && id !== '') {
           try {
-            const agency = await AgencyService.getAgency(id)
+            const _agency = await AgencyService.getAgency(id)
 
-            if (agency) {
-              setAgency(agency)
-              setEmail(agency.email || '')
-              setAvatar(agency.avatar || '')
-              setFullName(agency.fullName || '')
-              setPhone(agency.phone || '')
-              setLocation(agency.location || '')
-              setBio(agency.bio || '')
-              setPayLater(agency.payLater || false)
+            if (_agency) {
+              setAgency(_agency)
+              setEmail(_agency.email || '')
+              setAvatar(_agency.avatar || '')
+              setFullName(_agency.fullName || '')
+              setPhone(_agency.phone || '')
+              setLocation(_agency.location || '')
+              setBio(_agency.bio || '')
+              setPayLater(_agency.payLater || false)
               setVisible(true)
               setLoading(false)
             } else {
@@ -218,8 +216,8 @@ const UpdateAgency = () => {
         return
       }
 
-      const phoneValid = validatePhone(phone)
-      if (!phoneValid) {
+      const _phoneValid = validatePhone(phone)
+      if (!_phoneValid) {
         return
       }
 
@@ -271,7 +269,7 @@ const UpdateAgency = () => {
                 record={agency}
                 size="large"
                 readonly={false}
-                hideDelete={true}
+                hideDelete
                 onBeforeUpload={onBeforeUpload}
                 onChange={onAvatarChange}
                 color="disabled"
@@ -280,7 +278,7 @@ const UpdateAgency = () => {
 
               <div className="info">
                 <InfoIcon />
-                <label>{ccStrings.RECOMMENDED_IMAGE_SIZE}</label>
+                <span>{ccStrings.RECOMMENDED_IMAGE_SIZE}</span>
               </div>
 
               <FormControl fullWidth margin="dense">
@@ -296,7 +294,7 @@ const UpdateAgency = () => {
 
               <FormControl component="fieldset" style={{ marginTop: 15 }}>
                 <FormControlLabel
-                  control={
+                  control={(
                     <Switch
                       checked={payLater}
                       onChange={(e) => {
@@ -304,14 +302,14 @@ const UpdateAgency = () => {
                       }}
                       color="primary"
                     />
-                  }
+                  )}
                   label={commonStrings.PAY_LATER}
                 />
               </FormControl>
 
               <div className="info">
                 <InfoIcon />
-                <label>{commonStrings.OPTIONAL}</label>
+                <span>{commonStrings.OPTIONAL}</span>
               </div>
 
               <FormControl fullWidth margin="dense">
@@ -329,7 +327,12 @@ const UpdateAgency = () => {
               </FormControl>
               {admin && (
                 <FormControl fullWidth margin="dense" className="resend-activation-link">
-                  <Link onClick={handleResendActivationLink}>{commonStrings.RESEND_ACTIVATION_LINK}</Link>
+                  <Button
+                    variant="outlined"
+                    onClick={handleResendActivationLink}
+                  >
+                    {commonStrings.RESEND_ACTIVATION_LINK}
+                  </Button>
                 </FormControl>
               )}
               <div className="buttons">

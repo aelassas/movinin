@@ -196,9 +196,9 @@ function ImageViewer({
           && (
             <div className="thumbnailsContainer">
               <div className="thumbnails">
-                {src.map((_src, index) => (
+                {src.map((srcItem, index) => (
                   <div
-                    key={_src}
+                    key={srcItem}
                     ref={(el) => {
                       thumbnails[index] = el
                     }}
@@ -207,7 +207,7 @@ function ImageViewer({
                     role="button"
                     tabIndex={0}
                   >
-                    <img className="thumbnail" src={_src} alt="" />
+                    <img className="thumbnail" src={srcItem} alt="" />
                   </div>
                 ))}
               </div>

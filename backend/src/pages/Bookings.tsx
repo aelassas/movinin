@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { Button } from '@mui/material'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import Master from '../components/Master'
 import Env from '../config/env.config'
 import { strings } from '../lang/bookings'
@@ -7,14 +10,11 @@ import BookingList from '../components/BookingList'
 import AgencyFilter from '../components/AgencyFilter'
 import StatusFilter from '../components/StatusFilter'
 import BookingFilter from '../components/BookingFilter'
-import { Button } from '@mui/material'
 import * as AgencyService from '../services/AgencyService'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/bookings.css'
 
-const Bookings = () => {
+function Bookings() {
   const [user, setUser] = useState<movininTypes.User>()
   const [leftPanel, setLeftPanel] = useState(false)
   const [admin, setAdmin] = useState(false)
@@ -34,30 +34,30 @@ const Bookings = () => {
     }
   }, [user])
 
-  const handleAgencyFilterChange = (agencies: string[]) => {
-    setAgencies(agencies)
+  const handleAgencyFilterChange = (_agencies: string[]) => {
+    setAgencies(_agencies)
   }
 
-  const handleStatusFilterChange = (statuses: movininTypes.BookingStatus[]) => {
-    setStatuses(statuses)
+  const handleStatusFilterChange = (_statuses: movininTypes.BookingStatus[]) => {
+    setStatuses(_statuses)
   }
 
-  const handleBookingFilterSubmit = (filter: movininTypes.Filter | null) => {
-    setFilter(filter)
+  const handleBookingFilterSubmit = (_filter: movininTypes.Filter | null) => {
+    setFilter(_filter)
   }
 
-  const onLoad = async (user?: movininTypes.User) => {
-    if (user) {
-      const admin = Helper.admin(user)
-      setUser(user)
-      setAdmin(admin)
-      setLeftPanel(!admin)
-      setLoadingAgencies(admin)
+  const onLoad = async (_user?: movininTypes.User) => {
+    if (_user) {
+      const _admin = Helper.admin(_user)
+      setUser(_user)
+      setAdmin(_admin)
+      setLeftPanel(!_admin)
+      setLoadingAgencies(_admin)
 
-      const allAgencies = admin ? await AgencyService.getAllAgencies() : []
-      const agencies = admin ? movininHelper.flattenAgencies(allAgencies) : [user._id ?? '']
-      setAllAgencies(allAgencies)
-      setAgencies(agencies)
+      const _allAgencies = _admin ? await AgencyService.getAllAgencies() : []
+      const _agencies = _admin ? movininHelper.flattenAgencies(_allAgencies) : [_user._id ?? '']
+      setAllAgencies(_allAgencies)
+      setAgencies(_agencies)
       setLeftPanel(true)
       setLoadingAgencies(false)
     }
@@ -74,16 +74,19 @@ const Bookings = () => {
                   {strings.NEW_BOOKING}
                 </Button>
                 {
-                  admin &&
-                  <AgencyFilter
-                    agencies={allAgencies}
-                    onChange={handleAgencyFilterChange}
-                    className="cl-agency-filter"
-                  />
+                  admin
+                  && (
+                    <AgencyFilter
+                      agencies={allAgencies}
+                      onChange={handleAgencyFilterChange}
+                      className="cl-agency-filter"
+                    />
+                  )
                 }
                 <StatusFilter
                   onChange={handleStatusFilterChange}
-                  className="cl-status-filter" />
+                  className="cl-status-filter"
+                />
                 <BookingFilter
                   onSubmit={handleBookingFilterSubmit}
                   language={(user && user.language) || Env.DEFAULT_LANGUAGE}

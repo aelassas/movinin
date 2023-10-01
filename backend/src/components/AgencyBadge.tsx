@@ -5,24 +5,26 @@ import Env from '../config/env.config'
 
 import '../assets/css/agency-badge.css'
 
-const AgencyBadge = ({
+function AgencyBadge({
     agency
 }: {
     agency: movininTypes.User
-}) => (
-    agency
-        ? <div className="agency-badge">
+}) {
+  return agency
+        ? (
+          <div className="agency-badge">
             <span className="agency-badge-logo">
-                <img
-                    src={movininHelper.joinURL(Env.CDN_USERS, agency.avatar)}
-                    alt={agency.fullName}
-                />
+              <img
+                src={movininHelper.joinURL(Env.CDN_USERS, agency.avatar)}
+                alt={agency.fullName}
+              />
             </span>
             <a href={`/agency?c=${agency._id}`} className="agency-badge-info">
-                {agency.fullName}
+              {agency.fullName}
             </a>
-        </div>
-        : <></>
+          </div>
 )
+        : <></>
+}
 
 export default AgencyBadge

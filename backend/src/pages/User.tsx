@@ -1,14 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Env from '../config/env.config'
-import { strings as commonStrings } from '../lang/common'
-import { strings as ulStrings } from '../lang/user-list'
-import * as UserService from '../services/UserService'
-import * as Helper from '../common/Helper'
-import Master from '../components/Master'
-import Backdrop from '../components/SimpleBackdrop'
-import Avatar from '../components/Avatar'
-import BookingList from '../components/BookingList'
-import NoMatch from './NoMatch'
 import {
   Typography,
   IconButton,
@@ -20,14 +10,24 @@ import {
   Tooltip
 } from '@mui/material'
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
-import * as AgencyService from '../services/AgencyService'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
+import Env from '../config/env.config'
+import { strings as commonStrings } from '../lang/common'
+import { strings as ulStrings } from '../lang/user-list'
+import * as UserService from '../services/UserService'
+import * as Helper from '../common/Helper'
+import Master from '../components/Master'
+import Backdrop from '../components/SimpleBackdrop'
+import Avatar from '../components/Avatar'
+import BookingList from '../components/BookingList'
+import NoMatch from './NoMatch'
+import * as AgencyService from '../services/AgencyService'
 
 import '../assets/css/user.css'
 
-const User = () => {
+function User() {
   const navigate = useNavigate()
   const statuses = Helper.getBookingStatuses().map((status) => status.value)
 
@@ -86,8 +86,8 @@ const User = () => {
     setOpenDeleteDialog(false)
   }
 
-  const onLoad = async (loggedUser?: movininTypes.User) => {
-    if (loggedUser && loggedUser.verified) {
+  const onLoad = async (_loggedUser?: movininTypes.User) => {
+    if (_loggedUser && _loggedUser.verified) {
       setLoading(true)
 
       const params = new URLSearchParams(window.location.search)
@@ -95,24 +95,24 @@ const User = () => {
         const id = params.get('u')
         if (id && id !== '') {
           try {
-            const user = await UserService.getUser(id)
+            const _user = await UserService.getUser(id)
 
-            if (user) {
-              const setState = (agencies: string[]) => {
-                setAgencies(agencies)
-                setLoggedUser(loggedUser)
-                setUser(user)
+            if (_user) {
+              const setState = (_agencies: string[]) => {
+                setAgencies(_agencies)
+                setLoggedUser(_loggedUser)
+                setUser(_user)
                 setVisible(true)
                 setLoading(false)
               }
 
-              const admin = Helper.admin(loggedUser)
+              const admin = Helper.admin(_loggedUser)
               if (admin) {
-                const agencies = await AgencyService.getAllAgencies()
-                const agencyIds = movininHelper.flattenAgencies(agencies)
+                const _agencies = await AgencyService.getAllAgencies()
+                const agencyIds = movininHelper.flattenAgencies(_agencies)
                 setState(agencyIds)
               } else {
-                setState([loggedUser._id as string])
+                setState([_loggedUser._id as string])
               }
             } else {
               setLoading(false)
@@ -134,8 +134,7 @@ const User = () => {
     }
   }
 
-  const edit =
-    loggedUser && user && (loggedUser.type === movininTypes.RecordType.Admin || loggedUser._id === user._id || (loggedUser.type === movininTypes.RecordType.Agency && loggedUser._id === user.agency))
+  const edit = loggedUser && user && (loggedUser.type === movininTypes.RecordType.Admin || loggedUser._id === user._id || (loggedUser.type === movininTypes.RecordType.Agency && loggedUser._id === user.agency))
   const agency = user && user.type === movininTypes.RecordType.Agency
 
   return (

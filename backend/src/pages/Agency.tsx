@@ -1,4 +1,11 @@
 import React, { useState } from 'react'
+import {
+  Typography, IconButton, Button, Dialog, DialogTitle, DialogContent, DialogActions, Tooltip
+} from '@mui/material'
+import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import Env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as clStrings } from '../lang/agency-list'
@@ -11,15 +18,10 @@ import PropertyList from '../components/PropertyList'
 import InfoBox from '../components/InfoBox'
 import Error from './Error'
 import NoMatch from './NoMatch'
-import { Typography, IconButton, Button, Dialog, DialogTitle, DialogContent, DialogActions, Tooltip } from '@mui/material'
-import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/agency.css'
 
-const Agency = () => {
+function Agency() {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [agency, setAgency] = useState<movininTypes.User>()
@@ -80,24 +82,24 @@ const Agency = () => {
     }
   }
 
-  const handlePropertyDelete = (rowCount: number) => {
-    setRowCount(rowCount)
+  const handlePropertyDelete = (_rowCount: number) => {
+    setRowCount(_rowCount)
   }
 
-  const onLoad = async (user?: movininTypes.User) => {
-    setUser(user)
+  const onLoad = async (_user?: movininTypes.User) => {
+    setUser(_user)
 
-    if (user && user.verified) {
+    if (_user && _user.verified) {
       const params = new URLSearchParams(window.location.search)
       if (params.has('c')) {
         const id = params.get('c')
         if (id && id !== '') {
           try {
-            const agency = await AgencyService.getAgency(id)
+            const _agency = await AgencyService.getAgency(id)
 
-            if (agency) {
-              setAgency(agency)
-              setAgencies([agency._id as string])
+            if (_agency) {
+              setAgency(_agency)
+              setAgencies([_agency._id as string])
               setVisible(true)
               setLoading(false)
             } else {

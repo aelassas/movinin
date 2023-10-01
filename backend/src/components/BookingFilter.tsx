@@ -1,8 +1,4 @@
 import React, { useState } from 'react'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/booking-filter'
-import LocationSelectList from './LocationSelectList'
-import DatePicker from './DatePicker'
 import {
   FormControl,
   TextField,
@@ -13,13 +9,17 @@ import {
   Search as SearchIcon,
   Clear as ClearIcon
 } from '@mui/icons-material'
-import Accordion from '../components/Accordion'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
+import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/booking-filter'
+import LocationSelectList from './LocationSelectList'
+import DatePicker from './DatePicker'
+import Accordion from '../components/Accordion'
 
 import '../assets/css/booking-filter.css'
 
-const BookingFilter = ({
+function BookingFilter({
   collapse,
   className,
   language,
@@ -30,7 +30,7 @@ const BookingFilter = ({
     className?: string,
     language?: string,
     onSubmit?: (filter: movininTypes.Filter | null) => void
-  }) => {
+  }) {
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [location, setLocation] = useState('')
@@ -41,12 +41,6 @@ const BookingFilter = ({
     setKeyword(e.target.value)
   }
 
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
-      handleSubmit(e)
-    }
-  }
-
   const handleLocationChange = (locations: movininTypes.Option[]) => {
     setLocation(locations.length > 0 ? locations[0]._id : '')
   }
@@ -54,13 +48,21 @@ const BookingFilter = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
     e.preventDefault()
 
-    let filter: movininTypes.Filter | null = { from, to, location, keyword }
+    let filter: movininTypes.Filter | null = {
+      from, to, location, keyword
+    }
 
     if (!from && !to && !location && !keyword) {
       filter = null
     }
     if (onSubmit) {
       onSubmit(movininHelper.clone(filter))
+    }
+  }
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e)
     }
   }
 
@@ -72,14 +74,13 @@ const BookingFilter = ({
             label={commonStrings.FROM}
             onChange={(date) => {
               if (date) {
-
                 if (to && to.getTime() <= date.getTime()) {
                   setTo(undefined)
                 }
 
-                const minDate = new Date(date)
-                minDate.setDate(date.getDate() + 1)
-                setMinDate(minDate)
+                const _minDate = new Date(date)
+                _minDate.setDate(date.getDate() + 1)
+                setMinDate(_minDate)
               } else {
                 setMinDate(undefined)
               }

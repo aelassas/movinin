@@ -1,17 +1,24 @@
 import React, { useState } from 'react'
+import {
+  Input,
+  InputLabel,
+  FormControl,
+  FormHelperText,
+  Button,
+  Paper
+} from '@mui/material'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import Master from '../components/Master'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/create-location'
 import * as LocationService from '../services/LocationService'
-import { Input, InputLabel, FormControl, FormHelperText, Button, Paper } from '@mui/material'
 import * as Helper from '../common/Helper'
 import Env from '../config/env.config'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/create-location.css'
 
-const CreateLocation = () => {
+function CreateLocation() {
   const [visible, setVisible] = useState(false)
   const [names, setNames] = useState<movininTypes.LocationName[]>([])
   const [nameErrors, setNameErrors] = useState<boolean[]>([])
@@ -22,11 +29,11 @@ const CreateLocation = () => {
     try {
       let isValid = true
 
-      for (let i = 0; i < nameErrors.length; i++) {
+      for (let i = 0; i < nameErrors.length; i += 1) {
         nameErrors[i] = false
       }
 
-      for (let i = 0; i < names.length; i++) {
+      for (let i = 0; i < names.length; i += 1) {
         const name = names[i]
         const _isValid = (await LocationService.validate(name)) === 200
         isValid = isValid && _isValid
@@ -41,7 +48,7 @@ const CreateLocation = () => {
         const status = await LocationService.create(names)
 
         if (status === 200) {
-          for (let i = 0; i < names.length; i++) {
+          for (let i = 0; i < names.length; i += 1) {
             names[i].name = ''
           }
           setNames(movininHelper.cloneArray(names) as movininTypes.LocationName[])
@@ -63,10 +70,14 @@ const CreateLocation = () => {
     <Master onLoad={onLoad} strict>
       <div className="create-location">
         <Paper className="location-form location-form-wrapper" elevation={10} style={visible ? {} : { display: 'none' }}>
-          <h1 className="location-form-title"> {strings.NEW_LOCATION_HEADING} </h1>
+          <h1 className="location-form-title">
+            {' '}
+            {strings.NEW_LOCATION_HEADING}
+            {' '}
+          </h1>
           <form onSubmit={handleSubmit}>
             {Env._LANGUAGES.map((language, index) => (
-              <FormControl key={index} fullWidth margin="dense">
+              <FormControl key={language.code} fullWidth margin="dense">
                 <InputLabel className="required">{language.label}</InputLabel>
                 <Input
                   type="text"

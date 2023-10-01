@@ -1,4 +1,16 @@
 import React, { useState, useCallback } from 'react'
+import {
+  FormControl,
+  Button,
+  Paper,
+  FormControlLabel,
+  Switch
+} from '@mui/material'
+import {
+  Info as InfoIcon
+} from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
+import * as movininTypes from 'movinin-types'
 import Master from '../components/Master'
 import { strings as commonStrings } from '../lang/common'
 import { strings as blStrings } from '../lang/booking-list'
@@ -14,23 +26,11 @@ import LocationSelectList from '../components/LocationSelectList'
 import PropertySelectList from '../components/PropertySelectList'
 import StatusList from '../components/StatusList'
 import DatePicker from '../components/DatePicker'
-import {
-  FormControl,
-  Button,
-  Paper,
-  FormControlLabel,
-  Switch
-} from '@mui/material'
-import {
-  Info as InfoIcon
-} from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
-import * as movininTypes from 'movinin-types'
 import Backdrop from '../components/SimpleBackdrop'
 
 import '../assets/css/create-booking.css'
 
-const CreateBooking = () => {
+function CreateBooking() {
   const navigate = useNavigate()
   const [isAgency, setIsAgency] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -59,9 +59,9 @@ const CreateBooking = () => {
 
   const handlePropertySelectListChange = useCallback((values: movininTypes.Property[]) => {
     if (Array.isArray(values) && values.length > 0) {
-      const property = values[0]
-      if (property) {
-        setProperty(property)
+      const _property = values[0]
+      if (_property) {
+        setProperty(_property)
       } else {
         Helper.error()
       }
@@ -138,7 +138,11 @@ const CreateBooking = () => {
     <Master onLoad={onLoad} strict>
       <div className="create-booking">
         <Paper className="booking-form booking-form-wrapper" elevation={10} style={visible ? {} : { display: 'none' }}>
-          <h1 className="booking-form-title"> {strings.NEW_BOOKING_HEADING} </h1>
+          <h1 className="booking-form-title">
+            {' '}
+            {strings.NEW_BOOKING_HEADING}
+            {' '}
+          </h1>
           <form onSubmit={handleSubmit}>
             {!isAgency && (
               <FormControl fullWidth margin="dense">
@@ -146,7 +150,8 @@ const CreateBooking = () => {
                   label={blStrings.AGENCY}
                   required
                   variant="standard"
-                  onChange={handleAgencyChange} />
+                  onChange={handleAgencyChange}
+                />
               </FormControl>
             )}
 
@@ -154,14 +159,16 @@ const CreateBooking = () => {
               label={blStrings.RENTER}
               required
               variant="standard"
-              onChange={handleRenterChange} />
+              onChange={handleRenterChange}
+            />
 
             <FormControl fullWidth margin="dense">
               <LocationSelectList
                 label={bfStrings.LOCATION}
                 required
                 variant="standard"
-                onChange={handleLocationChange} />
+                onChange={handleLocationChange}
+              />
             </FormControl>
 
             <PropertySelectList
@@ -169,7 +176,8 @@ const CreateBooking = () => {
               agency={agency}
               location={location}
               onChange={handlePropertySelectListChange}
-              required />
+              required
+            />
 
             <FormControl fullWidth margin="dense">
               <DatePicker
@@ -178,14 +186,13 @@ const CreateBooking = () => {
                 required
                 onChange={(date) => {
                   if (date) {
-
                     if (to && to.getTime() <= date.getTime()) {
                       setTo(undefined)
                     }
 
-                    const minDate = new Date(date)
-                    minDate.setDate(minDate.getDate() + 1)
-                    setMinDate(minDate)
+                    const _minDate = new Date(date)
+                    _minDate.setDate(_minDate.getDate() + 1)
+                    setMinDate(_minDate)
                   } else {
                     setMinDate(undefined)
                   }
@@ -202,8 +209,8 @@ const CreateBooking = () => {
                 value={to}
                 minDate={minDate}
                 required
-                onChange={(to) => {
-                  setTo(to || undefined)
+                onChange={(_to) => {
+                  setTo(_to || undefined)
                 }}
                 language={UserService.getLanguage()}
               />
@@ -213,12 +220,13 @@ const CreateBooking = () => {
               <StatusList
                 label={blStrings.STATUS}
                 onChange={handleStatusChange}
-                required />
+                required
+              />
             </FormControl>
 
             <div className="info">
               <InfoIcon />
-              <label>{commonStrings.OPTIONAL}</label>
+              <span>{commonStrings.OPTIONAL}</span>
             </div>
 
             <FormControl fullWidth margin="dense" className="checkbox-fc">

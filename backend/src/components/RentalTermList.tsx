@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material'
-import { strings } from '../lang/rental-term'
+import {
+ InputLabel, Select, MenuItem, SelectChangeEvent
+} from '@mui/material'
 import * as movininTypes from 'movinin-types'
+import { strings } from '../lang/rental-term'
 
-const RentalTermList = (
-  {
+function RentalTermList({
     value: rentalTermValue,
     required,
     label,
@@ -17,19 +18,18 @@ const RentalTermList = (
       label?: string
       variant?: 'filled' | 'standard' | 'outlined'
       onChange?: (value: string) => void
-    }
-) => {
+    }) {
   const [value, setValue] = useState(rentalTermValue || '')
   useEffect(() => {
     setValue(rentalTermValue || '')
   }, [rentalTermValue])
 
   const handleChange = (e: SelectChangeEvent<string>) => {
-    const value = e.target.value || ''
-    setValue(value)
+    const _value = e.target.value || ''
+    setValue(_value)
 
     if (onChange) {
-      onChange(value)
+      onChange(_value)
     }
   }
 

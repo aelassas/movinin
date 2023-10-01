@@ -1,10 +1,10 @@
+import { toast } from 'react-toastify'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings as rtStrings } from '../lang/rental-term'
 import { strings } from '../lang/properties'
 import * as PropertyService from '../services/PropertyService'
-import { toast } from 'react-toastify'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 /**
  * Toast info message.
@@ -110,34 +110,32 @@ export const getBookingStatus = (status: movininTypes.BookingStatus) => {
  *
  * @returns {movininTypes.StatusFilterItem[]}
  */
-export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => {
-  return [
-    {
-      value: movininTypes.BookingStatus.Void,
-      label: commonStrings.BOOKING_STATUS_VOID,
-    },
-    {
-      value: movininTypes.BookingStatus.Pending,
-      label: commonStrings.BOOKING_STATUS_PENDING,
-    },
-    {
-      value: movininTypes.BookingStatus.Deposit,
-      label: commonStrings.BOOKING_STATUS_DEPOSIT,
-    },
-    {
-      value: movininTypes.BookingStatus.Paid,
-      label: commonStrings.BOOKING_STATUS_PAID,
-    },
-    {
-      value: movininTypes.BookingStatus.Reserved,
-      label: commonStrings.BOOKING_STATUS_RESERVED,
-    },
-    {
-      value: movininTypes.BookingStatus.Cancelled,
-      label: commonStrings.BOOKING_STATUS_CANCELLED,
-    },
-  ]
-}
+export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => [
+  {
+    value: movininTypes.BookingStatus.Void,
+    label: commonStrings.BOOKING_STATUS_VOID,
+  },
+  {
+    value: movininTypes.BookingStatus.Pending,
+    label: commonStrings.BOOKING_STATUS_PENDING,
+  },
+  {
+    value: movininTypes.BookingStatus.Deposit,
+    label: commonStrings.BOOKING_STATUS_DEPOSIT,
+  },
+  {
+    value: movininTypes.BookingStatus.Paid,
+    label: commonStrings.BOOKING_STATUS_PAID,
+  },
+  {
+    value: movininTypes.BookingStatus.Reserved,
+    label: commonStrings.BOOKING_STATUS_RESERVED,
+  },
+  {
+    value: movininTypes.BookingStatus.Cancelled,
+    label: commonStrings.BOOKING_STATUS_CANCELLED,
+  },
+]
 
 /**
  * Get bedrooms tooltip.
@@ -197,7 +195,7 @@ export const getKParkingSpacesTooltip = (parkingSpaces: number, fr?: boolean) =>
 export const price = async (
   booking: movininTypes.Booking,
   property: movininTypes.Property | undefined | null,
-  onSucess: (price: number) => void,
+  onSucess: (_price: number) => void,
   onError: (err: unknown) => void
 ) => {
   try {
@@ -211,29 +209,27 @@ export const price = async (
       const days = movininHelper.totalDays(from, to)
 
       const now = new Date()
-      let price = 0
+      let _price = 0
 
       if (property.rentalTerm === movininTypes.RentalTerm.Monthly) {
-        price = property.price * days / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
+        _price = (property.price * days) / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
       } else if (property.rentalTerm === movininTypes.RentalTerm.Weekly) {
-        price = property.price * days / 7
+        _price = (property.price * days) / 7
       } else if (property.rentalTerm === movininTypes.RentalTerm.Daily) {
-        price = property.price * days
+        _price = property.price * days
       } else if (property.rentalTerm === movininTypes.RentalTerm.Yearly) {
-        price = property.price * days / movininHelper.daysInYear(now.getFullYear())
+        _price = (property.price * days) / movininHelper.daysInYear(now.getFullYear())
       }
 
       if (booking.cancellation && property.cancellation > 0) {
-        price += property.cancellation
+        _price += property.cancellation
       }
 
       if (onSucess) {
-        onSucess(price)
+        onSucess(_price)
       }
-    } else {
-      if (onError) {
-        onError(`Property ${booking.property} not found.`)
-      }
+    } else if (onError) {
+      onError(`Property ${booking.property} not found.`)
     }
   } catch (err) {
     if (onError) {
@@ -247,22 +243,20 @@ export const price = async (
  *
  * @returns {{}}
  */
-export const getUserTypes = () => {
-  return [
-    {
-      value: movininTypes.UserType.Admin,
-      label: commonStrings.RECORD_TYPE_ADMIN
-    },
-    {
-      value: movininTypes.UserType.Agency,
-      label: commonStrings.RECORD_TYPE_AGENCY,
-    },
-    {
-      value: movininTypes.UserType.User,
-      label: commonStrings.RECORD_TYPE_USER
-    },
-  ]
-}
+export const getUserTypes = () => [
+  {
+    value: movininTypes.UserType.Admin,
+    label: commonStrings.RECORD_TYPE_ADMIN
+  },
+  {
+    value: movininTypes.UserType.Agency,
+    label: commonStrings.RECORD_TYPE_AGENCY,
+  },
+  {
+    value: movininTypes.UserType.User,
+    label: commonStrings.RECORD_TYPE_USER
+  },
+]
 
 /**
  * Get user type label.
@@ -313,11 +307,10 @@ export const getDaysShort = (days: number) => `${days} ${strings.PRICE_DAYS_PART
 export const getCancellation = (cancellation: number, fr: boolean) => {
   if (cancellation === -1) {
     return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${strings.UNAVAILABLE}`
-  } else if (cancellation === 0) {
+  } if (cancellation === 0) {
     return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${strings.INCLUDED}${fr ? 'e' : ''}`
-  } else {
-    return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${movininHelper.formatNumber(cancellation)} ${commonStrings.CURRENCY}`
   }
+  return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${movininHelper.formatNumber(cancellation)} ${commonStrings.CURRENCY}`
 }
 
 /**
@@ -331,11 +324,10 @@ export const getCancellation = (cancellation: number, fr: boolean) => {
 export const getCancellationOption = (cancellation: number, fr: boolean, hidePlus: boolean) => {
   if (cancellation === -1) {
     return strings.UNAVAILABLE
-  } else if (cancellation === 0) {
+  } if (cancellation === 0) {
     return `${strings.INCLUDED}${fr ? 'e' : ''}`
-  } else {
-    return `${hidePlus ? '' : '+ '}${cancellation} ${commonStrings.CURRENCY}`
   }
+  return `${hidePlus ? '' : '+ '}${cancellation} ${commonStrings.CURRENCY}`
 }
 
 /**

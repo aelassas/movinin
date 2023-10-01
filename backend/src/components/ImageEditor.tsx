@@ -3,38 +3,36 @@ import {
     Delete as DeleteIcon,
     PhotoCamera as ImageIcon
 } from '@mui/icons-material'
+import * as movininHelper from 'movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/image-editor'
 import ImageViewer from './ImageViewer'
 import Env from '../config/env.config'
-import * as movininHelper from 'movinin-helper'
 import * as Helper from '../common/Helper'
 import * as PropertyService from '../services/PropertyService'
 
 import '../assets/css/image-editor.css'
 import Property from '../assets/img/property.png'
 
-const ImageEditor = (
-    {
-        title,
-        image: mainImage,
-        images: ieImages,
-        onMainImageUpsert,
-        onAdd,
-        onDelete,
-        onImageViewerOpen,
-        onImageViewerClose
-    }: {
-        title?: string
-        image?: ImageItem
-        images?: ImageItem[]
-        onMainImageUpsert?: (image: ImageItem) => void
-        onAdd?: (image: ImageItem) => void
-        onDelete?: (image: ImageItem, index?: number) => void
-        onImageViewerOpen?: () => void
-        onImageViewerClose?: () => void
-    }
-) => {
+function ImageEditor({
+    title,
+    image: mainImage,
+    images: ieImages,
+    onMainImageUpsert,
+    onAdd,
+    onDelete,
+    onImageViewerOpen,
+    onImageViewerClose
+}: {
+    title?: string
+    image?: ImageItem
+    images?: ImageItem[]
+    onMainImageUpsert?: (image: ImageItem) => void
+    onAdd?: (image: ImageItem) => void
+    onDelete?: (image: ImageItem, index?: number) => void
+    onImageViewerOpen?: () => void
+    onImageViewerClose?: () => void
+}) {
     const [currentImage, setCurrentImage] = useState(0)
     const [openImageDialog, setOpenImageDialog] = useState(false)
     const [image, setImage] = useState<ImageItem | undefined>(mainImage)
@@ -76,8 +74,7 @@ const ImageEditor = (
     }
 
     const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-        const files = e.target.files
+        const { files } = e.target
 
         if (files) {
             for (const file of files) {
@@ -106,10 +103,10 @@ const ImageEditor = (
         }
     }
 
-    const src = (image: ImageItem) =>
+    const src = (_image: ImageItem) =>
         movininHelper.joinURL(
-            image.temp ? Env.CDN_TEMP_PROPERTIES : Env.CDN_PROPERTIES
-            , image.filename
+            _image.temp ? Env.CDN_TEMP_PROPERTIES : Env.CDN_PROPERTIES,
+            _image.filename
         )
 
     return (
@@ -125,64 +122,76 @@ const ImageEditor = (
                                 ? movininHelper.joinURL(Env.CDN_TEMP_PROPERTIES, image.filename)
                                 : movininHelper.joinURL(Env.CDN_PROPERTIES, image.filename)
                             : Property
-                    } />
+                    }
+                />
             </div>
 
             {/* Add/Update main image & Add additional images buttons */}
             <div className="image-control">
-                <a onClick={() => {
-                    if (uploadImageRef.current) {
-                        uploadImageRef.current.value = ''
+                <button
+                    type="button"
+                    onClick={() => {
+                        if (uploadImageRef.current) {
+                            uploadImageRef.current.value = ''
 
-                        setTimeout(() => {
-                            uploadImageRef.current?.click()
-                        }, 0)
-                    }
-                }}
+                            setTimeout(() => {
+                                uploadImageRef.current?.click()
+                            }, 0)
+                        }
+                    }}
                     className="action"
                 >
                     <ImageIcon className="icon" />
                     <span>{image ? strings.UPDATE_IMAGE : strings.ADD_IMAGE}</span>
-                </a>
+                </button>
                 <input ref={uploadImageRef} type="file" accept="image/*" hidden onChange={handleImageChange} />
-                <a onClick={() => {
-                    if (uploadImagesRef.current) {
-                        uploadImagesRef.current.value = ''
+                <button
+                    type="button"
+                    onClick={() => {
+                        if (uploadImagesRef.current) {
+                            uploadImagesRef.current.value = ''
 
-                        setTimeout(() => {
-                            uploadImagesRef.current?.click()
-                        }, 0)
-                    }
-                }}
+                            setTimeout(() => {
+                                uploadImagesRef.current?.click()
+                            }, 0)
+                        }
+                    }}
                     className="action"
                 >
                     <ImageIcon className="icon" />
                     <span>{strings.ADD_IMAGES}</span>
-                </a>
+                </button>
                 <input ref={uploadImagesRef} type="file" accept="image/*" hidden multiple onChange={handleImagesChange} />
             </div>
 
             {/* Additional images */}
             <div className="images">
                 {
-                    images.map((image, index) => (
-                        <div key={index} className="container">
-                            <div key={index} className="image" onClick={() => {
-                                setCurrentImage(index)
-                                setOpenImageDialog(true)
-                                if (onImageViewerOpen) {
-                                    onImageViewerOpen()
-                                }
-                            }}>
-                                <img alt='' className="image" src={src(image)} />
+                    images.map((_image, index) => (
+                        <div key={_image.filename} className="container">
+                            <div
+                                className="image"
+                                onClick={() => {
+                                    setCurrentImage(index)
+                                    setOpenImageDialog(true)
+                                    if (onImageViewerOpen) {
+                                        onImageViewerOpen()
+                                    }
+                                }}
+                                role="button"
+                                tabIndex={0}
+                            >
+                                <img alt="" className="image" src={src(_image)} />
                             </div>
                             <div className="ai-action">
                                 <span
                                     className="button"
                                     title={commonStrings.DELETE}
+                                    role="button"
+                                    tabIndex={0}
                                     onClick={async () => {
                                         try {
-                                            const status = await PropertyService.deleteTempImage(image.filename)
+                                            const status = await PropertyService.deleteTempImage(_image.filename)
 
                                             if (status === 200) {
                                                 const _images = movininHelper.cloneArray(images) || []
@@ -194,7 +203,7 @@ const ImageEditor = (
                                                 setFilenames(_filenames)
 
                                                 if (onDelete) {
-                                                    onDelete(image)
+                                                    onDelete(_image)
                                                 }
                                             } else {
                                                 Helper.error()
@@ -202,7 +211,8 @@ const ImageEditor = (
                                         } catch (err) {
                                             Helper.error()
                                         }
-                                    }}>
+                                    }}
+                                >
                                     <DeleteIcon className="button" />
                                 </span>
                             </div>
@@ -213,20 +223,22 @@ const ImageEditor = (
 
             {/* ImageViewer */}
             {
-                openImageDialog &&
-                <ImageViewer
-                    src={images.map(src)}
-                    currentIndex={currentImage}
-                    title={title}
-                    closeOnClickOutside
-                    onClose={() => {
-                        setOpenImageDialog(false)
-                        setCurrentImage(0)
-                        if (onImageViewerClose) {
-                            onImageViewerClose()
-                        }
-                    }}
-                />
+                openImageDialog
+                && (
+                    <ImageViewer
+                        src={images.map(src)}
+                        currentIndex={currentImage}
+                        title={title}
+                        closeOnClickOutside
+                        onClose={() => {
+                            setOpenImageDialog(false)
+                            setCurrentImage(0)
+                            if (onImageViewerClose) {
+                                onImageViewerClose()
+                            }
+                        }}
+                    />
+                )
             }
 
         </div>

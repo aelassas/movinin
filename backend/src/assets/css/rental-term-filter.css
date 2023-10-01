@@ -7,7 +7,7 @@ div.rental-term-filter div.filter-elements div.filter-element input[type='checkb
   margin-left: 5px;
 }
 
-div.rental-term-filter div.filter-elements div.filter-element label {
+div.rental-term-filter div.filter-elements div.filter-element span {
   margin-left: 5px;
   cursor: pointer;
   font-size: 12px;

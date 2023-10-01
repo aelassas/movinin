@@ -1,12 +1,14 @@
 import React, { useState, useEffect, CSSProperties } from 'react'
-import { strings as commonStrings } from '../lang/common'
-import { InputLabel, Select, MenuItem, SelectChangeEvent, TextFieldVariants } from '@mui/material'
-import * as Helper from '../common/Helper'
+import {
+ InputLabel, Select, MenuItem, SelectChangeEvent, TextFieldVariants
+} from '@mui/material'
 import * as movininTypes from 'movinin-types'
+import { strings as commonStrings } from '../lang/common'
+import * as Helper from '../common/Helper'
 
 import '../assets/css/status-list.css'
 
-const StatusList = ({
+function StatusList({
   value: statusListValue,
   label,
   required,
@@ -22,7 +24,7 @@ const StatusList = ({
   disabled?: boolean
   style?: CSSProperties
   onChange: (value: movininTypes.BookingStatus) => void
-}) => {
+}) {
   const [value, setValue] = useState('')
 
   useEffect(() => {
@@ -55,10 +57,11 @@ const StatusList = ({
             variant={variant || 'standard'}
             required={required}
             fullWidth
-            renderValue={(value) =>
-              <span className={`bs-s-sv bs-s-${value.toLowerCase()}`}>
-                {Helper.getBookingStatus(value as movininTypes.BookingStatus)}
-              </span>}
+            renderValue={(_value) => (
+              <span className={`bs-s-sv bs-s-${_value.toLowerCase()}`}>
+                {Helper.getBookingStatus(_value as movininTypes.BookingStatus)}
+              </span>
+            )}
           >
             <MenuItem value={movininTypes.BookingStatus.Void} className="bs-s bs-s-void">
               {commonStrings.BOOKING_STATUS_VOID}

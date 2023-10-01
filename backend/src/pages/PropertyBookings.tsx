@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Master from '../components/Master'
-import Env from '../config/env.config'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/properties'
-import * as PropertyService from '../services/PropertyService'
-import * as AgencyService from '../services/AgencyService'
-import Backdrop from '../components/SimpleBackdrop'
-import NoMatch from './NoMatch'
-import Error from './Error'
-import BookingList from '../components/BookingList'
-import * as Helper from '../common/Helper'
 import {
   Button,
   Dialog,
@@ -27,12 +16,23 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
+import Master from '../components/Master'
+import Env from '../config/env.config'
+import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/properties'
+import * as PropertyService from '../services/PropertyService'
+import * as AgencyService from '../services/AgencyService'
+import Backdrop from '../components/SimpleBackdrop'
+import NoMatch from './NoMatch'
+import Error from './Error'
+import BookingList from '../components/BookingList'
+import * as Helper from '../common/Helper'
 import PropertyInfo from '../components/PropertyInfo'
 
 import '../assets/css/property-bookings.css'
 import AgencyBadge from '../components/AgencyBadge'
 
-const PropertyBookings = () => {
+function PropertyBookings() {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [property, setProperty] = useState<movininTypes.Property>()
@@ -74,32 +74,32 @@ const PropertyBookings = () => {
     }
   }
 
-  const onLoad = async (user?: movininTypes.User) => {
+  const onLoad = async (_user?: movininTypes.User) => {
     setLoading(true)
-    setUser(user)
+    setUser(_user)
 
     const params = new URLSearchParams(window.location.search)
-    if (user && user.verified && params.has('p')) {
+    if (_user && _user.verified && params.has('p')) {
       const id = params.get('p')
       if (id && id !== '') {
         try {
-          const property = await PropertyService.getProperty(id)
+          const _property = await PropertyService.getProperty(id)
 
-          if (property) {
-            if (user.type === movininTypes.RecordType.Admin) {
+          if (_property) {
+            if (_user.type === movininTypes.RecordType.Admin) {
               try {
-                const agencies = await AgencyService.getAllAgencies()
-                const agencyIds = movininHelper.flattenAgencies(agencies)
+                const _agencies = await AgencyService.getAllAgencies()
+                const agencyIds = movininHelper.flattenAgencies(_agencies)
                 setAgencies(agencyIds)
-                setProperty(property)
+                setProperty(_property)
                 setVisible(true)
                 setLoading(false)
               } catch (err) {
                 Helper.error(err)
               }
-            } else if (property.agency._id === user._id) {
-              setAgencies([user._id as string])
-              setProperty(property)
+            } else if (_property.agency._id === _user._id) {
+              setAgencies([_user._id as string])
+              setProperty(_property)
               setVisible(true)
               setLoading(false)
             } else {
@@ -175,8 +175,8 @@ const PropertyBookings = () => {
               agencies={agencies}
               statuses={statuses}
               property={property._id}
-              hideAgencyColumn={true}
-              hidePropertyColumn={true}
+              hideAgencyColumn
+              hidePropertyColumn
               hideDates={Env.isMobile()}
               checkboxSelection={!Env.isMobile()}
             />
@@ -199,9 +199,9 @@ const PropertyBookings = () => {
               <Button onClick={() => setOpenDeleteDialog(false)} variant="contained" className="btn-secondary">
                 {commonStrings.CANCEL}
               </Button>
-              <Button onClick={async () => {
+              <Button
+                onClick={async () => {
                 try {
-
                   setOpenDeleteDialog(false)
 
                   const status = await PropertyService.deleteProperty(property._id)
@@ -211,11 +211,13 @@ const PropertyBookings = () => {
                   } else {
                     Helper.error()
                   }
-
                 } catch (err) {
                   Helper.error(err)
                 }
-              }} variant="contained" color="error">
+              }}
+                variant="contained"
+                color="error"
+              >
                 {commonStrings.DELETE}
               </Button>
             </DialogActions>

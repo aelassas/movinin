@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
+import { Button } from '@mui/material'
+import * as movininTypes from 'movinin-types'
 import Master from '../components/Master'
 import { strings } from '../lang/agencies'
 import Search from '../components/Search'
 import AgencyList from '../components/AgencyList'
 import InfoBox from '../components/InfoBox'
-import { Button } from '@mui/material'
 import * as Helper from '../common/Helper'
-import * as movininTypes from 'movinin-types'
 
 import '../assets/css/agencies.css'
 
-const Agencies = () => {
+function Agencies() {
   const [user, setUser] = useState<movininTypes.User>()
   const [keyword, setKeyword] = useState('')
   const [rowCount, setRowCount] = useState(-1)
@@ -25,12 +25,12 @@ const Agencies = () => {
     }
   }
 
-  const handleAgencyDelete = (rowCount: number) => {
-    setRowCount(rowCount)
+  const handleAgencyDelete = (_rowCount: number) => {
+    setRowCount(_rowCount)
   }
 
-  const onLoad = (user?: movininTypes.User) => {
-    setUser(user)
+  const onLoad = (_user?: movininTypes.User) => {
+    setUser(_user)
   }
 
   const admin = Helper.admin(user)
@@ -49,14 +49,18 @@ const Agencies = () => {
                   variant="contained"
                   className="btn-primary new-agency"
                   size="small"
-                  href="/create-agency">
+                  href="/create-agency"
+                >
                   {strings.NEW_AGENCY}
                 </Button>
               )}
 
-              {rowCount > 0 && <InfoBox
+              {rowCount > 0 && (
+              <InfoBox
                 value={`${rowCount} ${rowCount > 1 ? strings.AGENCIES : strings.AGENCY}`}
-                className="agency-count" />}
+                className="agency-count"
+              />
+)}
             </div>
           </div>
           <div className="col-2">

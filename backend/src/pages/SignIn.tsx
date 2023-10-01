@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/sign-in'
-import * as UserService from '../services/UserService'
-import Header from '../components/Header'
-import Error from '../components/Error'
 import {
   Paper,
   FormControl,
@@ -13,11 +8,16 @@ import {
   Link
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/sign-in'
+import * as UserService from '../services/UserService'
+import Header from '../components/Header'
+import Error from '../components/Error'
 import * as LangHelper from '../common/LangHelper'
 
 import '../assets/css/signin.css'
 
-const SignIn = () => {
+function SignIn() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -32,12 +32,6 @@ const SignIn = () => {
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
-  }
-
-  const handlePasswordKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
-      handleSubmit(e)
-    }
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
@@ -80,6 +74,12 @@ const SignIn = () => {
     }
   }
 
+  const handlePasswordKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e)
+    }
+  }
+
   useEffect(() => {
     (async function () {
       try {
@@ -105,7 +105,7 @@ const SignIn = () => {
       } catch {
         UserService.signout()
       }
-    })()
+    }())
   }, [navigate])
 
   return (
@@ -127,18 +127,14 @@ const SignIn = () => {
 
               <div className="stay-connected">
                 <input
+                  id="stay-connected"
                   type="checkbox"
                   onChange={(e) => {
                     setStayConnected(e.currentTarget.checked)
                   }}
                 />
                 <label
-                  onClick={(e) => {
-                    const checkbox = e.currentTarget.previousSibling as HTMLInputElement
-                    const checked = !checkbox.checked
-                    checkbox.checked = checked
-                    setStayConnected(checked)
-                  }}
+                  htmlFor="stay-connected"
                 >
                   {strings.STAY_CONNECTED}
                 </label>

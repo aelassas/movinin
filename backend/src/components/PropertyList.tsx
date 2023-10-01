@@ -1,10 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Env from '../config/env.config'
-import Const from '../config/const'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/properties'
-import * as Helper from '../common/Helper'
-import * as PropertyService from '../services/PropertyService'
 import {
   IconButton,
   Button,
@@ -23,52 +17,56 @@ import {
   Delete as DeleteIcon,
   Bookmarks as BookingsIcon
 } from '@mui/icons-material'
-import Pager from './Pager'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
+import Env from '../config/env.config'
+import Const from '../config/const'
+import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/properties'
+import * as Helper from '../common/Helper'
+import * as PropertyService from '../services/PropertyService'
+import Pager from './Pager'
 import PropertyInfo from './PropertyInfo'
 import AgencyBadge from './AgencyBadge'
 
 import '../assets/css/property-list.css'
 
-const PropertyList = (
+function PropertyList({
+  agencies,
+  keyword,
+  types,
+  rentalTerms,
+  availability,
+  reload,
+  properties,
+  user: propertyListUser,
+  booking,
+  className,
+  loading: propertyListLoading,
+  hideAgency,
+  hidePrice,
+  language,
+  onLoad,
+  onDelete
+}:
   {
-    agencies,
-    keyword,
-    types,
-    rentalTerms,
-    availability,
-    reload,
-    properties,
-    user: propertyListUser,
-    booking,
-    className,
-    loading: propertyListLoading,
-    hideAgency,
-    hidePrice,
-    language,
-    onLoad,
-    onDelete
-  }:
-    {
-      agencies?: string[]
-      keyword?: string
-      types?: movininTypes.PropertyType[]
-      rentalTerms?: movininTypes.RentalTerm[]
-      availability?: movininTypes.Availablity[]
-      reload?: boolean
-      properties?: movininTypes.Property[]
-      user?: movininTypes.User
-      booking?: movininTypes.Booking
-      className?: string
-      loading?: boolean
-      hideAgency?: boolean
-      hidePrice?: boolean
-      language: string
-      onLoad?: movininTypes.DataEvent<movininTypes.Property>
-      onDelete?: (rowCount: number) => void
-    }
-) => {
+    agencies?: string[]
+    keyword?: string
+    types?: movininTypes.PropertyType[]
+    rentalTerms?: movininTypes.RentalTerm[]
+    availability?: movininTypes.Availablity[]
+    reload?: boolean
+    properties?: movininTypes.Property[]
+    user?: movininTypes.User
+    booking?: movininTypes.Booking
+    className?: string
+    loading?: boolean
+    hideAgency?: boolean
+    hidePrice?: boolean
+    language: string
+    onLoad?: movininTypes.DataEvent<movininTypes.Property>
+    onDelete?: (rowCount: number) => void
+  }) {
   const [user, setUser] = useState<movininTypes.User>()
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -100,7 +98,7 @@ const PropertyList = (
     }
   }, [fetch, loading, page])
 
-  const _fetch = async (page: number) => {
+  const _fetch = async (_page: number) => {
     try {
       setLoading(true)
       const payload: movininTypes.GetPropertiesPayload = {
@@ -111,33 +109,33 @@ const PropertyList = (
         language
       }
 
-      const data = await PropertyService.getProperties(keyword || '', payload, page, Env.PROPERTIES_PAGE_SIZE)
+      const data = await PropertyService.getProperties(keyword || '', payload, _page, Env.PROPERTIES_PAGE_SIZE)
 
       const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
       if (!_data) {
         Helper.error()
         return
       }
-      const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
+      const _totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
       let _rows = []
       if (Env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || Env.isMobile()) {
-        _rows = page === 1 ? _data.resultData : [...rows, ..._data.resultData]
+        _rows = _page === 1 ? _data.resultData : [...rows, ..._data.resultData]
       } else {
         _rows = _data.resultData
       }
 
       setRows(_rows)
-      setRowCount((page - 1) * Env.PROPERTIES_PAGE_SIZE + _rows.length)
-      setTotalRecords(totalRecords)
+      setRowCount((_page - 1) * Env.PROPERTIES_PAGE_SIZE + _rows.length)
+      setTotalRecords(_totalRecords)
       setFetch(_data.resultData.length > 0)
 
-      if (((Env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || Env.isMobile()) && page === 1) || (Env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !Env.isMobile())) {
+      if (((Env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || Env.isMobile()) && _page === 1) || (Env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !Env.isMobile())) {
         window.scrollTo(0, 0)
       }
 
       if (onLoad) {
-        onLoad({ rows: _data.resultData, rowCount: totalRecords })
+        onLoad({ rows: _data.resultData, rowCount: _totalRecords })
       }
     } catch (err) {
       Helper.error(err)
@@ -212,17 +210,17 @@ const PropertyList = (
 
   const handleDelete = async (e: React.MouseEvent<HTMLElement>) => {
     try {
-      const propertyId = e.currentTarget.getAttribute('data-id') as string
-      const propertyIndex = Number(e.currentTarget.getAttribute('data-index') as string)
+      const _propertyId = e.currentTarget.getAttribute('data-id') as string
+      const _propertyIndex = Number(e.currentTarget.getAttribute('data-index') as string)
 
-      const status = await PropertyService.check(propertyId)
+      const status = await PropertyService.check(_propertyId)
 
       if (status === 200) {
         setOpenInfoDialog(true)
       } else if (status === 204) {
         setOpenDeleteDialog(true)
-        setPropertyId(propertyId)
-        setPropertyIndex(propertyIndex)
+        setPropertyId(_propertyId)
+        setPropertyIndex(_propertyIndex)
       } else {
         Helper.error()
       }
