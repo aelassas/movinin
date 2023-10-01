@@ -43,30 +43,30 @@ div.home div.home-content div.home-logo {
   height: 180px;
 }
 
-div.home div.home-content label.home-logo-main,
-div.home div.home-content label.home-logo-registered {
+div.home div.home-content span.home-logo-main,
+div.home div.home-content span.home-logo-registered {
   float: left;
   color: #0D63C9;
   opacity: 0.97;
 }
 
-div.home div.home-content label.home-logo-main {
+div.home div.home-content span.home-logo-main {
   font-size: 80px;
   font-weight: 700;
   line-height: 135px;
 }
 
-div.home div.home-content label.home-logo-main:after {
+div.home div.home-content span.home-logo-main:after {
   content: "Movin' In";
 }
 
-div.home div.home-content label.home-logo-registered {
+div.home div.home-content span.home-logo-registered {
   margin-top: 40px;
   font-size: 15px;
   font-weight: 600;
 }
 
-div.home div.home-content label.home-logo-registered:after {
+div.home div.home-content span.home-logo-registered:after {
   content: '®';
 }
 
@@ -100,24 +100,6 @@ div.home div.home-content div.home-search .btn-search:hover {
   opacity: 0.95;
 }
 
-div.home div.home-content .chk-same-location {
-  display: table-row;
-  color: rgba(0, 0, 0, 0.7);
-  font-weight: 400;
-  line-height: 1.4em;
-  font-size: 0.9em;
-}
-
-div.home div.home-content .chk-same-location label {
-  cursor: pointer;
-  padding: 2px;
-  vertical-align: top;
-}
-
-div.home div.home-content .chk-same-location input[type='checkbox'] {
-  cursor: pointer;
-}
-
 /* Device width is less than or equal to 960px */
 
 @media only screen and (max-width: 960px) {
@@ -133,14 +115,14 @@ div.home div.home-content .chk-same-location input[type='checkbox'] {
     height: 140px;
   }
 
-  div.home div.home-content label.home-logo-main,
-  div.home div.home-content label.home-logo-registered {
+  div.home div.home-content span.home-logo-main,
+  div.home div.home-content span.home-logo-registered {
     float: left;
     color: #0D63C9;
     opacity: 0.97;
   }
 
-  div.home div.home-content label.home-logo-main {
+  div.home div.home-content span.home-logo-main {
     font-size: 70px;
     font-weight: 700;
     line-height: 125px;

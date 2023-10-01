@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import { FormControl, Button } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import * as movininTypes from 'movinin-types'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/home'
 import * as UserService from '../services/UserService'
 import Master from '../components/Master'
 import LocationSelectList from '../components/LocationSelectList'
 import DatePicker from '../components/DatePicker'
-import { FormControl, Button } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
-import * as movininTypes from 'movinin-types'
 
 import SecurePayment from '../assets/img/secure-payment.png'
 import '../assets/css/home.css'
 
-const Home = () => {
+function Home() {
   const navigate = useNavigate()
 
   const _minDate = new Date()
@@ -25,15 +25,15 @@ const Home = () => {
 
   useEffect(() => {
     if (from) {
-      const minDate = new Date(from)
-      minDate.setDate(from.getDate() + 1)
-      setMinDate(minDate)
+      const __minDate = new Date(from)
+      __minDate.setDate(from.getDate() + 1)
+      setMinDate(__minDate)
     }
   }, [from])
 
   const handleLocationChange = (values: movininTypes.Option[]) => {
-    const location = (values.length > 0 && values[0]._id) || ''
-    setLocation(location)
+    const _location = (values.length > 0 && values[0]._id) || ''
+    setLocation(_location)
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,8 +53,8 @@ const Home = () => {
       <div className="home">
         <div className="home-content">
           <div className="home-logo">
-            <label className="home-logo-main" />
-            <label className="home-logo-registered" />
+            <span className="home-logo-main" />
+            <span className="home-logo-registered" />
           </div>
           <div className="home-search">
             <form onSubmit={handleSubmit} className="home-search-form">
@@ -77,14 +77,13 @@ const Home = () => {
                   required
                   onChange={(date) => {
                     if (date) {
-
                       if (to && to.getTime() <= date.getTime()) {
                         setTo(undefined)
                       }
 
-                      const minDate = new Date(date)
-                      minDate.setDate(date.getDate() + 1)
-                      setMinDate(minDate)
+                      const __minDate = new Date(date)
+                      __minDate.setDate(date.getDate() + 1)
+                      setMinDate(__minDate)
                     } else {
                       setMinDate(_minDate)
                     }

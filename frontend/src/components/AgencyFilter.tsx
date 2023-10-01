@@ -1,25 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import Env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import Accordion from './Accordion'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/agency-filter.css'
 
-const AgencyFilter = (
-  {
-    agencies: filterAgencies,
-    collapse,
-    className,
-    onChange
-  }: {
-    agencies: movininTypes.User[]
-    collapse?: boolean
-    className?: string
-    onChange: (value: string[]) => void
-  }
-) => {
+function AgencyFilter({
+  agencies: filterAgencies,
+  collapse,
+  className,
+  onChange
+}: {
+  agencies: movininTypes.User[]
+  collapse?: boolean
+  className?: string
+  onChange: (value: string[]) => void
+}) {
   const [agencies, setAgencies] = useState<movininTypes.User[]>([])
   const [checkedAgencies, setCheckedAgencies] = useState<string[]>([])
   const [allChecked, setAllChecked] = useState(true)
@@ -39,14 +37,6 @@ const AgencyFilter = (
       })
     }
   }, [agencies])
-
-  const handleAgencyClick = (e: React.MouseEvent<HTMLElement>) => {
-    const checkbox = e.currentTarget.previousSibling as HTMLInputElement
-    checkbox.checked = !checkbox.checked
-    const event = e
-    event.currentTarget = checkbox
-    handleCheckAgencyChange(event)
-  }
 
   const handleCheckAgencyChange = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
     const agencyId = e.currentTarget.getAttribute('data-id') as string
@@ -71,6 +61,14 @@ const AgencyFilter = (
     if (onChange) {
       onChange(movininHelper.clone(checkedAgencies))
     }
+  }
+
+  const handleAgencyClick = (e: React.MouseEvent<HTMLElement>) => {
+    const checkbox = e.currentTarget.previousSibling as HTMLInputElement
+    checkbox.checked = !checkbox.checked
+    const event = e
+    event.currentTarget = checkbox
+    handleCheckAgencyChange(event)
   }
 
   const handleUncheckAllChange = () => {
@@ -103,29 +101,48 @@ const AgencyFilter = (
   }
 
   return (
-    (agencies.length > 1 &&
-      <Accordion
-        title={commonStrings.AGENCY}
-        collapse={collapse}
-        offsetHeight={Math.floor((agencies.length / 2) * Env.AGENCY_IMAGE_HEIGHT)}
-        className={`${className ? `${className} ` : ''}agency-filter`}
-      >
-        <ul className="agency-list">
-          {agencies.map((agency, index) => (
-            <li key={agency._id}>
-              <input ref={(ref) => (refs.current[index] = ref)} type="checkbox" data-id={agency._id} className="agency-checkbox" onChange={handleCheckAgencyChange} />
-              <label onClick={handleAgencyClick}>
-                <img src={movininHelper.joinURL(Env.CDN_USERS, agency.avatar)} alt={agency.fullName} />
-              </label>
-            </li>
-          ))}
-        </ul>
-        <div className="filter-actions">
-          <span onClick={handleUncheckAllChange} className="uncheckall">
-            {allChecked ? commonStrings.UNCHECK_ALL : commonStrings.CHECK_ALL}
-          </span>
-        </div>
-      </Accordion>
+    (agencies.length > 1
+      && (
+        <Accordion
+          title={commonStrings.AGENCY}
+          collapse={collapse}
+          offsetHeight={Math.floor((agencies.length / 2) * Env.AGENCY_IMAGE_HEIGHT)}
+          className={`${className ? `${className} ` : ''}agency-filter`}
+        >
+          <ul className="agency-list">
+            {agencies.map((agency, index) => (
+              <li key={agency._id}>
+                <input
+                  ref={(ref) => {
+                    refs.current[index] = ref
+                  }}
+                  type="checkbox"
+                  data-id={agency._id}
+                  className="agency-checkbox"
+                  onChange={handleCheckAgencyChange}
+                />
+                <span
+                  onClick={handleAgencyClick}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <img src={movininHelper.joinURL(Env.CDN_USERS, agency.avatar)} alt={agency.fullName} />
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="filter-actions">
+            <span
+              onClick={handleUncheckAllChange}
+              className="uncheckall"
+              role="button"
+              tabIndex={0}
+            >
+              {allChecked ? commonStrings.UNCHECK_ALL : commonStrings.CHECK_ALL}
+            </span>
+          </div>
+        </Accordion>
+      )
     ) || <></>
   )
 }

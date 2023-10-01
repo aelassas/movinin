@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import { FormControl, Button } from '@mui/material'
+import * as movininTypes from 'movinin-types'
 import { strings as commonStrings } from '../lang/common'
 import * as UserService from '../services/UserService'
 import LocationSelectList from './LocationSelectList'
 import DatePicker from './DatePicker'
-import { FormControl, Button } from '@mui/material'
-import * as movininTypes from 'movinin-types'
 
 import '../assets/css/property-filter.css'
 
-const PropertyFilter = (
-  {
+function PropertyFilter({
     from: filterFrom,
     to: filterTo,
     location: filterLocation,
@@ -21,8 +20,7 @@ const PropertyFilter = (
     location: movininTypes.Location
     className?: string
     onSubmit: movininTypes.PropertyFilterSubmitEvent
-  }) => {
-
+  }) {
   const _minDate = new Date()
   _minDate.setDate(_minDate.getDate() + 1)
 
@@ -33,16 +31,16 @@ const PropertyFilter = (
 
   useEffect(() => {
     if (filterFrom) {
-      const minDate = new Date(filterFrom)
-      minDate.setDate(filterFrom.getDate() + 1)
-      setMinDate(minDate)
+      const __minDate = new Date(filterFrom)
+      __minDate.setDate(filterFrom.getDate() + 1)
+      setMinDate(__minDate)
     }
   }, [filterFrom])
 
   const handleLocationChange = (values: movininTypes.Option[]) => {
-    const location = (values.length > 0 && values[0]) || null
+    const _location = (values.length > 0 && values[0]) || null
 
-    setLocation(location)
+    setLocation(_location)
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -82,14 +80,13 @@ const PropertyFilter = (
             required
             onChange={(date) => {
               if (date) {
-
                 if (to && to.getTime() <= date.getTime()) {
                   setTo(undefined)
                 }
 
-                const minDate = new Date(date)
-                minDate.setDate(date.getDate() + 1)
-                setMinDate(minDate)
+                const __minDate = new Date(date)
+                __minDate.setDate(date.getDate() + 1)
+                setMinDate(__minDate)
               } else {
                 setMinDate(_minDate)
               }

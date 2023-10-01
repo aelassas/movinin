@@ -1,60 +1,57 @@
 import React, { useState, useEffect } from 'react'
-import Env from '../config/env.config'
-import Const from '../config/const'
-import { strings as commonStrings } from '../lang/common'
-import { strings as csStrings } from '../lang/properties'
-import { strings } from '../lang/properties'
-import * as Helper from '../common/Helper'
-import * as PropertyService from '../services/PropertyService'
 import {
   Card,
   CardContent,
   Typography,
   Button
 } from '@mui/material'
-import Pager from './Pager'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
+import Env from '../config/env.config'
+import Const from '../config/const'
+import { strings as commonStrings } from '../lang/common'
+import { strings as csStrings, strings } from '../lang/properties'
+
+import * as Helper from '../common/Helper'
+import * as PropertyService from '../services/PropertyService'
+import Pager from './Pager'
 import PropertyInfo from './PropertyInfo'
 import AgencyBadge from './AgencyBadge'
 
 import '../assets/css/property-list.css'
 
-const PropertyList = (
+function PropertyList({
+  agencies,
+  types,
+  rentalTerms,
+  location,
+  from,
+  to,
+  reload,
+  properties,
+  className,
+  loading: propertyListLoading,
+  hideAgency,
+  hidePrice,
+  hideActions,
+  onLoad,
+}:
   {
-    agencies,
-    types,
-    rentalTerms,
-    location,
-    from,
-    to,
-    reload,
-    properties,
-    className,
-    loading: propertyListLoading,
-    hideAgency,
-    hidePrice,
-    hideActions,
-    onLoad,
-  }:
-    {
-      agencies?: string[]
-      types?: movininTypes.PropertyType[]
-      rentalTerms?: movininTypes.RentalTerm[]
-      location?: string
-      from?: Date
-      to?: Date
-      reload?: boolean
-      properties?: movininTypes.Property[]
-      user?: movininTypes.User
-      className?: string
-      loading?: boolean
-      hideAgency?: boolean
-      hidePrice?: boolean
-      hideActions?: boolean
-      onLoad?: movininTypes.DataEvent<movininTypes.Property>
-    }
-) => {
+    agencies?: string[]
+    types?: movininTypes.PropertyType[]
+    rentalTerms?: movininTypes.RentalTerm[]
+    location?: string
+    from?: Date
+    to?: Date
+    reload?: boolean
+    properties?: movininTypes.Property[]
+    className?: string
+    loading?: boolean
+    hideAgency?: boolean
+    hidePrice?: boolean
+    hideActions?: boolean
+    onLoad?: movininTypes.DataEvent<movininTypes.Property>
+  }) {
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(false)
@@ -81,7 +78,7 @@ const PropertyList = (
     }
   }, [fetch, loading, page])
 
-  const _fetch = async (page: number) => {
+  const _fetch = async (_page: number) => {
     try {
       setLoading(true)
 
@@ -91,33 +88,33 @@ const PropertyList = (
         rentalTerms,
         location,
       }
-      const data = await PropertyService.getProperties(payload, page, Env.PROPERTIES_PAGE_SIZE)
+      const data = await PropertyService.getProperties(payload, _page, Env.PROPERTIES_PAGE_SIZE)
 
       const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
       if (!_data) {
         Helper.error()
         return
       }
-      const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
+      const _totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
       let _rows = []
       if (Env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || Env.isMobile()) {
-        _rows = page === 1 ? _data.resultData : [...rows, ..._data.resultData]
+        _rows = _page === 1 ? _data.resultData : [...rows, ..._data.resultData]
       } else {
         _rows = _data.resultData
       }
 
       setRows(_rows)
-      setRowCount((page - 1) * Env.PROPERTIES_PAGE_SIZE + _rows.length)
-      setTotalRecords(totalRecords)
+      setRowCount((_page - 1) * Env.PROPERTIES_PAGE_SIZE + _rows.length)
+      setTotalRecords(_totalRecords)
       setFetch(_data.resultData.length > 0)
 
-      if (((Env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || Env.isMobile()) && page === 1) || (Env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !Env.isMobile())) {
+      if (((Env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || Env.isMobile()) && _page === 1) || (Env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !Env.isMobile())) {
         window.scrollTo(0, 0)
       }
 
       if (onLoad) {
-        onLoad({ rows: _data.resultData, rowCount: totalRecords })
+        onLoad({ rows: _data.resultData, rowCount: _totalRecords })
       }
     } catch (err) {
       Helper.error(err)
@@ -199,7 +196,7 @@ const PropertyList = (
             </Card>
           )
           : rows.map((property) => {
-            const price = from && to && Helper.price(property, from, to) || 0
+            const price = (from && to && Helper.price(property, from, to)) || 0
 
             return (
               <article key={property._id}>
@@ -228,36 +225,38 @@ const PropertyList = (
                 <div className="right-panel">
                   {!hidePrice && from && to && (
                     <div className="price">
-                      <label className="price-days">{Helper.getDays(days)}</label>
-                      <label className="price-main">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</label>
-                      <label className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatNumber((price || 0) / days)} ${commonStrings.CURRENCY}`}</label>
+                      <span className="price-days">{Helper.getDays(days)}</span>
+                      <span className="price-main">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</span>
+                      <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatNumber((price || 0) / days)} ${commonStrings.CURRENCY}`}</span>
                     </div>
                   )}
-                  {hidePrice && !hideActions && <span></span>}
+                  {hidePrice && !hideActions && <span />}
                   {
                     !hideActions
-                    && <div className="action">
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        className="btn-action btn-margin-bottom"
-                        href={`/property?p=${property._id}${(from && `&f=${from?.getTime()}`) || ''}${(to && `&t=${to?.getTime()}`) || ''}`}
-                      >
-                        {strings.VIEW}
-                      </Button>
-                      {
-                        !hidePrice && (
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            className="btn-action btn-margin-bottom"
-                            href={`/checkout?p=${property._id}&l=${location}&f=${(from as Date).getTime()}&t=${(to as Date).getTime()}`}
-                          >
-                            {strings.BOOK}
-                          </Button>
-                        )
-                      }
-                    </div>
+                    && (
+                      <div className="action">
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          className="btn-action btn-margin-bottom"
+                          href={`/property?p=${property._id}${(from && `&f=${from?.getTime()}`) || ''}${(to && `&t=${to?.getTime()}`) || ''}`}
+                        >
+                          {strings.VIEW}
+                        </Button>
+                        {
+                          !hidePrice && (
+                            <Button
+                              type="submit"
+                              variant="contained"
+                              className="btn-action btn-margin-bottom"
+                              href={`/checkout?p=${property._id}&l=${location}&f=${(from as Date).getTime()}&t=${(to as Date).getTime()}`}
+                            >
+                              {strings.BOOK}
+                            </Button>
+                          )
+                        }
+                      </div>
+                    )
                   }
 
                 </div>

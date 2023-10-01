@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Env from '../config/env.config'
-import { strings } from '../lang/header'
-import { strings as commonStrings } from '../lang/common'
-import * as UserService from '../services/UserService'
-import * as NotificationService from '../services/NotificationService'
 import { toast } from 'react-toastify'
-import Avatar from './Avatar'
 import {
   AppBar,
   Toolbar,
@@ -36,15 +30,22 @@ import {
   EventSeat as BookingsIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import * as LangHelper from '../common/LangHelper'
 import * as movininTypes from 'movinin-types'
+import Env from '../config/env.config'
+import { strings } from '../lang/header'
+import { strings as commonStrings } from '../lang/common'
+import * as UserService from '../services/UserService'
+import * as NotificationService from '../services/NotificationService'
+import Avatar from './Avatar'
+import * as LangHelper from '../common/LangHelper'
 
 import '../assets/css/header.css'
 
-const ListItemLink = (props: any) => <ListItemButton component="a" {...props} />
+function ListItemLink(props: any) {
+  return <ListItemButton component="a" {...props} />
+}
 
-const Header = (
-  {
+function Header({
     user,
     hidden,
     hideSignin,
@@ -54,8 +55,7 @@ const Header = (
     hidden?: boolean
     hideSignin?: boolean
     notificationCount?: number
-  }
-) => {
+  }) {
   const navigate = useNavigate()
   const [lang, setLang] = useState(Env.DEFAULT_LANGUAGE)
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -108,7 +108,7 @@ const Header = (
 
     if (params.has('l')) {
       params.delete('l')
-      window.location.href = window.location.href.split('?')[0] + ([...params].length > 0 ? '?' + params : '')
+      window.location.href = window.location.href.split('?')[0] + ([...params].length > 0 ? `?${params}` : '')
     } else {
       window.location.reload()
     }
@@ -147,8 +147,8 @@ const Header = (
     }
   }
 
-  const getLang = (lang: string) => {
-    switch (lang) {
+  const getLang = (_lang: string) => {
+    switch (_lang) {
       case 'fr':
         return strings.LANGUAGE_FR
       case 'en':
@@ -235,7 +235,7 @@ const Header = (
         {strings.SETTINGS}
       </MenuItem>
       <MenuItem onClick={handleSignout}>
-        {<SignoutIcon className="header-action" />}
+        <SignoutIcon className="header-action" />
         <Typography>{strings.SIGN_OUT}</Typography>
       </MenuItem>
     </Menu>
@@ -301,40 +301,40 @@ const Header = (
                 <MenuIcon />
               </IconButton>
             )}
-            <React.Fragment>
+            <>
               <Drawer open={isSideMenuOpen} onClose={handleSideMenuClose}>
                 <List sx={classes.list}>
                   <ListItemLink href="/">
-                    <ListItemIcon>{<HomeIcon />}</ListItemIcon>
+                    <ListItemIcon><HomeIcon /></ListItemIcon>
                     <ListItemText primary={strings.HOME} />
                   </ListItemLink>
                   {isSignedIn && (
                     <ListItemLink href="/bookings">
-                      <ListItemIcon>{<BookingsIcon />}</ListItemIcon>
+                      <ListItemIcon><BookingsIcon /></ListItemIcon>
                       <ListItemText primary={strings.BOOKINGS} />
                     </ListItemLink>
                   )}
                   <ListItemLink href="/about">
-                    <ListItemIcon>{<AboutIcon />}</ListItemIcon>
+                    <ListItemIcon><AboutIcon /></ListItemIcon>
                     <ListItemText primary={strings.ABOUT} />
                   </ListItemLink>
                   <ListItemLink href="/tos">
-                    <ListItemIcon>{<TosIcon />}</ListItemIcon>
+                    <ListItemIcon><TosIcon /></ListItemIcon>
                     <ListItemText primary={strings.TOS} />
                   </ListItemLink>
                   <ListItemLink href="/contact">
-                    <ListItemIcon>{<MailIcon />}</ListItemIcon>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
                     <ListItemText primary={strings.CONTACT} />
                   </ListItemLink>
                   {Env.isMobile() && !hideSignin && !isSignedIn && isLoaded && !loading && (
                     <ListItemLink href="/sign-in">
-                      <ListItemIcon>{<LoginIcon />}</ListItemIcon>
+                      <ListItemIcon><LoginIcon /></ListItemIcon>
                       <ListItemText primary={strings.SIGN_IN} />
                     </ListItemLink>
                   )}
                 </List>
               </Drawer>
-            </React.Fragment>
+            </>
             <div style={classes.grow} />
             <div className="header-desktop">
               {isSignedIn && (

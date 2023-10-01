@@ -1,19 +1,4 @@
 import React, { useState } from 'react'
-import Env from '../config/env.config'
-import * as BookingService from '../services/BookingService'
-import { strings as commonStrings } from '../lang/common'
-import { strings as csStrings } from '../lang/properties'
-import { strings } from '../lang/checkout'
-import * as Helper from '../common/Helper'
-import * as UserService from '../services/UserService'
-import * as PropertyService from '../services/PropertyService'
-import * as LocationService from '../services/LocationService'
-import Master from '../components/Master'
-import Error from '../components/Error'
-import DatePicker from '../components/DatePicker'
-import Backdrop from '../components/SimpleBackdrop'
-import NoMatch from './NoMatch'
-import Info from './Info'
 import {
   OutlinedInput, InputLabel,
   FormControl,
@@ -39,11 +24,26 @@ import { format, intervalToDuration } from 'date-fns'
 import { fr, enUS } from 'date-fns/locale'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
+import Env from '../config/env.config'
+import * as BookingService from '../services/BookingService'
+import { strings as commonStrings } from '../lang/common'
+import { strings as csStrings } from '../lang/properties'
+import { strings } from '../lang/checkout'
+import * as Helper from '../common/Helper'
+import * as UserService from '../services/UserService'
+import * as PropertyService from '../services/PropertyService'
+import * as LocationService from '../services/LocationService'
+import Master from '../components/Master'
+import Error from '../components/Error'
+import DatePicker from '../components/DatePicker'
+import Backdrop from '../components/SimpleBackdrop'
+import NoMatch from './NoMatch'
+import Info from './Info'
 
 import SecurePayment from '../assets/img/secure-payment.png'
 import '../assets/css/checkout.css'
 
-const Checkout = () => {
+function Checkout() {
   const [user, setUser] = useState<movininTypes.User>()
   const [property, setProperty] = useState<movininTypes.Property>()
   const [location, setLocation] = useState<movininTypes.Location>()
@@ -83,17 +83,16 @@ const Checkout = () => {
 
   const [payLater, setPayLater] = useState(false)
 
-
   const handleCancellationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (property && from && to) {
-      const cancellation = e.target.checked
+      const _cancellation = e.target.checked
       const options: movininTypes.PropertyOptions = {
-        cancellation
+        cancellation: _cancellation
       }
-      const price = Helper.price(property, from, to, options)
+      const _price = Helper.price(property, from, to, options)
 
-      setCancellation(cancellation)
-      setPrice(price)
+      setCancellation(_cancellation)
+      setPrice(_price)
     }
   }
 
@@ -110,23 +109,22 @@ const Checkout = () => {
     }
   }
 
-  const validateEmail = async (email?: string) => {
-    if (email) {
-      if (validator.isEmail(email)) {
+  const validateEmail = async (_email?: string) => {
+    if (_email) {
+      if (validator.isEmail(_email)) {
         try {
-          const status = await UserService.validateEmail({ email })
+          const status = await UserService.validateEmail({ email: _email })
           if (status === 200) {
             setEmailRegitered(false)
             setEmailValid(true)
             setEmailInfo(true)
             return true
-          } else {
-            setEmailRegitered(true)
-            setEmailValid(true)
-            setError(false)
-            setEmailInfo(false)
-            return false
           }
+          setEmailRegitered(true)
+          setEmailValid(true)
+          setError(false)
+          setEmailInfo(false)
+          return false
         } catch (err) {
           Helper.error(err)
           setEmailRegitered(false)
@@ -160,19 +158,18 @@ const Checkout = () => {
     }
   }
 
-  const validatePhone = (phone?: string) => {
-    if (phone) {
-      const phoneValid = validator.isMobilePhone(phone)
-      setPhoneValid(phoneValid)
-      setPhoneInfo(phoneValid)
+  const validatePhone = (_phone?: string) => {
+    if (_phone) {
+      const _phoneValid = validator.isMobilePhone(_phone)
+      setPhoneValid(_phoneValid)
+      setPhoneInfo(_phoneValid)
 
-      return phoneValid
-    } else {
-      setPhoneValid(true)
-      setPhoneInfo(true)
-
-      return true
+      return _phoneValid
     }
+    setPhoneValid(true)
+    setPhoneInfo(true)
+
+    return true
   }
 
   const handlePhoneBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -183,14 +180,13 @@ const Checkout = () => {
     if (property && date && movininHelper.isDate(date)) {
       const now = new Date()
       const sub = intervalToDuration({ start: date, end: now }).years ?? 0
-      const birthDateValid = sub >= property.minimumAge
+      const _birthDateValid = sub >= property.minimumAge
 
-      setBirthDateValid(birthDateValid)
-      return birthDateValid
-    } else {
-      setBirthDateValid(true)
-      return true
+      setBirthDateValid(_birthDateValid)
+      return _birthDateValid
     }
+    setBirthDateValid(true)
+    return true
   }
 
   const handleTosChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -201,17 +197,16 @@ const Checkout = () => {
     }
   }
 
-  const validateCardNumber = (cardNumber?: string) => {
-    if (cardNumber) {
-      const cardNumberValid = validator.isCreditCard(cardNumber)
-      setCardNumberValid(cardNumberValid)
+  const validateCardNumber = (_cardNumber?: string) => {
+    if (_cardNumber) {
+      const _cardNumberValid = validator.isCreditCard(_cardNumber)
+      setCardNumberValid(_cardNumberValid)
 
-      return cardNumberValid
-    } else {
-      setCardNumberValid(true)
-
-      return true
+      return _cardNumberValid
     }
+    setCardNumberValid(true)
+
+    return true
   }
 
   const handleCardNumberBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -226,28 +221,26 @@ const Checkout = () => {
     }
   }
 
-  const validateCardMonth = (cardMonth?: string) => {
-    if (cardMonth) {
-      if (movininHelper.isInteger(cardMonth)) {
-        const month = Number.parseInt(cardMonth)
-        const cardMonthValid = month >= 1 && month <= 12
+  const validateCardMonth = (_cardMonth?: string) => {
+    if (_cardMonth) {
+      if (movininHelper.isInteger(_cardMonth)) {
+        const month = Number.parseInt(_cardMonth, 10)
+        const _cardMonthValid = month >= 1 && month <= 12
 
-        setCardMonthValid(cardMonthValid)
+        setCardMonthValid(_cardMonthValid)
         setCardDateError(false)
 
-        return cardMonthValid
-      } else {
-        setCardMonthValid(false)
-        setCardDateError(false)
-
-        return false
+        return _cardMonthValid
       }
-    } else {
-      setCardMonthValid(true)
+      setCardMonthValid(false)
       setCardDateError(false)
 
-      return true
+      return false
     }
+    setCardMonthValid(true)
+    setCardDateError(false)
+
+    return true
   }
 
   const handleCardMonthBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -263,29 +256,27 @@ const Checkout = () => {
     }
   }
 
-  const validateCardYear = (cardYear?: string) => {
-    if (cardYear) {
-      if (movininHelper.isYear(cardYear)) {
-        const year = Number.parseInt(cardYear)
-        const currentYear = Number.parseInt(String(new Date().getFullYear()).slice(2))
-        const cardYearValid = year >= currentYear
+  const validateCardYear = (_cardYear?: string) => {
+    if (_cardYear) {
+      if (movininHelper.isYear(_cardYear)) {
+        const year = Number.parseInt(_cardYear, 10)
+        const currentYear = Number.parseInt(String(new Date().getFullYear()).slice(2), 10)
+        const _cardYearValid = year >= currentYear
 
-        setCardYearValid(cardYearValid)
+        setCardYearValid(_cardYearValid)
         setCardDateError(false)
 
-        return cardYearValid
-      } else {
-        setCardYearValid(false)
-        setCardDateError(false)
-
-        return false
+        return _cardYearValid
       }
-    } else {
-      setCardYearValid(true)
+      setCardYearValid(false)
       setCardDateError(false)
 
-      return true
+      return false
     }
+    setCardYearValid(true)
+    setCardDateError(false)
+
+    return true
   }
 
   const handleCardYearBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -301,17 +292,16 @@ const Checkout = () => {
     }
   }
 
-  const validateCvv = (cvv?: string) => {
-    if (cvv) {
-      const cvvValid = movininHelper.isCvv(cvv)
-      setCvvValid(cvvValid)
+  const validateCvv = (_cvv?: string) => {
+    if (_cvv) {
+      const _cvvValid = movininHelper.isCvv(_cvv)
+      setCvvValid(_cvvValid)
 
-      return cvvValid
-    } else {
-      setCvvValid(true)
-
-      return true
+      return _cvvValid
     }
+    setCvvValid(true)
+
+    return true
   }
 
   const handleCvvBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -326,12 +316,12 @@ const Checkout = () => {
     }
   }
 
-  const validateCardDate = (cardMonth: string, cardYear: string) => {
-    const today = new Date(),
-      cardDate = new Date()
-    const y = Number.parseInt(String(today.getFullYear()).slice(0, 2)) * 100
-    const year = y + Number.parseInt(cardYear)
-    const month = Number.parseInt(cardMonth)
+  const validateCardDate = (_cardMonth: string, _cardYear: string) => {
+    const today = new Date()
+    const cardDate = new Date()
+    const y = Number.parseInt(String(today.getFullYear()).slice(0, 2), 10) * 100
+    const year = y + Number.parseInt(_cardYear, 10)
+    const month = Number.parseInt(_cardMonth, 10)
     cardDate.setFullYear(year, month - 1, 1)
 
     if (cardDate < today) {
@@ -351,18 +341,18 @@ const Checkout = () => {
       }
 
       if (!authenticated) {
-        const emailValid = await validateEmail(email)
-        if (!emailValid) {
+        const _emailValid = await validateEmail(email)
+        if (!_emailValid) {
           return
         }
 
-        const phoneValid = validatePhone(phone)
-        if (!phoneValid) {
+        const _phoneValid = validatePhone(phone)
+        if (!_phoneValid) {
           return
         }
 
-        const birthDateValid = validateBirthDate(birthDate)
-        if (!birthDateValid) {
+        const _birthDateValid = validateBirthDate(birthDate)
+        if (!_birthDateValid) {
           return
         }
 
@@ -377,23 +367,23 @@ const Checkout = () => {
           return
         }
 
-        const cardNumberValid = validateCardNumber(cardNumber)
-        if (!cardNumberValid) {
+        const _cardNumberValid = validateCardNumber(cardNumber)
+        if (!_cardNumberValid) {
           return
         }
 
-        const cardMonthValid = validateCardMonth(cardMonth)
-        if (!cardMonthValid) {
+        const _cardMonthValid = validateCardMonth(cardMonth)
+        if (!_cardMonthValid) {
           return
         }
 
-        const cardYearValid = validateCardYear(cardYear)
-        if (!cardYearValid) {
+        const _cardYearValid = validateCardYear(cardYear)
+        if (!_cardYearValid) {
           return
         }
 
-        const cvvValid = validateCvv(cvv)
-        if (!cvvValid) {
+        const _cvvValid = validateCvv(cvv)
+        if (!_cvvValid) {
           return
         }
 
@@ -406,7 +396,7 @@ const Checkout = () => {
 
       setLoading(true)
 
-      let renter: movininTypes.User | undefined = undefined
+      let renter: movininTypes.User | undefined
 
       if (!authenticated) {
         renter = {
@@ -423,8 +413,8 @@ const Checkout = () => {
         property: property._id,
         renter: authenticated ? user?._id : undefined,
         location: location._id,
-        from: from,
-        to: to,
+        from,
+        to,
         status: payLater ? movininTypes.BookingStatus.Pending : movininTypes.BookingStatus.Paid,
         cancellation,
         price,
@@ -453,17 +443,17 @@ const Checkout = () => {
     }
   }
 
-  const onLoad = async (user?: movininTypes.User) => {
-    setUser(user)
-    setAuthenticated(user !== undefined)
+  const onLoad = async (_user?: movininTypes.User) => {
+    setUser(_user)
+    setAuthenticated(_user !== undefined)
     setLanguage(UserService.getLanguage())
 
     let propertyId: string | null = null
-    let property: movininTypes.Property | null = null
+    let _property: movininTypes.Property | null = null
     let locationId: string | null = null
-    let location: movininTypes.Location | null = null
-    let from: Date | null = null
-    let to: Date | null = null
+    let _location: movininTypes.Location | null = null
+    let _from: Date | null = null
+    let _to: Date | null = null
     const params = new URLSearchParams(window.location.search)
 
     if (params.has('p')) {
@@ -474,42 +464,42 @@ const Checkout = () => {
     }
     if (params.has('f')) {
       const val = params.get('f')
-      from = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val)) : null
+      _from = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
     }
     if (params.has('t')) {
       const val = params.get('t')
-      to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val)) : null
+      _to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
     }
 
-    if (!propertyId || !locationId || !from || !to) {
+    if (!propertyId || !locationId || !_from || !_to) {
       setNoMatch(true)
       return
     }
 
     try {
-      property = await PropertyService.getProperty(propertyId)
-      if (!property) {
+      _property = await PropertyService.getProperty(propertyId)
+      if (!_property) {
         setNoMatch(true)
         return
       }
 
-      location = await LocationService.getLocation(locationId)
+      _location = await LocationService.getLocation(locationId)
 
-      if (!location) {
+      if (!_location) {
         setNoMatch(true)
         return
       }
 
-      const price = Helper.price(property, from, to)
+      const _price = Helper.price(_property, _from, _to)
 
       const included = (val: number) => val === 0
 
-      setProperty(property)
-      setPrice(price)
-      setLocation(location)
-      setFrom(from)
-      setTo(to)
-      setCancellation(included(property.cancellation))
+      setProperty(_property)
+      setPrice(_price)
+      setLocation(_location)
+      setFrom(_from)
+      setTo(_to)
+      setCancellation(included(_property.cancellation))
       setVisible(true)
     } catch (err) {
       Helper.error(err)
@@ -526,25 +516,29 @@ const Checkout = () => {
       {visible && property && from && to && location && (
         <div className="booking">
           <Paper className="booking-form" elevation={10}>
-            <h1 className="booking-form-title"> {strings.BOOKING_HEADING} </h1>
+            <h1 className="booking-form-title">
+              {' '}
+              {strings.BOOKING_HEADING}
+              {' '}
+            </h1>
             <form onSubmit={handleSubmit}>
               <div>
                 <div className="booking-options-container">
                   <div className="booking-info">
                     <BookingIcon />
-                    <label>{strings.BOOKING_OPTIONS}</label>
+                    <span>{strings.BOOKING_OPTIONS}</span>
                   </div>
                   <div className="booking-options">
                     <FormControl fullWidth margin="dense">
                       <FormControlLabel
                         disabled={property.cancellation === -1 || property.cancellation === 0}
                         control={<Switch checked={cancellation} onChange={handleCancellationChange} color="primary" />}
-                        label={
+                        label={(
                           <span>
                             <span className="booking-option-label">{csStrings.CANCELLATION}</span>
                             <span className="booking-option-value">{Helper.getCancellationOption(property.cancellation, _fr)}</span>
                           </span>
-                        }
+                        )}
                       />
                     </FormControl>
 
@@ -554,35 +548,37 @@ const Checkout = () => {
                 <div className="booking-details-container">
                   <div className="booking-info">
                     <PropertyIcon />
-                    <label>{strings.BOOKING_DETAILS}</label>
+                    <span>{strings.BOOKING_DETAILS}</span>
                   </div>
                   <div className="booking-details">
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <label className="booking-detail-title">{strings.DAYS}</label>
-                      <div className="booking-detail-value">{`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
-                        format(from, _format, { locale: _locale }),
-                      )} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`}</div>
+                      <span className="booking-detail-title">{strings.DAYS}</span>
+                      <div className="booking-detail-value">
+                        {`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
+                          format(from, _format, { locale: _locale }),
+                        )} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`}
+                      </div>
                     </div>
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <label className="booking-detail-title">{commonStrings.LOCATION}</label>
+                      <span className="booking-detail-title">{commonStrings.LOCATION}</span>
                       <div className="booking-detail-value">{location.name}</div>
                     </div>
 
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <label className="booking-detail-title">{strings.PROPERTY}</label>
+                      <span className="booking-detail-title">{strings.PROPERTY}</span>
                       <div className="booking-detail-value">{`${property.name} (${Helper.priceLabel(property)})`}</div>
                     </div>
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <label className="booking-detail-title">{commonStrings.AGENCY}</label>
+                      <span className="booking-detail-title">{commonStrings.AGENCY}</span>
                       <div className="booking-detail-value">
                         <div className="property-agency">
                           <img src={movininHelper.joinURL(Env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: Env.AGENCY_IMAGE_HEIGHT }} />
-                          <label className="property-agency-name">{property.agency.fullName}</label>
+                          <span className="property-agency-name">{property.agency.fullName}</span>
                         </div>
                       </div>
                     </div>
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <label className="booking-detail-title">{strings.COST}</label>
+                      <span className="booking-detail-title">{strings.COST}</span>
                       <div className="booking-detail-value booking-price">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</div>
                     </div>
                   </div>
@@ -591,7 +587,7 @@ const Checkout = () => {
                   <div className="renter-details">
                     <div className="booking-info">
                       <RenterIcon />
-                      <label>{strings.RENTER_DETAILS}</label>
+                      <span>{strings.RENTER_DETAILS}</span>
                     </div>
                     <div className="renter-details-form">
                       <FormControl fullWidth margin="dense">
@@ -617,8 +613,8 @@ const Checkout = () => {
                               <span> </span>
                               <a href={`/sign-in?p=${property._id}&l=${location._id}&f=${from.getTime()}&t=${to.getTime()}&from=checkout`}>{strings.SIGN_IN}</a>
                             </span>
-                          )) ||
-                            ''}
+                          ))
+                            || ''}
                           {(emailInfo && strings.EMAIL_INFO) || ''}
                         </FormHelperText>
                       </FormControl>
@@ -635,12 +631,12 @@ const Checkout = () => {
                           label={commonStrings.BIRTH_DATE}
                           variant="outlined"
                           required
-                          onChange={(birthDate) => {
-                            if (birthDate) {
-                              const birthDateValid = validateBirthDate(birthDate)
+                          onChange={(_birthDate) => {
+                            if (_birthDate) {
+                              const _birthDateValid = validateBirthDate(_birthDate)
 
-                              setBirthDate(birthDate)
-                              setBirthDateValid(birthDateValid)
+                              setBirthDate(_birthDate)
+                              setBirthDateValid(_birthDateValid)
                             }
                           }}
                           language={language}
@@ -671,7 +667,7 @@ const Checkout = () => {
                   <div className="payment-options-container">
                     <div className="booking-info">
                       <PaymentOptionsIcon />
-                      <label>{strings.PAYMENT_OPTIONS}</label>
+                      <span>{strings.PAYMENT_OPTIONS}</span>
                     </div>
                     <div className="payment-options">
                       <FormControl>
@@ -684,22 +680,22 @@ const Checkout = () => {
                           <FormControlLabel
                             value="payLater"
                             control={<Radio />}
-                            label={
+                            label={(
                               <span className="payment-button">
                                 <span>{strings.PAY_LATER}</span>
                                 <span className="payment-info">{`(${strings.PAY_LATER_INFO})`}</span>
                               </span>
-                            }
+                            )}
                           />
                           <FormControlLabel
                             value="payOnline"
                             control={<Radio />}
-                            label={
+                            label={(
                               <span className="payment-button">
                                 <span>{strings.PAY_ONLINE}</span>
                                 <span className="payment-info">{`(${strings.PAY_ONLINE_INFO})`}</span>
                               </span>
-                            }
+                            )}
                           />
                         </RadioGroup>
                       </FormControl>
@@ -712,11 +708,11 @@ const Checkout = () => {
                     <div className="cost">
                       <div className="secure-payment-label">
                         <LockIcon className="secure-payment-lock" />
-                        <label>{strings.PAYMENT}</label>
+                        <span>{strings.PAYMENT}</span>
                       </div>
                       <div className="secure-payment-cost">
-                        <label className="cost-title">{strings.COST}</label>
-                        <label className="cost-value">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</label>
+                        <span className="cost-title">{strings.COST}</span>
+                        <span className="cost-value">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</span>
                       </div>
                     </div>
 
@@ -798,7 +794,7 @@ const Checkout = () => {
 
                     <div className="secure-payment-info">
                       <LockIcon className="secure-payment-lock" />
-                      <label>{strings.SECURE_PAYMENT_INFO}</label>
+                      <span>{strings.SECURE_PAYMENT_INFO}</span>
                     </div>
                   </div>
                 )}

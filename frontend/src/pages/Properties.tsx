@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import Env from '../config/env.config'
 import * as Helper from '../common/Helper'
 import * as LocationService from '../services/LocationService'
@@ -10,12 +12,10 @@ import AgencyFilter from '../components/AgencyFilter'
 import RentalTermFilter from '../components/RentalTermFilter'
 import PropertyList from '../components/PropertyList'
 import PropertyTypeFilter from '../components/PropertyTypeFilter'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/properties.css'
 
-const Properties = () => {
+function Properties() {
   const [visible, setVisible] = useState(false)
   const [noMatch, setNoMatch] = useState(false)
   const [location, setLocation] = useState<movininTypes.Location>()
@@ -47,9 +47,9 @@ const Properties = () => {
 
   const onLoad = async (user?: movininTypes.User) => {
     let locationId: string | null = null
-    let location: movininTypes.Location | null = null
-    let from: Date | null = null
-    let to: Date | null = null
+    let _location: movininTypes.Location | null = null
+    let _from: Date | null = null
+    let _to: Date | null = null
 
     const params = new URLSearchParams(window.location.search)
     if (params.has('l')) {
@@ -57,36 +57,36 @@ const Properties = () => {
     }
     if (params.has('f')) {
       const val = params.get('f')
-      from = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val)) : null
+      _from = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
     }
     if (params.has('t')) {
       const val = params.get('t')
-      to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val)) : null
+      _to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
     }
 
-    if (!locationId || !from || !to) {
+    if (!locationId || !_from || !_to) {
       setLoading(false)
       setNoMatch(true)
       return
     }
 
     try {
-      location = await LocationService.getLocation(locationId)
+      _location = await LocationService.getLocation(locationId)
 
-      if (!location) {
+      if (!_location) {
         setLoading(false)
         setNoMatch(true)
         return
       }
 
-      const allAgencies = await AgencyService.getAllAgencies()
-      const agencies = movininHelper.flattenAgencies(allAgencies)
+      const _allAgencies = await AgencyService.getAllAgencies()
+      const _agencies = movininHelper.flattenAgencies(_allAgencies)
 
-      setLocation(location)
-      setFrom(from)
-      setTo(to)
-      setAllAgencies(allAgencies)
-      setAgencies(agencies)
+      setLocation(_location)
+      setFrom(_from)
+      setTo(_to)
+      setAllAgencies(_allAgencies)
+      setAgencies(_agencies)
       setLoading(false)
       if (!user || (user && user.verified)) {
         setVisible(true)
@@ -108,18 +108,22 @@ const Properties = () => {
                   location={location}
                   from={from}
                   to={to}
-                  onSubmit={handlePropertyFilterSubmit} />
+                  onSubmit={handlePropertyFilterSubmit}
+                />
                 <AgencyFilter
                   className="filter"
                   agencies={allAgencies}
                   onChange={handleAgencyFilterChange}
-                  collapse={!Env.isMobile()} />
+                  collapse={!Env.isMobile()}
+                />
                 <PropertyTypeFilter
                   className="filter"
-                  onChange={handlePropertyTypeFilterChange} />
+                  onChange={handlePropertyTypeFilterChange}
+                />
                 <RentalTermFilter
                   className="filter"
-                  onChange={handleRentalTermFilterChange} />
+                  onChange={handleRentalTermFilterChange}
+                />
               </>
             )}
           </div>

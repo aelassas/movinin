@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
+import { TextFieldVariants } from '@mui/material'
 import Env from '../config/env.config'
 import * as AgencyService from '../services/AgencyService'
 import * as Helper from '../common/Helper'
 import MultipleSelect from './MultipleSelect'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
-import { TextFieldVariants } from '@mui/material'
 
-const AgencySelectList = ({
+function AgencySelectList({
   value,
   multiple,
   label,
@@ -23,7 +23,7 @@ const AgencySelectList = ({
   readOnly?: boolean,
   variant?: TextFieldVariants,
   onChange?: (values: movininTypes.Option[]) => void
-}) => {
+}) {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [rows, setRows] = useState<movininTypes.Option[]>([])
@@ -45,17 +45,17 @@ const AgencySelectList = ({
       return { _id: _id as string, name: fullName, image: avatar }
     })
 
-  const _fetch = async (page: number, keyword: string, onFetch?: (data: { rows: any[], rowCount: number }) => void) => {
+  const _fetch = async (_page: number, _keyword: string, onFetch?: (data: { rows: any[], rowCount: number }) => void) => {
     try {
       setLoading(true)
-      const data = await AgencyService.getAgencies(keyword, page, Env.PAGE_SIZE)
+      const data = await AgencyService.getAgencies(_keyword, _page, Env.PAGE_SIZE)
       const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
       if (!_data) {
         Helper.error()
         return
       }
       const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
-      const _rows = page === 1 ? getAgencies(_data.resultData) : [...rows, ...getAgencies(_data.resultData)]
+      const _rows = _page === 1 ? getAgencies(_data.resultData) : [...rows, ...getAgencies(_data.resultData)]
 
       setRows(_rows)
       setFetch(_data.resultData.length > 0)
@@ -109,14 +109,14 @@ const AgencySelectList = ({
         }
       }}
       onInputChange={(event) => {
-        const value = (event && event.target && 'value' in event.target && event.target.value as string) || ''
+        const _value = (event && event.target && 'value' in event.target && event.target.value as string) || ''
 
-        //if (event.target.type === 'text' && value !== keyword) {
-        if (value !== keyword) {
+        // if (event.target.type === 'text' && value !== keyword) {
+        if (_value !== keyword) {
           setRows([])
           setPage(1)
-          setKeyword(value)
-          _fetch(1, value)
+          setKeyword(_value)
+          _fetch(1, _value)
         }
       }}
       onClear={() => {

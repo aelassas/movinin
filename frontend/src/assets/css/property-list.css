@@ -87,7 +87,7 @@ section.property-list article div.right-panel div.price {
   flex-direction: column;
 }
 
-section.property-list article div.right-panel div.price label.price-main {
+section.property-list article div.right-panel div.price span.price-main {
   color: #383838;
   font-size: 2.5em;
   font-weight: 700;
@@ -97,8 +97,8 @@ section.property-list article div.right-panel div.price label.price-main {
   text-align: right;
 }
 
-section.property-list article div.right-panel div.price label.price-days,
-section.property-list article div.right-panel div.price label.price-day {
+section.property-list article div.right-panel div.price span.price-days,
+section.property-list article div.right-panel div.price span.price-day {
   font-size: 13px;
   color: #a1a1a1;
   display: table-row;

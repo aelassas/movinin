@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import Master from '../components/Master'
 import Env from '../config/env.config'
 import * as Helper from '../common/Helper'
@@ -7,12 +9,10 @@ import AgencyFilter from '../components/AgencyFilter'
 import StatusFilter from '../components/StatusFilter'
 import BookingFilter from '../components/BookingFilter'
 import * as AgencyService from '../services/AgencyService'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/bookings.css'
 
-const Bookings = () => {
+function Bookings() {
   const [user, setUser] = useState<movininTypes.User>()
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
   const [agencies, setAgencies] = useState<string[]>()
@@ -30,26 +30,26 @@ const Bookings = () => {
     }
   }, [user])
 
-  const handleAgencyFilterChange = (agencies: string[]) => {
-    setAgencies(agencies)
+  const handleAgencyFilterChange = (_agencies: string[]) => {
+    setAgencies(_agencies)
   }
 
-  const handleStatusFilterChange = (statuses: movininTypes.BookingStatus[]) => {
-    setStatuses(statuses)
+  const handleStatusFilterChange = (_statuses: movininTypes.BookingStatus[]) => {
+    setStatuses(_statuses)
   }
 
-  const handleBookingFilterSubmit = (filter: movininTypes.Filter | null) => {
-    setFilter(filter)
+  const handleBookingFilterSubmit = (_filter: movininTypes.Filter | null) => {
+    setFilter(_filter)
   }
 
-  const onLoad = async (user?: movininTypes.User) => {
-    setUser(user)
+  const onLoad = async (_user?: movininTypes.User) => {
+    setUser(_user)
     setLoadingAgencies(true)
 
-    const allAgencies = await AgencyService.getAllAgencies()
-    const agencies = movininHelper.flattenAgencies(allAgencies)
-    setAllAgencies(allAgencies)
-    setAgencies(agencies)
+    const _allAgencies = await AgencyService.getAllAgencies()
+    const _agencies = movininHelper.flattenAgencies(_allAgencies)
+    setAllAgencies(_allAgencies)
+    setAgencies(_agencies)
     setLoadingAgencies(false)
   }
 

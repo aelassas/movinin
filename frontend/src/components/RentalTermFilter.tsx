@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings as propertyStrings } from '../lang/property'
 import { strings } from '../lang/rental-term'
 import Accordion from './Accordion'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/rental-term-filter.css'
 
-const RentalTermFilter = (
-  {
-    className,
-    onChange
-  }: {
-    className?: string
-    onChange?: (values: movininTypes.RentalTerm[]) => void
-  }
-) => {
+function RentalTermFilter({
+  className,
+  onChange
+}: {
+  className?: string
+  onChange?: (values: movininTypes.RentalTerm[]) => void
+}) {
   const allRentalTerms = movininHelper.getAllRentalTerms()
 
   const [allChecked, setAllChecked] = useState(true)
@@ -220,23 +218,23 @@ const RentalTermFilter = (
       <div className="filter-elements">
         <div className="filter-element">
           <input ref={monthlyRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckMonthlyChange} />
-          <label onClick={handleMonthlyClick}>{strings.MONTHLY}</label>
+          <span role="button" tabIndex={0} onClick={handleMonthlyClick}>{strings.MONTHLY}</span>
         </div>
         <div className="filter-element">
           <input ref={weeklyRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckWeeklyChange} />
-          <label onClick={handleWeeklyClick}>{strings.WEEKLY}</label>
+          <span role="button" tabIndex={0} onClick={handleWeeklyClick}>{strings.WEEKLY}</span>
         </div>
         <div className="filter-element">
           <input ref={dailyRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckDailyChange} />
-          <label onClick={handleDailyClick}>{strings.DAILY}</label>
+          <span role="button" tabIndex={0} onClick={handleDailyClick}>{strings.DAILY}</span>
         </div>
         <div className="filter-element">
           <input ref={yearlyRef} type="checkbox" className="property-type-checkbox" onChange={handleCheckYearlyChange} />
-          <label onClick={handleYearlyClick}>{strings.YEARLY}</label>
+          <span role="button" tabIndex={0} onClick={handleYearlyClick}>{strings.YEARLY}</span>
         </div>
       </div>
       <div className="filter-actions">
-        <span onClick={handleUncheckAllChange} className="uncheckall">
+        <span role="button" tabIndex={0} onClick={handleUncheckAllChange} className="uncheckall">
           {allChecked ? commonStrings.UNCHECK_ALL : commonStrings.CHECK_ALL}
         </span>
       </div>

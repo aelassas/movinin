@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import {
+ Dialog, DialogTitle, DialogContent, DialogActions, Button, TextFieldVariants
+} from '@mui/material'
+import * as movininTypes from 'movinin-types'
 import Env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as bfStrings } from '../lang/booking-filter'
@@ -6,12 +10,9 @@ import { strings as blStrings } from '../lang/booking-list'
 import { strings } from '../lang/booking-property-list'
 import * as PropertyService from '../services/PropertyService'
 import MultipleSelect from './MultipleSelect'
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextFieldVariants } from '@mui/material'
 import * as Helper from '../common/Helper'
-import * as movininTypes from 'movinin-types'
 
-const PropertySelectList = (
-  {
+function PropertySelectList({
     label,
     required,
     multiple,
@@ -32,13 +33,12 @@ const PropertySelectList = (
       location: string
       readOnly?: boolean
       onChange?: (values: movininTypes.Property[]) => void
-    }
-) => {
+    }) {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(true)
-  const [_agency, set_Agency] = useState('-1')
-  const [_location, set_Location] = useState('-1')
+  const [currentAgency, setCurrentAgency] = useState('-1')
+  const [currentLocation, setCurrentLocation] = useState('-1')
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
   const [properties, setProperties] = useState<movininTypes.Property[]>([])
@@ -56,10 +56,10 @@ const PropertySelectList = (
   }, [value])
 
   useEffect(() => {
-    if (agency && _agency !== agency) {
-      set_Agency(agency || '-1')
+    if (agency && currentAgency !== agency) {
+      setCurrentAgency(agency || '-1')
 
-      if (_agency !== '-1' && _location !== '-1') {
+      if (currentAgency !== '-1' && currentLocation !== '-1') {
         setReload(true)
         setSelectedOptions([])
         setPage(1)
@@ -70,13 +70,13 @@ const PropertySelectList = (
         }
       }
     }
-  }, [_agency, agency, _location, onChange])
+  }, [currentAgency, agency, currentLocation, onChange])
 
   useEffect(() => {
-    if (location && _location !== location) {
-      set_Location(location || '-1')
+    if (location && currentLocation !== location) {
+      setCurrentLocation(location || '-1')
 
-      if (_agency !== '-1' && _location !== '-1') {
+      if (currentAgency !== '-1' && currentLocation !== '-1') {
         setReload(true)
         setSelectedOptions([])
         setPage(1)
@@ -87,13 +87,13 @@ const PropertySelectList = (
         }
       }
     }
-  }, [_location, _agency, location, onChange])
+  }, [currentLocation, currentAgency, location, onChange])
 
   useEffect(() => {
-    if (_location !== location) {
-      set_Location(location)
+    if (currentLocation !== location) {
+      setCurrentLocation(location)
     }
-  }, [_location, location])
+  }, [currentLocation, location])
 
   const handleChange = (values: movininTypes.Property[]) => {
     if (onChange) {
@@ -101,23 +101,23 @@ const PropertySelectList = (
     }
   }
 
-  const _fetch = async (page: number, keyword: string, agency: string, location: string) => {
+  const _fetch = async (_page: number, _keyword: string, _agency: string, _location: string) => {
     try {
-      const payload: movininTypes.GetBookingPropertiesPayload = { agency, location }
+      const payload: movininTypes.GetBookingPropertiesPayload = { agency: _agency, location: _location }
 
       if (closeDialog) {
         setCloseDialog(false)
       }
 
-      if (agency === '-1' || location === '-1') {
+      if (_agency === '-1' || _location === '-1') {
         setOpenDialog(true)
         return
       }
 
       setLoading(true)
 
-      const data = await PropertyService.getBookingProperties(keyword, payload, page, Env.PAGE_SIZE)
-      const _properties = page === 1 ? data : [...properties, ...data]
+      const data = await PropertyService.getBookingProperties(_keyword, payload, _page, Env.PAGE_SIZE)
+      const _properties = _page === 1 ? data : [...properties, ...data]
 
       setProperties(_properties)
       setFetch(data.length > 0)
@@ -155,7 +155,7 @@ const PropertySelectList = (
             if (fetch && !loading && listboxNode.scrollTop + listboxNode.clientHeight >= listboxNode.scrollHeight - Env.PAGE_OFFSET) {
               const p = page + 1
               setPage(p)
-              _fetch(p, keyword, _agency, _location)
+              _fetch(p, keyword, currentAgency, currentLocation)
             }
           },
         }}
@@ -164,17 +164,17 @@ const PropertySelectList = (
             const p = 1
             setProperties([])
             setPage(p)
-            _fetch(p, keyword, _agency, _location)
+            _fetch(p, keyword, currentAgency, currentLocation)
           }
         }}
         onInputChange={(event: React.SyntheticEvent<Element, Event>) => {
-          const value = (event && event.target && 'value' in event.target && event.target.value as string) || ''
+          const _value = (event && event.target && 'value' in event.target && event.target.value as string) || ''
 
-          if (value !== keyword) {
+          if (_value !== keyword) {
             setProperties([])
             setPage(1)
-            setKeyword(value)
-            _fetch(1, value, _agency, _location)
+            setKeyword(_value)
+            _fetch(1, _value, currentAgency, currentLocation)
           }
         }}
         onClear={() => {
@@ -182,18 +182,18 @@ const PropertySelectList = (
           setPage(1)
           setKeyword('')
           setFetch(true)
-          _fetch(1, '', _agency, _location)
+          _fetch(1, '', currentAgency, currentLocation)
         }}
       />
 
       <Dialog disableEscapeKeyDown maxWidth="xs" open={openDialog}>
         <DialogTitle className="dialog-header">{commonStrings.INFO}</DialogTitle>
         <DialogContent className="dialog-content">
-          {_agency === '-1' && _location === '-1' ? (
+          {currentAgency === '-1' && currentLocation === '-1' ? (
             `${strings.REQUIRED_FIELDS}${blStrings.AGENCY} ${commonStrings.AND} ${bfStrings.LOCATION}`
-          ) : _agency === '-1' ? (
+          ) : currentAgency === '-1' ? (
             `${strings.REQUIRED_FIELD}${blStrings.AGENCY}`
-          ) : _location === '-1' ? (
+          ) : currentLocation === '-1' ? (
             `${strings.REQUIRED_FIELD}${bfStrings.LOCATION}`
           ) : (
             <></>

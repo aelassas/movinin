@@ -1,4 +1,14 @@
 import React, { useState } from 'react'
+import {
+  FormControl,
+  FormControlLabel,
+  Switch,
+} from '@mui/material'
+import {
+  Info as InfoIcon,
+} from '@mui/icons-material'
+import * as movininTypes from 'movinin-types'
+import * as movininHelper from 'movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings as blStrings } from '../lang/booking-list'
 import { strings as bfStrings } from '../lang/booking-filter'
@@ -16,20 +26,10 @@ import LocationSelectList from '../components/LocationSelectList'
 import PropertySelectList from '../components/PropertySelectList'
 import StatusList from '../components/StatusList'
 import DatePicker from '../components/DatePicker'
-import {
-  FormControl,
-  FormControlLabel,
-  Switch,
-} from '@mui/material'
-import {
-  Info as InfoIcon,
-} from '@mui/icons-material'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
 
 import '../assets/css/booking.css'
 
-const Booking = () => {
+function Booking() {
   const [loading, setLoading] = useState(false)
   const [noMatch, setNoMatch] = useState(false)
   const [error, setError] = useState(false)
@@ -54,30 +54,30 @@ const Booking = () => {
         const id = params.get('b')
         if (id && id !== '') {
           try {
-            const booking = await BookingService.getBooking(id)
+            const _booking = await BookingService.getBooking(id)
 
-            if (booking) {
-              setBooking(booking)
-              setPrice(booking.price)
+            if (_booking) {
+              setBooking(_booking)
+              setPrice(_booking.price)
               setLoading(false)
               setVisible(true)
               setIsAgency(user.type === movininTypes.RecordType.Agency)
-              const cmp = booking.agency as movininTypes.User
+              const cmp = _booking.agency as movininTypes.User
               setAgency({
                 _id: cmp._id as string,
                 name: cmp.fullName,
                 image: cmp.avatar,
               })
-              setProperty(booking.property as movininTypes.Property)
-              const loc = booking.location as movininTypes.Location
+              setProperty(_booking.property as movininTypes.Property)
+              const loc = _booking.location as movininTypes.Location
               setLocation({
                 _id: loc._id,
                 name: loc.name || '',
               })
-              setFrom(new Date(booking.from))
-              setTo(new Date(booking.to))
-              setStatus(booking.status)
-              setCancellation(booking.cancellation || false)
+              setFrom(new Date(_booking.from))
+              setTo(new Date(_booking.to))
+              setStatus(_booking.status)
+              setCancellation(_booking.cancellation || false)
             } else {
               setLoading(false)
               setNoMatch(true)
@@ -168,7 +168,7 @@ const Booking = () => {
 
               <div className="info">
                 <InfoIcon />
-                <label>{commonStrings.OPTIONAL}</label>
+                <span>{commonStrings.OPTIONAL}</span>
               </div>
 
               <FormControl fullWidth margin="dense" className="checkbox-fc">
@@ -184,9 +184,9 @@ const Booking = () => {
           <div className="col-2">
             <div className="col-2-header">
               <div className="price">
-                <label className="price-days">{Helper.getDays(days)}</label>
-                <label className="price-main">{`${movininHelper.formatNumber(price ?? 0)} ${commonStrings.CURRENCY}`}</label>
-                <label className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</label>
+                <span className="price-days">{Helper.getDays(days)}</span>
+                <span className="price-main">{`${movininHelper.formatNumber(price ?? 0)} ${commonStrings.CURRENCY}`}</span>
+                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</span>
               </div>
             </div>
             <PropertyList
