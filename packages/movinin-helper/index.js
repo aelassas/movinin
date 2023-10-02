@@ -42,7 +42,7 @@ export function capitalize(str) {
  * @returns {boolean}
  */
 export function isDate(value) {
-    return value instanceof Date && !isNaN(value.valueOf());
+    return value instanceof Date && !Number.isNaN(value.valueOf());
 }
 /**
  * Join two url parts.
@@ -113,7 +113,7 @@ export const arrayEqual = (a, b) => {
     // the array, you should sort both arrays here.
     // Please note that calling sort on an array will modify that array.
     // you might want to clone your array first.
-    for (let i = 0; i < a.length; i++) {
+    for (let i = 0; i < a.length; i += 1) {
         if (a[i] !== b[i]) {
             return false;
         }
