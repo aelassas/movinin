@@ -1,34 +1,40 @@
 import React, { memo, useEffect, useRef } from 'react'
-import { ActivityIndicator, Animated, Easing, StyleSheet, Pressable, View } from 'react-native'
+import {
+  ActivityIndicator,
+  Animated,
+  Easing,
+  StyleSheet,
+  Pressable,
+  View
+} from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import Feather from 'react-native-vector-icons/Feather'
+
 Feather.loadFont()
 
-const RightButtonComponent = (
-  {
-    inputHeight,
-    isOpened,
-    showChevron,
-    showClear,
-    loading,
-    buttonsContainerStyle,
-    ChevronIconComponent,
-    ClearIconComponent,
-    onClearPress,
-    onChevronPress,
-  }: {
-    inputHeight?: number
-    isOpened?: boolean
-    showChevron?: boolean
-    showClear?: boolean
-    loading?: boolean
-    buttonsContainerStyle?: object
-    ChevronIconComponent?: React.ReactNode
-    ClearIconComponent?: boolean
-    onClearPress: () => void
-    onChevronPress: () => void
-  }
-) => {
+function RightButtonComponent({
+  inputHeight,
+  isOpened,
+  showChevron,
+  showClear,
+  loading,
+  buttonsContainerStyle,
+  ChevronIconComponent,
+  ClearIconComponent,
+  onClearPress,
+  onChevronPress,
+}: {
+  inputHeight?: number
+  isOpened?: boolean
+  showChevron?: boolean
+  showClear?: boolean
+  loading?: boolean
+  buttonsContainerStyle?: object
+  ChevronIconComponent?: React.ReactNode
+  ClearIconComponent?: boolean
+  onClearPress: () => void
+  onChevronPress: () => void
+}) {
   const isOpenedAnimationValue = useRef(new Animated.Value(0)).current
 
   useEffect(() => {

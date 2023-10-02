@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Keyboard } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Keyboard
+} from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
@@ -12,7 +19,7 @@ import Button from '../components/Button'
 import LocationSelectList from '../components/LocationSelectList'
 import DateTimePicker from '../components/DateTimePicker'
 
-const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Home'>) => {
+function HomeScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'Home'>) {
   const isFocused = useIsFocused()
 
   const _minDate = new Date()
@@ -30,9 +37,9 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
   const [reload, setReload] = useState(false)
 
   const _init = async () => {
-    const language = await UserService.getLanguage()
-    i18n.locale = language
-    setLanguage(language)
+    const _language = await UserService.getLanguage()
+    i18n.locale = _language
+    setLanguage(_language)
 
     setLocation('')
     setFrom(undefined)
@@ -59,8 +66,8 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
     setReload(false)
   }
 
-  const handleLocationSelect = (location: string) => {
-    setLocation(location)
+  const handleLocationSelect = (_location: string) => {
+    setLocation(_location)
   }
 
   const blurLocations = () => {
@@ -76,15 +83,18 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
     blurLocations()
 
     if (!location) {
-      return Helper.toast(i18n.t('LOCATION_EMPTY'))
+      Helper.toast(i18n.t('LOCATION_EMPTY'))
+      return
     }
 
     if (!from) {
-      return Helper.toast(i18n.t('FROM_DATE_EMPTY'))
+      Helper.toast(i18n.t('FROM_DATE_EMPTY'))
+      return
     }
 
     if (!to) {
-      return Helper.toast(i18n.t('TO_DATE_EMPTY'))
+      Helper.toast(i18n.t('TO_DATE_EMPTY'))
+      return
     }
 
     const params = {
@@ -103,7 +113,7 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
           <View style={styles.contentContainer}>
             <View style={styles.logo}>
-              <Text style={styles.logoMain}>{"Movin' In"}</Text>
+              <Text style={styles.logoMain}>Movin&apos; In</Text>
               <Text style={styles.logoRegistered}>®</Text>
             </View>
 
@@ -150,9 +160,9 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
                     setTo(undefined)
                   }
 
-                  const minDate = new Date(date)
-                  minDate.setDate(date.getDate() + 1)
-                  setMinDate(minDate)
+                  const __minDate = new Date(date)
+                  __minDate.setDate(date.getDate() + 1)
+                  setMinDate(__minDate)
                 } else {
                   setMinDate(_minDate)
                 }

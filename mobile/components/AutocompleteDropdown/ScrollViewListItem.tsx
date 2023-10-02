@@ -1,24 +1,27 @@
 import React, { memo } from 'react'
-import { StyleSheet, Text, Pressable, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  Pressable,
+  View
+} from 'react-native'
 
-const ScrollViewListItemComponent = (
+function ScrollViewListItemComponent({
+  titleHighlighted,
+  titleStart,
+  titleEnd,
+  style,
+  numberOfLines = 2,
+  onPress
+}:
   {
-    titleHighlighted,
-    titleStart,
-    titleEnd,
-    style,
-    numberOfLines = 2,
-    onPress
-  }:
-    {
-      titleHighlighted?: string
-      titleStart?: string
-      titleEnd?: string
-      style?: object
-      numberOfLines?: number
-      onPress: () => void
-    }
-) => {
+    titleHighlighted?: string
+    titleStart?: string
+    titleEnd?: string
+    style?: object
+    numberOfLines?: number
+    onPress: () => void
+  }) {
   return (
     <Pressable onPress={onPress}>
       <View style={styles.container}>

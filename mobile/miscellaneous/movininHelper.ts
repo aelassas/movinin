@@ -12,7 +12,7 @@ export function formatNumber(x?: number): string {
 }
 
 export function formatDatePart(n: number): string {
-    return n > 9 ? String(n) : '0' + n
+    return n > 9 ? String(n) : `0${n}`
 }
 
 export function capitalize(str: string): string {
@@ -20,7 +20,7 @@ export function capitalize(str: string): string {
 }
 
 export function isDate(date?: Date): boolean {
-    return date instanceof Date && !isNaN(date.valueOf())
+    return date instanceof Date && !Number.isNaN(date.valueOf())
 }
 
 export const joinURL = (part1?: string, part2?: string) => {
@@ -36,20 +36,14 @@ export const joinURL = (part1?: string, part2?: string) => {
     if (part2.charAt(0) === '/') {
         part2 = part2.substring(1)
     }
-    return part1 + '/' + part2
+    return `${part1}/${part2}`
 }
 
-export const isInteger = (val: string) => {
-    return /^\d+$/.test(val)
-}
+export const isInteger = (val: string) => /^\d+$/.test(val)
 
-export const isYear = (val: string) => {
-    return /^\d{2}$/.test(val)
-}
+export const isYear = (val: string) => /^\d{2}$/.test(val)
 
-export const isCvv = (val: string) => {
-    return /^\d{3,4}$/.test(val)
-}
+export const isCvv = (val: string) => /^\d{3,4}$/.test(val)
 
 export const arrayEqual = (a: any, b: any) => {
     if (a === b) {
@@ -67,7 +61,7 @@ export const arrayEqual = (a: any, b: any) => {
     // Please note that calling sort on an array will modify that array.
     // you might want to clone your array first.
 
-    for (let i = 0; i < a.length; i++) {
+    for (let i = 0; i < a.length; i += 1) {
         if (a[i] !== b[i]) {
             return false
         }
@@ -75,9 +69,7 @@ export const arrayEqual = (a: any, b: any) => {
     return true
 }
 
-export const clone = (obj: any) => {
-    return Array.isArray(obj) ? Array.from(obj) : Object.assign({}, obj)
-}
+export const clone = (obj: any) => (Array.isArray(obj) ? Array.from(obj) : ({ ...obj }))
 
 export function cloneArray<T>(arr: T[]): T[] | undefined | null {
     if (typeof arr === 'undefined') {
@@ -132,7 +124,7 @@ export const daysInMonth = (month: number, year: number) =>
     new Date(year, month, 0).getDate()
 
 export const daysInYear = (year: number) =>
-    ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365
+    (((year % 4 === 0 && year % 100 > 0) || year % 400 === 0) ? 366 : 365)
 
 export const getAllPropertyTypes = () =>
     [

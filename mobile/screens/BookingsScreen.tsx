@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import * as movininTypes from  '../miscellaneous/movininTypes'
+import * as movininTypes from '../miscellaneous/movininTypes'
 
 import Master from '../components/Master'
 import i18n from '../lang/i18n'
@@ -14,7 +14,7 @@ import StatusFilter from '../components/StatusFilter'
 import * as BookingService from '../services/BookingService'
 import BookingFilter from '../components/BookingFilter'
 
-const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Bookings'>) => {
+function BookingsScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'Bookings'>) {
   const isFocused = useIsFocused()
   const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
   const [reload, setReload] = useState(false)
@@ -32,9 +32,9 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       setCompanies([])
       setFilter(undefined)
 
-      const language = await UserService.getLanguage()
-      i18n.locale = language
-      setLanguage(language)
+      const _language = await UserService.getLanguage()
+      i18n.locale = _language
+      setLanguage(_language)
 
       const currentUser = await UserService.getCurrentUser()
 
@@ -43,18 +43,18 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         return
       }
 
-      const user = await UserService.getUser(currentUser._id)
+      const _user = await UserService.getUser(currentUser._id)
 
-      if (!user?._id) {
+      if (!_user?._id) {
         await UserService.signout(navigation, false, true)
         return
       }
 
-      setUser(user)
+      setUser(_user)
 
-      const hasBookingsStatus = await BookingService.hasBookings(user._id)
-      const hasBookings = hasBookingsStatus === 200
-      setHasBookings(hasBookings)
+      const hasBookingsStatus = await BookingService.hasBookings(_user._id)
+      const _hasBookings = hasBookingsStatus === 200
+      setHasBookings(_hasBookings)
 
       setVisible(true)
     } catch (err) {
@@ -75,24 +75,24 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     setReload(false)
   }
 
-  const onLoadCompanies = (agencies: string[]) => {
-    setCompanies(agencies)
+  const onLoadCompanies = (_agencies: string[]) => {
+    setCompanies(_agencies)
   }
 
-  const onChangeCompanies = (agencies: string[]) => {
-    setCompanies(agencies)
+  const onChangeCompanies = (_agencies: string[]) => {
+    setCompanies(_agencies)
   }
 
-  const onLoadStatuses = (statuses: string[]) => {
-    setStatuses(statuses)
+  const onLoadStatuses = (_statuses: string[]) => {
+    setStatuses(_statuses)
   }
 
-  const onChangeStatuses = (statuses: string[]) => {
-    setStatuses(statuses)
+  const onChangeStatuses = (_statuses: string[]) => {
+    setStatuses(_statuses)
   }
 
-  const onSubmitBookingFilter = (filter: movininTypes.Filter) => {
-    setFilter(filter)
+  const onSubmitBookingFilter = (_filter: movininTypes.Filter) => {
+    setFilter(_filter)
   }
 
   return (
@@ -104,7 +104,7 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
           agencies={agencies}
           statuses={statuses}
           filter={filter}
-          header={
+          header={(
             <View>
               <AgencyFilter
                 style={styles.filter}
@@ -124,7 +124,7 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                 onSubmit={onSubmitBookingFilter}
               />
             </View>
-          }
+          )}
         />
       )}
     </Master>

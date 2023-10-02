@@ -5,9 +5,9 @@ import Constants from 'expo-constants'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RouteProp } from '@react-navigation/native'
 
+import * as mime from 'mime'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
-import * as mime from 'mime'
 import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 import * as ToasHelper from './ToastHelper'
@@ -63,7 +63,7 @@ export const getMimeType = (fileName: string) => mime.getType(fileName)
  */
 export const registerPushToken = async (userId: string) => {
   async function registerForPushNotificationsAsync() {
-    let token
+    let token: string | undefined
 
     try {
       if (Device.isDevice) {
@@ -75,7 +75,7 @@ export const registerPushToken = async (userId: string) => {
         }
         if (finalStatus !== 'granted') {
           alert('Failed to get push token for push notification!')
-          return
+          return ''
         }
         token = (
           await Notifications.getExpoPushTokenAsync({
@@ -126,12 +126,12 @@ export const registerPushToken = async (userId: string) => {
  * @returns {Date}
  */
 export const dateTime = (date: Date, time: Date) => {
-  const dateTime = new Date(date)
-  dateTime.setHours(time.getHours())
-  dateTime.setMinutes(time.getMinutes())
-  dateTime.setSeconds(time.getSeconds())
-  dateTime.setMilliseconds(time.getMilliseconds())
-  return dateTime
+  const _dateTime = new Date(date)
+  _dateTime.setHours(time.getHours())
+  _dateTime.setMinutes(time.getMinutes())
+  _dateTime.setSeconds(time.getSeconds())
+  _dateTime.setMilliseconds(time.getMilliseconds())
+  return _dateTime
 }
 
 /**
@@ -144,11 +144,10 @@ export const dateTime = (date: Date, time: Date) => {
 export const getCancellation = (cancellation: number, fr: boolean) => {
   if (cancellation === -1) {
     return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${i18n.t('UNAVAILABLE')}`
-  } else if (cancellation === 0) {
+  } if (cancellation === 0) {
     return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${i18n.t('INCLUDED')}${fr ? 'e' : ''}`
-  } else {
-    return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${movininHelper.formatNumber(cancellation)} ${i18n.t('CURRENCY')}`
   }
+  return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${movininHelper.formatNumber(cancellation)} ${i18n.t('CURRENCY')}`
 }
 
 /**
@@ -157,9 +156,7 @@ export const getCancellation = (cancellation: number, fr: boolean) => {
  * @param {number} days
  * @returns {string}
  */
-export const getDays = (days: number) => {
-  return `${i18n.t('PRICE_DAYS_PART_1')} ${days} ${i18n.t('PRICE_DAYS_PART_2')}${days > 1 ? 's' : ''}`
-}
+export const getDays = (days: number) => `${i18n.t('PRICE_DAYS_PART_1')} ${days} ${i18n.t('PRICE_DAYS_PART_2')}${days > 1 ? 's' : ''}`
 
 /**
  * Get short days label.
@@ -167,10 +164,7 @@ export const getDays = (days: number) => {
  * @param {number} days
  * @returns {string}
  */
-export const getDaysShort = (days: number) => {
-  return `${days} ${i18n.t('PRICE_DAYS_PART_2')}${days > 1 ? 's' : ''}`
-}
-
+export const getDaysShort = (days: number) => `${days} ${i18n.t('PRICE_DAYS_PART_2')}${days > 1 ? 's' : ''}`
 
 /**
  * Get price.
@@ -185,25 +179,25 @@ export const price = (property: movininTypes.Property, from: Date, to: Date, opt
   const now = new Date()
   const days = movininHelper.days(from, to)
 
-  let price = 0
+  let _price = 0
 
   if (property.rentalTerm === movininTypes.RentalTerm.Monthly) {
-    price = property.price * days / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
+    _price = (property.price * days) / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
   } else if (property.rentalTerm === movininTypes.RentalTerm.Weekly) {
-    price = property.price * days / 7
+    _price = (property.price * days) / 7
   } else if (property.rentalTerm === movininTypes.RentalTerm.Daily) {
-    price = property.price * days
+    _price = property.price * days
   } else if (property.rentalTerm === movininTypes.RentalTerm.Yearly) {
-    price = property.price * days / movininHelper.daysInYear(now.getFullYear())
+    _price = (property.price * days) / movininHelper.daysInYear(now.getFullYear())
   }
 
   if (options) {
     if (options.cancellation && property.cancellation > 0) {
-      price += property.cancellation
+      _price += property.cancellation
     }
   }
 
-  return price
+  return _price
 }
 
 /**
@@ -217,11 +211,10 @@ export const price = (property: movininTypes.Property, from: Date, to: Date, opt
 export const getCancellationOption = (cancellation: number, fr: boolean, hidePlus?: boolean) => {
   if (cancellation === -1) {
     return i18n.t('UNAVAILABLE')
-  } else if (cancellation === 0) {
+  } if (cancellation === 0) {
     return `${i18n.t('INCLUDED')}${fr ? 'e' : ''}`
-  } else {
-    return `${hidePlus ? '' : '+ '}${movininHelper.formatNumber(cancellation)} ${i18n.t('CURRENCY')}`
   }
+  return `${hidePlus ? '' : '+ '}${movininHelper.formatNumber(cancellation)} ${i18n.t('CURRENCY')}`
 }
 
 /**
@@ -347,7 +340,6 @@ export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
 export const priceLabel = (property: movininTypes.Property): string =>
   `${movininHelper.formatNumber(property.price)} ${i18n.t('CURRENCY')}/${rentalTermUnit(property.rentalTerm)}`
 
-
 /**
  * Check whether property option is available or not.
  *
@@ -416,30 +408,38 @@ export const navigate = (
       navigation.navigate(route.name, { d: new Date().getTime() })
       break
     case 'Booking':
-      navigation.navigate(route.name,
+      navigation.navigate(
+        route.name,
         {
           d: new Date().getTime(),
           id: (route.params && 'id' in route.params && route.params.id as string) || '',
-        })
+        }
+      )
       break
     case 'Properties':
-      navigation.navigate(route.name,
+      navigation.navigate(
+        route.name,
         {
           d: new Date().getTime(),
           location: (route.params && 'location' in route.params && route.params.location as string) || '',
           from: (route.params && 'from' in route.params && route.params.from as number) || 0,
           to: (route.params && 'to' in route.params && route.params.to as number) || 0,
-        })
+        }
+      )
       break
     case 'Checkout':
-      navigation.navigate(route.name,
+      navigation.navigate(
+        route.name,
         {
           d: new Date().getTime(),
           property: (route.params && 'property' in route.params && route.params.property as string) || '',
           location: (route.params && 'location' in route.params && route.params.location as string) || '',
           from: (route.params && 'from' in route.params && route.params.from as number) || 0,
           to: (route.params && 'to' in route.params && route.params.to as number) || 0,
-        })
+        }
+      )
+      break
+    default:
       break
   }
 }

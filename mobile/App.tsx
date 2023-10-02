@@ -4,10 +4,10 @@ import { RootSiblingParent } from 'react-native-root-siblings'
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native'
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import DrawerNavigator from './components/DrawerNavigator'
 import { Provider } from 'react-native-paper'
 import * as SplashScreen from 'expo-splash-screen'
 import * as Notifications from 'expo-notifications'
+import DrawerNavigator from './components/DrawerNavigator'
 import * as Helper from './common/Helper'
 import * as NotificationService from './services/NotificationService'
 import * as UserService from './services/UserService'
@@ -25,7 +25,7 @@ SplashScreen.preventAutoHideAsync()
   .then((result) => console.log(`SplashScreen.preventAutoHideAsync() succeeded: ${result}`))
   .catch(console.warn) // it's good to explicitly catch and inspect any error
 
-const App = () => {
+function App() {
   const [appIsReady, setAppIsReady] = useState(false)
   const responseListener = useRef<Notifications.Subscription>()
   const navigationRef = useRef<NavigationContainerRef<StackParams>>(null)
@@ -50,7 +50,7 @@ const App = () => {
     responseListener.current = Notifications.addNotificationResponseReceivedListener(async (response) => {
       try {
         if (navigationRef.current) {
-          const data = response.notification.request.content.data
+          const { data } = response.notification.request.content
 
           if (data.booking) {
             if (data.user && data.notification) {

@@ -88,21 +88,21 @@ export const AXIOS_TIMEOUT: number = 5000
  *
  * @type {number}
  */
-export const PAGE_SIZE: number = Number.parseInt(MI_PAGE_SIZE) || 20
+export const PAGE_SIZE: number = Number.parseInt(MI_PAGE_SIZE, 10) || 20
 
 /**
  * Properties page size. Default is 8.
  *
  * @type {number}
  */
-export const PROPERTIES_PAGE_SIZE: number = Number.parseInt(MI_PROPERTIES_PAGE_SIZE) || 8
+export const PROPERTIES_PAGE_SIZE: number = Number.parseInt(MI_PROPERTIES_PAGE_SIZE, 10) || 8
 
 /**
  * Bookings page size. Default is 8.
  *
  * @type {number}
  */
-export const BOOKINGS_PAGE_SIZE: number = Number.parseInt(MI_BOOKINGS_PAGE_SIZE) || 8
+export const BOOKINGS_PAGE_SIZE: number = Number.parseInt(MI_BOOKINGS_PAGE_SIZE, 10) || 8
 
 /**
  * User images CDN.
@@ -130,35 +130,35 @@ export const PAGE_OFFSET: number = 200
  *
  * @type {number}
  */
-export const AGENCY_IMAGE_WIDTH: number = Number.parseInt(MI_AGENCY_IMAGE_WIDTH) || 60
+export const AGENCY_IMAGE_WIDTH: number = Number.parseInt(MI_AGENCY_IMAGE_WIDTH, 10) || 60
 
 /**
  * Agency image height. Default is 30.
  *
  * @type {number}
  */
-export const AGENCY_IMAGE_HEIGHT: number = Number.parseInt(MI_AGENCY_IMAGE_HEIGHT) || 30
+export const AGENCY_IMAGE_HEIGHT: number = Number.parseInt(MI_AGENCY_IMAGE_HEIGHT, 10) || 30
 
 /**
  * Property image width. Default is 300.
  *
  * @type {number}
  */
-export const PROPERTY_IMAGE_WIDTH: number = Number.parseInt(MI_PROPERTY_IMAGE_WIDTH) || 300
+export const PROPERTY_IMAGE_WIDTH: number = Number.parseInt(MI_PROPERTY_IMAGE_WIDTH, 10) || 300
 
 /**
  * Property image height. Default is 200.
  *
  * @type {number}
  */
-export const PROPERTY_IMAGE_HEIGHT: number = Number.parseInt(MI_PROPERTY_IMAGE_HEIGHT) || 200
+export const PROPERTY_IMAGE_HEIGHT: number = Number.parseInt(MI_PROPERTY_IMAGE_HEIGHT, 10) || 200
 
 /**
  * Minimum age. Default is 21.
  *
  * @type {number}
  */
-export const MINIMUM_AGE: number = Number.parseInt(MI_MINIMUM_AGE) || 21
+export const MINIMUM_AGE: number = Number.parseInt(MI_MINIMUM_AGE, 10) || 21
 
 /**
  * Size unit.

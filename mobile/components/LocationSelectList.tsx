@@ -7,33 +7,31 @@ import { AutocompleteDropdown, AutocompleteOption } from './AutocompleteDropdown
 import * as LocationService from '../services/LocationService'
 import * as Helper from '../common/Helper'
 
-const LocationSelectList = (
-  {
-    selectedItem: listSelectedItem,
-    size,
-    style,
-    backgroundColor,
-    label,
-    blur,
-    close,
-    onSelectItem,
-    onFetch,
-    onChangeText: listOnChangeText,
-    onFocus
-  }: {
-    selectedItem?: string
-    size?: 'small'
-    style?: object
-    backgroundColor?: string
-    label: string
-    blur?: boolean
-    close?: boolean
-    onSelectItem?: (selectedItem: string) => void
-    onFetch?: () => void
-    onChangeText?: (text: string) => void
-    onFocus?: () => void
-  }
-) => {
+function LocationSelectList({
+  selectedItem: listSelectedItem,
+  size,
+  style,
+  backgroundColor,
+  label,
+  blur,
+  close,
+  onSelectItem,
+  onFetch,
+  onChangeText: listOnChangeText,
+  onFocus
+}: {
+  selectedItem?: string
+  size?: 'small'
+  style?: object
+  backgroundColor?: string
+  label: string
+  blur?: boolean
+  close?: boolean
+  onSelectItem?: (selectedItem: string) => void
+  onFetch?: () => void
+  onChangeText?: (text: string) => void
+  onFocus?: () => void
+}) {
   const [loading, setLoading] = useState(false)
   const [rows, setRows] = useState<AutocompleteOption[]>([])
   const [selectedItem, setSelectedItem] = useState<string>()
@@ -42,11 +40,11 @@ const LocationSelectList = (
     setSelectedItem(listSelectedItem)
   }, [listSelectedItem])
 
-  const _setSelectedItem = (selectedItem?: string) => {
-    setSelectedItem(selectedItem)
+  const _setSelectedItem = (_selectedItem?: string) => {
+    setSelectedItem(_selectedItem)
 
     if (onSelectItem) {
-      onSelectItem(selectedItem as string)
+      onSelectItem(_selectedItem as string)
     }
   }
 
@@ -108,7 +106,9 @@ const LocationSelectList = (
         useFilter={false} // set false to prevent rerender twice
         dataSet={rows}
         onSelectItem={(item: AutocompleteOption) => {
-          item && _setSelectedItem(item.id)
+          if (item) {
+            _setSelectedItem(item.id)
+          }
         }}
         onChangeText={(text: string) => {
           onChangeText(text)
@@ -168,9 +168,9 @@ const LocationSelectList = (
         inputHeight={small ? 37 : 55}
         showChevron={false}
         showClear={!!selectedItem}
-        closeOnBlur={true}
+        closeOnBlur
         clearOnFocus={false}
-        closeOnSubmit={true}
+        closeOnSubmit
         EmptyResultComponent={<></>}
       />
     </View>

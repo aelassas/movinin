@@ -13,7 +13,7 @@ import AgencyFilter from '../components/AgencyFilter'
 import RentalTermFilter from '../components/RentalTermFilter'
 import PropertyTypeFilter from '../components/PropertyTypeFilter'
 
-const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Properties'>) => {
+function PropertiesScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'Properties'>) {
   const isFocused = useIsFocused()
   const [reload, setReload] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -41,21 +41,21 @@ const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackPar
     setReload(false)
   }
 
-  const onLoadCompanies = (agencies: string[]) => {
-    setCompanies(agencies)
+  const onLoadCompanies = (_agencies: string[]) => {
+    setCompanies(_agencies)
     setLoaded(true)
   }
 
-  const onChangeCompanies = (agencies: string[]) => {
-    setCompanies(agencies)
+  const onChangeCompanies = (_agencies: string[]) => {
+    setCompanies(_agencies)
   }
 
-  const onChangeRentalTerm = (rentalTerms: movininTypes.RentalTerm[]) => {
-    setRentalTerm(rentalTerms)
+  const onChangeRentalTerm = (_rentalTerms: movininTypes.RentalTerm[]) => {
+    setRentalTerm(_rentalTerms)
   }
 
-  const onChangePropertyType = (propertyTypes: movininTypes.PropertyType[]) => {
-    setPropertyTypes(propertyTypes)
+  const onChangePropertyType = (_propertyTypes: movininTypes.PropertyType[]) => {
+    setPropertyTypes(_propertyTypes)
   }
 
   return (
@@ -69,13 +69,13 @@ const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackPar
           location={route.params.location}
           from={new Date(route.params.from)}
           to={new Date(route.params.to)}
-          header={
+          header={(
             <View>
               <AgencyFilter style={styles.filter} visible onLoad={onLoadCompanies} onChange={onChangeCompanies} />
               <PropertyTypeFilter style={styles.filter} visible={loaded} onChange={onChangePropertyType} />
               <RentalTermFilter style={styles.filter} visible={loaded} onChange={onChangeRentalTerm} />
             </View>
-          }
+          )}
         />
       )}
     </Master>

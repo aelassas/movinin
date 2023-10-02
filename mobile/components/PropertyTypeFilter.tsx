@@ -8,8 +8,7 @@ import Accordion from './Accordion'
 import Link from './Link'
 import Switch from './Switch'
 
-const PropertyTypeFilter = (
-  {
+function PropertyTypeFilter({
     visible,
     style,
     onChange
@@ -17,8 +16,7 @@ const PropertyTypeFilter = (
     visible?: boolean
     style?: object
     onChange?: (values: movininTypes.PropertyType[]) => void
-  }
-) => {
+  }) {
   const allPropertyTypes = movininHelper.getAllPropertyTypes()
 
   const [values, setValues] = useState(allPropertyTypes)
@@ -186,7 +184,6 @@ const PropertyTypeFilter = (
     if (checked) {
       values.push(movininTypes.PropertyType.Townhouse)
 
-      console.log('values.length', values.length)
       if (values.length === 7) {
         setAllChecked(true)
       }

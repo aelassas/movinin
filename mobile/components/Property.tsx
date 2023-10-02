@@ -1,38 +1,42 @@
 import React, { memo } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { StyleSheet, Text, View, Image, useWindowDimensions } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  useWindowDimensions
+} from 'react-native'
+import HTML from 'react-native-render-html'
 import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 import Button from './Button'
 import * as Helper from '../common/Helper'
 import * as Env from '../config/env.config'
 import i18n from '../lang/i18n'
-import HTML from 'react-native-render-html'
 
 const iconSize = 24
 const iconColor = '#000'
 
 const getExtraIcon = (extra: number) =>
-  extra === -1 ? 'clear' : extra === 0 ? 'check' : 'info'
+  (extra === -1 ? 'clear' : extra === 0 ? 'check' : 'info')
 
-const Property = (
-  {
-    property,
-    fr,
-    from,
-    to,
-    location,
-    navigation
-  }: {
-    navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
-    fr: boolean,
-    property: movininTypes.Property,
-    from: Date,
-    to: Date,
-    location: string,
-  }
-) => {
+function Property({
+  property,
+  fr,
+  from,
+  to,
+  location,
+  navigation
+}: {
+  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
+  fr: boolean,
+  property: movininTypes.Property,
+  from: Date,
+  to: Date,
+  location: string,
+}) {
   const { width } = useWindowDimensions()
   const days = movininHelper.days(from, to)
   const price = Helper.price(property, from, to)
@@ -96,11 +100,13 @@ const Property = (
 
         <View style={styles.extras}>
           {
-            property.size &&
-            <View style={styles.extra}>
-              <MaterialIcons name="photo-size-select-small" size={iconSize} style={styles.infoIcon} />
-              <Text style={styles.text}>{`${property.size} ${Env.SIZE_UNIT}`}</Text>
-            </View>
+            property.size
+            && (
+              <View style={styles.extra}>
+                <MaterialIcons name="photo-size-select-small" size={iconSize} style={styles.infoIcon} />
+                <Text style={styles.text}>{`${property.size} ${Env.SIZE_UNIT}`}</Text>
+              </View>
+            )
           }
           <View style={styles.extra}>
             <MaterialIcons name={getExtraIcon(property.cancellation)} size={iconSize} style={styles.infoIcon} />
@@ -111,7 +117,8 @@ const Property = (
         <View style={styles.description}>
           <HTML
             contentWidth={width}
-            source={{ html: property.description }} />
+            source={{ html: property.description }}
+          />
         </View>
 
         <View style={styles.footer}>
@@ -139,7 +146,7 @@ const Property = (
             onPress={() => {
               const params = {
                 property: property._id,
-                location: location,
+                location,
                 from: from.getTime(),
                 to: to.getTime(),
               }

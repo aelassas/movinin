@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, ScrollView, View, TextInput as ReactTextInput } from 'react-native'
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  TextInput as ReactTextInput
+} from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import validator from 'validator'
@@ -14,7 +19,7 @@ import * as Helper from '../common/Helper'
 import Switch from '../components/Switch'
 import Header from '../components/Header'
 
-const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'SignIn'>) => {
+function SignInScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'SignIn'>) {
   const isFocused = useIsFocused()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -76,11 +81,10 @@ const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
             setEmailError(false)
             setEmailValid(true)
             return true
-          } else {
-            setEmailError(true)
-            setEmailValid(true)
-            return false
           }
+          setEmailError(true)
+          setEmailValid(true)
+          return false
         } catch (err) {
           Helper.error(err)
           setEmailError(false)
@@ -138,8 +142,8 @@ const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
   }
 
   const onPressSignIn = async () => {
-    const emailValid = await validateEmail()
-    if (!emailValid) {
+    const _emailValid = await validateEmail()
+    if (!_emailValid) {
       return
     }
 

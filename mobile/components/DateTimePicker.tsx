@@ -1,50 +1,53 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Pressable, Text } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  Text
+} from 'react-native'
 import ReactDateTimePicker from '@react-native-community/datetimepicker'
 import { format } from 'date-fns'
 import { enUS, fr } from 'date-fns/locale'
-import * as movininHelper from '../miscellaneous/movininHelper'
 import { MaterialIcons } from '@expo/vector-icons'
+import * as movininHelper from '../miscellaneous/movininHelper'
 import * as Env from '../config/env.config'
 import * as Helper from '../common/Helper'
 
-const DateTimePicker = (
-  {
-    value: dateTimeValue,
-    locale: dateTimeLocale,
-    mode,
-    size,
-    label: dateTimeLabel,
-    backgroundColor,
-    error,
-    style,
-    helperText,
-    minDate,
-    readOnly,
-    hideClearButton,
-    hidePicker,
-    hidePickerMessage,
-    onPress,
-    onChange
-  }: {
-    value?: Date
-    locale?: string,
-    mode?: 'date' | 'datetime' | 'time' | 'countdown'
-    size?: 'small'
-    label: string
-    backgroundColor?: string
-    error?: boolean
-    style?: object
-    helperText?: string
-    minDate?: Date
-    readOnly?: boolean
-    hideClearButton?: boolean
-    hidePicker?: boolean
-    hidePickerMessage?: string
-    onPress?: () => void
-    onChange?: (date: Date | undefined) => void
-  }
-) => {
+function DateTimePicker({
+  value: dateTimeValue,
+  locale: dateTimeLocale,
+  mode,
+  size,
+  label: dateTimeLabel,
+  backgroundColor,
+  error,
+  style,
+  helperText,
+  minDate,
+  readOnly,
+  hideClearButton,
+  hidePicker,
+  hidePickerMessage,
+  onPress,
+  onChange
+}: {
+  value?: Date
+  locale?: string,
+  mode?: 'date' | 'datetime' | 'time' | 'countdown'
+  size?: 'small'
+  label: string
+  backgroundColor?: string
+  error?: boolean
+  style?: object
+  helperText?: string
+  minDate?: Date
+  readOnly?: boolean
+  hideClearButton?: boolean
+  hidePicker?: boolean
+  hidePickerMessage?: string
+  onPress?: () => void
+  onChange?: (date: Date | undefined) => void
+}) {
   const [label, setLabel] = useState('')
   const [value, setValue] = useState<Date | undefined>(dateTimeValue)
   const [show, setShow] = useState(false)

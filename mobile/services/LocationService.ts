@@ -2,7 +2,7 @@ import axios from 'axios'
 import * as Env from '../config/env.config'
 import * as UserService from './UserService'
 import * as AxiosHelper from '../common/AxiosHelper'
-import * as movininTypes from  '../miscellaneous/movininTypes'
+import * as movininTypes from '../miscellaneous/movininTypes'
 
 AxiosHelper.init(axios)
 

@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ActivityIndicator
+} from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
@@ -10,29 +16,27 @@ import * as UserService from '../services/UserService'
 import * as PropertyService from '../services/PropertyService'
 import Property from './Property'
 
-const PropertyList = (
-  {
-    navigation,
-    from,
-    to,
-    location,
-    agencies,
-    types,
-    rentalTerms,
-    header,
-    onLoad
-  }: {
-    navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
-    from?: Date
-    to?: Date
-    location: string
-    agencies: string[]
-    types: movininTypes.PropertyType[]
-    rentalTerms: movininTypes.RentalTerm[]
-    header?: React.ReactElement
-    onLoad?: movininTypes.DataEvent<movininTypes.Property>
-  }
-) => {
+function PropertyList({
+  navigation,
+  from,
+  to,
+  location,
+  agencies,
+  types,
+  rentalTerms,
+  header,
+  onLoad
+}: {
+  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
+  from?: Date
+  to?: Date
+  location: string
+  agencies: string[]
+  types: movininTypes.PropertyType[]
+  rentalTerms: movininTypes.RentalTerm[]
+  header?: React.ReactElement
+  onLoad?: movininTypes.DataEvent<movininTypes.Property>
+}) {
   const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
   const [onScrollEnd, setOnScrollEnd] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -42,9 +46,9 @@ const PropertyList = (
 
   const _init = async () => {
     try {
-      const language = await UserService.getLanguage()
-      i18n.locale = language
-      setLanguage(language)
+      const _language = await UserService.getLanguage()
+      i18n.locale = _language
+      setLanguage(_language)
     } catch (err) {
       Helper.error(err)
     }
@@ -53,36 +57,36 @@ const PropertyList = (
   useEffect(() => {
     (async function () {
       await _init()
-    })()
+    }())
   }, [])
 
   const _fetch = async (
-    page: number,
-    location: string,
-    agencies: string[],
-    types: movininTypes.PropertyType[],
-    rentalTerms: movininTypes.RentalTerm[]
+    _page: number,
+    _location: string,
+    _agencies: string[],
+    _types: movininTypes.PropertyType[],
+    _rentalTerms: movininTypes.RentalTerm[]
   ) => {
     try {
-      if (agencies && agencies.length > 0) {
+      if (_agencies && _agencies.length > 0) {
         setLoading(true)
         setFetch(true)
 
         const payload: movininTypes.GetPropertiesPayload = {
-          location,
-          agencies,
-          types,
-          rentalTerms,
+          location: _location,
+          agencies: _agencies,
+          types: _types,
+          rentalTerms: _rentalTerms,
         }
 
-        const data = await PropertyService.getProperties(payload, page, Env.PROPERTIES_PAGE_SIZE)
+        const data = await PropertyService.getProperties(payload, _page, Env.PROPERTIES_PAGE_SIZE)
         const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
         if (!_data) {
           Helper.error()
           return
         }
         const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
-        const _rows = page === 1 ? _data.resultData : [...rows, ..._data.resultData]
+        const _rows = _page === 1 ? _data.resultData : [...rows, ..._data.resultData]
 
         setRows(_rows)
         setFetch(_data.resultData.length > 0)
@@ -140,7 +144,8 @@ const PropertyList = (
               from={from}
               to={to}
               location={location}
-              navigation={navigation} />
+              navigation={navigation}
+            />
           )}
           keyExtractor={(item) => item._id}
           onEndReached={() => setOnScrollEnd(true)}
@@ -154,7 +159,8 @@ const PropertyList = (
           ListFooterComponent={
             fetch
               ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
-              : <></>}
+              : <></>
+          }
           ListEmptyComponent={
             !loading ? (
               <View style={styles.container}>

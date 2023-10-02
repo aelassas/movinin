@@ -9,8 +9,7 @@ import DateTimePicker from './DateTimePicker'
 import LocationSelectList from './LocationSelectList'
 import TextInput from './TextInput'
 
-const BookingFilter = (
-  {
+function BookingFilter({
     visible,
     style,
     language,
@@ -20,8 +19,7 @@ const BookingFilter = (
     style?: object
     language?: string
     onSubmit: (filter: movininTypes.Filter) => void
-  }
-) => {
+  }) {
   const [init, setInit] = useState(false)
   const [from, setFrom] = useState<Date | undefined>(undefined)
   const [to, setTo] = useState<Date | undefined>(undefined)
@@ -52,8 +50,8 @@ const BookingFilter = (
     setCloseLocation(true)
   }
 
-  const handleLocationSelect = (location: string) => {
-    setLocation(location)
+  const handleLocationSelect = (_location: string) => {
+    setLocation(_location)
   }
 
   const onPressSearch = () => {
@@ -70,8 +68,8 @@ const BookingFilter = (
   }
 
   return (
-    init &&
-    visible && (
+    init
+    && visible && (
       <View style={{ ...styles.container, ...style }}>
         <Accordion style={styles.accordion} title={i18n.t('SEARCH')}>
           <DateTimePicker
@@ -90,9 +88,9 @@ const BookingFilter = (
                   setTo(undefined)
                 }
 
-                const minDate = new Date(date)
-                minDate.setDate(date.getDate() + 1)
-                setMinDate(minDate)
+                const _minDate = new Date(date)
+                _minDate.setDate(date.getDate() + 1)
+                setMinDate(_minDate)
               } else {
                 setMinDate(undefined)
               }

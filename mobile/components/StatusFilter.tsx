@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import * as movininTypes from  '../miscellaneous/movininTypes'
+import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 
 import * as Helper from '../common/Helper'
@@ -10,8 +10,7 @@ import BookingStatus from './BookingStatus'
 import Link from './Link'
 import Switch from './Switch'
 
-const StatusFilter = (
-  {
+function StatusFilter({
     visible,
     style,
     onLoad,
@@ -21,8 +20,7 @@ const StatusFilter = (
     style?: object
     onLoad?: (checkedStatuses: movininTypes.BookingStatus[]) => void
     onChange?: (checkedStatuses: movininTypes.BookingStatus[]) => void
-  }
-) => {
+  }) {
   const [statuses, setStatuses] = useState<movininTypes.StatusFilterItem[]>(
     Helper.getBookingStatuses().map((status) => ({ ...status, checked: true }))
   )
@@ -43,7 +41,8 @@ const StatusFilter = (
         <Accordion style={styles.accordion} title={i18n.t('BOOKING_STATUS')}>
           <View style={styles.statuses}>
             {statuses.map((status) => (
-              typeof status.checked !== 'undefined' &&
+              typeof status.checked !== 'undefined'
+              && (
               <View key={status.value} style={styles.status}>
                 <Switch
                   value={status.checked}
@@ -75,6 +74,7 @@ const StatusFilter = (
                   <BookingStatus style={styles.bookingStatus} status={status.value} />
                 </Switch>
               </View>
+)
             ))}
 
             <Link

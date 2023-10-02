@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { ActivityIndicator, FlatList, StyleSheet, View, Text } from 'react-native'
-import { Paragraph, Dialog, Portal, Button as NativeButton } from 'react-native-paper'
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  View,
+  Text
+} from 'react-native'
+import {
+  Paragraph,
+  Dialog,
+  Portal,
+  Button as NativeButton
+} from 'react-native-paper'
 import { enUS, fr } from 'date-fns/locale'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
@@ -11,25 +22,23 @@ import * as BookingService from '../services/BookingService'
 
 import Booking from './Booking'
 
-const BookingList = (
-  {
-    agencies,
-    statuses,
-    filter,
-    user,
-    booking: bookingId,
-    language,
-    header
-  }: {
-    agencies?: string[]
-    statuses?: string[]
-    filter?: movininTypes.Filter
-    user: string
-    booking?: string
-    language?: string
-    header?: React.ReactElement
-  }
-) => {
+function BookingList({
+  agencies,
+  statuses,
+  filter,
+  user,
+  booking: bookingId,
+  language,
+  header
+}: {
+  agencies?: string[]
+  statuses?: string[]
+  filter?: movininTypes.Filter
+  user: string
+  booking?: string
+  language?: string
+  header?: React.ReactElement
+}) {
   const [firstLoad, setFirstLoad] = useState(true)
   const [onScrollEnd, setOnScrollEnd] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -52,10 +61,10 @@ const BookingList = (
           setPage(0)
         }
         const payload: movininTypes.GetBookingsPayload = {
-          agencies: agencies,
-          statuses: statuses,
-          filter: filter,
-          user: user,
+          agencies,
+          statuses,
+          filter,
+          user,
           language: language || Env.DEFAULT_LANGUAGE
         }
         setLoading(true)
@@ -95,7 +104,7 @@ const BookingList = (
         await _fetch()
         setFirstLoad(false)
       }
-    })()
+    }())
   }, [firstLoad, agencies, statuses]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -169,8 +178,8 @@ const BookingList = (
         }}
         ListHeaderComponent={header}
         ListFooterComponent={
-          fetch && !openCancelDialog ?
-            <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
+          fetch && !openCancelDialog
+            ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
             : <></>
         }
         ListEmptyComponent={
@@ -227,7 +236,6 @@ const BookingList = (
                     const status = await BookingService.cancel(selectedId)
 
                     if (status === 200) {
-
                       row.cancelRequest = true
 
                       setCancelRequestSent(true)

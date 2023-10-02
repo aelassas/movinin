@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Image, ScrollView, StyleSheet, Text, View, TextInput as ReactTextInput } from 'react-native'
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TextInput as ReactTextInput
+} from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -26,7 +33,7 @@ import * as BookingService from '../services/BookingService'
 import * as Env from '../config/env.config'
 import Backdrop from '../components/Backdrop'
 
-const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Checkout'>) => {
+function CheckoutScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'Checkout'>) {
   const isFocused = useIsFocused()
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -93,16 +100,16 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       setVisible(false)
       setFormVisible(false)
 
-      const language = await UserService.getLanguage()
-      i18n.locale = language
-      setLanguage(language)
-      setLoacle(language === Env.LANGUAGE.FR ? fr : enUS)
+      const _language = await UserService.getLanguage()
+      i18n.locale = _language
+      setLanguage(_language)
+      setLoacle(_language === Env.LANGUAGE.FR ? fr : enUS)
 
       setAuthenticated(false)
       setUser(null)
 
-      let authenticated = false
-      let user = null
+      let _authenticated = false
+      let _user = null
       const currentUser = await UserService.getCurrentUser()
 
       if (currentUser?._id) {
@@ -114,19 +121,19 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         }
 
         if (status === 200) {
-          const _user = await UserService.getUser(currentUser._id)
+          const __user = await UserService.getUser(currentUser._id)
 
-          if (_user) {
-            authenticated = true
-            user = _user
+          if (__user) {
+            _authenticated = true
+            _user = __user
           }
         }
       }
 
-      setAuthenticated(authenticated)
-      setUser(user)
+      setAuthenticated(_authenticated)
+      setUser(_user)
 
-      if (!authenticated) {
+      if (!_authenticated) {
         setFullName('')
         setEmail('')
         setPhone('')
@@ -198,11 +205,11 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         return
       }
 
-      const property = await PropertyService.getProperty(route.params.property)
-      setProperty(property)
+      const _property = await PropertyService.getProperty(route.params.property)
+      setProperty(_property)
 
-      const location = await LocationService.getLocation(route.params.location)
-      setLocation(location)
+      const _location = await LocationService.getLocation(route.params.location)
+      setLocation(_location)
 
       const _from = new Date(route.params.from)
       setFrom(_from)
@@ -210,12 +217,12 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       const _to = new Date(route.params.to)
       setTo(_to)
 
-      const _price = Helper.price(property, _from, _to)
+      const _price = Helper.price(_property, _from, _to)
       setPrice(_price)
 
       const included = (val: number) => val === 0
 
-      setCancellation(included(property.cancellation))
+      setCancellation(included(_property.cancellation))
 
       setVisible(true)
       setFormVisible(true)
@@ -263,13 +270,12 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
             setEmailValid(true)
             setError(false)
             return true
-          } else {
-            setEmailInfo(false)
-            setEmailError(true)
-            setEmailValid(true)
-            setError(true)
-            return false
           }
+          setEmailInfo(false)
+          setEmailError(true)
+          setEmailValid(true)
+          setError(true)
+          return false
         } catch (err) {
           Helper.error(err)
           setEmailInfo(true)
@@ -305,21 +311,20 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const validatePhone = () => {
     if (phone) {
-      const phoneValid = validator.isMobilePhone(phone)
-      setPhoneInfo(phoneValid)
+      const _phoneValid = validator.isMobilePhone(phone)
+      setPhoneInfo(_phoneValid)
       setPhoneRequired(false)
-      setPhoneValid(phoneValid)
-      setError(!phoneValid)
+      setPhoneValid(_phoneValid)
+      setError(!_phoneValid)
 
-      return phoneValid
-    } else {
-      setPhoneInfo(false)
-      setPhoneRequired(true)
-      setPhoneValid(true)
-      setError(true)
-
-      return false
+      return _phoneValid
     }
+    setPhoneInfo(false)
+    setPhoneRequired(true)
+    setPhoneValid(true)
+    setError(true)
+
+    return false
   }
 
   const onChangePhone = (text: string) => {
@@ -338,18 +343,17 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         start: birthDate,
         end: new Date(),
       }).years ?? 0
-      const birthDateValid = sub >= Env.MINIMUM_AGE
+      const _birthDateValid = sub >= Env.MINIMUM_AGE
 
-      setBirthDateValid(birthDateValid)
-      setError(!birthDateValid)
-      return birthDateValid
-    } else {
-      setBirthDateRequired(true)
-      setBirthDateValid(true)
-      setError(true)
-
-      return false
+      setBirthDateValid(_birthDateValid)
+      setError(!_birthDateValid)
+      return _birthDateValid
     }
+    setBirthDateRequired(true)
+    setBirthDateValid(true)
+    setError(true)
+
+    return false
   }
 
   const onChangeBirthDate = (date: Date | undefined) => {
@@ -370,10 +374,9 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     if (cardName) {
       setCardNameRequired(false)
       return true
-    } else {
-      setCardNameRequired(true)
-      return false
     }
+    setCardNameRequired(true)
+    return false
   }
 
   const onCardNameChange = (text: string) => {
@@ -383,17 +386,16 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const validateCardNumber = () => {
     if (cardNumber) {
-      const cardNumberValid = validator.isCreditCard(cardNumber)
+      const _cardNumberValid = validator.isCreditCard(cardNumber)
       setCardNumberRequired(false)
-      setCardNumberValid(cardNumberValid)
+      setCardNumberValid(_cardNumberValid)
 
-      return cardNumberValid
-    } else {
-      setCardNumberRequired(true)
-      setCardNumberValid(true)
-
-      return false
+      return _cardNumberValid
     }
+    setCardNumberRequired(true)
+    setCardNumberValid(true)
+
+    return false
   }
 
   const onCardNumberChange = (text: string) => {
@@ -404,21 +406,20 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const validateCardMonth = () => {
     if (cardMonth) {
-      const month = Number.parseInt(cardMonth)
-      const cardMonthValid = month >= 1 && month <= 12
+      const month = Number.parseInt(cardMonth, 10)
+      const _cardMonthValid = month >= 1 && month <= 12
 
       setCardMonthRequired(false)
-      setCardMonthValid(cardMonthValid)
+      setCardMonthValid(_cardMonthValid)
       setCardDateError(false)
 
-      return cardMonthValid
-    } else {
-      setCardMonthRequired(true)
-      setCardMonthValid(true)
-      setCardDateError(false)
-
-      return false
+      return _cardMonthValid
     }
+    setCardMonthRequired(true)
+    setCardMonthValid(true)
+    setCardDateError(false)
+
+    return false
   }
 
   const onCardMonthChange = (text: string) => {
@@ -429,22 +430,21 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const validateCardYear = () => {
     if (cardYear) {
-      const year = Number.parseInt(cardYear)
-      const currentYear = Number.parseInt(String(new Date().getFullYear()).slice(2))
-      const cardYearValid = year >= currentYear
+      const year = Number.parseInt(cardYear, 10)
+      const currentYear = Number.parseInt(String(new Date().getFullYear()).slice(2), 10)
+      const _cardYearValid = year >= currentYear
 
       setCardYearRequired(false)
-      setCardYearValid(cardYearValid)
+      setCardYearValid(_cardYearValid)
       setCardDateError(false)
 
-      return cardYearValid
-    } else {
-      setCardYearRequired(true)
-      setCardYearValid(true)
-      setCardDateError(false)
-
-      return false
+      return _cardYearValid
     }
+    setCardYearRequired(true)
+    setCardYearValid(true)
+    setCardDateError(false)
+
+    return false
   }
 
   const onCardYearChange = (text: string) => {
@@ -455,17 +455,16 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const validateCvv = () => {
     if (cvv) {
-      const cvvValid = movininHelper.isCvv(cvv)
+      const _cvvValid = movininHelper.isCvv(cvv)
       setCardCvvRequired(false)
-      setCardCvvValid(cvvValid)
+      setCardCvvValid(_cvvValid)
 
-      return cvvValid
-    } else {
-      setCardCvvRequired(true)
-      setCardCvvValid(true)
-
-      return false
+      return _cvvValid
     }
+    setCardCvvRequired(true)
+    setCardCvvValid(true)
+
+    return false
   }
 
   const onCardCvvChange = (text: string) => {
@@ -474,12 +473,12 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     setCardCvvValid(true)
   }
 
-  const validateCardDate = (cardMonth: string, cardYear: string) => {
-    const today = new Date(),
-      cardDate = new Date()
-    const y = Number.parseInt(String(today.getFullYear()).slice(0, 2)) * 100
-    const year = y + Number.parseInt(cardYear)
-    const month = Number.parseInt(cardMonth)
+  const validateCardDate = (_cardMonth: string, _cardYear: string) => {
+    const today = new Date()
+    const cardDate = new Date()
+    const y = Number.parseInt(String(today.getFullYear()).slice(0, 2), 10) * 100
+    const year = y + Number.parseInt(_cardYear, 10)
+    const month = Number.parseInt(_cardMonth, 10)
     cardDate.setFullYear(year, month - 1, 1)
 
     if (cardDate < today) {
@@ -493,9 +492,9 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     const options = {
       cancellation: checked
     }
-    const price = Helper.price(property as movininTypes.Property, from as Date, to as Date, options)
+    const _price = Helper.price(property as movininTypes.Property, from as Date, to as Date, options)
     setCancellation(checked)
-    setPrice(price)
+    setPrice(_price)
   }
 
   const _error = (err?: unknown) => {
@@ -505,7 +504,6 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const onPressBook = async () => {
     try {
-
       if (!property || !location || !from || !to) {
         Helper.error()
         return
@@ -521,23 +519,24 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
           return
         }
 
-        const emailValid = await validateEmail()
-        if (!emailValid) {
+        const _emailValid = await validateEmail()
+        if (!_emailValid) {
           return
         }
 
-        const phoneValid = validatePhone()
-        if (!phoneValid) {
+        const _phoneValid = validatePhone()
+        if (!_phoneValid) {
           return
         }
 
-        const birthDateValid = validateBirthDate()
-        if (!birthDateValid) {
+        const _birthDateValid = validateBirthDate()
+        if (!_birthDateValid) {
           return
         }
 
         if (!tosChecked) {
-          return setTosError(true)
+          setTosError(true)
+          return
         }
       }
 
@@ -547,35 +546,36 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
           return
         }
 
-        const cardNumberValid = validateCardNumber()
-        if (!cardNumberValid) {
+        const _cardNumberValid = validateCardNumber()
+        if (!_cardNumberValid) {
           return
         }
 
-        const cardMonthValid = validateCardMonth()
-        if (!cardMonthValid) {
+        const _cardMonthValid = validateCardMonth()
+        if (!_cardMonthValid) {
           return
         }
 
-        const cardYearValid = validateCardYear()
-        if (!cardYearValid) {
+        const _cardYearValid = validateCardYear()
+        if (!_cardYearValid) {
           return
         }
 
-        const cvvValid = validateCvv()
-        if (!cvvValid) {
+        const _cvvValid = validateCvv()
+        if (!_cvvValid) {
           return
         }
 
         const cardDateValid = validateCardDate(cardMonth, cardYear)
         if (!cardDateValid) {
-          return setCardDateError(true)
+          setCardDateError(true)
+          return
         }
       }
 
       setLoading(true)
 
-      let renter: movininTypes.User | undefined = undefined
+      let renter: movininTypes.User | undefined
 
       if (!authenticated) {
         renter = {
@@ -592,8 +592,8 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         property: property._id as string,
         renter: authenticated ? user?._id : undefined,
         location: location._id as string,
-        from: from,
-        to: to,
+        from,
+        to,
         status: payLater ? movininTypes.BookingStatus.Pending : movininTypes.BookingStatus.Paid,
         cancellation,
         price,
@@ -656,9 +656,11 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   </View>
 
                   <Text style={styles.detailTitle}>{i18n.t('DAYS')}</Text>
-                  <Text style={styles.detailText}>{`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(format(from, _format, { locale }))} - ${movininHelper.capitalize(
-                    format(to, _format, { locale }),
-                  )})`}</Text>
+                  <Text style={styles.detailText}>
+                    {`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(format(from, _format, { locale }))} - ${movininHelper.capitalize(
+                      format(to, _format, { locale }),
+                    )})`}
+                  </Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('LOCATION')}</Text>
                   <Text style={styles.detailText}>{location.name}</Text>
@@ -706,11 +708,11 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                       value={email}
                       error={emailRequired || !emailValid || emailError}
                       helperText={
-                        (emailInfo && i18n.t('EMAIL_INFO')) ||
-                        (emailRequired && i18n.t('REQUIRED')) ||
-                        (!emailValid && i18n.t('EMAIL_NOT_VALID')) ||
-                        (emailError && i18n.t('BOOKING_EMAIL_ALREADY_REGISTERED')) ||
-                        ''
+                        (emailInfo && i18n.t('EMAIL_INFO'))
+                        || (emailRequired && i18n.t('REQUIRED'))
+                        || (!emailValid && i18n.t('EMAIL_NOT_VALID'))
+                        || (emailError && i18n.t('BOOKING_EMAIL_ALREADY_REGISTERED'))
+                        || ''
                       }
                       onChangeText={onChangeEmail}
                       backgroundColor="#fbfbfb"

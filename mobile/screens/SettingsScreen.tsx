@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, ScrollView, Pressable } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Pressable
+} from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { MaterialIcons } from '@expo/vector-icons'
-import { Avatar, Dialog, Portal, Button as NativeButton, Paragraph } from 'react-native-paper'
+import {
+  Avatar,
+  Dialog,
+  Portal,
+  Button as NativeButton,
+  Paragraph
+} from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import validator from 'validator'
 import { intervalToDuration } from 'date-fns'
@@ -20,7 +31,7 @@ import Button from '../components/Button'
 import * as Helper from '../common/Helper'
 import * as Env from '../config/env.config'
 
-const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Settings'>) => {
+function SettingsScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'Settings'>) {
   const isFocused = useIsFocused()
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -43,9 +54,9 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const _init = async () => {
     try {
-      const language = await UserService.getLanguage()
-      i18n.locale = language
-      setLanguage(language)
+      const _language = await UserService.getLanguage()
+      i18n.locale = _language
+      setLanguage(_language)
 
       const currentUser = await UserService.getCurrentUser()
 
@@ -54,37 +65,37 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         return
       }
 
-      const user = await UserService.getUser(currentUser._id)
+      const _user = await UserService.getUser(currentUser._id)
 
-      if (!user) {
+      if (!_user) {
         await UserService.signout(navigation, false, true)
         return
       }
 
-      setUser(user)
-      if (user.avatar) {
-        setAvatar(movininHelper.joinURL(Env.CDN_USERS, user.avatar))
+      setUser(_user)
+      if (_user.avatar) {
+        setAvatar(movininHelper.joinURL(Env.CDN_USERS, _user.avatar))
       } else {
         setAvatar(null)
       }
-      setFullName(user.fullName)
-      if (user.email) {
-        setEmail(user.email)
+      setFullName(_user.fullName)
+      if (_user.email) {
+        setEmail(_user.email)
       }
-      if (user.phone) {
-        setPhone(user.phone)
+      if (_user.phone) {
+        setPhone(_user.phone)
       }
-      if (user.birthDate) {
-        setBirthDate(new Date(user.birthDate))
+      if (_user.birthDate) {
+        setBirthDate(new Date(_user.birthDate))
       }
-      if (user.location) {
-        setLocation(user.location)
+      if (_user.location) {
+        setLocation(_user.location)
       }
-      if (user.bio) {
-        setBio(user.bio)
+      if (_user.bio) {
+        setBio(_user.bio)
       }
-      if (typeof user.enableEmailNotifications !== 'undefined') {
-        setEnableEmailNotifications(user.enableEmailNotifications)
+      if (typeof _user.enableEmailNotifications !== 'undefined') {
+        setEnableEmailNotifications(_user.enableEmailNotifications)
       }
 
       setFullNameRequired(false)
@@ -128,17 +139,16 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const validatePhone = () => {
     if (phone) {
-      const phoneValid = validator.isMobilePhone(phone)
+      const _phoneValid = validator.isMobilePhone(phone)
       setPhoneRequired(false)
-      setPhoneValid(phoneValid)
+      setPhoneValid(_phoneValid)
 
-      return phoneValid
-    } else {
-      setPhoneRequired(true)
-      setPhoneValid(true)
-
-      return false
+      return _phoneValid
     }
+    setPhoneRequired(true)
+    setPhoneValid(true)
+
+    return false
   }
 
   const onChangePhone = (text: string) => {
@@ -155,16 +165,15 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         start: birthDate,
         end: new Date(),
       }).years ?? 0
-      const birthDateValid = sub >= Env.MINIMUM_AGE
+      const _birthDateValid = sub >= Env.MINIMUM_AGE
 
-      setBirthDateValid(birthDateValid)
-      return birthDateValid
-    } else {
-      setBirthDateRequired(true)
-      setBirthDateValid(true)
-
-      return false
+      setBirthDateValid(_birthDateValid)
+      return _birthDateValid
     }
+    setBirthDateRequired(true)
+    setBirthDateValid(true)
+
+    return false
   }
 
   const onChangeBirthDate = (date: Date | undefined) => {
@@ -197,13 +206,13 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         return
       }
 
-      const phoneValid = validatePhone()
-      if (!phoneValid) {
+      const _phoneValid = validatePhone()
+      if (!_phoneValid) {
         return
       }
 
-      const birthDateValid = validateBirthDate()
-      if (!birthDateValid) {
+      const _birthDateValid = validateBirthDate()
+      if (!_birthDateValid) {
         return
       }
 
@@ -241,8 +250,8 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
             <View style={styles.contentContainer}>
               <View style={styles.avatar}>
                 {
-                  avatar ?
-                    <Avatar.Image size={94} source={{ uri: avatar }} />
+                  avatar
+                    ? <Avatar.Image size={94} source={{ uri: avatar }} />
                     : <MaterialIcons name="account-circle" size={94} color="#bdbdbd" />
                 }
                 <View style={styles.avatarActions}>
@@ -284,13 +293,13 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                           return
                         }
 
-                        const uri = pickerResult.assets[0].uri
+                        const { uri } = pickerResult.assets[0]
                         const name = Helper.getFileName(uri)
                         const type = Helper.getMimeType(name)
                         const image: BlobInfo = { uri, name, type }
                         const status = await UserService.updateAvatar(user._id, image)
 
-                        if (status == 200) {
+                        if (status === 200) {
                           const _user = await UserService.getUser(user._id)
                           setUser(_user)
                           const _avatar = movininHelper.joinURL(Env.CDN_USERS, _user.avatar)

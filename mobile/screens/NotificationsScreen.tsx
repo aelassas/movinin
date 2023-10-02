@@ -1,12 +1,24 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text, ScrollView, View, Pressable, ActivityIndicator } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  View,
+  Pressable,
+  ActivityIndicator
+} from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { MaterialIcons } from '@expo/vector-icons'
-import { Dialog, Portal, Button as NativeButton, Paragraph } from 'react-native-paper'
+import {
+  Dialog,
+  Portal,
+  Button as NativeButton,
+  Paragraph
+} from 'react-native-paper'
 import { format } from 'date-fns'
 import { enUS, fr } from 'date-fns/locale'
-import * as movininTypes from  '../miscellaneous/movininTypes'
+import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 
 import i18n from '../lang/i18n'
@@ -17,7 +29,7 @@ import * as Env from '../config/env.config'
 import * as Helper from '../common/Helper'
 import Checkbox from '../components/Checkbox'
 
-const NotificationsScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Notifications'>) => {
+function NotificationsScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'Notifications'>) {
   const isFocused = useIsFocused()
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -46,14 +58,14 @@ const NotificationsScreen = ({ navigation, route }: NativeStackScreenProps<Stack
       return
     }
 
-    const user = await UserService.getUser(currentUser._id)
+    const _user = await UserService.getUser(currentUser._id)
 
-    if (!user) {
+    if (!_user) {
       await UserService.signout(navigation, false, true)
       return
     }
 
-    setUser(user)
+    setUser(_user)
     setVisible(true)
   }
 
@@ -105,7 +117,7 @@ const NotificationsScreen = ({ navigation, route }: NativeStackScreenProps<Stack
 
   useEffect(() => {
     if (user) {
-      const _init = async () => {
+      const __init = async () => {
         if (user?._id) {
           const notificationCounter = await NotificationService.getNotificationCounter(user._id)
           const _notificationCount = notificationCounter.count
@@ -113,7 +125,7 @@ const NotificationsScreen = ({ navigation, route }: NativeStackScreenProps<Stack
         }
       }
 
-      _init()
+      __init()
     }
   }, [user])
 

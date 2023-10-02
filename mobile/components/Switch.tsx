@@ -7,7 +7,7 @@ import {
   Switch as ReactSwitch
 } from 'react-native'
 
-const Switch = ({
+function Switch({
   value: switchValue,
   style,
   textStyle,
@@ -23,17 +23,17 @@ const Switch = ({
   disabled?: boolean
   children?: React.ReactNode
   onValueChange?: (value: boolean) => void
-}) => {
+}) {
   const [value, setValue] = useState(switchValue)
 
   useEffect(() => {
     setValue(switchValue)
   }, [switchValue])
 
-  const onValueChange = (value: boolean) => {
-    setValue(value)
+  const onValueChange = (_value: boolean) => {
+    setValue(_value)
     if (onSwitchValueChange) {
-      onSwitchValueChange(value)
+      onSwitchValueChange(_value)
     }
   }
 

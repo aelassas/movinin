@@ -1,5 +1,10 @@
 import React, { memo } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image
+} from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { format } from 'date-fns'
 import * as movininTypes from '../miscellaneous/movininTypes'
@@ -17,19 +22,17 @@ const iconColor = '#000'
 const extraIconColor = '#1f9201'
 const extraIconSize = 16
 
-const Booking = (
-  {
-    booking,
-    locale,
-    fr,
-    onCancel
-  }: {
-    booking: movininTypes.Booking
-    locale: Locale
-    fr: boolean
-    onCancel: () => void
-  }
-) => {
+function Booking({
+  booking,
+  locale,
+  fr,
+  onCancel
+}: {
+  booking: movininTypes.Booking
+  locale: Locale
+  fr: boolean
+  onCancel: () => void
+}) {
   const from = new Date(booking.from)
   const to = new Date(booking.to)
   const property = booking.property as movininTypes.Property
@@ -52,9 +55,11 @@ const Booking = (
         <BookingStatus style={styles.status} status={booking.status} />
 
         <Text style={styles.detailTitle}>{i18n.t('DAYS')}</Text>
-        <Text style={styles.detailText}>{`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(format(from, _format, { locale }))} - ${movininHelper.capitalize(
-          format(to, _format, { locale }),
-        )})`}</Text>
+        <Text style={styles.detailText}>
+          {`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(format(from, _format, { locale }))} - ${movininHelper.capitalize(
+            format(to, _format, { locale }),
+          )})`}
+        </Text>
 
         <Text style={styles.detailTitle}>{i18n.t('LOCATION')}</Text>
         <Text style={styles.detailText}>{(booking.location as movininTypes.Location).name}</Text>

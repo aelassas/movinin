@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable
+} from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, DrawerActions } from '@react-navigation/native'
 import { Avatar, Badge } from 'react-native-paper'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { DrawerActions } from '@react-navigation/native'
+
 import * as UserService from '../services/UserService'
 import * as movininHelper from '../miscellaneous/movininHelper'
 
 import * as Env from '../config/env.config'
 
-const Header = (
-  { title,
-    hideTitle,
-    loggedIn,
-    notificationCount,
-    reload,
-    _avatar
-  }: {
-    title?: string
-    hideTitle?: boolean
-    loggedIn?: boolean
-    notificationCount?: number
-    reload?: boolean
-    _avatar?: string | null
-  }) => {
+function Header({
+  title,
+  hideTitle,
+  loggedIn,
+  notificationCount,
+  reload,
+  _avatar
+}: {
+  title?: string
+  hideTitle?: boolean
+  loggedIn?: boolean
+  notificationCount?: number
+  reload?: boolean
+  _avatar?: string | null
+}) {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams, keyof StackParams>>()
   const [avatar, setAvatar] = useState<string | null | undefined>(null)
 

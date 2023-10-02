@@ -9,10 +9,9 @@ import i18n from '../lang/i18n'
 import * as Helper from '../common/Helper'
 import Header from '../components/Header'
 import * as NotificationService from '../services/NotificationService'
-import * as movininTypes from  '../miscellaneous/movininTypes'
+import * as movininTypes from '../miscellaneous/movininTypes'
 
-const Master = (
-  {
+function Master({
     navigation,
     strict,
     route,
@@ -36,14 +35,13 @@ const Master = (
     avatar?: string | null
     children: React.ReactNode
     onLoad: (user?: movininTypes.User) => void
-  }
-) => {
+  }) {
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<movininTypes.User | null>(null)
   const [loggedIn, setLoggedIn] = useState(false)
   const [notificationCount, setNotificationCount] = useState(0)
 
-  const exit = async (reload = false) => {
+  const exit = async (_reload = false) => {
     if (strict) {
       await UserService.signout(navigation, false, true)
 
@@ -58,7 +56,7 @@ const Master = (
         onLoad()
       }
 
-      if (reload && route) {
+      if (_reload && route) {
         Helper.navigate(route, navigation)
       } else {
         setLoading(false)
@@ -79,10 +77,10 @@ const Master = (
         const status = await UserService.validateAccessToken()
 
         if (status === 200) {
-          const user = await UserService.getUser(currentUser._id)
+          const _user = await UserService.getUser(currentUser._id)
 
-          if (user) {
-            if (user.blacklisted) {
+          if (_user) {
+            if (_user.blacklisted) {
               await exit(true)
               return
             }
@@ -91,11 +89,11 @@ const Master = (
             setNotificationCount(notificationCounter.count)
 
             setLoggedIn(true)
-            setUser(user)
+            setUser(_user)
             setLoading(false)
 
             if (onLoad) {
-              onLoad(user)
+              onLoad(_user)
             }
           } else {
             await exit(true)
@@ -144,8 +142,8 @@ const Master = (
   return (
     <View style={{ ...styles.container, ...style }}>
       <Header title={title} hideTitle={hideTitle} loggedIn={loggedIn} notificationCount={notificationCount} reload={reload} _avatar={avatar} />
-      {(!loading &&
-        ((!user && !strict) || (user && user.verified) ? (
+      {(!loading
+        && ((!user && !strict) || (user && user.verified) ? (
           children
         ) : (
           <View style={styles.validate}>

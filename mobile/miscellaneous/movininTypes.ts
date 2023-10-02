@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 // Metro does not support symlinks
 
 export enum UserType {
@@ -362,8 +363,7 @@ export interface PropertyOptions {
     cancellation?: boolean
 }
 
-
-// 
+//
 // React types
 //
 export type DataEvent<T> = (data?: Data<T>) => void

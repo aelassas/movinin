@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { StyleSheet, ScrollView, View, TextInput as ReactTextInput } from 'react-native'
+import {
+  StyleSheet,
+  ScrollView,
+  View, TextInput as ReactTextInput
+} from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { intervalToDuration } from 'date-fns'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import validator from 'validator'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
 import i18n from '../lang/i18n'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import Switch from '../components/Switch'
-import validator from 'validator'
 import * as UserService from '../services/UserService'
 import * as Helper from '../common/Helper'
 import DateTimePicker from '../components/DateTimePicker'
@@ -18,7 +22,7 @@ import Error from '../components/Error'
 import Backdrop from '../components/Backdrop'
 import Header from '../components/Header'
 
-const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'SignUp'>) => {
+function SignUpScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'SignUp'>) {
   const isFocused = useIsFocused()
   const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
   const [fullName, setFullName] = useState('')
@@ -50,9 +54,9 @@ const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
   const confirmPasswordRef = useRef<ReactTextInput>(null)
 
   const _init = async () => {
-    const language = await UserService.getLanguage()
-    i18n.locale = language
-    setLanguage(language)
+    const _language = await UserService.getLanguage()
+    i18n.locale = _language
+    setLanguage(_language)
 
     setFullName('')
     setEmail('')
@@ -122,11 +126,10 @@ const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
             setEmailError(false)
             setEmailValid(true)
             return true
-          } else {
-            setEmailError(true)
-            setEmailValid(true)
-            return false
           }
+          setEmailError(true)
+          setEmailValid(true)
+          return false
         } catch (err) {
           Helper.error(err)
           setEmailError(false)
@@ -155,17 +158,16 @@ const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
 
   const validatePhone = () => {
     if (phone) {
-      const phoneValid = validator.isMobilePhone(phone)
+      const _phoneValid = validator.isMobilePhone(phone)
       setPhoneRequired(false)
-      setPhoneValid(phoneValid)
+      setPhoneValid(_phoneValid)
 
-      return phoneValid
-    } else {
-      setPhoneRequired(true)
-      setPhoneValid(true)
-
-      return false
+      return _phoneValid
     }
+    setPhoneRequired(true)
+    setPhoneValid(true)
+
+    return false
   }
 
   const onChangePhone = (text: string) => {
@@ -182,16 +184,15 @@ const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
         start: birthDate,
         end: new Date(),
       }).years ?? 0
-      const birthDateValid = sub >= Env.MINIMUM_AGE
+      const _birthDateValid = sub >= Env.MINIMUM_AGE
 
-      setBirthDateValid(birthDateValid)
-      return birthDateValid
-    } else {
-      setBirthDateRequired(true)
-      setBirthDateValid(true)
-
-      return false
+      setBirthDateValid(_birthDateValid)
+      return _birthDateValid
     }
+    setBirthDateRequired(true)
+    setBirthDateValid(true)
+
+    return false
   }
 
   const onChangeBirthDate = (date: Date | undefined) => {
@@ -265,18 +266,18 @@ const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
         return
       }
 
-      const emailValid = await validateEmail()
-      if (!emailValid) {
+      const _emailValid = await validateEmail()
+      if (!_emailValid) {
         return
       }
 
-      const phoneValid = validatePhone()
-      if (!phoneValid) {
+      const _phoneValid = validatePhone()
+      if (!_phoneValid) {
         return
       }
 
-      const birthDateValid = validateBirthDate()
-      if (!birthDate || !birthDateValid) {
+      const _birthDateValid = validateBirthDate()
+      if (!birthDate || !_birthDateValid) {
         return
       }
 
@@ -286,7 +287,8 @@ const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
       }
 
       if (!tosChecked) {
-        return setTosError(true)
+        setTosError(true)
+        return
       }
 
       setLoading(true)

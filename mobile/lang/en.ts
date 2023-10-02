@@ -69,7 +69,7 @@ export const en = {
   BIRTH_DATE: 'Birth date',
   RECAPTCHA_ERROR: 'Fill out the captcha to continue.',
   TOS_ERROR: 'Please accept the Terms of Use.',
-  BIRTH_DATE_NOT_VALID: 'You must be at least ' + Env.MINIMUM_AGE + ' years old.',
+  BIRTH_DATE_NOT_VALID: `You must be at least ${Env.MINIMUM_AGE} years old.`,
   BIRTH_DATE_NOT_VALID_PART1: 'The renter must be at least',
   BIRTH_DATE_NOT_VALID_PART2: 'years old.',
   AGENCY: 'Agency',

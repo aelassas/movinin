@@ -13,8 +13,7 @@ import {
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { MaterialIcons } from '@expo/vector-icons'
 import { CommonActions, DrawerActions } from '@react-navigation/routers'
-import { useNavigation } from '@react-navigation/native'
-import { RouteProp } from '@react-navigation/native'
+import { useNavigation, RouteProp } from '@react-navigation/native'
 
 import i18n from '../lang/i18n'
 import * as Env from '../config/env.config'
@@ -24,34 +23,33 @@ import * as movininTypes from '../miscellaneous/movininTypes'
 
 let yOffset = 0
 
-const DrawerContent = (
-  {
-    language: drawerLanguage,
-    index,
-    drawerItems,
-    loggedIn,
-    activeTintColor,
-    inactiveTintColor,
-    activeBackgroundColor,
-    inactiveBackgroundColor,
-    pressColor,
-    labelStyle,
-    itemStyle,
-    props
-  }: {
-    language: string
-    index: number
-    drawerItems: DrawerItem[]
-    loggedIn?: boolean
-    activeTintColor?: string
-    inactiveTintColor?: string
-    activeBackgroundColor?: string
-    inactiveBackgroundColor?: string
-    pressColor?: string
-    labelStyle?: StyleProp<ViewStyle>
-    itemStyle?: StyleProp<ViewStyle>
-    props: DrawerContentComponentProps
-  }) => {
+function DrawerContent({
+  language: drawerLanguage,
+  index,
+  drawerItems,
+  loggedIn,
+  activeTintColor,
+  inactiveTintColor,
+  activeBackgroundColor,
+  inactiveBackgroundColor,
+  pressColor,
+  labelStyle,
+  itemStyle,
+  props
+}: {
+  language: string
+  index: number
+  drawerItems: DrawerItem[]
+  loggedIn?: boolean
+  activeTintColor?: string
+  inactiveTintColor?: string
+  activeBackgroundColor?: string
+  inactiveBackgroundColor?: string
+  pressColor?: string
+  labelStyle?: StyleProp<ViewStyle>
+  itemStyle?: StyleProp<ViewStyle>
+  props: DrawerContentComponentProps
+}) {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams, keyof StackParams>>()
   const [openLanguageMenu, setopenLanguageMenu] = useState(false)
   const [language, setLanguage] = useState(drawerLanguage)
@@ -61,12 +59,12 @@ const DrawerContent = (
     setLanguage(drawerLanguage)
   }, [drawerLanguage])
 
-  const updateLanguage = async (language: string) => {
+  const updateLanguage = async (_language: string) => {
     try {
-      const setLang = async (language: string) => {
-        i18n.locale = language
-        await UserService.setLanguage(language)
-        setLanguage(language)
+      const setLang = async (__language: string) => {
+        i18n.locale = __language
+        await UserService.setLanguage(__language)
+        setLanguage(__language)
         const route = props.state.routes[index]
         Helper.navigate(route as RouteProp<StackParams, keyof StackParams>, navigation)
       }
@@ -75,17 +73,17 @@ const DrawerContent = (
       if (currentUser && currentUser._id) {
         const data: movininTypes.UpdateLanguagePayload = {
           id: currentUser._id,
-          language: language,
+          language: _language,
         }
         const status = await UserService.updateLanguage(data)
 
         if (status === 200) {
-          await setLang(language)
+          await setLang(_language)
         } else {
           Helper.error()
         }
       } else {
-        await setLang(language)
+        await setLang(_language)
       }
     } catch (err) {
       Helper.error(err)
@@ -106,11 +104,9 @@ const DrawerContent = (
       contentContainerStyle={styles.drawer}
       {...props}
     >
-      <View
-      // forceInset={styles.drawerList}
-      >
-        {props?.state?.routes &&
-          props.state.routes.map((route, i: number) => {
+      <View>
+        {props?.state?.routes
+          && props.state.routes.map((route, i: number) => {
             const focused = i === props.state.index
             const { title, drawerLabel, drawerIcon } = props.descriptors[route.key].options
 
@@ -143,7 +139,9 @@ const DrawerContent = (
             )
           })}
         {loggedIn && (
-          <Pressable style={styles.signout} hitSlop={15} onPress={async () => await UserService.signout(navigation)}>
+          <Pressable style={styles.signout} hitSlop={15} onPress={async () => {
+            await UserService.signout(navigation)
+          }}>
             <MaterialIcons style={styles.signoutIcon} name="logout" size={24} color="rgba(0, 0, 0, 0.54)" />
             <Text style={styles.text}>{i18n.t('SIGN_OUT')}</Text>
           </Pressable>

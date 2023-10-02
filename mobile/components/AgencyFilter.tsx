@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, View } from 'react-native'
-import * as movininTypes from  '../miscellaneous/movininTypes'
+import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 
 import * as Helper from '../common/Helper'
@@ -11,8 +11,7 @@ import Link from './Link'
 import Switch from './Switch'
 import Accordion from './Accordion'
 
-const AgencyFilter = (
-  {
+function AgencyFilter({
     visible,
     style,
     onLoad,
@@ -22,8 +21,7 @@ const AgencyFilter = (
     style?: object
     onLoad?: (checkedAgencies: string[]) => void
     onChange?: (checkedAgencies: string[]) => void
-  }
-) => {
+  }) {
   const [agencies, setAgencies] = useState<movininTypes.User[]>([])
   const [checkedAgencies, setCheckedAgencies] = useState<string[]>([])
   const [allChecked, setAllChecked] = useState(true)
@@ -32,15 +30,15 @@ const AgencyFilter = (
     try {
       const allAgencies = await AgencyService.getAllAgencies()
       if (allAgencies) {
-        const agencies = allAgencies.map((agency: movininTypes.User) => ({
+        const _agencies = allAgencies.map((agency: movininTypes.User) => ({
           ...agency,
           checked: true,
         }))
-        const checkedAgencies = movininHelper.flattenAgencies(agencies)
-        setAgencies(agencies)
-        setCheckedAgencies(checkedAgencies)
+        const _checkedAgencies = movininHelper.flattenAgencies(_agencies)
+        setAgencies(_agencies)
+        setCheckedAgencies(_checkedAgencies)
         if (onLoad) {
-          onLoad(checkedAgencies)
+          onLoad(_checkedAgencies)
         }
       } else {
         Helper.error()
@@ -60,7 +58,8 @@ const AgencyFilter = (
         <Accordion style={styles.accordion} title={i18n.t('AGENCY')}>
           <View style={styles.agencies}>
             {agencies.map((agency) => (
-              agency._id && typeof agency.checked !== 'undefined' &&
+              agency._id && typeof agency.checked !== 'undefined'
+              && (
               <View key={agency._id} style={styles.agency}>
                 <Switch
                   value={agency.checked}
@@ -97,6 +96,7 @@ const AgencyFilter = (
                   />
                 </Switch>
               </View>
+)
             ))}
           </View>
           <Link
