@@ -1,5 +1,8 @@
 /* eslint-disable no-shadow */
+
+//
 // Metro does not support symlinks
+//
 
 export enum UserType {
     Admin = 'ADMIN',
