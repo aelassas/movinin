@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
-import { IconButton, TextField } from '@mui/material'
-import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material'
+import {
+  IconButton,
+  TextField
+} from '@mui/material'
+import {
+  Search as SearchIcon,
+  Clear as ClearIcon
+} from '@mui/icons-material'
 import { strings as commonStrings } from '../lang/common'
 
 import '../assets/css/search.css'
