@@ -4,9 +4,7 @@ import {
   FormControlLabel,
   Switch,
 } from '@mui/material'
-import {
-  Info as InfoIcon,
-} from '@mui/icons-material'
+import { Info as InfoIcon } from '@mui/icons-material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import { strings as commonStrings } from '../lang/common'
