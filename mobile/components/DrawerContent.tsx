@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { DrawerContentScrollView, DrawerItem, DrawerContentComponentProps } from '@react-navigation/drawer'
+import {
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerContentComponentProps
+} from '@react-navigation/drawer'
 import {
   StyleSheet,
   Text,
