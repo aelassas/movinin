@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import {
- Dialog, DialogTitle, DialogContent, DialogActions, Button, TextFieldVariants
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextFieldVariants
 } from '@mui/material'
 import * as movininTypes from 'movinin-types'
 import Env from '../config/env.config'
@@ -13,27 +18,27 @@ import MultipleSelect from './MultipleSelect'
 import * as Helper from '../common/Helper'
 
 function PropertySelectList({
-    label,
-    required,
-    multiple,
-    variant,
-    value,
-    agency,
-    location,
-    readOnly,
-    onChange
-  }:
-    {
-      label?: string
-      required?: boolean
-      multiple?: boolean
-      variant?: TextFieldVariants
-      value?: movininTypes.Property
-      agency: string
-      location: string
-      readOnly?: boolean
-      onChange?: (values: movininTypes.Property[]) => void
-    }) {
+  label,
+  required,
+  multiple,
+  variant,
+  value,
+  agency,
+  location,
+  readOnly,
+  onChange
+}:
+  {
+    label?: string
+    required?: boolean
+    multiple?: boolean
+    variant?: TextFieldVariants
+    value?: movininTypes.Property
+    agency: string
+    location: string
+    readOnly?: boolean
+    onChange?: (values: movininTypes.Property[]) => void
+  }) {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(true)
