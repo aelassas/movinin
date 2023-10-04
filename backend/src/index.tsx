@@ -28,12 +28,12 @@ if (process.env.REACT_APP_NODE_ENV === 'production') {
 }
 
 let language = Env.DEFAULT_LANGUAGE
-const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null')
+const user = JSON.parse(localStorage.getItem('mi-user') ?? 'null')
 let lang = UserService.getQueryLanguage()
 
 if (lang) {
   if (!Env.LANGUAGES.includes(lang)) {
-    lang = localStorage.getItem('bc-language')
+    lang = localStorage.getItem('mi-language')
 
     if (lang && !Env.LANGUAGES.includes(lang)) {
       lang = Env.DEFAULT_LANGUAGE

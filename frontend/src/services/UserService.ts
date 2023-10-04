@@ -8,7 +8,7 @@ import Env from '../config/env.config'
  * @returns {unknown}
  */
 export const authHeader = () => {
-  const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null')
+  const user = JSON.parse(localStorage.getItem('mi-user') ?? 'null')
 
   if (user && user.accessToken) {
     return { 'x-access-token': user.accessToken }
@@ -115,7 +115,7 @@ export const signin = (data: movininTypes.SignInPayload): Promise<{ status: numb
     )
     .then((res) => {
       if (res.data.accessToken) {
-        localStorage.setItem('bc-user', JSON.stringify(res.data))
+        localStorage.setItem('mi-user', JSON.stringify(res.data))
       }
       return { status: res.status, data: res.data }
     })
@@ -139,7 +139,7 @@ export const signout = (redirect = true, redirectSignin = false) => {
     }
 
     sessionStorage.clear()
-    localStorage.removeItem('bc-user')
+    localStorage.removeItem('mi-user')
     deleteAllCookies()
 
     if (redirect) {
@@ -203,12 +203,12 @@ export const resendLink = (data: movininTypes.ResendLinkPayload): Promise<number
  * @returns {string}
  */
 export const getLanguage = () => {
-  const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null')
+  const user = JSON.parse(localStorage.getItem('mi-user') ?? 'null')
 
   if (user && user.language) {
     return user.language
   }
-  const lang = localStorage.getItem('bc-language')
+  const lang = localStorage.getItem('mi-language')
   if (lang && lang.length === 2) {
     return lang
   }
@@ -241,9 +241,9 @@ export const updateLanguage = (data: movininTypes.UpdateLanguagePayload) =>
     })
     .then((res) => {
       if (res.status === 200) {
-        const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null')
+        const user = JSON.parse(localStorage.getItem('mi-user') ?? 'null')
         user.language = data.language
-        localStorage.setItem('bc-user', JSON.stringify(user))
+        localStorage.setItem('mi-user', JSON.stringify(user))
       }
       return res.status
     })
@@ -254,7 +254,7 @@ export const updateLanguage = (data: movininTypes.UpdateLanguagePayload) =>
  * @param {string} lang
  */
 export const setLanguage = (lang: string) => {
-  localStorage.setItem('bc-language', lang)
+  localStorage.setItem('mi-language', lang)
 }
 
 /**
@@ -263,7 +263,7 @@ export const setLanguage = (lang: string) => {
  * @returns {movininTypes.User | null}
  */
 export const getCurrentUser = (): movininTypes.User | null => {
-  const user = JSON.parse(localStorage.getItem('bc-user') ?? 'null') as movininTypes.User | null
+  const user = JSON.parse(localStorage.getItem('mi-user') ?? 'null') as movininTypes.User | null
   if (user && user.accessToken) {
     return user
   }
@@ -323,7 +323,7 @@ export const updateEmailNotifications = (data: movininTypes.UpdateEmailNotificat
         const user = getCurrentUser()
         if (user) {
           user.enableEmailNotifications = data.enableEmailNotifications
-          localStorage.setItem('bc-user', JSON.stringify(user))
+          localStorage.setItem('mi-user', JSON.stringify(user))
         }
       }
       return res.status
