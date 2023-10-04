@@ -9,7 +9,10 @@ import {
   DialogActions,
   Tooltip
 } from '@mui/material'
-import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon
+} from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
