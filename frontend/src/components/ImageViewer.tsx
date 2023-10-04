@@ -74,7 +74,7 @@ function ImageViewer({
         return
       }
 
-      const checkId = 'id' in event.target && event.target.id === 'ReactSimpleImageViewer'
+      const checkId = 'id' in event.target && event.target.id === 'image-viewer'
 
       if (checkId) {
         event.stopPropagation()
@@ -135,8 +135,8 @@ function ImageViewer({
 
   return (
     <div
-      id="ReactSimpleImageViewer"
-      className="wrapper react-simple-image-viewer__modal"
+      id="image-viewer"
+      className="wrapper image-viewer__modal"
       ref={imageViewerRef}
       // tabIndex={0}
       onKeyDown={handleKeyDown}
@@ -146,7 +146,7 @@ function ImageViewer({
     >
       <div className="popup">
         <span
-          className="close react-simple-image-viewer__close"
+          className="close image-viewer__close"
           onClick={() => onClose?.()}
           role="button"
           tabIndex={0}
@@ -158,7 +158,7 @@ function ImageViewer({
 
         {src.length > 1 && (
           <span
-            className="navigation prev react-simple-image-viewer__previous"
+            className="navigation prev image-viewer__previous"
             onClick={() => changeImage(-1)}
             role="button"
             tabIndex={0}
@@ -169,7 +169,7 @@ function ImageViewer({
 
         {src.length > 1 && (
           <span
-            className="navigation next react-simple-image-viewer__next"
+            className="navigation next image-viewer__next"
             onClick={() => changeImage(1)}
             role="button"
             tabIndex={0}
@@ -179,12 +179,12 @@ function ImageViewer({
         )}
 
         <div
-          className="iv-content react-simple-image-viewer__modal-iv-content"
+          className="iv-content image-viewer__modal-iv-content"
           onClick={handleClick}
           role="button"
           tabIndex={0}
         >
-          <div className="slide react-simple-image-viewer__slide">
+          <div className="slide image-viewer__slide">
             <img className="image" src={src[currentIndex]} alt="" style={imageStyle} />
           </div>
         </div>
