@@ -48,6 +48,7 @@
     "no-nested-ternary": "off",
     "react/jsx-no-useless-fragment": "off",
     "react/no-danger": "off",
+    "object-curly-newline": "off",
     "react/jsx-filename-extension": [
       "warn",
       {
