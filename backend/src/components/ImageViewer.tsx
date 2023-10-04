@@ -1,5 +1,10 @@
 import React, {
-  KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
 } from 'react'
 
 import '../assets/css/image-viewer.css'
