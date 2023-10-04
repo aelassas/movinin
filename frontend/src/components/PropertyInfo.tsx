@@ -1,7 +1,5 @@
 import React from 'react'
-import {
-  Tooltip
-} from '@mui/material'
+import { Tooltip } from '@mui/material'
 import {
   House as PropertyTypeIcon,
   SingleBed as BedroomsIcon,
