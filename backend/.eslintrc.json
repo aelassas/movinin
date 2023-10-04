@@ -50,6 +50,7 @@
     "react/no-danger": "off",
     "react/jsx-indent": "off",
     "react/jsx-indent-props": "off",
+    "object-curly-newline": "off",
     "react/jsx-filename-extension": [
       "warn",
       {
