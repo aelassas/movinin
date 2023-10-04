@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import {
- InputLabel, Select, MenuItem, SelectChangeEvent
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent
 } from '@mui/material'
 import * as movininTypes from 'movinin-types'
 import { strings } from '../lang/properties'
 
 function PropertyTypeList({
-    value: propertyTypeValue,
-    required,
-    label,
-    variant,
-    onChange
-  }:
-    {
-      value?: string,
-      required?: boolean,
-      label?: string
-      variant?: 'filled' | 'standard' | 'outlined'
-      onChange?: (value: string) => void
-    }) {
+  value: propertyTypeValue,
+  required,
+  label,
+  variant,
+  onChange
+}:
+  {
+    value?: string,
+    required?: boolean,
+    label?: string
+    variant?: 'filled' | 'standard' | 'outlined'
+    onChange?: (value: string) => void
+  }) {
   const [value, setValue] = useState(propertyTypeValue || '')
   useEffect(() => {
     setValue(propertyTypeValue || '')
