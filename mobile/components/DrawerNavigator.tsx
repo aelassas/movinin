@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import {
-  // useLinkBuilder,
-  useNavigationState
-} from '@react-navigation/native'
+import { useNavigationState } from '@react-navigation/native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -28,7 +25,6 @@ import CheckoutScreen from '../screens/Checkout'
 import NotificationsScreen from '../screens/NotificationsScreen'
 
 function DrawerNavigator() {
-  // const buildLink = useLinkBuilder()
   const routes = useNavigationState((state) => state && state.routes)
   const index = useNavigationState((state) => state && state.index)
   const [loggedIn, setLoggedIn] = useState(false)
@@ -148,7 +144,6 @@ function DrawerNavigator() {
   return (
     <View style={styles.container}>
       <Drawer.Navigator
-        // drawerType="front"
         initialRouteName="Home"
         backBehavior="history"
         screenOptions={{
@@ -163,7 +158,6 @@ function DrawerNavigator() {
             activeBackgroundColor={menuColor}
             activeTintColor="#0D63C9"
             pressColor={menuColor}
-            // buildLink={buildLink}
             props={props}
           />
         )}
@@ -177,28 +171,6 @@ function DrawerNavigator() {
                 name={drawer.name}
                 component={HomeScreen}
                 options={{
-                title: drawer.title,
-                drawerItemStyle: {
-                  height: drawer.hidden ? 0 : 'auto',
-                },
-                drawerIcon: () => (
-                  <MaterialIcons
-                    name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
-                    size={24}
-                    color={iconColor}
-                  />
-                ),
-                headerShown: false,
-              }}
-              />
-)
-            : drawer.name === 'Properties'
-              ? (
-                <Drawer.Screen
-                  key={drawer.name}
-                  name={drawer.name}
-                  component={PropertiesScreen}
-                  options={{
                   title: drawer.title,
                   drawerItemStyle: {
                     height: drawer.hidden ? 0 : 'auto',
@@ -212,15 +184,15 @@ function DrawerNavigator() {
                   ),
                   headerShown: false,
                 }}
-                />
-)
-              : drawer.name === 'Checkout'
-                ? (
-                  <Drawer.Screen
-                    key={drawer.name}
-                    name={drawer.name}
-                    component={CheckoutScreen}
-                    options={{
+              />
+            )
+            : drawer.name === 'Properties'
+              ? (
+                <Drawer.Screen
+                  key={drawer.name}
+                  name={drawer.name}
+                  component={PropertiesScreen}
+                  options={{
                     title: drawer.title,
                     drawerItemStyle: {
                       height: drawer.hidden ? 0 : 'auto',
@@ -234,18 +206,18 @@ function DrawerNavigator() {
                     ),
                     headerShown: false,
                   }}
-                  />
-)
-                : drawer.name === 'Bookings'
-                  ? (
-                    <Drawer.Screen
-                      key={drawer.name}
-                      name={drawer.name}
-                      component={BookingsScreen}
-                      options={{
+                />
+              )
+              : drawer.name === 'Checkout'
+                ? (
+                  <Drawer.Screen
+                    key={drawer.name}
+                    name={drawer.name}
+                    component={CheckoutScreen}
+                    options={{
                       title: drawer.title,
                       drawerItemStyle: {
-                        height: drawer.hidden || !loggedIn ? 0 : 'auto',
+                        height: drawer.hidden ? 0 : 'auto',
                       },
                       drawerIcon: () => (
                         <MaterialIcons
@@ -256,18 +228,18 @@ function DrawerNavigator() {
                       ),
                       headerShown: false,
                     }}
-                    />
-)
-                  : drawer.name === 'Booking'
-                    ? (
-                      <Drawer.Screen
-                        key={drawer.name}
-                        name={drawer.name}
-                        component={BookingScreen}
-                        options={{
+                  />
+                )
+                : drawer.name === 'Bookings'
+                  ? (
+                    <Drawer.Screen
+                      key={drawer.name}
+                      name={drawer.name}
+                      component={BookingsScreen}
+                      options={{
                         title: drawer.title,
                         drawerItemStyle: {
-                          height: drawer.hidden ? 0 : 'auto',
+                          height: drawer.hidden || !loggedIn ? 0 : 'auto',
                         },
                         drawerIcon: () => (
                           <MaterialIcons
@@ -278,15 +250,15 @@ function DrawerNavigator() {
                         ),
                         headerShown: false,
                       }}
-                      />
-)
-                    : drawer.name === 'About'
-                      ? (
-                        <Drawer.Screen
-                          key={drawer.name}
-                          name={drawer.name}
-                          component={AboutScreen}
-                          options={{
+                    />
+                  )
+                  : drawer.name === 'Booking'
+                    ? (
+                      <Drawer.Screen
+                        key={drawer.name}
+                        name={drawer.name}
+                        component={BookingScreen}
+                        options={{
                           title: drawer.title,
                           drawerItemStyle: {
                             height: drawer.hidden ? 0 : 'auto',
@@ -300,15 +272,15 @@ function DrawerNavigator() {
                           ),
                           headerShown: false,
                         }}
-                        />
-)
-                      : drawer.name === 'ToS'
-                        ? (
-                          <Drawer.Screen
-                            key={drawer.name}
-                            name={drawer.name}
-                            component={ToSScreen}
-                            options={{
+                      />
+                    )
+                    : drawer.name === 'About'
+                      ? (
+                        <Drawer.Screen
+                          key={drawer.name}
+                          name={drawer.name}
+                          component={AboutScreen}
+                          options={{
                             title: drawer.title,
                             drawerItemStyle: {
                               height: drawer.hidden ? 0 : 'auto',
@@ -322,15 +294,15 @@ function DrawerNavigator() {
                             ),
                             headerShown: false,
                           }}
-                          />
-)
-                        : drawer.name === 'Contact'
-                          ? (
-                            <Drawer.Screen
-                              key={drawer.name}
-                              name={drawer.name}
-                              component={ContactScreen}
-                              options={{
+                        />
+                      )
+                      : drawer.name === 'ToS'
+                        ? (
+                          <Drawer.Screen
+                            key={drawer.name}
+                            name={drawer.name}
+                            component={ToSScreen}
+                            options={{
                               title: drawer.title,
                               drawerItemStyle: {
                                 height: drawer.hidden ? 0 : 'auto',
@@ -344,18 +316,18 @@ function DrawerNavigator() {
                               ),
                               headerShown: false,
                             }}
-                            />
-)
-                          : drawer.name === 'Settings'
-                            ? (
-                              <Drawer.Screen
-                                key={drawer.name}
-                                name={drawer.name}
-                                component={SettingsScreen}
-                                options={{
+                          />
+                        )
+                        : drawer.name === 'Contact'
+                          ? (
+                            <Drawer.Screen
+                              key={drawer.name}
+                              name={drawer.name}
+                              component={ContactScreen}
+                              options={{
                                 title: drawer.title,
                                 drawerItemStyle: {
-                                  height: drawer.hidden || !loggedIn ? 0 : 'auto',
+                                  height: drawer.hidden ? 0 : 'auto',
                                 },
                                 drawerIcon: () => (
                                   <MaterialIcons
@@ -366,18 +338,18 @@ function DrawerNavigator() {
                                 ),
                                 headerShown: false,
                               }}
-                              />
-)
-                            : drawer.name === 'ChangePassword'
-                              ? (
-                                <Drawer.Screen
-                                  key={drawer.name}
-                                  name={drawer.name}
-                                  component={ChangePasswordScreen}
-                                  options={{
+                            />
+                          )
+                          : drawer.name === 'Settings'
+                            ? (
+                              <Drawer.Screen
+                                key={drawer.name}
+                                name={drawer.name}
+                                component={SettingsScreen}
+                                options={{
                                   title: drawer.title,
                                   drawerItemStyle: {
-                                    height: drawer.hidden ? 0 : 'auto',
+                                    height: drawer.hidden || !loggedIn ? 0 : 'auto',
                                   },
                                   drawerIcon: () => (
                                     <MaterialIcons
@@ -388,18 +360,18 @@ function DrawerNavigator() {
                                   ),
                                   headerShown: false,
                                 }}
-                                />
-)
-                              : drawer.name === 'SignIn'
-                                ? (
-                                  <Drawer.Screen
-                                    key={drawer.name}
-                                    name={drawer.name}
-                                    component={SignInScreen}
-                                    options={{
+                              />
+                            )
+                            : drawer.name === 'ChangePassword'
+                              ? (
+                                <Drawer.Screen
+                                  key={drawer.name}
+                                  name={drawer.name}
+                                  component={ChangePasswordScreen}
+                                  options={{
                                     title: drawer.title,
                                     drawerItemStyle: {
-                                      height: drawer.hidden || loggedIn ? 0 : 'auto',
+                                      height: drawer.hidden ? 0 : 'auto',
                                     },
                                     drawerIcon: () => (
                                       <MaterialIcons
@@ -410,18 +382,18 @@ function DrawerNavigator() {
                                     ),
                                     headerShown: false,
                                   }}
-                                  />
-)
-                                : drawer.name === 'SignUp'
-                                  ? (
-                                    <Drawer.Screen
-                                      key={drawer.name}
-                                      name={drawer.name}
-                                      component={SignUpScreen}
-                                      options={{
+                                />
+                              )
+                              : drawer.name === 'SignIn'
+                                ? (
+                                  <Drawer.Screen
+                                    key={drawer.name}
+                                    name={drawer.name}
+                                    component={SignInScreen}
+                                    options={{
                                       title: drawer.title,
                                       drawerItemStyle: {
-                                        height: drawer.hidden ? 0 : 'auto',
+                                        height: drawer.hidden || loggedIn ? 0 : 'auto',
                                       },
                                       drawerIcon: () => (
                                         <MaterialIcons
@@ -432,15 +404,15 @@ function DrawerNavigator() {
                                       ),
                                       headerShown: false,
                                     }}
-                                    />
-)
-                                  : drawer.name === 'ForgotPassword'
-                                    ? (
-                                      <Drawer.Screen
-                                        key={drawer.name}
-                                        name={drawer.name}
-                                        component={ForgotPasswordScreen}
-                                        options={{
+                                  />
+                                )
+                                : drawer.name === 'SignUp'
+                                  ? (
+                                    <Drawer.Screen
+                                      key={drawer.name}
+                                      name={drawer.name}
+                                      component={SignUpScreen}
+                                      options={{
                                         title: drawer.title,
                                         drawerItemStyle: {
                                           height: drawer.hidden ? 0 : 'auto',
@@ -454,15 +426,15 @@ function DrawerNavigator() {
                                         ),
                                         headerShown: false,
                                       }}
-                                      />
-)
-                                    : drawer.name === 'Notifications'
-                                      ? (
-                                        <Drawer.Screen
-                                          key={drawer.name}
-                                          name={drawer.name}
-                                          component={NotificationsScreen}
-                                          options={{
+                                    />
+                                  )
+                                  : drawer.name === 'ForgotPassword'
+                                    ? (
+                                      <Drawer.Screen
+                                        key={drawer.name}
+                                        name={drawer.name}
+                                        component={ForgotPasswordScreen}
+                                        options={{
                                           title: drawer.title,
                                           drawerItemStyle: {
                                             height: drawer.hidden ? 0 : 'auto',
@@ -476,8 +448,30 @@ function DrawerNavigator() {
                                           ),
                                           headerShown: false,
                                         }}
+                                      />
+                                    )
+                                    : drawer.name === 'Notifications'
+                                      ? (
+                                        <Drawer.Screen
+                                          key={drawer.name}
+                                          name={drawer.name}
+                                          component={NotificationsScreen}
+                                          options={{
+                                            title: drawer.title,
+                                            drawerItemStyle: {
+                                              height: drawer.hidden ? 0 : 'auto',
+                                            },
+                                            drawerIcon: () => (
+                                              <MaterialIcons
+                                                name={drawer.iconName as keyof typeof MaterialIcons.glyphMap}
+                                                size={24}
+                                                color={iconColor}
+                                              />
+                                            ),
+                                            headerShown: false,
+                                          }}
                                         />
-)
+                                      )
                                       : null
         ))}
       </Drawer.Navigator>
