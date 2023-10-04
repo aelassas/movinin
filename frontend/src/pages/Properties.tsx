@@ -22,7 +22,7 @@ function Properties() {
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
-  const [agencies, setAgencies] = useState<string[]>([])
+  const [agencies, setAgencies] = useState<string[]>()
   const [loading, setLoading] = useState(true)
   const [propertyTypes, setPropertyTypes] = useState(movininHelper.getAllPropertyTypes())
   const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())

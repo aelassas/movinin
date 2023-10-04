@@ -22,7 +22,7 @@ function Properties() {
   const [user, setUser] = useState<movininTypes.User>()
   const [admin, setAdmin] = useState(false)
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
-  const [agencies, setAgencies] = useState<string[]>([])
+  const [agencies, setAgencies] = useState<string[]>()
   const [keyword, setKeyword] = useState('')
   const [rowCount, setRowCount] = useState(0)
   const [loading, setLoading] = useState(true)
