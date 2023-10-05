@@ -4,6 +4,15 @@ import * as movininHelper from 'movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings as rtStrings } from '../lang/rental-term'
 import { strings } from '../lang/properties'
+import Env from '../config/env.config'
+
+/**
+ * Get language.
+ *
+ * @param {string} code
+ * @returns {*}
+ */
+export const getLanguage = (code: string) => Env._LANGUAGES.find((l) => l.code === code)
 
 /**
  * Toast info message.
