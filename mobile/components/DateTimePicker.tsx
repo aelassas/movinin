@@ -10,7 +10,6 @@ import { format } from 'date-fns'
 import { enUS, fr } from 'date-fns/locale'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as movininHelper from '../miscellaneous/movininHelper'
-import * as Env from '../config/env.config'
 import * as Helper from '../common/Helper'
 
 function DateTimePicker({
