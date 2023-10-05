@@ -99,8 +99,6 @@ export const en = {
   SIGN_OUT: 'Sign out',
   BOOKINGS: 'Bookings',
   LANGUAGE: 'Language',
-  LANGUAGE_FR: 'Français',
-  LANGUAGE_EN: 'English',
   PROPERTIES: 'Properties',
   EMAIL_ERROR: 'Email address not registered',
   SETTINGS: 'Settings',

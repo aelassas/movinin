@@ -163,30 +163,25 @@ function DrawerContent({
           <MaterialIcons style={styles.languageIcon} name="language" size={24} color="rgba(0, 0, 0, 0.54)" />
           <Text style={styles.text}>{i18n.t('LANGUAGE')}</Text>
         </Pressable>
+
         {openLanguageMenu && (
           <View style={styles.languageMenu}>
-            <Pressable
-              style={language === Env.LANGUAGE.FR ? styles.languageMenuSelectedItem : styles.languageMenuItem}
-              onPress={async () => {
-                if (language !== Env.LANGUAGE.FR) {
-                  await updateLanguage(Env.LANGUAGE.FR)
-                  setopenLanguageMenu(false)
-                }
-              }}
-            >
-              <Text style={language === Env.LANGUAGE.FR ? styles.languageMenuSelectedText : styles.languageMenuText}>{i18n.t('LANGUAGE_FR')}</Text>
-            </Pressable>
-            <Pressable
-              style={language === Env.LANGUAGE.EN ? styles.languageMenuSelectedItem : styles.languageMenuItem}
-              onPress={async () => {
-                if (language !== Env.LANGUAGE.EN) {
-                  await updateLanguage(Env.LANGUAGE.EN)
-                  setopenLanguageMenu(false)
-                }
-              }}
-            >
-              <Text style={language === Env.LANGUAGE.EN ? styles.languageMenuSelectedText : styles.languageMenuText}>{i18n.t('LANGUAGE_EN')}</Text>
-            </Pressable>
+            {
+              Env.LANGUAGES.map((lang) => (
+                <Pressable
+                  key={lang.code}
+                  style={lang.code === language ? styles.languageMenuSelectedItem : styles.languageMenuItem}
+                  onPress={async () => {
+                    if (lang.code !== language) {
+                      await updateLanguage(lang.code)
+                      setopenLanguageMenu(false)
+                    }
+                  }}
+                >
+                  <Text style={lang.code === language ? styles.languageMenuSelectedText : styles.languageMenuText}>{lang.label}</Text>
+                </Pressable>
+              ))
+            }
           </View>
         )}
       </View>
@@ -259,7 +254,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#feeee4',
+    backgroundColor: 'rgba(13, 99, 201, 0.3)',
   },
   languageMenuSelectedText: {
     color: '#0D63C9',

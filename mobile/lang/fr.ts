@@ -98,8 +98,6 @@ export const fr = {
   SIGN_OUT: 'Déconnexion',
   BOOKINGS: 'Réservations',
   LANGUAGE: 'Langue',
-  LANGUAGE_FR: 'Français',
-  LANGUAGE_EN: 'English',
   PROPERTIES: 'Voitures',
   EMAIL_ERROR: 'Adresse e-mail non enregistrée',
   SETTINGS: 'Paramètres',

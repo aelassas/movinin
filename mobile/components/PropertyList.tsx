@@ -122,7 +122,7 @@ function PropertyList({
     setPage(1)
   }, [location, agencies, types, rentalTerms])
 
-  const fr = language === Env.LANGUAGE.FR
+  const fr = language === 'fr'
   const numToRender = Math.floor(Env.PROPERTIES_PAGE_SIZE / 2)
 
   return (
