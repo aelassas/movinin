@@ -1,5 +1,4 @@
 import * as Env from '../config/env.config'
-import { COPYRIGHT, REGISTERED } from './copyright'
 
 export const en = {
   GENERIC_ERROR: 'An unhandled error occurred.',
@@ -73,9 +72,6 @@ export const en = {
   BIRTH_DATE_NOT_VALID_PART1: 'The renter must be at least',
   BIRTH_DATE_NOT_VALID_PART2: 'years old.',
   AGENCY: 'Agency',
-  COPYRIGHT_PART1: COPYRIGHT,
-  COPYRIGHT_PART2: REGISTERED,
-  COPYRIGHT_PART3: '. All rights reserved.',
   FROM_DATE: 'Rental start date',
   TO_DATE: 'Rental end date',
   HOME: 'Home',
