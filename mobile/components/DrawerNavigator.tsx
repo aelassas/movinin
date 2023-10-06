@@ -43,7 +43,7 @@ function DrawerNavigator() {
     {
       name: 'Properties',
       title: i18n.t('PROPERTIES'),
-      iconName: 'directions-property',
+      iconName: 'home',
       hidden: true,
       hideTitle: true,
     },
