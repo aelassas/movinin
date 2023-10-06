@@ -35,7 +35,7 @@ Movin' In can run in a Docker container. Follow this step by step [guide](https:
 
 ## Contents
 
-1. [Screenshots](https://github.com/aelassas/movinin/wiki/Screenshots)
+1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)
 2. [Architecture](https://github.com/aelassas/movinin/wiki/Architecture)
 3. [Installing](https://github.com/aelassas/movinin/wiki/Installing)
 4. [Docker](https://github.com/aelassas/movinin/wiki/Docker)
@@ -48,7 +48,7 @@ Movin' In can run in a Docker container. Follow this step by step [guide](https:
 8. [Run from Source](https://github.com/aelassas/movinin/wiki/Run-from-Source)
 9. [Run Mobile App](https://github.com/aelassas/movinin/wiki/Run-Mobile-App)
 10. [Change Currency](https://github.com/aelassas/movinin/wiki/Change-Currency)
-11. [Add a New Language](https://github.com/aelassas/movinin/wiki/Add-a-New-Language)
+11. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)
 
 ### License
 
