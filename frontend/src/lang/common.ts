@@ -55,7 +55,7 @@ const strings = new LocalizedStrings({
     FIX_ERRORS: 'Veuillez corriger les erreurs.',
     SEND_MESSAGE: 'Envoyer un message',
     VERIFIED: 'Compte vérifié',
-    PROPERTY: 'voiture',
+    PROPERTY: 'propriété',
     RESEND_ACTIVATION_LINK: "Renvoyer le lien d'activation du compte",
     ACTIVATION_EMAIL_SENT: "E-mail d'activation envoyé.",
     EMAIL_NOT_VALID: 'E-mail non valide',

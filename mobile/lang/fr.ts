@@ -94,7 +94,7 @@ export const fr = {
   SIGN_OUT: 'Déconnexion',
   BOOKINGS: 'Réservations',
   LANGUAGE: 'Langue',
-  PROPERTIES: 'Voitures',
+  PROPERTIES: 'Propriétés',
   EMAIL_ERROR: 'Adresse e-mail non enregistrée',
   SETTINGS: 'Paramètres',
   ENABLE_EMAIL_NOTIFICATIONS: 'Activer les notifications par email',

@@ -7,7 +7,7 @@ const strings = new LocalizedStrings({
     BOOKING_OPTIONS: 'Vos options de réservation',
     BOOKING_DETAILS: 'Vos données de réservation',
     DAYS: 'Jours',
-    PROPERTY: 'Voiture',
+    PROPERTY: 'Propriété',
     AGENCY: 'Agence',
     COST: 'Total',
     RENTER_DETAILS: 'Informations client',

@@ -3,7 +3,7 @@ import * as LangHelper from '../common/LangHelper'
 
 const strings = new LocalizedStrings({
   fr: {
-    PROPERTY: 'Voiture',
+    PROPERTY: 'Propriété',
     AGENCY: 'Agence',
     PRICE: 'Prix',
     STATUS: 'Statut',
