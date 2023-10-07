@@ -1,8 +1,7 @@
 [![](https://movin-in.github.io/content/cover.jpg)](https://movin-in.github.io)
 
-| | Status |
+|**Supported Platforms**|  ![](https://img.shields.io/badge/iOS-4630EB.svg?logo=APPLE&labelColor=999999&logoColor=fff) ![](https://img.shields.io/badge/Android-4630EB.svg?&logo=ANDROID&labelColor=A4C639&logoColor=fff) ![](https://img.shields.io/badge/web-4630EB.svg?logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff) |
 | ----------- | ----------- |
-| **Supported Platforms** |  ![](https://img.shields.io/badge/iOS-4630EB.svg?logo=APPLE&labelColor=999999&logoColor=fff) ![](https://img.shields.io/badge/Android-4630EB.svg?&logo=ANDROID&labelColor=A4C639&logoColor=fff) ![](https://img.shields.io/badge/web-4630EB.svg?logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff) |
 | **CodeFactor**| [![CodeFactor](https://www.codefactor.io/repository/github/aelassas/movinin/badge)](https://www.codefactor.io/repository/github/aelassas/movinin) |
 | **API**      | [![API CI](https://github.com/aelassas/movinin/actions/workflows/api.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/api.yml) |
 | **Backend**   | [![Backend CI](https://github.com/aelassas/movinin/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/backend.yml) |
