@@ -8,6 +8,7 @@ import {
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import validator from 'validator'
+import * as movininTypes from '../miscellaneous/movininTypes'
 
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
@@ -152,7 +153,12 @@ function SignInScreen({ navigation, route }: NativeStackScreenProps<StackParams,
       return
     }
 
-    const data = { email, password, stayConnected }
+    const data: movininTypes.SignInPayload = {
+      email,
+      password,
+      stayConnected,
+      mobile: true,
+    }
 
     const res = await UserService.signin(data)
 

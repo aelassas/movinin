@@ -68,7 +68,6 @@ export const deleteProperty = (id: string): Promise<number> =>
  * @returns {Promise<string>}
  */
 export const uploadImage = (file: Blob): Promise<string> => {
-  const user = UserService.getCurrentUser()
   const formData = new FormData()
   formData.append('image', file)
 
@@ -76,14 +75,10 @@ export const uploadImage = (file: Blob): Promise<string> => {
     .post(
       `${Env.API_HOST}/api/upload-property-image`,
       formData,
-      user && user.accessToken
-        ? {
-          headers: {
-            'x-access-token': user.accessToken,
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-        : { headers: { 'Content-Type': 'multipart/form-data' } },
+      {
+        withCredentials: true,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
     )
     .then((res) => res.data)
 }

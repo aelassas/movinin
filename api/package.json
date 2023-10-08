@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "npx nodemon",
+    "dev": "nodemon",
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node --experimental-specifier-resolution=node dist",
     "lint": "eslint --ext .ts .",
