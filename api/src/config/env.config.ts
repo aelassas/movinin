@@ -96,7 +96,7 @@ export const COOKIE_OPTIONS: CookieOptions = { httpOnly: true, secure: HTTPS, si
  *
  * @type {string}
  */
-export const COOKIE_SECRET = __env__('MI_COOKIE_SECRET', false, 'BookCars')
+export const COOKIE_SECRET = __env__('MI_COOKIE_SECRET', false, 'Movinin')
 
 /**
  * JWT secret. It should at least be 32 characters long, but the longer the better.
