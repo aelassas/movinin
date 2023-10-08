@@ -31,7 +31,7 @@
     "max-len": "off",
     "indent": "off",
     "import/prefer-default-export": "off",
-    "no-await-in-loop":"off",
+    "no-await-in-loop": "off",
     "no-console": "off",
     "object-curly-newline": "off",
     "semi": [
