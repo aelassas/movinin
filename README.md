@@ -10,7 +10,7 @@
 
 Movin' In is a Rental Property Management Platform with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
-Movin' In is user-friendly, straightforward, secured against XSS, XST, CSRF and MITM, and subtly crafted.
+Movin' In is user-friendly, straightforward, secure against XSS, XST, CSRF and MITM, and subtly crafted.
 
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency as well.
 
@@ -39,6 +39,7 @@ Movin' In can run in a Docker container. Follow this step by step [guide](https:
 * Responsive backend and frontend
 * Native Mobile app for Android and iOS with single codebase
 * Push notifications
+* Secure against XSS, XST, CSRF and MITM
 
 ## Contents
 
