@@ -45,6 +45,6 @@ export const getBookingProperties = (keyword: string, data: movininTypes.GetBook
     .post(
       `${Env.API_HOST}/api/booking-properties/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
       data,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)

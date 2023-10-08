@@ -30,7 +30,7 @@ export const getBookings = (payload: movininTypes.GetBookingsPayload, page: numb
     .post(
       `${Env.API_HOST}/api/bookings/${page}/${size}/${UserService.getLanguage()}`,
       payload,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)
 
@@ -44,7 +44,7 @@ export const getBooking = (id: string): Promise<movininTypes.Booking> =>
   axios
     .get(
       `${Env.API_HOST}/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)
 
@@ -59,5 +59,5 @@ export const cancel = (id: string): Promise<number> =>
     .post(
       `${Env.API_HOST}/api/cancel-booking/${encodeURIComponent(id)}`,
       null,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     ).then((res) => res.status)

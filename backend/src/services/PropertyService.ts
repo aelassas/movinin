@@ -14,7 +14,7 @@ export const create = (data: movininTypes.CreatePropertyPayload): Promise<movini
     .post(
       `${Env.API_HOST}/api/create-property`,
       data,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)
 
@@ -29,7 +29,7 @@ export const update = (data: movininTypes.UpdatePropertyPayload): Promise<number
     .put(
       `${Env.API_HOST}/api/update-property`,
       data,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.status)
 
@@ -43,7 +43,7 @@ export const check = (id: string): Promise<number> =>
   axios
     .get(
       `${Env.API_HOST}/api/check-property/${encodeURIComponent(id)}`,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.status)
 
@@ -57,7 +57,7 @@ export const deleteProperty = (id: string): Promise<number> =>
   axios
     .delete(
       `${Env.API_HOST}/api/delete-property/${encodeURIComponent(id)}`,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.status)
 
@@ -99,7 +99,7 @@ export const deleteImage = (id: string): Promise<number> =>
     .post(
       `${Env.API_HOST}/api/delete-property-image/${encodeURIComponent(id)}`,
       null,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.status)
 
@@ -114,7 +114,7 @@ export const deleteTempImage = (image: string): Promise<number> =>
     .post(
       `${Env.API_HOST}/api/delete-temp-property-image/${encodeURIComponent(image)}`,
       null,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.status)
 
@@ -128,7 +128,7 @@ export const getProperty = (id: string): Promise<movininTypes.Property> =>
   axios
     .get(
       `${Env.API_HOST}/api/property/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)
 
@@ -146,7 +146,7 @@ export const getProperties = (keyword: string, data: movininTypes.GetPropertiesP
     .post(
       `${Env.API_HOST}/api/properties/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
       data,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)
 
@@ -164,6 +164,6 @@ export const getBookingProperties = (keyword: string, data: movininTypes.GetBook
     .post(
       `${Env.API_HOST}/api/booking-properties/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
       data,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)

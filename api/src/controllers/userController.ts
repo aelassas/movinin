@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 import { v1 as uuid } from 'uuid'
 import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
-import { Request, Response } from 'express'
+import { CookieOptions, Request, Response } from 'express'
 import * as movininTypes from 'movinin-types'
 import strings from '../config/app.config'
 import * as env from '../config/env.config'
@@ -453,23 +453,29 @@ export async function signin(req: Request, res: Response) {
     if (passwordMatch) {
       const payload = { id: user._id }
 
-      let options: { expiresIn?: number } = { expiresIn: env.JWT_EXPIRE_AT }
-      if (stayConnected) {
-        options = {}
+      let options: { expiresIn?: number } = {}
+      const cookieOptions: CookieOptions = Helper.clone(env.COOKIE_OPTIONS)
+
+      if (!stayConnected) {
+        options = { expiresIn: env.JWT_EXPIRE_AT }
+        cookieOptions.maxAge = env.JWT_EXPIRE_AT * 1000
       }
 
       const token = jwt.sign(payload, env.JWT_SECRET, options)
 
-      return res.status(200).send({
-        _id: user._id,
-        email: user.email,
-        fullName: user.fullName,
-        language: user.language,
-        enableEmailNotifications: user.enableEmailNotifications,
-        accessToken: token,
-        blacklisted: user.blacklisted,
-        avatar: user.avatar,
-      })
+      return res
+        .clearCookie('x-access-token')
+        .cookie('x-access-token', token, cookieOptions)
+        .status(200)
+        .send({
+          _id: user._id,
+          email: user.email,
+          fullName: user.fullName,
+          language: user.language,
+          enableEmailNotifications: user.enableEmailNotifications,
+          blacklisted: user.blacklisted,
+          avatar: user.avatar,
+        })
     }
 
     return res.sendStatus(204)
@@ -477,6 +483,19 @@ export async function signin(req: Request, res: Response) {
     console.error(`[user.signin] ${strings.DB_ERROR} ${email}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
   }
+}
+
+/**
+ * Sign out.
+ *
+ * @export
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
+export async function signout(req: Request, res: Response) {
+  return res.clearCookie('x-access-token').sendStatus(200)
 }
 
 /**

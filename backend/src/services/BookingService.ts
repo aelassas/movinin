@@ -14,7 +14,7 @@ export const create = (data: movininTypes.Booking): Promise<movininTypes.Booking
     .post(
       `${Env.API_HOST}/api/create-booking`,
       data,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)
 
@@ -29,7 +29,7 @@ export const update = (data: movininTypes.Booking): Promise<number> =>
     .put(
       `${Env.API_HOST}/api/update-booking`,
       data,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.status)
 
@@ -44,7 +44,7 @@ export const updateStatus = (data: movininTypes.UpdateStatusPayload): Promise<nu
     .post(
       `${Env.API_HOST}/api/update-booking-status`,
       data,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.status)
 
@@ -59,7 +59,7 @@ export const deleteBookings = (ids: string[]): Promise<number> =>
     .post(
       `${Env.API_HOST}/api/delete-bookings`,
       ids,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.status)
 
@@ -73,7 +73,7 @@ export const getBooking = (id: string): Promise<movininTypes.Booking> =>
   axios
     .get(
       `${Env.API_HOST}/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)
 
@@ -90,6 +90,6 @@ export const getBookings = (payload: movininTypes.GetBookingsPayload, page: numb
     .post(
       `${Env.API_HOST}/api/bookings/${page}/${size}/${UserService.getLanguage()}`,
       payload,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)

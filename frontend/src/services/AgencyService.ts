@@ -1,7 +1,6 @@
 import axios from 'axios'
 import * as movininTypes from 'movinin-types'
 import Env from '../config/env.config'
-import * as UserService from './UserService'
 
 /**
  * Get all agencies.
@@ -12,7 +11,7 @@ export const getAllAgencies = (): Promise<movininTypes.User[]> =>
   axios
     .get(
       `${Env.API_HOST}/api/all-agencies`,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
 )
     .then((res) => res.data)
 
@@ -28,6 +27,6 @@ export const getAgencies = (keyword: string, page: number, size: number): Promis
   axios
     .get(
       `${Env.API_HOST}/api/agencies/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
-      { headers: UserService.authHeader() }
+      { withCredentials: true }
     )
     .then((res) => res.data)

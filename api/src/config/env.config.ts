@@ -1,5 +1,6 @@
 import process from 'node:process'
 import { Document, Types } from 'mongoose'
+import { CookieOptions } from 'express'
 import * as movininTypes from 'movinin-types'
 import * as Helper from '../common/Helper'
 
@@ -84,6 +85,18 @@ export const DB_SSL_CA = __env__('MI_DB_SSL_CA', DB_SSL)
  * @type {boolean}
  */
 export const DB_DEBUG = Helper.StringToBoolean(__env__('MI_DB_DEBUG', false, 'false'))
+
+/**
+ * Cookie options.
+ */
+export const COOKIE_OPTIONS: CookieOptions = { httpOnly: true, secure: HTTPS, signed: true, sameSite: 'strict' }
+
+/**
+ * Cookie secret. It should at least be 32 characters long, but the longer the better.
+ *
+ * @type {string}
+ */
+export const COOKIE_SECRET = __env__('MI_COOKIE_SECRET', false, 'BookCars')
 
 /**
  * JWT secret. It should at least be 32 characters long, but the longer the better.
