@@ -3,8 +3,9 @@ import jwt from 'jsonwebtoken'
 import * as env from '../config/env.config'
 
 function verifyToken(req: Request, res: Response, next: NextFunction) {
-  const token: string = req.signedCookies['x-access-token'] as string // backend and frontend
-  || req.headers['x-access-token'] as string // mobile app
+  const token: string = req.signedCookies[env.FRONTEND_AUTH_COOKIE_NAME] as string // frontend
+    || req.signedCookies[env.BACKEND_AUTH_COOKIE_NAME] as string // backend
+    || req.headers['x-access-token'] as string // mobile app
 
   if (!token) {
     return res.status(403).send({ message: 'No token provided!' })

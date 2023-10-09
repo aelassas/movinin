@@ -5,10 +5,10 @@ import Env from '../config/env.config'
 /**
  * Sign up.
  *
- * @param {movininTypes.BackendSignUpPayload} data
+ * @param {movininTypes.SignUpPayload} data
  * @returns {Promise<number>}
  */
-export const signup = (data: movininTypes.BackendSignUpPayload): Promise<number> =>
+export const signup = (data: movininTypes.SignUpPayload): Promise<number> =>
   axios
     .post(
       `${Env.API_HOST}/api/sign-up/ `,

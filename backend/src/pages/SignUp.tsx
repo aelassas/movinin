@@ -65,10 +65,10 @@ function SignUp() {
             setEmailValid(true)
             return true
           }
-            setEmailError(true)
-            setEmailValid(true)
-            setError(false)
-            return false
+          setEmailError(true)
+          setEmailValid(true)
+          setError(false)
+          return false
         } catch (err) {
           Helper.error(err)
           setEmailError(false)
@@ -116,7 +116,7 @@ function SignUp() {
 
       setLoading(true)
 
-      const data: movininTypes.BackendSignUpPayload = {
+      const data: movininTypes.SignUpPayload = {
         email,
         password,
         fullName,

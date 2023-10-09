@@ -214,7 +214,7 @@ function SignUp() {
 
       setLoading(true)
 
-      const data: movininTypes.FrontendSignUpPayload = {
+      const data: movininTypes.SignUpPayload = {
         email,
         phone,
         password,

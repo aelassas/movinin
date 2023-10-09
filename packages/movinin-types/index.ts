@@ -48,7 +48,7 @@ export enum RentalTerm {
     Yearly = 'YEARLY'
 }
 
-export interface BackendSignUpPayload {
+export interface SignUpPayload {
     email: string
     password: string
     fullName: string
@@ -58,11 +58,8 @@ export interface BackendSignUpPayload {
     blacklisted?: boolean
     type?: string
     avatar?: string
-}
-
-export interface FrontendSignUpPayload extends BackendSignUpPayload {
-    birthDate: number | Date
-    phone: string
+    birthDate?: number | Date
+    phone?: string
 }
 
 export interface CreateUserPayload {
@@ -175,6 +172,7 @@ export interface SignInPayload {
     email: string
     password?: string
     stayConnected?: boolean
+    backend?: boolean
     mobile?: boolean
 }
 
