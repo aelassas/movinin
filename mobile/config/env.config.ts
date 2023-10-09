@@ -44,6 +44,13 @@ export const APP_TYPE: string = 'frontend'
 export const API_HOST: string = MI_API_HOST
 
 /**
+ * Axios timeout in milliseconds.
+ *
+ * @type {number}
+ */
+export const AXIOS_TIMEOUT: number = 5000
+
+/**
  * Number of maximum axios retries.
  *
  * @type {number}
@@ -63,13 +70,6 @@ export const AXIOS_RETRIES_INTERVAL: number = 500
  * @type {string}
  */
 export const DEFAULT_LANGUAGE: string = MI_DEFAULT_LANGUAGE || 'en'
-
-/**
- * Axios timeout in milliseconds.
- *
- * @type {number}
- */
-export const AXIOS_TIMEOUT: number = 5000
 
 /**
  * Page size. Default is 20.
