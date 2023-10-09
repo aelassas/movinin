@@ -87,16 +87,40 @@ export const DB_SSL_CA = __env__('MI_DB_SSL_CA', DB_SSL)
 export const DB_DEBUG = Helper.StringToBoolean(__env__('MI_DB_DEBUG', false, 'false'))
 
 /**
- * Cookie options.
- */
-export const COOKIE_OPTIONS: CookieOptions = { httpOnly: true, secure: HTTPS, signed: true, sameSite: 'strict' }
-
-/**
  * Cookie secret. It should at least be 32 characters long, but the longer the better.
  *
  * @type {string}
  */
 export const COOKIE_SECRET = __env__('MI_COOKIE_SECRET', false, 'Movinin')
+
+/**
+ * Cookie options.
+ *
+ * @type {CookieOptions}
+ */
+export const COOKIE_OPTIONS: CookieOptions = { httpOnly: true, secure: HTTPS, signed: true, sameSite: 'strict' }
+
+/**
+ * Authentication cookie domain.
+ * Default is localhost.
+ *
+ * @type {string}
+ */
+export const AUTH_COOKIE_DOMAIN = __env__('MI_AUTH_COOKIE_DOMAIN', false, 'localhost')
+
+/**
+ * frontend authentication cookie name.
+ *
+ * @type {"mi-x-access-token-frontend"}
+ */
+export const FRONTEND_AUTH_COOKIE_NAME = 'mi-x-access-token-frontend'
+
+/**
+ * Backend authentication cookie name.
+ *
+ * @type {"mi-x-access-token-frontend"}
+ */
+export const BACKEND_AUTH_COOKIE_NAME = 'mi-x-access-token-backend'
 
 /**
  * JWT secret. It should at least be 32 characters long, but the longer the better.
@@ -216,20 +240,6 @@ export const MINIMUM_AGE = Number.parseInt(__env__('MI_MINIMUM_AGE', false, '21'
  * @type {string}
  */
 export const EXPO_ACCESS_TOKEN = __env__('MI_EXPO_ACCESS_TOKEN', false)
-
-/**
- * frontend authentication cookie name.
- *
- * @type {"mi-x-access-token-frontend"}
- */
-export const FRONTEND_AUTH_COOKIE_NAME = 'mi-x-access-token-frontend'
-
-/**
- * Backend authentication cookie name.
- *
- * @type {"mi-x-access-token-frontend"}
- */
-export const BACKEND_AUTH_COOKIE_NAME = 'mi-x-access-token-backend'
 
 /**
  * User Document.
