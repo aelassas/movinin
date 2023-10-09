@@ -161,7 +161,7 @@ export const validateAccessToken = (): Promise<number> =>
   axios
     .post(
       `${Env.API_HOST}/api/validate-access-token`,
-      { backend: true },
+      null,
       { withCredentials: true }
     )
     .then((res) => res.status)
