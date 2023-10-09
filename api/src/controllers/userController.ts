@@ -426,8 +426,7 @@ export async function signin(req: Request, res: Response) {
         options = {}
         //
         // Cookies can no longer set an expiration date more than 400 days in the future.
-        // The limit MUST NOT be greater than 400 days in duration
-        // (400 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds).
+        // The limit MUST NOT be greater than 400 days in duration.
         // The RECOMMENDED limit is 400 days in duration, but the user agent MAY adjust the
         // limit to be less.
         //
