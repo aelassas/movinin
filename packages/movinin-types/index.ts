@@ -172,7 +172,6 @@ export interface SignInPayload {
     email: string
     password?: string
     stayConnected?: boolean
-    backend?: boolean
     mobile?: boolean
 }
 
