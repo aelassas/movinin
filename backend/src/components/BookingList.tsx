@@ -204,7 +204,7 @@ function BookingList({
     }
   }, [pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const getDate = (date: Date) => {
+  const getDate = (date: string) => {
     const d = new Date(date)
     return `${movininHelper.formatDatePart(d.getDate())}-${movininHelper.formatDatePart(d.getMonth() + 1)}-${d.getFullYear()}`
   }
