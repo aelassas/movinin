@@ -3,7 +3,9 @@ import {
   DataGrid,
   frFR,
   enUS,
-  GridColDef
+  GridColDef,
+  GridRenderCellParams,
+  GridValueGetterParams
 } from '@mui/x-data-grid'
 import {
   Tooltip,
@@ -130,21 +132,21 @@ function UserList({
     }
   }, [pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const getColumns = (_user: movininTypes.User) => {
-    const _columns = [
+  const getColumns = (_user: movininTypes.User): GridColDef<movininTypes.User>[] => {
+    const _columns: GridColDef<movininTypes.User>[] = [
       {
         field: 'fullName',
         headerName: commonStrings.USER,
         flex: 1,
-        renderCell: (params: any) => {
-          const __user = params.row
+        renderCell: ({ row, value }: GridRenderCellParams<movininTypes.User, string>) => {
+          const __user = row
           let userAvatar
 
           if (__user.avatar) {
             if (__user.type === movininTypes.RecordType.Agency) {
-              userAvatar = <img src={movininHelper.joinURL(Env.CDN_USERS, params.row.avatar)} alt={params.row.fullName} />
+              userAvatar = <img src={movininHelper.joinURL(Env.CDN_USERS, row.avatar)} alt={row.fullName} />
             } else {
-              const avatar = <Avatar src={movininHelper.joinURL(Env.CDN_USERS, params.row.avatar)} className="avatar-small" />
+              const avatar = <Avatar src={movininHelper.joinURL(Env.CDN_USERS, row.avatar)} className="avatar-small" />
               if (__user.verified) {
                 userAvatar = (
                   <Badge
@@ -196,50 +198,50 @@ function UserList({
           }
 
           return (
-            <Link href={`/user?u=${params.row._id}`} className="us-user">
+            <Link href={`/user?u=${row._id}`} className="us-user">
               <span className="us-avatar">{userAvatar}</span>
-              <span>{params.value}</span>
+              <span>{value}</span>
             </Link>
           )
         },
-        valueGetter: (params: any) => params.value,
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.User, string>) => value,
       },
       {
         field: 'email',
         headerName: commonStrings.EMAIL,
         flex: 1,
-        valueGetter: (params: any) => params.value,
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.User, string>) => value,
       },
       {
         field: 'phone',
         headerName: commonStrings.PHONE,
         flex: 1,
-        valueGetter: (params: any) => params.value,
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.User, string>) => value,
       },
       {
         field: 'type',
         headerName: commonStrings.TYPE,
         flex: 1,
-        renderCell: (params: any) => <span className={`bs us-${params.value.toLowerCase()}`}>{Helper.getUserType(params.value)}</span>,
-        valueGetter: (params: any) => params.value,
+        renderCell: ({ value }: GridRenderCellParams<movininTypes.User, movininTypes.UserType>) => <span className={`bs us-${value?.toLowerCase()}`}>{Helper.getUserType(value)}</span>,
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.User, string>) => value,
       },
       {
         field: 'action',
         headerName: '',
         sortable: false,
         disableColumnMenu: true,
-        renderCell: (params: any) => {
+        renderCell: ({ row }: GridRenderCellParams<movininTypes.User>) => {
           const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation() // don't select this row after clicking
-            setSelectedId(params.row._id)
+            setSelectedId(row._id || '')
             setOpenDeleteDialog(true)
           }
 
-          const __user = params.row
+          const __user = row
           return _user.type === movininTypes.RecordType.Admin || __user.agency === _user._id ? (
             <div>
               <Tooltip title={commonStrings.UPDATE}>
-                <IconButton href={`update-user?u=${params.row._id}`}>
+                <IconButton href={`update-user?u=${row._id}`}>
                   <EditIcon />
                 </IconButton>
               </Tooltip>

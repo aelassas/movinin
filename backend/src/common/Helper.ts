@@ -89,7 +89,7 @@ export const admin = (user?: movininTypes.User): boolean =>
  * @param {string} status
  * @returns {string}
  */
-export const getBookingStatus = (status: movininTypes.BookingStatus) => {
+export const getBookingStatus = (status?: movininTypes.BookingStatus) => {
   switch (status) {
     case movininTypes.BookingStatus.Void:
       return commonStrings.BOOKING_STATUS_VOID
@@ -273,7 +273,7 @@ export const getUserTypes = () => [
  * @param {string} type
  * @returns {string}
  */
-export const getUserType = (type: movininTypes.UserType) => {
+export const getUserType = (type?: movininTypes.UserType) => {
   switch (type) {
     case movininTypes.UserType.Admin:
       return commonStrings.RECORD_TYPE_ADMIN

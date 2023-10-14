@@ -79,7 +79,7 @@ export const getPropertyType = (type: string) => {
  * @param {string} status
  * @returns {string}
  */
-export const getBookingStatus = (status: movininTypes.BookingStatus) => {
+export const getBookingStatus = (status?: movininTypes.BookingStatus) => {
   switch (status) {
     case movininTypes.BookingStatus.Void:
       return commonStrings.BOOKING_STATUS_VOID

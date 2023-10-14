@@ -5,7 +5,9 @@ import {
   enUS,
   GridPaginationModel,
   GridColDef,
-  GridRowId
+  GridRowId,
+  GridValueGetterParams,
+  GridRenderCellParams
 } from '@mui/x-data-grid'
 import {
   Tooltip,
@@ -204,66 +206,70 @@ function BookingList({
     }
   }, [pageSize]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const getDate = (date: string) => {
-    const d = new Date(date)
-    return `${movininHelper.formatDatePart(d.getDate())}-${movininHelper.formatDatePart(d.getMonth() + 1)}-${d.getFullYear()}`
+  const getDate = (date?: string) => {
+    if (date) {
+      const d = new Date(date)
+      return `${movininHelper.formatDatePart(d.getDate())}-${movininHelper.formatDatePart(d.getMonth() + 1)}-${d.getFullYear()}`
+    }
+
+    throw new Error('Invalid date')
   }
 
-  const getColumns = () => {
-    const _columns = [
+  const getColumns = (): GridColDef<movininTypes.Booking>[] => {
+    const _columns: GridColDef<movininTypes.Booking>[] = [
       {
         field: 'renter',
         headerName: strings.RENTER,
         flex: 1,
-        renderCell: (params: any) => (
-          <Tooltip title={params.value} placement="left">
-            <Link href={`/user?u=${params.row.renter._id}`}>{params.value}</Link>
+        renderCell: ({ row, value }: GridRenderCellParams<movininTypes.Booking, string>) => (
+          <Tooltip title={value} placement="left">
+            <Link href={`/user?u=${(row?.renter as movininTypes.User)._id}`}>{value}</Link>
           </Tooltip>
         ),
-        valueGetter: (params: any) => params.value.fullName,
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, movininTypes.User>) => value?.fullName,
       },
       {
         field: 'from',
         headerName: commonStrings.FROM,
         flex: 1,
-        valueGetter: (params: any) => getDate(params.value),
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, string>) => getDate(value),
       },
       {
         field: 'to',
         headerName: commonStrings.TO,
         flex: 1,
-        valueGetter: (params: any) => getDate(params.value),
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, string>) => getDate(value),
       },
       {
         field: 'price',
         headerName: strings.PRICE,
         flex: 1,
-        valueGetter: (params: any) => `${movininHelper.formatNumber(params.value)} ${commonStrings.CURRENCY}`,
-        renderCell: (params: any) => <span className="bp">{params.value}</span>,
+        renderCell: ({ value }: GridRenderCellParams<movininTypes.Booking, string>) => <span className="bp">{value}</span>,
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, number>) => `${movininHelper.formatNumber(value)} ${commonStrings.CURRENCY}`,
       },
       {
         field: 'status',
         headerName: strings.STATUS,
         flex: 1,
-        renderCell: (params: any) => <span className={`bs bs-${params.value.toLowerCase()}`}>{Helper.getBookingStatus(params.value)}</span>,
-        valueGetter: (params: any) => params.value,
+        renderCell: ({ value }: GridRenderCellParams<movininTypes.Booking, movininTypes.BookingStatus>) => <span className={`bs bs-${value?.toLowerCase()}`}>{Helper.getBookingStatus(value)}</span>,
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, string>) => value,
       },
       {
         field: 'action',
         headerName: '',
         sortable: false,
         disableColumnMenu: true,
-        renderCell: (params: any) => {
+        renderCell: ({ row }: GridRenderCellParams<movininTypes.Booking>) => {
           const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation() // don't select this row after clicking
-            setSelectedId(params.row._id)
+            setSelectedId(row._id || '')
             setopenDeleteDialog(true)
           }
 
           return (
             <div>
               <Tooltip title={commonStrings.UPDATE}>
-                <IconButton href={`update-booking?b=${params.row._id}`}>
+                <IconButton href={`update-booking?b=${row._id}`}>
                   <EditIcon />
                 </IconButton>
               </Tooltip>
@@ -311,12 +317,12 @@ function BookingList({
         field: 'property',
         headerName: strings.PROPERTY,
         flex: 1,
-        renderCell: (params: any) => (
-          <Tooltip title={params.value} placement="left">
-            <Link href={`/property-bookings?p=${params.row.property._id}`}>{params.value}</Link>
+        renderCell: ({ row, value }: GridRenderCellParams<movininTypes.Booking, string>) => (
+          <Tooltip title={value} placement="left">
+            <Link href={`/property-bookings?p=${(row.property as movininTypes.Property)._id}`}>{value}</Link>
           </Tooltip>
         ),
-        valueGetter: (params: any) => params.value.name,
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, movininTypes.Property>) => value?.name,
       })
     }
 
@@ -325,12 +331,12 @@ function BookingList({
         field: 'agency',
         headerName: commonStrings.AGENCY,
         flex: 1,
-        renderCell: (params: any) => (
-          <Link href={`/agency?c=${params.row.agency._id}`} className="cell-agency">
-            <img src={movininHelper.joinURL(Env.CDN_USERS, params.row.agency.avatar)} alt={params.value} />
+        renderCell: ({ row, value }: GridRenderCellParams<movininTypes.Booking, string>) => (
+          <Link href={`/agency?c=${(row.agency as movininTypes.User)._id}`} className="cell-agency">
+            <img src={movininHelper.joinURL(Env.CDN_USERS, (row.agency as movininTypes.User).avatar)} alt={value} />
           </Link>
         ),
-        valueGetter: (params: any) => params.value.fullName,
+        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, movininTypes.User>) => value?.fullName,
       })
     }
 
