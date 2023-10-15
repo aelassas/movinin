@@ -94,6 +94,14 @@ export const DB_DEBUG = Helper.StringToBoolean(__env__('MI_DB_DEBUG', false, 'fa
 export const COOKIE_SECRET = __env__('MI_COOKIE_SECRET', false, 'Movinin')
 
 /**
+ * Authentication cookie domain.
+ * Default is localhost.
+ *
+ * @type {string}
+ */
+export const AUTH_COOKIE_DOMAIN = __env__('MI_AUTH_COOKIE_DOMAIN', false, 'localhost')
+
+/**
  * Cookie options.
  *
  * On production, authentication cookies are httpOnly, signed, secure and strict sameSite.
@@ -104,15 +112,7 @@ export const COOKIE_SECRET = __env__('MI_COOKIE_SECRET', false, 'Movinin')
  *
  * @type {CookieOptions}
  */
-export const COOKIE_OPTIONS: CookieOptions = { httpOnly: true, secure: HTTPS, signed: true, sameSite: 'strict' }
-
-/**
- * Authentication cookie domain.
- * Default is localhost.
- *
- * @type {string}
- */
-export const AUTH_COOKIE_DOMAIN = __env__('MI_AUTH_COOKIE_DOMAIN', false, 'localhost')
+export const COOKIE_OPTIONS: CookieOptions = { httpOnly: true, secure: HTTPS, signed: true, sameSite: 'strict', domain: AUTH_COOKIE_DOMAIN }
 
 /**
  * frontend authentication cookie name.
