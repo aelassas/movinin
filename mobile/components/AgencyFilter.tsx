@@ -11,17 +11,19 @@ import Link from './Link'
 import Switch from './Switch'
 import Accordion from './Accordion'
 
+interface AgencyFilterProps {
+  visible?: boolean
+  style?: object
+  onLoad?: (checkedAgencies: string[]) => void
+  onChange?: (checkedAgencies: string[]) => void
+}
+
 function AgencyFilter({
-    visible,
-    style,
-    onLoad,
-    onChange
-  }: {
-    visible?: boolean
-    style?: object
-    onLoad?: (checkedAgencies: string[]) => void
-    onChange?: (checkedAgencies: string[]) => void
-  }) {
+  visible,
+  style,
+  onLoad,
+  onChange
+}: AgencyFilterProps) {
   const [agencies, setAgencies] = useState<movininTypes.User[]>([])
   const [checkedAgencies, setCheckedAgencies] = useState<string[]>([])
   const [allChecked, setAllChecked] = useState(true)
@@ -60,43 +62,43 @@ function AgencyFilter({
             {agencies.map((agency) => (
               agency._id && typeof agency.checked !== 'undefined'
               && (
-              <View key={agency._id} style={styles.agency}>
-                <Switch
-                  value={agency.checked}
-                  onValueChange={(checked) => {
-                    if (checked) {
-                      agency.checked = true
-                      setAgencies(movininHelper.clone(agencies))
-                      checkedAgencies.push(agency._id as string)
+                <View key={agency._id} style={styles.agency}>
+                  <Switch
+                    value={agency.checked}
+                    onValueChange={(checked) => {
+                      if (checked) {
+                        agency.checked = true
+                        setAgencies(movininHelper.clone(agencies))
+                        checkedAgencies.push(agency._id as string)
 
-                      if (checkedAgencies.length === agencies.length) {
-                        setAllChecked(true)
+                        if (checkedAgencies.length === agencies.length) {
+                          setAllChecked(true)
+                        }
+                      } else {
+                        agency.checked = false
+                        setAgencies(movininHelper.clone(agencies))
+                        const index = checkedAgencies.indexOf(agency._id as string)
+                        checkedAgencies.splice(index, 1)
+
+                        if (checkedAgencies.length === 0) {
+                          setAllChecked(false)
+                        }
                       }
-                    } else {
-                      agency.checked = false
-                      setAgencies(movininHelper.clone(agencies))
-                      const index = checkedAgencies.indexOf(agency._id as string)
-                      checkedAgencies.splice(index, 1)
 
-                      if (checkedAgencies.length === 0) {
-                        setAllChecked(false)
+                      if (onChange) {
+                        onChange(movininHelper.clone(checkedAgencies))
                       }
-                    }
-
-                    if (onChange) {
-                      onChange(movininHelper.clone(checkedAgencies))
-                    }
-                  }}
-                >
-                  <Image
-                    style={styles.image}
-                    source={{
-                      uri: movininHelper.joinURL(Env.CDN_USERS, agency.avatar),
                     }}
-                  />
-                </Switch>
-              </View>
-)
+                  >
+                    <Image
+                      style={styles.image}
+                      source={{
+                        uri: movininHelper.joinURL(Env.CDN_USERS, agency.avatar),
+                      }}
+                    />
+                  </Switch>
+                </View>
+              )
             ))}
           </View>
           <Link

@@ -16,6 +16,15 @@ import * as Helper from '../common/Helper'
 import * as Env from '../config/env.config'
 import i18n from '../lang/i18n'
 
+interface PropertyProps {
+  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
+  fr: boolean,
+  property: movininTypes.Property,
+  from: Date,
+  to: Date,
+  location: string,
+}
+
 const iconSize = 24
 const iconColor = '#000'
 
@@ -29,14 +38,7 @@ function Property({
   to,
   location,
   navigation
-}: {
-  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
-  fr: boolean,
-  property: movininTypes.Property,
-  from: Date,
-  to: Date,
-  location: string,
-}) {
+}: PropertyProps) {
   const { width } = useWindowDimensions()
   const days = movininHelper.days(from, to)
   const price = Helper.price(property, from, to)

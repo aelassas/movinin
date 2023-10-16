@@ -2,22 +2,24 @@ import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 
+interface CheckboxProps {
+  indeterminate?: boolean
+  checked?: boolean
+  onChange?: (_checked: boolean) => void
+}
+
 function Checkbox({
-    indeterminate,
-    checked,
-    onChange
-  }: {
-    indeterminate?: boolean
-    checked?: boolean
-    onChange?: (_checked: boolean) => void
-  }) {
+  indeterminate,
+  checked,
+  onChange
+}: CheckboxProps) {
   return (
     <Pressable
       onPress={() => {
-      if (onChange) {
-        onChange(!checked)
-      }
-    }}
+        if (onChange) {
+          onChange(!checked)
+        }
+      }}
       hitSlop={15}
       style={styles.checkbox}
     >

@@ -8,15 +8,17 @@ import Accordion from './Accordion'
 import Link from './Link'
 import Switch from './Switch'
 
+interface PropertyTypeFilterProps {
+  visible?: boolean
+  style?: object
+  onChange?: (values: movininTypes.PropertyType[]) => void
+}
+
 function PropertyTypeFilter({
-    visible,
-    style,
-    onChange
-  }: {
-    visible?: boolean
-    style?: object
-    onChange?: (values: movininTypes.PropertyType[]) => void
-  }) {
+  visible,
+  style,
+  onChange
+}: PropertyTypeFilterProps) {
   const allPropertyTypes = movininHelper.getAllPropertyTypes()
 
   const [values, setValues] = useState(allPropertyTypes)

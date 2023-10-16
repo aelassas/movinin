@@ -10,17 +10,19 @@ import BookingStatus from './BookingStatus'
 import Link from './Link'
 import Switch from './Switch'
 
+interface StatusFilterProps {
+  visible?: boolean
+  style?: object
+  onLoad?: (checkedStatuses: movininTypes.BookingStatus[]) => void
+  onChange?: (checkedStatuses: movininTypes.BookingStatus[]) => void
+}
+
 function StatusFilter({
-    visible,
-    style,
-    onLoad,
-    onChange
-  }: {
-    visible?: boolean
-    style?: object
-    onLoad?: (checkedStatuses: movininTypes.BookingStatus[]) => void
-    onChange?: (checkedStatuses: movininTypes.BookingStatus[]) => void
-  }) {
+  visible,
+  style,
+  onLoad,
+  onChange
+}: StatusFilterProps) {
   const [statuses, setStatuses] = useState<movininTypes.StatusFilterItem[]>(
     Helper.getBookingStatuses().map((status) => ({ ...status, checked: true }))
   )
@@ -43,38 +45,38 @@ function StatusFilter({
             {statuses.map((status) => (
               typeof status.checked !== 'undefined'
               && (
-              <View key={status.value} style={styles.status}>
-                <Switch
-                  value={status.checked}
-                  onValueChange={(checked) => {
-                    if (checked) {
-                      status.checked = true
-                      setStatuses(movininHelper.clone(statuses))
-                      checkedStatuses.push(status.value)
+                <View key={status.value} style={styles.status}>
+                  <Switch
+                    value={status.checked}
+                    onValueChange={(checked) => {
+                      if (checked) {
+                        status.checked = true
+                        setStatuses(movininHelper.clone(statuses))
+                        checkedStatuses.push(status.value)
 
-                      if (checkedStatuses.length === statuses.length) {
-                        setAllChecked(true)
+                        if (checkedStatuses.length === statuses.length) {
+                          setAllChecked(true)
+                        }
+                      } else {
+                        status.checked = false
+                        setStatuses(movininHelper.clone(statuses))
+                        const index = checkedStatuses.indexOf(status.value)
+                        checkedStatuses.splice(index, 1)
+
+                        if (checkedStatuses.length === 0) {
+                          setAllChecked(false)
+                        }
                       }
-                    } else {
-                      status.checked = false
-                      setStatuses(movininHelper.clone(statuses))
-                      const index = checkedStatuses.indexOf(status.value)
-                      checkedStatuses.splice(index, 1)
 
-                      if (checkedStatuses.length === 0) {
-                        setAllChecked(false)
+                      if (onChange) {
+                        onChange(movininHelper.clone(checkedStatuses))
                       }
-                    }
-
-                    if (onChange) {
-                      onChange(movininHelper.clone(checkedStatuses))
-                    }
-                  }}
-                >
-                  <BookingStatus style={styles.bookingStatus} status={status.value} />
-                </Switch>
-              </View>
-)
+                    }}
+                  >
+                    <BookingStatus style={styles.bookingStatus} status={status.value} />
+                  </Switch>
+                </View>
+              )
             ))}
 
             <Link

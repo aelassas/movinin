@@ -8,15 +8,17 @@ import Accordion from './Accordion'
 import Link from './Link'
 import Switch from './Switch'
 
+interface RentalTermFilterProps {
+  visible?: boolean
+  style?: object
+  onChange?: (values: movininTypes.RentalTerm[]) => void
+}
+
 function RentalTermFilter({
-    visible,
-    style,
-    onChange
-  }: {
-    visible?: boolean
-    style?: object
-    onChange?: (values: movininTypes.RentalTerm[]) => void
-  }) {
+  visible,
+  style,
+  onChange
+}: RentalTermFilterProps) {
   const allRentalTerms = movininHelper.getAllRentalTerms()
 
   const [values, setValues] = useState(allRentalTerms)

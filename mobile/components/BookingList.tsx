@@ -22,6 +22,16 @@ import * as BookingService from '../services/BookingService'
 
 import Booking from './Booking'
 
+interface BookingListProps {
+  agencies?: string[]
+  statuses?: string[]
+  filter?: movininTypes.Filter
+  user: string
+  booking?: string
+  language?: string
+  header?: React.ReactElement
+}
+
 function BookingList({
   agencies,
   statuses,
@@ -30,15 +40,7 @@ function BookingList({
   booking: bookingId,
   language,
   header
-}: {
-  agencies?: string[]
-  statuses?: string[]
-  filter?: movininTypes.Filter
-  user: string
-  booking?: string
-  language?: string
-  header?: React.ReactElement
-}) {
+}: BookingListProps) {
   const [firstLoad, setFirstLoad] = useState(true)
   const [onScrollEnd, setOnScrollEnd] = useState(false)
   const [loading, setLoading] = useState(true)

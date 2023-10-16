@@ -25,6 +25,21 @@ import * as Helper from '../common/Helper'
 import * as UserService from '../services/UserService'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
+interface DrawerContentProps {
+  language: string
+  index: number
+  drawerItems: DrawerItem[]
+  loggedIn?: boolean
+  activeTintColor?: string
+  inactiveTintColor?: string
+  activeBackgroundColor?: string
+  inactiveBackgroundColor?: string
+  pressColor?: string
+  labelStyle?: StyleProp<ViewStyle>
+  itemStyle?: StyleProp<ViewStyle>
+  props: DrawerContentComponentProps
+}
+
 let yOffset = 0
 
 function DrawerContent({
@@ -40,20 +55,7 @@ function DrawerContent({
   labelStyle,
   itemStyle,
   props
-}: {
-  language: string
-  index: number
-  drawerItems: DrawerItem[]
-  loggedIn?: boolean
-  activeTintColor?: string
-  inactiveTintColor?: string
-  activeBackgroundColor?: string
-  inactiveBackgroundColor?: string
-  pressColor?: string
-  labelStyle?: StyleProp<ViewStyle>
-  itemStyle?: StyleProp<ViewStyle>
-  props: DrawerContentComponentProps
-}) {
+}: DrawerContentProps) {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams, keyof StackParams>>()
   const [openLanguageMenu, setopenLanguageMenu] = useState(false)
   const [language, setLanguage] = useState(drawerLanguage)

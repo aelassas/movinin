@@ -12,8 +12,16 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import * as UserService from '../services/UserService'
 import * as movininHelper from '../miscellaneous/movininHelper'
-
 import * as Env from '../config/env.config'
+
+interface HeaderProps {
+  title?: string
+  hideTitle?: boolean
+  loggedIn?: boolean
+  notificationCount?: number
+  reload?: boolean
+  _avatar?: string | null
+}
 
 function Header({
   title,
@@ -22,14 +30,7 @@ function Header({
   notificationCount,
   reload,
   _avatar
-}: {
-  title?: string
-  hideTitle?: boolean
-  loggedIn?: boolean
-  notificationCount?: number
-  reload?: boolean
-  _avatar?: string | null
-}) {
+}: HeaderProps) {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams, keyof StackParams>>()
   const [avatar, setAvatar] = useState<string | null | undefined>(null)
 

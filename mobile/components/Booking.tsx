@@ -16,6 +16,13 @@ import * as Helper from '../common/Helper'
 import * as Env from '../config/env.config'
 import i18n from '../lang/i18n'
 
+interface BookingProps {
+  booking: movininTypes.Booking
+  locale: Locale
+  fr: boolean
+  onCancel: () => void
+}
+
 const _format = 'eee d LLLL yyyy kk:mm'
 const iconSize = 24
 const iconColor = '#000'
@@ -27,12 +34,7 @@ function Booking({
   locale,
   fr,
   onCancel
-}: {
-  booking: movininTypes.Booking
-  locale: Locale
-  fr: boolean
-  onCancel: () => void
-}) {
+}: BookingProps) {
   const from = new Date(booking.from)
   const to = new Date(booking.to)
   const property = booking.property as movininTypes.Property

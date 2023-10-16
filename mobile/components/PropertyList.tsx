@@ -16,6 +16,18 @@ import * as UserService from '../services/UserService'
 import * as PropertyService from '../services/PropertyService'
 import Property from './Property'
 
+interface PropertyListProps {
+  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
+  from?: Date
+  to?: Date
+  location: string
+  agencies: string[]
+  types: movininTypes.PropertyType[]
+  rentalTerms: movininTypes.RentalTerm[]
+  header?: React.ReactElement
+  onLoad?: movininTypes.DataEvent<movininTypes.Property>
+}
+
 function PropertyList({
   navigation,
   from,
@@ -26,17 +38,7 @@ function PropertyList({
   rentalTerms,
   header,
   onLoad
-}: {
-  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
-  from?: Date
-  to?: Date
-  location: string
-  agencies: string[]
-  types: movininTypes.PropertyType[]
-  rentalTerms: movininTypes.RentalTerm[]
-  header?: React.ReactElement
-  onLoad?: movininTypes.DataEvent<movininTypes.Property>
-}) {
+}: PropertyListProps) {
   const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
   const [onScrollEnd, setOnScrollEnd] = useState(false)
   const [loading, setLoading] = useState(true)

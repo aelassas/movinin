@@ -4,33 +4,35 @@ import * as movininTypes from '../miscellaneous/movininTypes'
 
 import * as Helper from '../common/Helper'
 
+interface BookingStatusProps {
+  style: object
+  status: movininTypes.BookingStatus
+}
+
 function BookingStatus({
-    style,
-    status
-  }: {
-    style: object
-    status: movininTypes.BookingStatus
-  }) {
+  style,
+  status
+}: BookingStatusProps) {
   return (
     <View
       style={{
-      ...styles.container,
-      ...style,
-      backgroundColor:
-        status === movininTypes.BookingStatus.Void
-          ? '#999'
-          : status === movininTypes.BookingStatus.Pending
-            ? '#e98003'
-            : status === movininTypes.BookingStatus.Deposit
-              ? '#22bba7'
-              : status === movininTypes.BookingStatus.Paid
-                ? '#77bc23'
-                : status === movininTypes.BookingStatus.Reserved
-                  ? '#188ace'
-                  : status === movininTypes.BookingStatus.Cancelled
-                    ? '#bc2143'
-                    : 'transparent',
-    }}
+        ...styles.container,
+        ...style,
+        backgroundColor:
+          status === movininTypes.BookingStatus.Void
+            ? '#999'
+            : status === movininTypes.BookingStatus.Pending
+              ? '#e98003'
+              : status === movininTypes.BookingStatus.Deposit
+                ? '#22bba7'
+                : status === movininTypes.BookingStatus.Paid
+                  ? '#77bc23'
+                  : status === movininTypes.BookingStatus.Reserved
+                    ? '#188ace'
+                    : status === movininTypes.BookingStatus.Cancelled
+                      ? '#bc2143'
+                      : 'transparent',
+      }}
     >
       <Text style={styles.text}>{Helper.getBookingStatus(status)}</Text>
     </View>

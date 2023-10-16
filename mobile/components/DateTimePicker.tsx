@@ -12,6 +12,25 @@ import { MaterialIcons } from '@expo/vector-icons'
 import * as movininHelper from '../miscellaneous/movininHelper'
 import * as Helper from '../common/Helper'
 
+interface DateTimePickerProps {
+  value?: Date
+  locale?: string,
+  mode?: 'date' | 'datetime' | 'time' | 'countdown'
+  size?: 'small'
+  label: string
+  backgroundColor?: string
+  error?: boolean
+  style?: object
+  helperText?: string
+  minDate?: Date
+  readOnly?: boolean
+  hideClearButton?: boolean
+  hidePicker?: boolean
+  hidePickerMessage?: string
+  onPress?: () => void
+  onChange?: (date: Date | undefined) => void
+}
+
 function DateTimePicker({
   value: dateTimeValue,
   locale: dateTimeLocale,
@@ -29,24 +48,7 @@ function DateTimePicker({
   hidePickerMessage,
   onPress,
   onChange
-}: {
-  value?: Date
-  locale?: string,
-  mode?: 'date' | 'datetime' | 'time' | 'countdown'
-  size?: 'small'
-  label: string
-  backgroundColor?: string
-  error?: boolean
-  style?: object
-  helperText?: string
-  minDate?: Date
-  readOnly?: boolean
-  hideClearButton?: boolean
-  hidePicker?: boolean
-  hidePickerMessage?: string
-  onPress?: () => void
-  onChange?: (date: Date | undefined) => void
-}) {
+}: DateTimePickerProps) {
   const [label, setLabel] = useState('')
   const [value, setValue] = useState<Date | undefined>(dateTimeValue)
   const [show, setShow] = useState(false)

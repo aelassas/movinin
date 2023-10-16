@@ -7,19 +7,21 @@ import {
 } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 
+interface RadioButtonProps {
+  checked: boolean
+  style?: object
+  textStyle?: object
+  label: string
+  onValueChange?: (_checked: boolean) => void
+}
+
 function RadioButton({
   checked,
   style,
   textStyle,
   label,
   onValueChange: onRadioButtonValueChange
-}: {
-  checked: boolean
-  style?: object
-  textStyle?: object
-  label: string
-  onValueChange?: (_checked: boolean) => void
-}) {
+}: RadioButtonProps) {
   const onPress = () => {
     if (onRadioButtonValueChange) {
       onRadioButtonValueChange(!checked)
