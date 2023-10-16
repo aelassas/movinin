@@ -14,6 +14,17 @@ import * as PropertyService from '../services/PropertyService'
 import '../assets/css/image-editor.css'
 import Property from '../assets/img/property.png'
 
+interface ImageEditorProps {
+    title?: string
+    image?: ImageItem
+    images?: ImageItem[]
+    onMainImageUpsert?: (image: ImageItem) => void
+    onAdd?: (image: ImageItem) => void
+    onDelete?: (image: ImageItem, index?: number) => void
+    onImageViewerOpen?: () => void
+    onImageViewerClose?: () => void
+}
+
 function ImageEditor({
     title,
     image: mainImage,
@@ -23,16 +34,7 @@ function ImageEditor({
     onDelete,
     onImageViewerOpen,
     onImageViewerClose
-}: {
-    title?: string
-    image?: ImageItem
-    images?: ImageItem[]
-    onMainImageUpsert?: (image: ImageItem) => void
-    onAdd?: (image: ImageItem) => void
-    onDelete?: (image: ImageItem, index?: number) => void
-    onImageViewerOpen?: () => void
-    onImageViewerClose?: () => void
-}) {
+}: ImageEditorProps) {
     const [currentImage, setCurrentImage] = useState(0)
     const [openImageDialog, setOpenImageDialog] = useState(false)
     const [image, setImage] = useState<ImageItem | undefined>(mainImage)

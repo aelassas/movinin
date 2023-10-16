@@ -30,20 +30,21 @@ import Env from '../config/env.config'
 
 import '../assets/css/property-info.css'
 
+interface PropertyInfoProps {
+  property: movininTypes.Property
+  user?: movininTypes.User,
+  booking?: movininTypes.Booking
+  description?: boolean
+  className?: string
+}
+
 function PropertyInfo({
   property,
   user,
   booking,
   description,
   className,
-}
-  : {
-    property: movininTypes.Property
-    user?: movininTypes.User,
-    booking?: movininTypes.Booking
-    description?: boolean
-    className?: string
-  }) {
+}: PropertyInfoProps) {
   const fr = movininHelper.fr(user)
   const edit = Helper.admin(user) || (user?._id === property.agency._id)
 

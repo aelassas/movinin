@@ -41,6 +41,24 @@ import StatusList from './StatusList'
 
 import '../assets/css/booking-list.css'
 
+interface BookingListProps {
+  agencies?: string[]
+  statuses?: string[]
+  filter?: movininTypes.Filter | null
+  property?: string
+  offset?: number
+  user?: movininTypes.User
+  loggedUser?: movininTypes.User
+  containerClassName?: string
+  hideDates?: boolean
+  hidePropertyColumn?: boolean
+  hideAgencyColumn?: boolean
+  language?: string
+  loading?: boolean
+  checkboxSelection?: boolean
+  onLoad?: movininTypes.DataEvent<movininTypes.Booking>
+}
+
 function BookingList({
   agencies: bookingAgencies,
   statuses: bookingStatuses,
@@ -57,23 +75,7 @@ function BookingList({
   loading: bookingLoading,
   checkboxSelection,
   onLoad,
-}: {
-  agencies?: string[]
-  statuses?: string[]
-  filter?: movininTypes.Filter | null
-  property?: string
-  offset?: number
-  user?: movininTypes.User
-  loggedUser?: movininTypes.User
-  containerClassName?: string
-  hideDates?: boolean
-  hidePropertyColumn?: boolean
-  hideAgencyColumn?: boolean
-  language?: string
-  loading?: boolean
-  checkboxSelection?: boolean
-  onLoad?: movininTypes.DataEvent<movininTypes.Booking>
-}) {
+}: BookingListProps) {
   const [loggedUser, setLoggedUser] = useState<movininTypes.User>()
   const [user, setUser] = useState<movininTypes.User>()
   const [columns, setColumns] = useState<GridColDef<movininTypes.Booking>[]>([])

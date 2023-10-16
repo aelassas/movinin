@@ -8,6 +8,17 @@ import Unauthorized from '../components/Unauthorized'
 import * as Helper from '../common/Helper'
 import { useInit } from '../common/customHooks'
 
+interface MasterProps {
+  user?: movininTypes.User
+  strict?: boolean
+  admin?: boolean
+  hideHeader?: boolean
+  notificationCount?: number
+  style?: CSSProperties
+  children: ReactNode
+  onLoad?: (user?: movininTypes.User) => void
+}
+
 function Master({
   user: masterUser,
   strict,
@@ -17,16 +28,7 @@ function Master({
   style,
   children,
   onLoad
-}: {
-  user?: movininTypes.User
-  strict?: boolean
-  admin?: boolean
-  hideHeader?: boolean
-  notificationCount?: number
-  style?: CSSProperties
-  children: ReactNode
-  onLoad?: (user?: movininTypes.User) => void
-}) {
+}: MasterProps) {
   const [user, setUser] = useState<movininTypes.User>()
   const [loading, setLoading] = useState(true)
   const [unauthorized, setUnauthorized] = useState(false)

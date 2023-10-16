@@ -7,17 +7,19 @@ import Accordion from './Accordion'
 
 import '../assets/css/agency-filter.css'
 
+interface AgencyFilterProps {
+  agencies: movininTypes.User[]
+  collapse?: boolean
+  className?: string
+  onChange?: (value: string[]) => void
+}
+
 function AgencyFilter({
   agencies: filterAgencies,
   collapse,
   className,
   onChange
-}: {
-  agencies: movininTypes.User[]
-  collapse?: boolean
-  className?: string
-  onChange: (value: string[]) => void
-}) {
+}: AgencyFilterProps) {
   const [agencies, setAgencies] = useState<movininTypes.User[]>([])
   const [checkedAgencies, setCheckedAgencies] = useState<string[]>([])
   const [allChecked, setAllChecked] = useState(true)

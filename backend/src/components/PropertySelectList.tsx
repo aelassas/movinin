@@ -17,6 +17,17 @@ import * as PropertyService from '../services/PropertyService'
 import MultipleSelect from './MultipleSelect'
 import * as Helper from '../common/Helper'
 
+interface PropertySelectListProps {
+  label?: string
+  required?: boolean
+  multiple?: boolean
+  variant?: TextFieldVariants
+  value?: movininTypes.Property
+  agency: string
+  location: string
+  onChange?: (values: movininTypes.Property[]) => void
+}
+
 function PropertySelectList({
   label,
   required,
@@ -26,17 +37,7 @@ function PropertySelectList({
   agency,
   location,
   onChange
-}:
-  {
-    label?: string
-    required?: boolean
-    multiple?: boolean
-    variant?: TextFieldVariants
-    value?: movininTypes.Property
-    agency: string
-    location: string
-    onChange?: (values: movininTypes.Property[]) => void
-  }) {
+}: PropertySelectListProps) {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(true)

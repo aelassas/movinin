@@ -8,20 +8,21 @@ import {
 import * as movininTypes from 'movinin-types'
 import { strings } from '../lang/rental-term'
 
+interface RentalTermListProps {
+  value?: string,
+  required?: boolean,
+  label?: string
+  variant?: 'filled' | 'standard' | 'outlined'
+  onChange?: (value: string) => void
+}
+
 function RentalTermList({
   value: rentalTermValue,
   required,
   label,
   variant,
   onChange
-}:
-  {
-    value?: string,
-    required?: boolean,
-    label?: string
-    variant?: 'filled' | 'standard' | 'outlined'
-    onChange?: (value: string) => void
-  }) {
+}: RentalTermListProps) {
   const [value, setValue] = useState(rentalTermValue || '')
   useEffect(() => {
     setValue(rentalTermValue || '')

@@ -8,20 +8,21 @@ import {
 import * as movininTypes from 'movinin-types'
 import { strings } from '../lang/properties'
 
+interface PropertyTypeListProps {
+  value?: string,
+  required?: boolean,
+  label?: string
+  variant?: 'filled' | 'standard' | 'outlined'
+  onChange?: (value: string) => void
+}
+
 function PropertyTypeList({
   value: propertyTypeValue,
   required,
   label,
   variant,
   onChange
-}:
-  {
-    value?: string,
-    required?: boolean,
-    label?: string
-    variant?: 'filled' | 'standard' | 'outlined'
-    onChange?: (value: string) => void
-  }) {
+}: PropertyTypeListProps) {
   const [value, setValue] = useState(propertyTypeValue || '')
   useEffect(() => {
     setValue(propertyTypeValue || '')

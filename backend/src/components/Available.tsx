@@ -1,19 +1,21 @@
 import React from 'react'
 import {
-    Check as AvailableIcon,
-    Clear as UnavailableIcon
+  Check as AvailableIcon,
+  Clear as UnavailableIcon
 } from '@mui/icons-material'
 import { strings } from '../lang/available'
 
 import '../assets/css/available.css'
 
+interface AvailableProps {
+  available: boolean
+  className?: string
+}
+
 function Available({
-        available,
-        className
-    }: {
-        available: boolean
-        className?: string
-    }) {
+  available,
+  className
+}: AvailableProps) {
   return (
     <div
       className={`label ${available ? 'available' : 'unavailable'}${className ? ` ${className}` : ''}`}

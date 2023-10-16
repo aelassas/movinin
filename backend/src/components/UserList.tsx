@@ -35,6 +35,15 @@ import * as UserService from '../services/UserService'
 
 import '../assets/css/user-list.css'
 
+interface UserListProps {
+  types?: movininTypes.UserType[]
+  keyword?: string
+  user?: movininTypes.User
+  hideDesktopColumns?: boolean
+  checkboxSelection?: boolean
+  onLoad?: movininTypes.DataEvent<movininTypes.User>
+}
+
 function UserList({
   types: userListTypes,
   keyword: userListKeyword,
@@ -42,14 +51,7 @@ function UserList({
   hideDesktopColumns,
   checkboxSelection,
   onLoad
-}: {
-  types?: movininTypes.UserType[]
-  keyword?: string
-  user?: movininTypes.User
-  hideDesktopColumns?: boolean
-  checkboxSelection?: boolean
-  onLoad?: movininTypes.DataEvent<movininTypes.User>
-}) {
+}: UserListProps) {
   const [user, setUser] = useState<movininTypes.User>()
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(Env.PAGE_SIZE)

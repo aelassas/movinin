@@ -2,6 +2,20 @@ import React, { KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState
 
 import '../assets/css/image-viewer.css'
 
+interface ImageViewerProps {
+  title?: string,
+  currentIndex?: number,
+  src: string[],
+  closeOnClickOutside?: boolean,
+  disableScroll?: boolean,
+  backgroundStyle?: React.CSSProperties
+  closeComponent?: React.ReactNode
+  leftArrowComponent?: React.ReactNode
+  rightArrowComponent?: React.ReactNode
+  imageStyle?: React.CSSProperties
+  onClose?: () => void
+}
+
 function ImageViewer({
   title,
   currentIndex: ivCurentIndex,
@@ -14,19 +28,7 @@ function ImageViewer({
   rightArrowComponent,
   imageStyle,
   onClose
-}: {
-  title?: string,
-  currentIndex?: number,
-  src: string[],
-  closeOnClickOutside?: boolean,
-  disableScroll?: boolean,
-  backgroundStyle?: React.CSSProperties
-  closeComponent?: React.ReactNode
-  leftArrowComponent?: React.ReactNode
-  rightArrowComponent?: React.ReactNode
-  imageStyle?: React.CSSProperties
-  onClose: () => void
-}) {
+}: ImageViewerProps) {
   const [currentIndex, setCurrentIndex] = useState(ivCurentIndex ?? 0)
   const thumbnails = useMemo<(HTMLDivElement | null)[]>(() => [], [])
 

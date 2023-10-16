@@ -28,19 +28,21 @@ import Pager from './Pager'
 
 import '../assets/css/agency-list.css'
 
+interface AgencyListProps {
+  user?: movininTypes.User
+  keyword?: string
+  reload?: boolean
+  onLoad?: movininTypes.DataEvent<movininTypes.User>
+  onDelete?: (rowCount: number) => void
+}
+
 function AgencyList({
   user,
   keyword: agencyListKeyword,
   reload: agencyListReload,
   onDelete,
   onLoad
-}: {
-  user?: movininTypes.User
-  keyword?: string
-  reload?: boolean
-  onLoad?: movininTypes.DataEvent<movininTypes.User>
-  onDelete?: (rowCount: number) => void
-}) {
+}: AgencyListProps) {
   const [keyword, setKeyword] = useState(agencyListKeyword)
   const [reload, setReload] = useState(false)
   const [init, setInit] = useState(true)

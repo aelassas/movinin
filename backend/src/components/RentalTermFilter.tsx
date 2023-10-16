@@ -8,13 +8,15 @@ import Accordion from './Accordion'
 
 import '../assets/css/rental-term-filter.css'
 
+interface RentalTermFilterProps {
+  className?: string
+  onChange?: (values: movininTypes.RentalTerm[]) => void
+}
+
 function RentalTermFilter({
   className,
   onChange
-}: {
-  className?: string
-  onChange?: (values: movininTypes.RentalTerm[]) => void
-}) {
+}: RentalTermFilterProps) {
   const allRentalTerms = movininHelper.getAllRentalTerms()
 
   const [allChecked, setAllChecked] = useState(true)

@@ -7,6 +7,15 @@ import * as UserService from '../services/UserService'
 import * as Helper from '../common/Helper'
 import MultipleSelect from './MultipleSelect'
 
+interface UserSelectListProps {
+  multiple?: boolean
+  value?: movininTypes.Option | movininTypes.Option[]
+  label?: string
+  required?: boolean
+  variant?: TextFieldVariants
+  onChange?: (values: movininTypes.Option[]) => void
+}
+
 function UserSelectList({
   multiple,
   value,
@@ -14,14 +23,7 @@ function UserSelectList({
   required,
   variant,
   onChange
-}: {
-  multiple?: boolean
-  value?: movininTypes.Option | movininTypes.Option[]
-  label?: string
-  required?: boolean
-  variant?: TextFieldVariants
-  onChange: (values: movininTypes.Option[]) => void
-}) {
+}: UserSelectListProps) {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [renters, setRenters] = useState<movininTypes.Option[]>([])

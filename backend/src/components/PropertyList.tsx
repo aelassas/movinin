@@ -31,6 +31,25 @@ import AgencyBadge from './AgencyBadge'
 
 import '../assets/css/property-list.css'
 
+interface PropertyListProps {
+  agencies?: string[]
+  keyword?: string
+  types?: movininTypes.PropertyType[]
+  rentalTerms?: movininTypes.RentalTerm[]
+  availability?: movininTypes.Availablity[]
+  reload?: boolean
+  properties?: movininTypes.Property[]
+  user?: movininTypes.User
+  booking?: movininTypes.Booking
+  className?: string
+  loading?: boolean
+  hideAgency?: boolean
+  hidePrice?: boolean
+  language: string
+  onLoad?: movininTypes.DataEvent<movininTypes.Property>
+  onDelete?: (rowCount: number) => void
+}
+
 function PropertyList({
   agencies,
   keyword,
@@ -48,25 +67,7 @@ function PropertyList({
   language,
   onLoad,
   onDelete
-}:
-  {
-    agencies?: string[]
-    keyword?: string
-    types?: movininTypes.PropertyType[]
-    rentalTerms?: movininTypes.RentalTerm[]
-    availability?: movininTypes.Availablity[]
-    reload?: boolean
-    properties?: movininTypes.Property[]
-    user?: movininTypes.User
-    booking?: movininTypes.Booking
-    className?: string
-    loading?: boolean
-    hideAgency?: boolean
-    hidePrice?: boolean
-    language: string
-    onLoad?: movininTypes.DataEvent<movininTypes.Property>
-    onDelete?: (rowCount: number) => void
-  }) {
+}: PropertyListProps) {
   const [user, setUser] = useState<movininTypes.User>()
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)

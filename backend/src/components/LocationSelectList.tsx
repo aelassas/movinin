@@ -7,6 +7,15 @@ import * as LocationService from '../services/LocationService'
 import * as Helper from '../common/Helper'
 import MultipleSelect from './MultipleSelect'
 
+interface LocationSelectListProps {
+  value?: movininTypes.Location | movininTypes.Location[]
+  multiple?: boolean
+  label?: string
+  required?: boolean
+  variant?: TextFieldVariants
+  onChange?: (values: movininTypes.Option[]) => void
+}
+
 function LocationSelectList({
   value,
   multiple,
@@ -14,14 +23,7 @@ function LocationSelectList({
   required,
   variant,
   onChange
-}: {
-  value?: movininTypes.Location | movininTypes.Location[]
-  multiple?: boolean
-  label?: string
-  required?: boolean
-  variant?: TextFieldVariants
-  onChange?: (values: movininTypes.Option[]) => void
-}) {
+}: LocationSelectListProps) {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [rows, setRows] = useState<movininTypes.Location[]>([])

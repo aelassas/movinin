@@ -8,13 +8,15 @@ import * as Helper from '../common/Helper'
 
 import '../assets/css/availability-filter.css'
 
+interface AvailabilityFilterProps {
+  className?: string,
+  onChange?: (values: movininTypes.Availablity[]) => void
+}
+
 function AvailabilityFilter({
   className,
   onChange
-}: {
-  className?: string,
-  onChange?: (values: movininTypes.Availablity[]) => void
-}) {
+}: AvailabilityFilterProps) {
   const [allChecked, setAllChecked] = useState(true)
   const [values, setValues] = useState<movininTypes.Availablity[]>([
     movininTypes.Availablity.Available,

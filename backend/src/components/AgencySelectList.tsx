@@ -7,6 +7,16 @@ import * as AgencyService from '../services/AgencyService'
 import * as Helper from '../common/Helper'
 import MultipleSelect from './MultipleSelect'
 
+interface AgencySelectListProps {
+  value?: movininTypes.Option | movininTypes.Option[]
+  multiple?: boolean,
+  label?: string,
+  required?: boolean,
+  readOnly?: boolean,
+  variant?: TextFieldVariants,
+  onChange?: (values: movininTypes.Option[]) => void
+}
+
 function AgencySelectList({
   value,
   multiple,
@@ -15,15 +25,7 @@ function AgencySelectList({
   readOnly,
   variant,
   onChange
-}: {
-  value?: movininTypes.Option | movininTypes.Option[]
-  multiple?: boolean,
-  label?: string,
-  required?: boolean,
-  readOnly?: boolean,
-  variant?: TextFieldVariants,
-  onChange: (values: movininTypes.Option[]) => void
-}) {
+}: AgencySelectListProps) {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [rows, setRows] = useState<movininTypes.Option[]>([])

@@ -4,11 +4,11 @@ import { strings } from '../lang/hidden'
 
 import '../assets/css/hidden.css'
 
-function Hidden({
-        className
-    }: {
-        className?: string
-    }) {
+interface HiddenProps {
+  className?: string
+}
+
+function Hidden({ className }: HiddenProps) {
   return (
     <div className={`label hidden${className ? ` ${className}` : ''}`} title={strings.HIDDEN_INFO}>
       <HiddenIcon className="label-icon" />
