@@ -19,18 +19,19 @@ import Accordion from '../components/Accordion'
 
 import '../assets/css/booking-filter.css'
 
+interface BookingFilterProps {
+  collapse?: boolean,
+  className?: string,
+  language?: string,
+  onSubmit?: (filter: movininTypes.Filter | null) => void
+}
+
 function BookingFilter({
   collapse,
   className,
   language,
   onSubmit
-}:
-  {
-    collapse?: boolean,
-    className?: string,
-    language?: string,
-    onSubmit?: (filter: movininTypes.Filter | null) => void
-  }) {
+}: BookingFilterProps) {
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [location, setLocation] = useState('')

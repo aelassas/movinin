@@ -8,19 +8,21 @@ import DatePicker from './DatePicker'
 
 import '../assets/css/property-filter.css'
 
+interface PropertyFilterProps {
+  from: Date
+  to: Date
+  location: movininTypes.Location
+  className?: string
+  onSubmit: movininTypes.PropertyFilterSubmitEvent
+}
+
 function PropertyFilter({
-    from: filterFrom,
-    to: filterTo,
-    location: filterLocation,
-    className,
-    onSubmit
-  }: {
-    from: Date
-    to: Date
-    location: movininTypes.Location
-    className?: string
-    onSubmit: movininTypes.PropertyFilterSubmitEvent
-  }) {
+  from: filterFrom,
+  to: filterTo,
+  location: filterLocation,
+  className,
+  onSubmit
+}: PropertyFilterProps) {
   const _minDate = new Date()
   _minDate.setDate(_minDate.getDate() + 1)
 

@@ -12,6 +12,17 @@ import * as Helper from '../common/Helper'
 
 import '../assets/css/status-list.css'
 
+interface StatusListProps {
+  value?: string
+  label?: string
+  required?: boolean
+  variant?: TextFieldVariants
+  disabled?: boolean
+  style?: CSSProperties
+  readOnly?: boolean
+  onChange?: (value: movininTypes.BookingStatus) => void
+}
+
 function StatusList({
   value: statusListValue,
   label,
@@ -21,16 +32,7 @@ function StatusList({
   style,
   readOnly,
   onChange
-}: {
-  value?: string
-  label?: string
-  required?: boolean
-  variant?: TextFieldVariants
-  disabled?: boolean
-  style?: CSSProperties
-  readOnly?: boolean
-  onChange?: (value: movininTypes.BookingStatus) => void
-}) {
+}: StatusListProps) {
   const [value, setValue] = useState('')
 
   useEffect(() => {

@@ -7,6 +7,15 @@ import * as UserService from '../services/UserService'
 import * as Helper from '../common/Helper'
 import { useInit } from '../common/customHooks'
 
+interface MasterProps {
+  user?: movininTypes.User
+  strict?: boolean
+  hideSignin?: boolean
+  notificationCount?: number
+  children: ReactNode
+  onLoad?: (user?: movininTypes.User) => void
+}
+
 function Master({
   user: masterUser,
   strict,
@@ -14,14 +23,7 @@ function Master({
   notificationCount,
   children,
   onLoad
-}: {
-  user?: movininTypes.User
-  strict?: boolean
-  hideSignin?: boolean
-  notificationCount?: number
-  children: ReactNode
-  onLoad?: (user?: movininTypes.User) => void
-}) {
+}: MasterProps) {
   const [user, setUser] = useState<movininTypes.User>()
   const [loading, setLoading] = useState(true)
 

@@ -20,26 +20,27 @@ import * as Helper from '../common/Helper'
 import { strings as commonStrings } from '../lang/common'
 import * as UserService from '../services/UserService'
 
+interface AvatarProps {
+  loggedUser?: movininTypes.User
+  user?: movininTypes.User
+  size: 'small' | 'medium' | 'large',
+  readonly?: boolean,
+  color?: 'disabled' | 'action' | 'inherit' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning',
+  className?: string,
+  onBeforeUpload?: () => void,
+  onChange?: (user: movininTypes.User) => void,
+}
+
 function Avatar({
-    loggedUser,
-    user: avatarUser,
-    size,
-    readonly,
-    color,
-    className,
-    onBeforeUpload,
-    onChange,
-  }:
-    {
-      loggedUser?: movininTypes.User
-      user?: movininTypes.User
-      size: 'small' | 'medium' | 'large',
-      readonly?: boolean,
-      color?: 'disabled' | 'action' | 'inherit' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning',
-      className?: string,
-      onBeforeUpload?: () => void,
-      onChange?: (user: movininTypes.User) => void,
-    }) {
+  loggedUser,
+  user: avatarUser,
+  size,
+  readonly,
+  color,
+  className,
+  onBeforeUpload,
+  onChange,
+}: AvatarProps) {
   const [error, setError] = useState(false)
   const [open, setOpen] = useState(false)
   const [user, setUser] = useState<movininTypes.User>()

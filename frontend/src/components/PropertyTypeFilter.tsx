@@ -8,13 +8,15 @@ import Accordion from './Accordion'
 
 import '../assets/css/property-type-filter.css'
 
+interface PropertyTypeFilterProps {
+  className?: string
+  onChange?: (values: movininTypes.PropertyType[]) => void
+}
+
 function PropertyTypeFilter({
   className,
   onChange
-}: {
-  className?: string
-  onChange?: (values: movininTypes.PropertyType[]) => void
-}) {
+}: PropertyTypeFilterProps) {
   const allPropertyTypes = [
     movininTypes.PropertyType.Apartment,
     movininTypes.PropertyType.Commercial,

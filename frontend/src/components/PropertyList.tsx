@@ -20,6 +20,23 @@ import AgencyBadge from './AgencyBadge'
 
 import '../assets/css/property-list.css'
 
+interface PropertyListProps {
+  agencies?: string[]
+  types?: movininTypes.PropertyType[]
+  rentalTerms?: movininTypes.RentalTerm[]
+  location?: string
+  from?: Date
+  to?: Date
+  reload?: boolean
+  properties?: movininTypes.Property[]
+  className?: string
+  loading?: boolean
+  hideAgency?: boolean
+  hidePrice?: boolean
+  hideActions?: boolean
+  onLoad?: movininTypes.DataEvent<movininTypes.Property>
+}
+
 function PropertyList({
   agencies,
   types,
@@ -35,23 +52,7 @@ function PropertyList({
   hidePrice,
   hideActions,
   onLoad,
-}:
-  {
-    agencies?: string[]
-    types?: movininTypes.PropertyType[]
-    rentalTerms?: movininTypes.RentalTerm[]
-    location?: string
-    from?: Date
-    to?: Date
-    reload?: boolean
-    properties?: movininTypes.Property[]
-    className?: string
-    loading?: boolean
-    hideAgency?: boolean
-    hidePrice?: boolean
-    hideActions?: boolean
-    onLoad?: movininTypes.DataEvent<movininTypes.Property>
-  }) {
+}: PropertyListProps) {
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(false)

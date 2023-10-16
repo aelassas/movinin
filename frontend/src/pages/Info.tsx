@@ -2,15 +2,17 @@ import React from 'react'
 import { Link } from '@mui/material'
 import { strings as commonStrings } from '../lang/common'
 
+interface InfoProps {
+  className?: string,
+  message: string,
+  style?: React.CSSProperties
+}
+
 function Info({
   className,
   message,
   style
-}: {
-  className?: string,
-  message: string,
-  style?: React.CSSProperties
-}) {
+}: InfoProps) {
   return (
     <div style={style} className={`${className ? `${className} ` : ''}msg`}>
       <p>{message}</p>

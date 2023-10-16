@@ -26,16 +26,17 @@ import Env from '../config/env.config'
 
 import '../assets/css/property-info.css'
 
+interface PropertyInfoProps {
+  property: movininTypes.Property
+  description?: boolean
+  className?: string
+}
+
 function PropertyInfo({
   property,
   description,
   className,
-}
-  : {
-    property: movininTypes.Property
-    description?: boolean
-    className?: string
-  }) {
+}: PropertyInfoProps) {
   const fr = LangHelper.fr()
 
   const getExtraIcon = (option: string, extra: number) => (extra === -1
