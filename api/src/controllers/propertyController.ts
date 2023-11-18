@@ -280,7 +280,10 @@ export async function checkProperty(req: Request, res: Response) {
 
   try {
     const _id = new mongoose.Types.ObjectId(id)
-    const count = await Booking.find({ property: _id }).limit(1).count()
+    const count = await Booking
+      .find({ property: _id })
+      .limit(1)
+      .countDocuments()
 
     if (count === 1) {
       return res.sendStatus(200)

@@ -679,11 +679,12 @@ export async function hasBookings(req: Request, res: Response) {
   const { renter } = req.params
 
   try {
-    const count = await Booking.find({
-      renter: new mongoose.Types.ObjectId(renter),
-    })
+    const count = await Booking
+      .find({
+        renter: new mongoose.Types.ObjectId(renter),
+      })
       .limit(1)
-      .count()
+      .countDocuments()
 
     if (count === 1) {
       return res.sendStatus(200)
