@@ -309,8 +309,10 @@ export async function deleteProperty(req: Request, res: Response) {
   const { id } = req.params
 
   try {
-    const property = await Property.findByIdAndDelete(id)
+    const property = await Property.findById(id)
     if (property) {
+      await Property.deleteOne({ _id: id })
+
       if (property.image) {
         const image = path.join(env.CDN_PROPERTIES, property.image)
         if (await Helper.exists(image)) {

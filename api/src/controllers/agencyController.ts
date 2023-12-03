@@ -94,8 +94,11 @@ export async function deleteAgency(req: Request, res: Response) {
   const { id } = req.params
 
   try {
-    const agency = await User.findByIdAndDelete(id)
+    const agency = await User.findById(id)
+
     if (agency) {
+      await User.deleteOne({ _id: id })
+
       if (agency.avatar) {
         const avatar = path.join(env.CDN_USERS, agency.avatar)
         if (await Helper.exists(avatar)) {
