@@ -710,9 +710,10 @@ export async function cancelBooking(req: Request, res: Response) {
   const { id } = req.params
 
   try {
-    const booking = await Booking.findOne({
-      _id: new mongoose.Types.ObjectId(id),
-    })
+    const booking = await Booking
+      .findOne({
+        _id: new mongoose.Types.ObjectId(id),
+      })
       .populate<{ agency: env.User }>('agency')
       .populate<{ renter: env.User }>('renter')
 
