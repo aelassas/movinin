@@ -22,7 +22,7 @@
     "eslint-plugin-import": "^2.29.0",
     "nodemon": "^3.0.2",
     "npm-check-updates": "^16.14.11",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.2"
   },
   "dependencies": {
     "@babel/cli": "^7.23.4",
