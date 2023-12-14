@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   FormControl,
   TextField,
@@ -37,6 +37,8 @@ function BookingFilter({
   const [location, setLocation] = useState('')
   const [keyword, setKeyword] = useState('')
   const [minDate, setMinDate] = useState<Date>()
+
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
@@ -115,6 +117,7 @@ function BookingFilter({
         </FormControl>
         <FormControl fullWidth margin="dense">
           <TextField
+            inputRef={inputRef}
             variant="standard"
             value={keyword}
             onKeyDown={handleSearchKeyDown}
@@ -126,6 +129,7 @@ function BookingFilter({
                   size="small"
                   onClick={() => {
                     setKeyword('')
+                    inputRef.current?.focus()
                   }}
                 >
                   <ClearIcon className="d-adornment-icon" />

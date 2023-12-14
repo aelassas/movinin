@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { IconButton, TextField } from '@mui/material'
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material'
 import { strings as commonStrings } from '../lang/common'
@@ -15,6 +15,7 @@ function Search({
   onSubmit
 }: SearchProps) {
   const [keyword, setKeyword] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
@@ -39,6 +40,7 @@ function Search({
       <form autoComplete="off" onSubmit={handleSubmit}>
         <input autoComplete="false" name="hidden" type="text" style={{ display: 'none' }} />
         <TextField
+          inputRef={inputRef}
           variant="standard"
           value={keyword}
           onKeyDown={handleSearchKeyDown}
@@ -50,6 +52,7 @@ function Search({
                 size="small"
                 onClick={() => {
                   setKeyword('')
+                  inputRef.current?.focus()
                 }}
               >
                 <ClearIcon style={{ width: 20, height: 20 }} />
