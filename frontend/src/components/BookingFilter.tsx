@@ -69,7 +69,8 @@ function BookingFilter({
 
   return (
     <Accordion title={commonStrings.SEARCH} collapse={collapse} className={`${className ? `${className} ` : ''}booking-filter`}>
-      <form onSubmit={handleSubmit}>
+      <form autoComplete="off" onSubmit={handleSubmit}>
+        <input autoComplete="false" name="hidden" type="text" style={{ display: 'none' }} />
         <FormControl fullWidth margin="dense">
           <DatePicker
             label={commonStrings.FROM}
@@ -133,7 +134,6 @@ function BookingFilter({
                 <SearchIcon className="d-adornment-icon" />
               ),
             }}
-            autoComplete="off"
             className="bf-search"
           />
         </FormControl>
