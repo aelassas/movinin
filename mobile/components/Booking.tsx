@@ -6,7 +6,7 @@ import {
   Image
 } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { format } from 'date-fns'
+import { Locale, format } from 'date-fns'
 import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 

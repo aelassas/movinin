@@ -66,6 +66,17 @@ export const registerPushToken = async (userId: string) => {
     let token: string | undefined
 
     try {
+      if (android()) {
+        await Notifications.setNotificationChannelAsync('default', {
+          name: 'default',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#FF231F7C',
+          enableVibrate: true,
+          showBadge: true
+        })
+      }
+
       if (Device.isDevice) {
         const { status: existingStatus } = await Notifications.getPermissionsAsync()
         let finalStatus = existingStatus
@@ -84,15 +95,6 @@ export const registerPushToken = async (userId: string) => {
         ).data
       } else {
         alert('Must use physical device for Push Notifications')
-      }
-
-      if (android()) {
-        Notifications.setNotificationChannelAsync('default', {
-          name: 'default',
-          importance: Notifications.AndroidImportance.MAX,
-          vibrationPattern: [0, 250, 250, 250],
-          lightColor: '#FF231F7C',
-        })
       }
     } catch (err) {
       error(err, false)
