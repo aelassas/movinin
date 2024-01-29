@@ -199,7 +199,6 @@ const styles = StyleSheet.create({
   },
   drawerList: {
     top: 'always' as DimensionValue,
-    horizontal: 'never',
   },
   signout: {
     flexDirection: 'row',
