@@ -12,7 +12,7 @@ beforeAll(async () => {
     if (await DatabaseHelper.Connect(false)) {
         await TestHelper.initializeDatabase()
 
-        // create a agency
+        // create an agency
         const agencyName = TestHelper.getAgencyName()
         SUPPLIER_ID = await TestHelper.createAgency(`${agencyName}@test.bookcars.ma`, agencyName)
 
