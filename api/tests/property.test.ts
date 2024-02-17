@@ -92,33 +92,35 @@ describe('POST /api/create-property', () => {
             fs.copyFile(ADDITIONAL_IMAGE1_2_PATH, additionalImage2)
         }
 
+        const payload: movininTypes.CreatePropertyPayload = {
+            name: 'Beautiful House in Detroit',
+            agency: AGENCY1_ID,
+            type: movininTypes.PropertyType.House,
+            description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: MAIN_IMAGE1,
+            images: [ADDITIONAL_IMAGE1_1, ADDITIONAL_IMAGE1_2],
+            bedrooms: 3,
+            bathrooms: 2,
+            kitchens: 1,
+            parkingSpaces: 1,
+            size: 200,
+            petsAllowed: false,
+            furnished: true,
+            aircon: true,
+            minimumAge: 21,
+            location: LOCATION1_ID,
+            address: '',
+            price: 4000,
+            hidden: true,
+            cancellation: 0,
+            available: false,
+            rentalTerm: movininTypes.RentalTerm.Monthly,
+        }
+
         const res = await request(app)
             .post('/api/create-property')
             .set(env.X_ACCESS_TOKEN, token)
-            .send({
-                name: 'Beautiful House in Detroit',
-                agency: AGENCY1_ID,
-                type: movininTypes.PropertyType.House,
-                description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
-                image: MAIN_IMAGE1,
-                images: [ADDITIONAL_IMAGE1_1, ADDITIONAL_IMAGE1_2],
-                bedrooms: 3,
-                bathrooms: 2,
-                kitchens: 1,
-                parkingSpaces: 1,
-                size: 200,
-                petsAllowed: false,
-                furnished: true,
-                aircon: true,
-                minimumAge: 21,
-                location: LOCATION1_ID,
-                address: '',
-                price: 4000,
-                hidden: true,
-                cancellation: 0,
-                available: false,
-                rentalTerm: movininTypes.RentalTerm.Monthly,
-            })
+            .send(payload)
 
         expect(res.statusCode).toBe(200)
         PROPERTY_ID = res.body._id
@@ -146,34 +148,36 @@ describe('PUT /api/update-property', () => {
             fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
         }
 
+        const payload: movininTypes.UpdatePropertyPayload = {
+            _id: PROPERTY_ID,
+            name: 'Beautiful Townhouse in Detroit',
+            agency: AGENCY2_ID,
+            type: movininTypes.PropertyType.Townhouse,
+            description: '<p>Perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: MAIN_IMAGE2,
+            images: [ADDITIONAL_IMAGE2_1, ADDITIONAL_IMAGE2_2],
+            bedrooms: 2,
+            bathrooms: 1,
+            kitchens: 2,
+            parkingSpaces: 2,
+            size: 250,
+            petsAllowed: true,
+            furnished: false,
+            aircon: false,
+            minimumAge: 23,
+            location: LOCATION2_ID,
+            address: 'Detroit',
+            price: 1000,
+            hidden: false,
+            cancellation: 50,
+            available: true,
+            rentalTerm: movininTypes.RentalTerm.Weekly,
+        }
+
         const res = await request(app)
             .put('/api/update-property')
             .set(env.X_ACCESS_TOKEN, token)
-            .send({
-                _id: PROPERTY_ID,
-                name: 'Beautiful Townhouse in Detroit',
-                agency: AGENCY2_ID,
-                type: movininTypes.PropertyType.Townhouse,
-                description: '<p>Perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
-                image: MAIN_IMAGE2,
-                images: [ADDITIONAL_IMAGE2_1, ADDITIONAL_IMAGE2_2],
-                bedrooms: 2,
-                bathrooms: 1,
-                kitchens: 2,
-                parkingSpaces: 2,
-                size: 250,
-                petsAllowed: true,
-                furnished: false,
-                aircon: false,
-                minimumAge: 23,
-                location: LOCATION2_ID,
-                address: 'Detroit',
-                price: 1000,
-                hidden: false,
-                cancellation: 50,
-                available: true,
-                rentalTerm: movininTypes.RentalTerm.Weekly,
-            })
+            .send(payload)
 
         expect(res.statusCode).toBe(200)
 
@@ -284,18 +288,18 @@ describe('POST /api/properties/:page/:size', () => {
     it('should return properties', async () => {
         const token = await TestHelper.signinAsAdmin()
 
+        const payload: movininTypes.GetPropertiesPayload = {
+            agencies: [AGENCY2_ID],
+            types: [movininTypes.PropertyType.Townhouse],
+            rentalTerms: [movininTypes.RentalTerm.Weekly],
+            availability: [movininTypes.Availablity.Available, movininTypes.Availablity.Unavailable],
+            language: TestHelper.LANGUAGE,
+        }
+
         const res = await request(app)
             .post(`/api/properties/${TestHelper.PAGE}/${TestHelper.SIZE}`)
             .set(env.X_ACCESS_TOKEN, token)
-            .send(
-                {
-                    agencies: [AGENCY2_ID],
-                    types: [movininTypes.PropertyType.Townhouse],
-                    rentalTerms: [movininTypes.RentalTerm.Weekly],
-                    availability: [movininTypes.Availablity.Available, movininTypes.Availablity.Unavailable],
-                    language: TestHelper.LANGUAGE,
-                },
-            )
+            .send(payload)
 
         expect(res.statusCode).toBe(200)
         expect(res.body[0].resultData.length).toBeGreaterThan(0)
@@ -308,34 +312,34 @@ describe('POST /api/booking-properties/:page/:size', () => {
     it('should return booking properties', async () => {
         const token = await TestHelper.signinAsAdmin()
 
+        const payload: movininTypes.GetBookingPropertiesPayload = {
+            agency: AGENCY2_ID,
+            location: LOCATION2_ID,
+        }
+
         const res = await request(app)
             .post(`/api/booking-properties/${TestHelper.PAGE}/${TestHelper.SIZE}`)
             .set(env.X_ACCESS_TOKEN, token)
-            .send(
-                {
-                    agency: AGENCY2_ID,
-                    location: LOCATION2_ID,
-                },
-            )
+            .send(payload)
 
         expect(res.statusCode).toBe(200)
         expect(res.body.length).toBeGreaterThan(0)
+        console.log(res.body)
         await TestHelper.signout(token)
     })
 })
 
 describe('POST /api/frontend-properties/:page/:size', () => {
     it('should return frontend properties', async () => {
+        const payload: movininTypes.GetPropertiesPayload = {
+            agencies: [AGENCY2_ID],
+            types: [movininTypes.PropertyType.Townhouse],
+            rentalTerms: [movininTypes.RentalTerm.Weekly],
+            location: LOCATION2_ID,
+        }
         const res = await request(app)
             .post(`/api/frontend-properties/${TestHelper.PAGE}/${TestHelper.SIZE}`)
-            .send(
-                {
-                    agencies: [AGENCY2_ID],
-                    types: [movininTypes.PropertyType.Townhouse],
-                    rentalTerms: [movininTypes.RentalTerm.Weekly],
-                    location: LOCATION2_ID,
-                },
-            )
+            .send(payload)
 
         expect(res.statusCode).toBe(200)
         expect(res.body[0].resultData.length).toBeGreaterThan(0)
