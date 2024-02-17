@@ -40,9 +40,11 @@ beforeAll(async () => {
     if (await DatabaseHelper.Connect(false)) {
         await TestHelper.initializeDatabase()
 
-        // create two agencys
-        AGENCY1_ID = await TestHelper.createAgency('agency1@test.movinin.ma', 'agency1')
-        AGENCY2_ID = await TestHelper.createAgency('agency2@test.movinin.ma', 'agency2')
+        // create two agencies
+        const agencyName1 = TestHelper.getAgencyName()
+        const agencyName2 = TestHelper.getAgencyName()
+        AGENCY1_ID = await TestHelper.createAgency(`${agencyName1}@test.movinin.ma`, agencyName1)
+        AGENCY2_ID = await TestHelper.createAgency(`${agencyName2}@test.movinin.ma`, agencyName2)
 
         // create two locations
         LOCATION1_ID = await TestHelper.createLocation('Location 1 EN', 'Location 1 FR')
@@ -56,7 +58,7 @@ beforeAll(async () => {
 afterAll(async () => {
     await TestHelper.clearDatabase()
 
-    // delete agencys
+    // delete agencies
     await TestHelper.deleteAgency(AGENCY1_ID)
     await TestHelper.deleteAgency(AGENCY2_ID)
 
