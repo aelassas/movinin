@@ -324,7 +324,6 @@ describe('POST /api/booking-properties/:page/:size', () => {
 
         expect(res.statusCode).toBe(200)
         expect(res.body.length).toBeGreaterThan(0)
-        console.log(res.body)
         await TestHelper.signout(token)
     })
 })
