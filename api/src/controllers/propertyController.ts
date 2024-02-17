@@ -255,7 +255,7 @@ export async function update(req: Request, res: Response) {
       }
 
       await property.save()
-      return res.sendStatus(200)
+      return res.json(property)
     }
 
     console.error('[property.update] Property not found:', _id)
@@ -352,7 +352,6 @@ export async function uploadImage(req: Request, res: Response) {
     }
 
     const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
-    console.log(filename)
     const filepath = path.join(env.CDN_TEMP_PROPERTIES, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
