@@ -495,7 +495,7 @@ export async function getBooking(req: Request, res: Response) {
 export async function getBookings(req: Request, res: Response) {
   try {
     const { body }: { body: movininTypes.GetBookingsPayload } = req
-    const page = Number.parseInt(req.params.page, 10) + 1
+    const page = Number.parseInt(req.params.page, 10)
     const size = Number.parseInt(req.params.size, 10)
     const agencies = body.agencies.map((id: string) => new mongoose.Types.ObjectId(id))
     const {
