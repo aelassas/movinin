@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "rimraf dist && tsc && babel dist -d dist",
-    "start": "npm run build && node dist",
+    "start": "npm run build && node dist/src",
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint --ext .ts .",
     "ncu": "ncu -u"
@@ -60,7 +60,6 @@
     "jsonwebtoken": "^9.0.2",
     "localized-strings": "^0.2.4",
     "mongoose": "^8.1.1",
-    "movinin-helper": "file:.packages/movinin-helper",
     "movinin-types": "file:../packages/movinin-types",
     "multer": "^1.4.5-lts.1",
     "nocache": "^4.0.0",
