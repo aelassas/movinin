@@ -342,7 +342,7 @@ export async function update(req: Request, res: Response) {
         await notifyRenter(booking)
       }
 
-      return res.sendStatus(200)
+      return res.json(booking)
     }
 
     console.error('[booking.update] Booking not found:', body._id)
@@ -502,7 +502,6 @@ export async function getBookings(req: Request, res: Response) {
       statuses,
       user,
       property,
-      language,
     } = body
     const location = (body.filter && body.filter.location) || null
     const from = (body.filter && body.filter.from && new Date(body.filter.from)) || null
@@ -552,7 +551,9 @@ export async function getBookings(req: Request, res: Response) {
         }
       }
     }
-    console.log($match)
+
+    const { language } = req.params
+
     const data = await Booking.aggregate([
       {
         $lookup: {

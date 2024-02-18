@@ -150,7 +150,6 @@ export interface GetBookingsPayload {
     user?: string
     property?: string
     filter?: Filter
-    language: string
 }
 
 export interface LocationName {
