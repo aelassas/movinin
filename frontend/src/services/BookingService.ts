@@ -6,13 +6,13 @@ import * as UserService from './UserService'
 /**
  * Complete the checkout process and create the booking.
  *
- * @param {movininTypes.BookPayload} data
+ * @param {movininTypes.CheckoutPayload} data
  * @returns {Promise<number>}
  */
-export const book = (data: movininTypes.BookPayload): Promise<number> =>
+export const checkout = (data: movininTypes.CheckoutPayload): Promise<number> =>
   axios
     .post(
-      `${Env.API_HOST}/api/book`,
+      `${Env.API_HOST}/api/checkout`,
       data
     )
     .then((res) => res.status)

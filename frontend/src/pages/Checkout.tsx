@@ -420,13 +420,13 @@ function Checkout() {
         price,
       }
 
-      const payload: movininTypes.BookPayload = {
+      const payload: movininTypes.CheckoutPayload = {
         renter,
         booking,
         payLater,
       }
 
-      const status = await BookingService.book(payload)
+      const status = await BookingService.checkout(payload)
 
       if (status === 200) {
         window.history.replaceState({}, window.document.title, '/checkout')

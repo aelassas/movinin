@@ -93,10 +93,10 @@ async function notifyAgency(user: env.User, bookingId: string, agency: env.User,
  * @param {Response} res
  * @returns {unknown}
  */
-export async function book(req: Request, res: Response) {
+export async function checkout(req: Request, res: Response) {
   try {
     let user: env.User | null
-    const { body }: { body: movininTypes.BookPayload } = req
+    const { body }: { body: movininTypes.CheckoutPayload } = req
     const { renter } = body
 
     if (renter) {

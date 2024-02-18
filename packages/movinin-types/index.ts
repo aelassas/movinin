@@ -131,7 +131,7 @@ export interface Booking {
     cancelRequest?: boolean
 }
 
-export interface BookPayload {
+export interface CheckoutPayload {
     renter?: User
     booking: Booking
     payLater?: boolean

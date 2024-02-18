@@ -116,7 +116,7 @@ export interface Booking {
     location: string | Location;
     cancelRequest?: boolean;
 }
-export interface BookPayload {
+export interface CheckoutPayload {
     renter?: User;
     booking: Booking;
     payLater?: boolean;
