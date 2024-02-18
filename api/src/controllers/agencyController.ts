@@ -70,7 +70,14 @@ export async function update(req: Request, res: Response) {
       agency.payLater = payLater
 
       await agency.save()
-      return res.sendStatus(200)
+      return res.json({
+        _id,
+        fullName: agency.fullName,
+        phone: agency.phone,
+        location: agency.location,
+        bio: agency.bio,
+        payLater: agency.payLater,
+      })
     }
 
     console.error('[agency.update] Agency not found:', _id)
