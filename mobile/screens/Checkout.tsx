@@ -599,13 +599,13 @@ function CheckoutScreen({ navigation, route }: NativeStackScreenProps<StackParam
         price,
       }
 
-      const payload: movininTypes.BookPayload = {
+      const payload: movininTypes.CheckoutPayload = {
         renter,
         booking,
         payLater,
       }
 
-      const status = await BookingService.book(payload)
+      const status = await BookingService.checkout(payload)
 
       if (status === 200) {
         setLoading(false)

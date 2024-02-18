@@ -14,12 +14,10 @@ import {
 } from 'react-native-paper'
 import { enUS, fr } from 'date-fns/locale'
 import * as movininTypes from '../miscellaneous/movininTypes'
-
 import * as Env from '../config/env.config'
 import i18n from '../lang/i18n'
 import * as Helper from '../common/Helper'
 import * as BookingService from '../services/BookingService'
-
 import Booking from './Booking'
 
 interface BookingListProps {
@@ -71,7 +69,7 @@ function BookingList({
         }
         setLoading(true)
         setFetch(true)
-        const data = await BookingService.getBookings(payload, _page, Env.BOOKINGS_PAGE_SIZE)
+        const data = await BookingService.getBookings(payload, _page + 1, Env.BOOKINGS_PAGE_SIZE)
         const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
         if (!_data) {
           Helper.error()
