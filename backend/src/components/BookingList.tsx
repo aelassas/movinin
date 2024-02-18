@@ -120,7 +120,6 @@ function BookingList({
           filter: filter || undefined,
           property,
           user: (_user && _user._id) || undefined,
-          language: loggedUser?.language || Env.DEFAULT_LANGUAGE
         }
 
         const data = await BookingService.getBookings(

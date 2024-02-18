@@ -117,7 +117,6 @@ function BookingList({
           filter: filter || undefined,
           property,
           user: (_user && _user._id) || undefined,
-          language: _user?.language || Env.DEFAULT_LANGUAGE
         }
 
         const data = await BookingService.getBookings(
