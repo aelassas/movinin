@@ -102,10 +102,14 @@ export async function signinAsUser() {
 }
 
 export async function signout(token: string) {
-    const signoutRequest = await request(app)
+    const res = await request(app)
         .post('/api/sign-out')
-        .set(env.X_ACCESS_TOKEN, token)
-    expect(signoutRequest.statusCode).toBe(200)
+        .set('Cookie', [`${env.X_ACCESS_TOKEN}=${token};`])
+    expect(res.statusCode).toBe(200)
+
+    const cookies = res.headers['set-cookie'] as unknown as string[]
+    expect(cookies.length).toBe(1)
+    expect(cookies[0]).toContain(`${env.X_ACCESS_TOKEN}=;`)
 }
 
 export async function createAgency(email: string, fullName: string) {
