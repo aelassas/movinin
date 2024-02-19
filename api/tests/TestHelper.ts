@@ -69,7 +69,7 @@ export async function clearDatabase() {
     await NotificationCounter.deleteMany({ user: { $in: [ADMIN_USER_ID, USER_ID] } })
 }
 
-const getToken = (cookie: string) => {
+export const getToken = (cookie: string) => {
     const signedCookie = decodeURIComponent(cookie)
     const token = cookieParser.signedCookie((signedCookie.match(`${env.X_ACCESS_TOKEN}=(s:.*?);`) ?? [])[1], env.COOKIE_SECRET) as string
     return token
@@ -81,12 +81,12 @@ const signin = async (appType: movininTypes.AppType, email: string) => {
         password: PASSWORD,
     }
 
-    const signinRequest = await request(app)
+    const res = await request(app)
         .post(`/api/sign-in/${appType}`)
         .send(payload)
 
-    expect(signinRequest.statusCode).toBe(200)
-    const cookies = signinRequest.headers['set-cookie'] as unknown as string[]
+    expect(res.statusCode).toBe(200)
+    const cookies = res.headers['set-cookie'] as unknown as string[]
     expect(cookies.length).toBeGreaterThan(1)
     const token = getToken(cookies[1])
     expect(token).toBeDefined()
@@ -131,6 +131,7 @@ export async function createAgency(email: string, fullName: string) {
 export async function deleteAgency(id: string) {
     const res = await User.deleteOne({ _id: id })
     expect(res.deletedCount).toBe(1)
+
     await Notification.deleteMany({ user: id })
     await NotificationCounter.deleteMany({ user: id })
 }
@@ -166,4 +167,8 @@ export async function createLocation(nameEN: string, nameFR: string) {
     await location.save()
     expect(location.id).toBeDefined()
     return location.id as string
+}
+
+export function GetRandomEmail() {
+    return `random.${uuid()}@test.movinin.io`
 }

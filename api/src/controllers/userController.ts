@@ -29,6 +29,13 @@ import * as MailHelper from '../common/MailHelper'
 const getStatusMessage = (lang: string, msg: string): string => `<!DOCTYPE html><html lang="' ${lang}'"><head></head><body><p>${msg}</p></body></html>`
 
 /**
+ * Generate user token.
+ *
+ * @returns {string}
+ */
+const generateToken = () => `${uuid()}-${Date.now()}`
+
+/**
  * Sign Up.
  *
  * @async
@@ -67,7 +74,7 @@ async function _signup(req: Request, res: Response, userType: movininTypes.UserT
     }
 
     // generate token and save
-    const token = new Token({ user: user._id, token: uuid() })
+    const token = new Token({ user: user._id, token: generateToken() })
 
     await token.save()
 
@@ -170,7 +177,7 @@ export async function create(req: Request, res: Response) {
     }
 
     // generate token and save
-    const token = new Token({ user: user._id, token: uuid() })
+    const token = new Token({ user: user._id, token: generateToken() })
     await token.save()
 
     // Send email
@@ -229,7 +236,7 @@ export async function checkToken(req: Request, res: Response) {
       }
 
       const token = await Token.findOne({
-        user: new mongoose.Types.ObjectId(req.params.userId),
+        user: new mongoose.Types.ObjectId(userId),
         token: req.params.token,
       })
 
@@ -304,7 +311,7 @@ export async function resend(req: Request, res: Response) {
       await user.save()
 
       // generate token and save
-      const token = new Token({ user: user._id, token: uuid() })
+      const token = new Token({ user: user._id, token: generateToken() })
       await token.save()
 
       // Send email
@@ -354,7 +361,7 @@ export async function activate(req: Request, res: Response) {
     const user = await User.findById(userId)
 
     if (user) {
-      const token = await Token.find({ token: body.token })
+      const token = await Token.findOne({ user: userId, token: body.token })
 
       if (token) {
         const salt = await bcrypt.genSalt(10)
@@ -494,7 +501,10 @@ export async function signin(req: Request, res: Response) {
  */
 export async function signout(req: Request, res: Response) {
   const cookieName = Helper.getAuthCookieName(req)
-  return res.clearCookie(cookieName).sendStatus(200)
+
+  return res
+    .clearCookie(cookieName)
+    .sendStatus(200)
 }
 
 /**
@@ -631,7 +641,7 @@ export async function confirmEmail(req: Request, res: Response) {
     }
 
     strings.setLanguage(user.language)
-    const token = await Token.findOne({ token: _token })
+    const token = await Token.findOne({ user: user._id, token: _token })
 
     // token is not found into database i.e. token may have expired
     if (!token) {
@@ -687,7 +697,7 @@ export async function resendLink(req: Request, res: Response) {
 
     // send verification link
     // generate token and save
-    const token = new Token({ user: user._id, token: uuid() })
+    const token = new Token({ user: user._id, token: generateToken() })
     await token.save()
 
     // Send email
@@ -784,6 +794,7 @@ export async function updateEmailNotifications(req: Request, res: Response) {
   try {
     const { _id } = body
     const user = await User.findById(_id)
+
     if (!user) {
       console.error('[user.updateEmailNotifications] User not found:', body)
       return res.sendStatus(204)
@@ -792,6 +803,7 @@ export async function updateEmailNotifications(req: Request, res: Response) {
     const { enableEmailNotifications } = body
     user.enableEmailNotifications = enableEmailNotifications
     await user.save()
+
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.updateEmailNotifications] ${strings.DB_ERROR} ${body}`, err)
@@ -942,7 +954,7 @@ export async function updateAvatar(req: Request, res: Response) {
       await fs.writeFile(filepath, req.file.buffer)
       user.avatar = filename
       await user.save()
-      return res.sendStatus(200)
+      return res.json(filename)
     }
 
     console.error('[user.updateAvatar] User not found:', userId)
