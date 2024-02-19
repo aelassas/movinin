@@ -8,9 +8,20 @@ import * as env from '../src/config/env.config'
 import User from '../src/models/User'
 import LocationValue from '../src/models/LocationValue'
 import Location from '../src/models/Location'
+import Notification from '../src/models/Notification'
+import NotificationCounter from '../src/models/NotificationCounter'
 
-const ADMIN_EMAIL = `admin.${uuid()}@test.movinin.io`
-const USER_EMAIL = `user.${uuid()}@test.movinin.io`
+export function getName(prefix: string) {
+    expect(prefix.length).toBeGreaterThan(1)
+    return `${prefix}.${uuid()}`
+}
+
+export function getAgencyName() {
+    return getName('agency')
+}
+
+const ADMIN_EMAIL = `${getName('admin')}@test.movinin.io`
+const USER_EMAIL = `${getName('user')}@test.movinin.io`
 export const PASSWORD = 'Un1tTest5'
 export const LANGUAGE = 'en'
 export const PAGE = 1
@@ -54,6 +65,8 @@ export function getUserId() {
 export async function clearDatabase() {
     const res = await User.deleteMany({ email: { $in: [ADMIN_EMAIL, USER_EMAIL] } })
     expect(res.deletedCount).toBe(2)
+    await Notification.deleteMany({ user: { $in: [ADMIN_USER_ID, USER_ID] } })
+    await NotificationCounter.deleteMany({ user: { $in: [ADMIN_USER_ID, USER_ID] } })
 }
 
 const getToken = (cookie: string) => {
@@ -112,6 +125,8 @@ export async function createAgency(email: string, fullName: string) {
 export async function deleteAgency(id: string) {
     const res = await User.deleteOne({ _id: id })
     expect(res.deletedCount).toBe(1)
+    await Notification.deleteMany({ user: id })
+    await NotificationCounter.deleteMany({ user: id })
 }
 
 export async function deleteLocation(id: string) {
@@ -145,8 +160,4 @@ export async function createLocation(nameEN: string, nameFR: string) {
     await location.save()
     expect(location.id).toBeDefined()
     return location.id as string
-}
-
-export function getAgencyName() {
-    return `agency.${uuid()}`
 }
