@@ -76,12 +76,14 @@ const getToken = (cookie: string) => {
 }
 
 const signin = async (appType: movininTypes.AppType, email: string) => {
+    const payload: movininTypes.SignInPayload = {
+        email,
+        password: PASSWORD,
+    }
+
     const signinRequest = await request(app)
         .post(`/api/sign-in/${appType}`)
-        .send({
-            email,
-            password: PASSWORD,
-        })
+        .send(payload)
 
     expect(signinRequest.statusCode).toBe(200)
     const cookies = signinRequest.headers['set-cookie'] as unknown as string[]
