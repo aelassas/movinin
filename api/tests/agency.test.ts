@@ -1,11 +1,19 @@
 import 'dotenv/config'
 import request from 'supertest'
+import url from 'url'
+import path from 'path'
+import fs from 'node:fs/promises'
 import * as movininTypes from 'movinin-types'
 import * as DatabaseHelper from '../src/common/DatabaseHelper'
 import * as TestHelper from './TestHelper'
 import app from '../src/app'
 import * as env from '../src/config/env.config'
+import * as Helper from '../src/common/Helper'
 import User from '../src/models/User'
+import Property from '../src/models/Property'
+
+const __filename = url.fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 let AGENCY1_ID: string
 let AGENCY2_ID: string
@@ -149,19 +157,68 @@ describe('DELETE /api/delete-agency/:id', () => {
         const token = await TestHelper.signinAsAdmin()
 
         const agencyName = TestHelper.getAgencyName()
-        const _id = await TestHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
+        const agencyId = await TestHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
 
-        let agency = await User.findById(_id)
+        let agency = await User.findById(agencyId)
         expect(agency).not.toBeNull()
 
+        const avatarName = 'avatar1.jpg'
+        const avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
+
+        const avatar = path.join(env.CDN_USERS, avatarName)
+        if (!await Helper.exists(avatar)) {
+            fs.copyFile(avatarPath, avatar)
+        }
+        agency!.avatar = avatarName
+        await agency?.save()
+
+        const locationId = await TestHelper.createLocation('Location 1 EN', 'Location 1 FR')
+
+        const propertyImageName = 'main1.jpg'
+        const propertyImagePath = path.resolve(__dirname, `./img/${propertyImageName}`)
+
+        const property = new Property({
+            name: 'Beautiful House in Detroit',
+            agency: agencyId,
+            type: movininTypes.PropertyType.House,
+            description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: propertyImageName,
+            images: [],
+            bedrooms: 3,
+            bathrooms: 2,
+            kitchens: 1,
+            parkingSpaces: 1,
+            size: 200,
+            petsAllowed: false,
+            furnished: true,
+            aircon: true,
+            minimumAge: 21,
+            location: locationId,
+            address: '',
+            price: 4000,
+            hidden: true,
+            cancellation: 0,
+            available: false,
+            rentalTerm: movininTypes.RentalTerm.Monthly,
+        })
+
+        const propertyImage = path.join(env.CDN_PROPERTIES, propertyImageName)
+        if (!await Helper.exists(propertyImage)) {
+            fs.copyFile(propertyImagePath, propertyImage)
+        }
+
+        await property.save()
+
         const res = await request(app)
-            .delete(`/api/delete-agency/${_id}`)
+            .delete(`/api/delete-agency/${agencyId}`)
             .set(env.X_ACCESS_TOKEN, token)
 
         expect(res.statusCode).toBe(200)
 
-        agency = await User.findById(_id)
+        agency = await User.findById(agencyId)
         expect(agency).toBeNull()
+
+        await TestHelper.deleteLocation(locationId)
 
         await TestHelper.signout(token)
     })

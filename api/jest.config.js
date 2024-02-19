@@ -7,6 +7,8 @@ const config = {
     roots: [
         './tests/',
     ],
+    collectCoverage: true,
+    coverageReporters: ['cobertura'],
 }
 
 export default config
