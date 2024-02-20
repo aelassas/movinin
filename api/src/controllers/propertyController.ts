@@ -24,11 +24,6 @@ export async function create(req: Request, res: Response) {
   const { body }: { body: movininTypes.CreatePropertyPayload } = req
 
   try {
-    if (!body.image) {
-      console.error(`[property.create] ${strings.PROPERTY_IMAGE_REQUIRED} ${body}`)
-      return res.status(400).send(strings.PROPERTY_IMAGE_REQUIRED)
-    }
-
     const {
       name,
       type,
@@ -313,7 +308,7 @@ export async function deleteProperty(req: Request, res: Response) {
       }
       await Booking.deleteMany({ property: property._id })
     } else {
-      return res.sendStatus(404)
+      return res.sendStatus(204)
     }
     return res.sendStatus(200)
   } catch (err) {

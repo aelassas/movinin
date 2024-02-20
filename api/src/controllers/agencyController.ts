@@ -133,7 +133,7 @@ export async function deleteAgency(req: Request, res: Response) {
         }
       }
     } else {
-      return res.sendStatus(404)
+      return res.sendStatus(204)
     }
     return res.sendStatus(200)
   } catch (err) {
