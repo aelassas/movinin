@@ -12,6 +12,7 @@ import Property from '../models/Property'
 import Notification from '../models/Notification'
 import NotificationCounter from '../models/NotificationCounter'
 import PushNotification from '../models/PushNotification'
+import Location from '../models/Location'
 import * as env from '../config/env.config'
 import * as MailHelper from '../common/MailHelper'
 import * as Helper from '../common/Helper'
@@ -160,6 +161,12 @@ export async function checkout(req: Request, res: Response) {
       return res.sendStatus(204)
     }
 
+    const location = await Location.findById(booking.location).populate<{ values: env.LocationValue[] }>('values')
+    if (!location) {
+      console.log(`Location ${booking.location} not found`)
+      return res.sendStatus(204)
+    }
+
     const mailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
@@ -206,10 +213,12 @@ export async function checkout(req: Request, res: Response) {
  */
 async function notifyRenter(booking: env.Booking) {
   const renter = await User.findById(booking.renter)
+
   if (!renter) {
     console.log(`Renter ${booking.renter} not found`)
     return
   }
+
   if (renter.language) {
     strings.setLanguage(renter.language)
   }
@@ -475,7 +484,7 @@ export async function getBooking(req: Request, res: Response) {
       return res.json(booking)
     }
 
-    console.error('[booking.getBooking] Property not found:', id)
+    console.error('[booking.getBooking] Booking not found:', id)
     return res.sendStatus(204)
   } catch (err) {
     console.error(`[booking.getBooking]  ${strings.DB_ERROR} ${id}`, err)

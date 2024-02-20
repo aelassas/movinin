@@ -1,15 +1,19 @@
 import 'dotenv/config'
 import request from 'supertest'
 import * as movininTypes from 'movinin-types'
+import { v1 as uuid } from 'uuid'
 import app from '../src/app'
 import * as DatabaseHelper from '../src/common/DatabaseHelper'
 import * as TestHelper from './TestHelper'
 import Property from '../src/models/Property'
 import Booking from '../src/models/Booking'
+import User from '../src/models/User'
+import PushNotification from '../src/models/PushNotification'
 import * as env from '../src/config/env.config'
 
 let AGENCY_ID: string
-let USER_ID: string
+let RENTER1_ID: string
+let RENTER2_ID: string
 let LOCATION_ID: string
 let PROPERTY1_ID: string
 let PROPERTY2_ID: string
@@ -27,7 +31,7 @@ beforeAll(async () => {
         AGENCY_ID = await TestHelper.createAgency(`${supplierName}@test.movinin.ma`, supplierName)
 
         // get user id
-        USER_ID = TestHelper.getUserId()
+        RENTER1_ID = TestHelper.getUserId()
 
         // create a location
         LOCATION_ID = await TestHelper.createLocation('Location 1 EN', 'Location 1 FR')
@@ -99,7 +103,7 @@ describe('POST /api/create-booking', () => {
         const payload: movininTypes.Booking = {
             agency: AGENCY_ID,
             property: PROPERTY1_ID,
-            renter: USER_ID,
+            renter: RENTER1_ID,
             location: LOCATION_ID,
             from: new Date(2024, 2, 1),
             to: new Date(1990, 2, 4),
@@ -122,14 +126,14 @@ describe('POST /api/create-booking', () => {
 
 describe('POST /api/checkout', () => {
     it('should checkout', async () => {
-        let bookings = await Booking.find({ renter: USER_ID })
+        let bookings = await Booking.find({ renter: RENTER1_ID })
         expect(bookings.length).toBe(1)
 
         const payload: movininTypes.CheckoutPayload = {
             booking: {
                 agency: AGENCY_ID,
                 property: PROPERTY1_ID,
-                renter: USER_ID,
+                renter: RENTER1_ID,
                 location: LOCATION_ID,
                 from: new Date(2024, 3, 1),
                 to: new Date(1990, 3, 4),
@@ -139,15 +143,51 @@ describe('POST /api/checkout', () => {
             },
             payLater: true,
         }
-
-        const res = await request(app)
+        let res = await request(app)
             .post('/api/checkout')
             .send(payload)
+        expect(res.statusCode).toBe(200)
+        bookings = await Booking.find({ renter: RENTER1_ID })
+        expect(bookings.length).toBeGreaterThan(1)
 
+        payload.renter = {
+            fullName: 'renter',
+            email: TestHelper.GetRandomEmail(),
+            language: TestHelper.LANGUAGE,
+        }
+        res = await request(app)
+            .post('/api/checkout')
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        const renter2 = await User.findOne({ email: payload.renter.email })
+        expect(renter2).not.toBeNull()
+        RENTER2_ID = renter2?.id
+
+        payload.renter = undefined
+        res = await request(app)
+            .post('/api/checkout')
+            .send(payload)
         expect(res.statusCode).toBe(200)
 
-        bookings = await Booking.find({ renter: USER_ID })
-        expect(bookings.length).toBeGreaterThan(1)
+        payload.booking!.property = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .post('/api/checkout')
+            .send(payload)
+        expect(res.statusCode).toBe(204)
+
+        payload.booking!.property = PROPERTY1_ID
+        payload.booking!.location = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .post('/api/checkout')
+            .send(payload)
+        expect(res.statusCode).toBe(204)
+
+        payload.booking!.agency = AGENCY_ID
+        payload.booking!.renter = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .post('/api/checkout')
+            .send(payload)
+        expect(res.statusCode).toBe(204)
     })
 })
 
@@ -159,7 +199,7 @@ describe('POST /api/update-booking', () => {
             _id: BOOKING_ID,
             agency: AGENCY_ID,
             property: PROPERTY2_ID,
-            renter: USER_ID,
+            renter: RENTER1_ID,
             location: LOCATION_ID,
             from: new Date(2024, 2, 1),
             to: new Date(1990, 2, 4),
@@ -168,7 +208,7 @@ describe('POST /api/update-booking', () => {
             price: 4800,
         }
 
-        const res = await request(app)
+        let res = await request(app)
             .put('/api/update-booking')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
@@ -177,6 +217,44 @@ describe('POST /api/update-booking', () => {
         expect(res.body.property).toBe(PROPERTY2_ID)
         expect(res.body.price).toBe(4800)
         expect(res.body.status).toBe(movininTypes.BookingStatus.Paid)
+
+        payload._id = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .put('/api/update-booking')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
+
+        // notifyDriver
+        payload._id = BOOKING_ID
+        payload.status = movininTypes.BookingStatus.Cancelled
+        payload.renter = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .put('/api/update-booking')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+
+        payload.renter = RENTER1_ID
+        payload.status = movininTypes.BookingStatus.Void
+        let pushNotification = new PushNotification({ user: payload.renter, token: uuid() })
+        await pushNotification.save()
+        res = await request(app)
+            .put('/api/update-booking')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        await PushNotification.deleteOne({ _id: pushNotification._id })
+
+        payload.status = movininTypes.BookingStatus.Cancelled
+        pushNotification = new PushNotification({ user: payload.renter, token: '0' })
+        await pushNotification.save()
+        res = await request(app)
+            .put('/api/update-booking')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        await PushNotification.deleteOne({ _id: pushNotification._id })
 
         await TestHelper.signout(token)
     })
@@ -209,12 +287,16 @@ describe('GET /api/booking/:id/:language', () => {
     it('should get a booking', async () => {
         const token = await TestHelper.signinAsAdmin()
 
-        const res = await request(app)
+        let res = await request(app)
             .get(`/api/booking/${BOOKING_ID}/${TestHelper.LANGUAGE}`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(200)
         expect(res.body.property._id).toBe(PROPERTY2_ID)
+
+        res = await request(app)
+            .get(`/api/booking/${TestHelper.GetRandromObjectIdAsString()}/${TestHelper.LANGUAGE}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -227,15 +309,31 @@ describe('POST /api/bookings/:page/:size/:language', () => {
         const payload: movininTypes.GetBookingsPayload = {
             agencies: [AGENCY_ID],
             statuses: [movininTypes.BookingStatus.Reserved],
+            filter: {
+                location: LOCATION_ID,
+                from: new Date(2024, 2, 1),
+                to: new Date(1990, 2, 4),
+                keyword: TestHelper.USER_FULL_NAME,
+            },
+            user: TestHelper.getUserId(),
+            property: PROPERTY2_ID,
         }
 
-        const res = await request(app)
+        let res = await request(app)
+            .post(`/api/bookings/${TestHelper.PAGE}/${TestHelper.SIZE}/${TestHelper.LANGUAGE}`)
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        expect(res.body[0].resultData.length).toBe(1)
+
+        payload.filter!.keyword = BOOKING_ID
+        res = await request(app)
             .post(`/api/bookings/${TestHelper.PAGE}/${TestHelper.SIZE}/${TestHelper.LANGUAGE}`)
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
 
         expect(res.statusCode).toBe(200)
-        expect(res.body[0].resultData.length).toBeGreaterThan(0)
+        expect(res.body[0].resultData.length).toBe(1)
 
         await TestHelper.signout(token)
     })
@@ -246,7 +344,7 @@ describe('GET /api/has-bookings/:renter', () => {
         const token = await TestHelper.signinAsAdmin()
 
         let res = await request(app)
-            .get(`/api/has-bookings/${USER_ID}`)
+            .get(`/api/has-bookings/${RENTER1_ID}`)
             .set(env.X_ACCESS_TOKEN, token)
 
         expect(res.statusCode).toBe(200)
@@ -288,8 +386,10 @@ describe('DELETE /api/delete-bookings', () => {
     it('should delete bookings', async () => {
         const token = await TestHelper.signinAsAdmin()
 
-        let bookings = await Booking.find({ renter: USER_ID })
-        expect(bookings.length).toBe(2)
+        const renters = [RENTER1_ID, RENTER2_ID]
+
+        let bookings = await Booking.find({ renter: { $in: renters } })
+        expect(bookings.length).toBeGreaterThan(0)
 
         const payload: string[] = bookings.map((u) => u.id)
 
@@ -300,7 +400,7 @@ describe('DELETE /api/delete-bookings', () => {
 
         expect(res.statusCode).toBe(200)
 
-        bookings = await Booking.find({ renter: USER_ID })
+        bookings = await Booking.find({ driver: { $in: renters } })
         expect(bookings.length).toBe(0)
 
         await TestHelper.signout(token)
