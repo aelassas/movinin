@@ -79,10 +79,6 @@ export async function create(req: Request, res: Response) {
     await property.save()
 
     // image
-    if (!await Helper.exists(env.CDN_PROPERTIES)) {
-      await fs.mkdir(env.CDN_PROPERTIES, { recursive: true })
-    }
-
     const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
     if (await Helper.exists(_image)) {
       const filename = `${property._id}_${Date.now()}${path.extname(imageFile)}`
@@ -191,10 +187,6 @@ export async function update(req: Request, res: Response) {
       property.cancellation = cancellation
       property.aircon = aircon
       property.rentalTerm = rentalTerm as movininTypes.RentalTerm
-
-      if (!await Helper.exists(env.CDN_PROPERTIES)) {
-        await fs.mkdir(env.CDN_PROPERTIES, { recursive: true })
-      }
 
       if (image && image !== property.image) {
         const oldImage = path.join(env.CDN_PROPERTIES, property.image)
@@ -345,10 +337,6 @@ export async function uploadImage(req: Request, res: Response) {
       const msg = '[property.uploadImage] req.file not found'
       console.error(msg)
       return res.status(400).send(msg)
-    }
-
-    if (!await Helper.exists(env.CDN_TEMP_PROPERTIES)) {
-      await fs.mkdir(env.CDN_TEMP_PROPERTIES, { recursive: true })
     }
 
     const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
