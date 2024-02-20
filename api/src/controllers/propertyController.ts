@@ -629,7 +629,7 @@ export async function getBookingProperties(req: Request, res: Response) {
     const page = Number.parseInt(req.params.page, 10)
     const size = Number.parseInt(req.params.size, 10)
 
-    const propertys = await Property.aggregate(
+    const properties = await Property.aggregate(
       [
         {
           $match: {
@@ -646,7 +646,7 @@ export async function getBookingProperties(req: Request, res: Response) {
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
-    return res.json(propertys)
+    return res.json(properties)
   } catch (err) {
     console.error(`[property.getBookingProperties] ${strings.DB_ERROR} ${req.query.s}`, err)
     return res.status(400).send(strings.DB_ERROR + err)
