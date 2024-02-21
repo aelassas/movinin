@@ -21,8 +21,8 @@ export function getAgencyName() {
     return getName('agency')
 }
 
-const ADMIN_EMAIL = `${getName('admin')}@test.movinin.io`
-const USER_EMAIL = `${getName('user')}@test.movinin.io`
+export const ADMIN_EMAIL = `${getName('admin')}@test.movinin.io`
+export const USER_EMAIL = `${getName('user')}@test.movinin.io`
 export const USER_FULL_NAME = 'user'
 export const PASSWORD = 'Un1tTest5'
 export const LANGUAGE = 'en'
