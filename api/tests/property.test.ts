@@ -124,6 +124,16 @@ describe('POST /api/create-property', () => {
         expect(res.statusCode).toBe(200)
         PROPERTY_ID = res.body._id
 
+        if (!await Helper.exists(mainImage)) {
+            fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
+        }
+        payload.images = ['unknown.jpg']
+        res = await request(app)
+            .post('/api/create-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(400)
+
         res = await request(app)
             .post('/api/create-property')
             .set(env.X_ACCESS_TOKEN, token)
@@ -222,12 +232,50 @@ describe('PUT /api/update-property', () => {
         expect(property.available).toBeTruthy()
         expect(property.rentalTerm).toBe(movininTypes.RentalTerm.Weekly)
 
+        if (!await Helper.exists(mainImage)) {
+            fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
+        }
+        payload.images = property.images
+        res = await request(app)
+            .put('/api/update-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+
+        if (!await Helper.exists(mainImage)) {
+            fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
+        }
+        payload.images = []
+        res = await request(app)
+            .put('/api/update-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+
         payload._id = TestHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .put('/api/update-property')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(204)
+
+        if (!await Helper.exists(mainImage)) {
+            fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
+        }
+        if (!await Helper.exists(additionalImage1)) {
+            fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
+        }
+        if (!await Helper.exists(additionalImage2)) {
+            fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
+        }
+        payload._id = PROPERTY_ID
+        payload.image = MAIN_IMAGE2
+        payload.images = [ADDITIONAL_IMAGE2_1, ADDITIONAL_IMAGE2_2]
+        res = await request(app)
+            .put('/api/update-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
 
         await TestHelper.signout(token)
     })
