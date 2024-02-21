@@ -56,22 +56,23 @@ describe('POST /api/validate-agency', () => {
         const token = await TestHelper.signinAsAdmin()
 
         let payload: movininTypes.ValidateAgencyPayload = { fullName: AGENCY1_NAME }
-
         let res = await request(app)
             .post('/api/validate-agency')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(204)
 
         payload = { fullName: TestHelper.getAgencyName() }
-
         res = await request(app)
             .post('/api/validate-agency')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
+
+        res = await request(app)
+            .post('/api/validate-agency')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
 
         await TestHelper.signout(token)
     })
@@ -114,6 +115,11 @@ describe('PUT /api/update-agency', () => {
             .send(payload)
         expect(res.statusCode).toBe(204)
 
+        res = await request(app)
+            .put('/api/update-agency')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
+
         await TestHelper.signout(token)
     })
 })
@@ -133,6 +139,11 @@ describe('GET /api/agency/:id', () => {
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(204)
 
+        res = await request(app)
+            .get('/api/agency/0')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
+
         await TestHelper.signout(token)
     })
 })
@@ -141,12 +152,16 @@ describe('GET /api/agencies/:page/:size', () => {
     it('should get agencies', async () => {
         const token = await TestHelper.signinAsAdmin()
 
-        const res = await request(app)
+        let res = await request(app)
             .get(`/api/agencies/${TestHelper.PAGE}/${TestHelper.SIZE}`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(200)
         expect(res.body[0].resultData.length).toBeGreaterThan(1)
+
+        res = await request(app)
+            .get(`/api/agencies/unknown/${TestHelper.SIZE}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
 
         await TestHelper.signout(token)
     })
@@ -154,11 +169,16 @@ describe('GET /api/agencies/:page/:size', () => {
 
 describe('GET /api/all-agencies', () => {
     it('should get all agencies', async () => {
-        const res = await request(app)
+        let res = await request(app)
             .get('/api/all-agencies')
-
         expect(res.statusCode).toBe(200)
         expect(res.body.length).toBeGreaterThan(1)
+
+        await DatabaseHelper.Close(false)
+        res = await request(app)
+            .get('/api/all-agencies')
+        expect(res.statusCode).toBe(400)
+        expect(await DatabaseHelper.Connect(false)).toBeTruthy()
     })
 })
 
@@ -168,32 +188,28 @@ describe('DELETE /api/delete-agency/:id', () => {
 
         const agencyName = TestHelper.getAgencyName()
         const agencyId = await TestHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
-
         let agency = await User.findById(agencyId)
         expect(agency).not.toBeNull()
-
         const avatarName = 'avatar1.jpg'
         const avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
-
         const avatar = path.join(env.CDN_USERS, avatarName)
         if (!await Helper.exists(avatar)) {
             fs.copyFile(avatarPath, avatar)
         }
         agency!.avatar = avatarName
         await agency?.save()
-
         const locationId = await TestHelper.createLocation('Location 1 EN', 'Location 1 FR')
-
         const propertyImageName = 'main1.jpg'
         const propertyImagePath = path.resolve(__dirname, `./img/${propertyImageName}`)
-
+        const additionalImageName = 'additional1-1.jpg'
+        const additionalImagePath = path.resolve(__dirname, `./img/${additionalImageName}`)
         const property = new Property({
             name: 'Beautiful House in Detroit',
             agency: agencyId,
             type: movininTypes.PropertyType.House,
             description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
             image: propertyImageName,
-            images: [],
+            images: [additionalImageName],
             bedrooms: 3,
             bathrooms: 2,
             kitchens: 1,
@@ -211,14 +227,15 @@ describe('DELETE /api/delete-agency/:id', () => {
             available: false,
             rentalTerm: movininTypes.RentalTerm.Monthly,
         })
-
         const propertyImage = path.join(env.CDN_PROPERTIES, propertyImageName)
         if (!await Helper.exists(propertyImage)) {
             fs.copyFile(propertyImagePath, propertyImage)
         }
-
+        const additionalImage = path.join(env.CDN_PROPERTIES, additionalImageName)
+        if (!await Helper.exists(propertyImage)) {
+            fs.copyFile(additionalImagePath, additionalImage)
+        }
         await property.save()
-
         let res = await request(app)
             .delete(`/api/delete-agency/${agencyId}`)
             .set(env.X_ACCESS_TOKEN, token)
@@ -226,11 +243,18 @@ describe('DELETE /api/delete-agency/:id', () => {
         agency = await User.findById(agencyId)
         expect(agency).toBeNull()
         await TestHelper.deleteLocation(locationId)
+        expect(await Helper.exists(propertyImage)).toBeFalsy()
+        expect(await Helper.exists(additionalImage)).toBeFalsy()
 
         res = await request(app)
             .delete(`/api/delete-agency/${TestHelper.GetRandromObjectIdAsString()}`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(204)
+
+        res = await request(app)
+            .delete('/api/delete-agency/0')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
 
         await TestHelper.signout(token)
     })
