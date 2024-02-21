@@ -24,7 +24,7 @@ let BOOKING_ID: string
 //
 beforeAll(async () => {
     if (await DatabaseHelper.Connect(false)) {
-        await TestHelper.initializeDatabase()
+        await TestHelper.initialize()
 
         // create a supplier
         const supplierName = TestHelper.getAgencyName()
@@ -78,7 +78,7 @@ beforeAll(async () => {
 // Closing and cleaning the database connection after running the test suite
 //
 afterAll(async () => {
-    await TestHelper.clearDatabase()
+    await TestHelper.close()
 
     // delete the supplier
     await TestHelper.deleteAgency(AGENCY_ID)

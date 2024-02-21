@@ -24,7 +24,7 @@ let AGENCY1_NAME: string
 //
 beforeAll(async () => {
     if (await DatabaseHelper.Connect(false)) {
-        await TestHelper.initializeDatabase()
+        await TestHelper.initialize()
 
         // create two agencies
         AGENCY1_NAME = TestHelper.getAgencyName()
@@ -38,7 +38,7 @@ beforeAll(async () => {
 // Closing and cleaning the database connection after running the test suite
 //
 afterAll(async () => {
-    await TestHelper.clearDatabase()
+    await TestHelper.close()
 
     // delete agencies
     await TestHelper.deleteAgency(AGENCY1_ID)

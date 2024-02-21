@@ -545,7 +545,7 @@ export async function getBookings(req: Request, res: Response) {
         $match.$and.push({ to: { $lte: to } })
       } // $to < to
       if (keyword) {
-        const isObjectId = mongoose.isValidObjectId(keyword)
+        const isObjectId = Helper.isValidObjectId(keyword)
         if (isObjectId) {
           $match.$and.push({
             _id: { $eq: new mongoose.Types.ObjectId(keyword) },

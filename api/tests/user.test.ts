@@ -38,7 +38,7 @@ const ADMIN_EMAIL = `${TestHelper.getName('admin')}@test.movinin.io`
 //
 beforeAll(async () => {
     if (await DatabaseHelper.Connect(false)) {
-        await TestHelper.initializeDatabase()
+        await TestHelper.initialize()
     }
 })
 
@@ -46,7 +46,7 @@ beforeAll(async () => {
 // Closing and cleaning the database connection after running the test suite
 //
 afterAll(async () => {
-    await TestHelper.clearDatabase()
+    await TestHelper.close()
 
     await Token.deleteMany({ user: { $in: [ADMIN_ID] } })
 
