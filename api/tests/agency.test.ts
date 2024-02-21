@@ -96,17 +96,23 @@ describe('PUT /api/update-agency', () => {
             payLater,
         }
 
-        const res = await request(app)
+        let res = await request(app)
             .put('/api/update-agency')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
         expect(res.body.fullName).toBe(AGENCY1_NAME)
         expect(res.body.bio).toBe(bio)
         expect(res.body.location).toBe(location)
         expect(res.body.phone).toBe(phone)
         expect(res.body.payLater).toBeFalsy()
+
+        payload._id = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .put('/api/update-agency')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -116,12 +122,16 @@ describe('GET /api/agency/:id', () => {
     it('should get a agency', async () => {
         const token = await TestHelper.signinAsAdmin()
 
-        const res = await request(app)
+        let res = await request(app)
             .get(`/api/agency/${AGENCY1_ID}`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(200)
         expect(res.body.fullName).toBe(AGENCY1_NAME)
+
+        res = await request(app)
+            .get(`/api/agency/${TestHelper.GetRandromObjectIdAsString()}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -209,16 +219,18 @@ describe('DELETE /api/delete-agency/:id', () => {
 
         await property.save()
 
-        const res = await request(app)
+        let res = await request(app)
             .delete(`/api/delete-agency/${agencyId}`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(200)
-
         agency = await User.findById(agencyId)
         expect(agency).toBeNull()
-
         await TestHelper.deleteLocation(locationId)
+
+        res = await request(app)
+            .delete(`/api/delete-agency/${TestHelper.GetRandromObjectIdAsString()}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
