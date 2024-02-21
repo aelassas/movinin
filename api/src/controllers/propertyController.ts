@@ -131,9 +131,12 @@ export async function create(req: Request, res: Response) {
  */
 export async function update(req: Request, res: Response) {
   const { body }: { body: movininTypes.UpdatePropertyPayload } = req
-  const _id = body
+  const { _id } = body
 
   try {
+    if (!Helper.isValidObjectId(_id)) {
+      throw new Error('body._id is not valid')
+    }
     const property = await Property.findById(_id)
 
     if (property) {
@@ -329,9 +332,7 @@ export async function deleteProperty(req: Request, res: Response) {
 export async function uploadImage(req: Request, res: Response) {
   try {
     if (!req.file) {
-      const msg = '[property.uploadImage] req.file not found'
-      console.error(msg)
-      return res.status(400).send(msg)
+      throw new Error('[property.uploadImage] req.file not found')
     }
 
     const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
@@ -356,10 +357,13 @@ export async function uploadImage(req: Request, res: Response) {
  */
 export async function deleteTempImage(req: Request, res: Response) {
   try {
-    const _image = path.join(env.CDN_TEMP_PROPERTIES, req.params.fileName)
-    if (await Helper.exists(_image)) {
-      await fs.unlink(_image)
+    const imageFile = path.join(env.CDN_TEMP_PROPERTIES, req.params.fileName)
+    if (!await Helper.exists(imageFile)) {
+      throw new Error(`[property.deleteTempImage] temp image ${imageFile} not found`)
     }
+
+    await fs.unlink(imageFile)
+
     return res.sendStatus(200)
   } catch (err) {
     console.error(strings.ERROR, err)

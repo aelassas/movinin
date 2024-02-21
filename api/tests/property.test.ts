@@ -82,17 +82,14 @@ describe('POST /api/create-property', () => {
         if (!await Helper.exists(mainImage)) {
             fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
         }
-
         const additionalImage1 = path.join(env.CDN_TEMP_PROPERTIES, ADDITIONAL_IMAGE1_1)
         if (!await Helper.exists(additionalImage1)) {
             fs.copyFile(ADDITIONAL_IMAGE1_1_PATH, additionalImage1)
         }
-
         const additionalImage2 = path.join(env.CDN_TEMP_PROPERTIES, ADDITIONAL_IMAGE1_2)
         if (!await Helper.exists(additionalImage2)) {
             fs.copyFile(ADDITIONAL_IMAGE1_2_PATH, additionalImage2)
         }
-
         const payload: movininTypes.CreatePropertyPayload = {
             name: 'Beautiful House in Detroit',
             agency: AGENCY1_ID,
@@ -153,6 +150,12 @@ describe('POST /api/create-property', () => {
             .post('/api/create-property')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
+        expect(res.statusCode).toBe(400)
+
+        res = await request(app)
+            .post('/api/create-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send({ image: 'image.jpg' })
         expect(res.statusCode).toBe(400)
 
         await TestHelper.signout(token)
@@ -277,6 +280,11 @@ describe('PUT /api/update-property', () => {
             .send(payload)
         expect(res.statusCode).toBe(200)
 
+        res = await request(app)
+            .put('/api/update-property')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
+
         await TestHelper.signout(token)
     })
 })
@@ -311,6 +319,11 @@ describe('POST /api/delete-property-image/:id/:image', () => {
             .post(`/api/delete-property-image/${PROPERTY_ID}/unknown.jpg`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(204)
+
+        res = await request(app)
+            .post(`/api/delete-property-image/0/${additionalImageName}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
 
         await TestHelper.signout(token)
     })
@@ -348,14 +361,17 @@ describe('POST /api/delete-temp-property-image/:image', () => {
         if (!await Helper.exists(tempImage)) {
             fs.copyFile(MAIN_IMAGE1_PATH, tempImage)
         }
-
-        const res = await request(app)
+        let res = await request(app)
             .post(`/api/delete-temp-property-image/${MAIN_IMAGE1}`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(200)
         const tempImageExists = await Helper.exists(tempImage)
         expect(tempImageExists).toBeFalsy()
+
+        res = await request(app)
+            .post('/api/delete-temp-property-image/unknown.jpg')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
 
         await TestHelper.signout(token)
     })
@@ -371,6 +387,10 @@ describe('GET /api/property/:id/:language', () => {
         res = await request(app)
             .get(`/api/property/${TestHelper.GetRandromObjectIdAsString()}/${TestHelper.LANGUAGE}`)
         expect(res.statusCode).toBe(204)
+
+        res = await request(app)
+            .get(`/api/property/0/${TestHelper.LANGUAGE}`)
+        expect(res.statusCode).toBe(400)
     })
 })
 
@@ -392,6 +412,11 @@ describe('POST /api/properties/:page/:size', () => {
             .send(payload)
         expect(res.statusCode).toBe(200)
         expect(res.body[0].resultData.length).toBeGreaterThan(0)
+
+        res = await request(app)
+            .post(`/api/properties/${TestHelper.PAGE}/${TestHelper.SIZE}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
 
         payload.availability = [movininTypes.Availablity.Available]
         res = await request(app)
@@ -429,14 +454,19 @@ describe('POST /api/booking-properties/:page/:size', () => {
             agency: AGENCY2_ID,
             location: LOCATION2_ID,
         }
-
-        const res = await request(app)
+        let res = await request(app)
             .post(`/api/booking-properties/${TestHelper.PAGE}/${TestHelper.SIZE}`)
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
         expect(res.body.length).toBeGreaterThan(0)
+
+        res = await request(app)
+            .post(`/api/booking-properties/unknown/${TestHelper.SIZE}`)
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(400)
+
         await TestHelper.signout(token)
     })
 })
@@ -449,11 +479,15 @@ describe('POST /api/frontend-properties/:page/:size', () => {
             rentalTerms: [movininTypes.RentalTerm.Weekly],
             location: LOCATION2_ID,
         }
-        const res = await request(app)
+        let res = await request(app)
             .post(`/api/frontend-properties/${TestHelper.PAGE}/${TestHelper.SIZE}`)
             .send(payload)
         expect(res.statusCode).toBe(200)
         expect(res.body[0].resultData.length).toBeGreaterThan(0)
+
+        res = await request(app)
+            .post(`/api/frontend-properties/${TestHelper.PAGE}/${TestHelper.SIZE}`)
+        expect(res.statusCode).toBe(400)
     })
 })
 
@@ -478,12 +512,21 @@ describe('GET /api/check-property/:id', () => {
             price: 4000,
         })
         await booking.save()
-
         res = await request(app)
             .get(`/api/check-property/${PROPERTY_ID}`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(200)
         await Booking.deleteOne({ _id: booking._id })
+
+        res = await request(app)
+            .get('/api/check-property/0')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
+
+        res = await request(app)
+            .get('/api/check-property/0')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
 
         await TestHelper.signout(token)
     })
@@ -502,6 +545,16 @@ describe('DELETE /api/delete-property/:id', () => {
             .delete(`/api/delete-property/${TestHelper.GetRandromObjectIdAsString()}`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(204)
+
+        res = await request(app)
+            .delete('/api/delete-property/0')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
+
+        res = await request(app)
+            .delete('/api/delete-property/0')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
 
         await TestHelper.signout(token)
     })
