@@ -317,6 +317,9 @@ async function notifyRenter(booking: env.Booking) {
 export async function update(req: Request, res: Response) {
   try {
     const { body }: { body: movininTypes.Booking } = req
+    if (!body._id) {
+      throw new Error('body._id not found')
+    }
     const booking = await Booking.findById(body._id)
 
     if (booking) {
