@@ -158,14 +158,9 @@ export async function create(req: Request, res: Response) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
         const newPath = path.join(env.CDN_USERS, filename)
 
-        try {
-          await fs.rename(avatar, newPath)
-          user.avatar = filename
-          await user.save()
-        } catch (err) {
-          console.error(strings.ERROR, err)
-          res.status(400).send(strings.ERROR + err)
-        }
+        await fs.rename(avatar, newPath)
+        user.avatar = filename
+        await user.save()
       }
     }
 
@@ -292,10 +287,15 @@ export async function resend(req: Request, res: Response) {
   const { email } = req.params
 
   try {
+    if (!Helper.isValidEmail(email)) {
+      throw new Error('email is not valid')
+    }
+
     const user = await User.findOne({ email })
-    const type = req.params.type.toUpperCase() as movininTypes.AppType
 
     if (user) {
+      const type = req.params.type.toUpperCase() as movininTypes.AppType
+
       if (
         ![movininTypes.AppType.Frontend.toString(), movininTypes.AppType.Backend.toString()].includes(type)
         || (type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User)
@@ -355,6 +355,10 @@ export async function activate(req: Request, res: Response) {
   const { userId } = body
 
   try {
+    if (!Helper.isValidObjectId(userId)) {
+      throw new Error('body.userId is not valid')
+    }
+
     const user = await User.findById(userId)
 
     if (user) {
@@ -395,6 +399,10 @@ export async function signin(req: Request, res: Response) {
   const { email, password, stayConnected, mobile } = body
 
   try {
+    if (!Helper.isValidEmail(email)) {
+      throw new Error('body.email is not valid')
+    }
+
     const user = await User.findOne({ email })
     const type = req.params.type.toUpperCase() as movininTypes.AppType
 
@@ -517,6 +525,10 @@ export async function pushToken(req: Request, res: Response) {
   const { userId } = req.params
 
   try {
+    if (!Helper.isValidObjectId(userId)) {
+      throw new Error('userId is not valid')
+    }
+
     const pushNotification = await PushNotification.findOne({ user: userId })
     if (pushNotification) {
       return res.status(200).json(pushNotification.token)
@@ -542,6 +554,10 @@ export async function createPushToken(req: Request, res: Response) {
   const { userId, token } = req.params
 
   try {
+    if (!Helper.isValidObjectId(userId)) {
+      throw new Error('userId is not valid')
+    }
+
     const exist = await PushNotification.exists({ user: userId })
 
     if (!exist) {
@@ -573,6 +589,10 @@ export async function deletePushToken(req: Request, res: Response) {
   const { userId } = req.params
 
   try {
+    if (!Helper.isValidObjectId(userId)) {
+      throw new Error('userId is not valid')
+    }
+
     await PushNotification.deleteMany({ user: userId })
     return res.sendStatus(200)
   } catch (err) {
@@ -595,6 +615,10 @@ export async function validateEmail(req: Request, res: Response) {
   const { email } = body
 
   try {
+    if (!Helper.isValidEmail(email)) {
+      throw new Error('body.email is not valid')
+    }
+
     const exists = await User.exists({ email })
 
     if (exists) {
@@ -630,6 +654,11 @@ export const validateAccessToken = (req: Request, res: Response) => res.sendStat
 export async function confirmEmail(req: Request, res: Response) {
   try {
     const { token: _token, email: _email } = req.params
+
+    if (!Helper.isValidEmail(_email)) {
+      throw new Error('email is not valid')
+    }
+
     const user = await User.findOne({ email: _email })
 
     if (!user) {
@@ -679,6 +708,10 @@ export async function resendLink(req: Request, res: Response) {
   const { email } = body
 
   try {
+    if (!email || !Helper.isValidEmail(email)) {
+      throw new Error('email is not valid')
+    }
+
     const user = await User.findOne({ email })
 
     // user is not found into database
@@ -733,6 +766,11 @@ export async function update(req: Request, res: Response) {
   try {
     const { body }: { body: movininTypes.UpdateUserPayload } = req
     const { _id } = body
+
+    if (!Helper.isValidObjectId(_id)) {
+      throw new Error('User id is not valid')
+    }
+
     const user = await User.findById(_id)
 
     if (!user) {
@@ -790,6 +828,11 @@ export async function updateEmailNotifications(req: Request, res: Response) {
 
   try {
     const { _id } = body
+
+    if (!Helper.isValidObjectId(_id)) {
+      throw new Error('User id is not valid')
+    }
+
     const user = await User.findById(_id)
 
     if (!user) {
@@ -822,6 +865,10 @@ export async function updateLanguage(req: Request, res: Response) {
     const { body }: { body: movininTypes.UpdateLanguage } = req
     const { id, language } = body
 
+    if (!Helper.isValidObjectId(id)) {
+      throw new Error('User id is not valid')
+    }
+
     const user = await User.findById(id)
 
     if (!user) {
@@ -850,6 +897,10 @@ export async function updateLanguage(req: Request, res: Response) {
 export async function getUser(req: Request, res: Response) {
   const { id } = req.params
   try {
+    if (!Helper.isValidObjectId(id)) {
+      throw new Error('User id is not valid')
+    }
+
     const user = await User.findById(id, {
       company: 1,
       email: 1,
@@ -891,9 +942,7 @@ export async function getUser(req: Request, res: Response) {
 export async function createAvatar(req: Request, res: Response) {
   try {
     if (!req.file) {
-      const msg = 'req.file not found'
-      console.error(`[user.createAvatar] ${msg}`)
-      return res.status(400).send(msg)
+      throw new Error('[user.createAvatar] req.file not found')
     }
 
     const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
@@ -1004,9 +1053,11 @@ export async function deleteTempAvatar(req: Request, res: Response) {
 
   try {
     const avatarFile = path.join(env.CDN_TEMP_USERS, avatar)
-    if (await Helper.exists(avatarFile)) {
-      await fs.unlink(avatarFile)
+    if (!await Helper.exists(avatarFile)) {
+      throw new Error(`[user.deleteTempAvatar] temp avatar ${avatarFile} not found`)
     }
+
+    await fs.unlink(avatarFile)
 
     return res.sendStatus(200)
   } catch (err) {
@@ -1034,6 +1085,10 @@ export async function changePassword(req: Request, res: Response) {
   } = body
 
   try {
+    if (!Helper.isValidObjectId(_id)) {
+      throw new Error('User id is not valid')
+    }
+
     const user = await User.findOne({ _id })
     if (!user) {
       console.error('[user.changePassword] User not found:', _id)
@@ -1083,6 +1138,10 @@ export async function checkPassword(req: Request, res: Response) {
   const { id, password } = req.params
 
   try {
+    if (!Helper.isValidObjectId(id)) {
+      throw new Error('User id is not valid')
+    }
+
     const user = await User.findById(id)
 
     if (user) {
