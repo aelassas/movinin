@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="1458" lines-covered="1207" line-rate="0.8278" branches-valid="450" branches-covered="299" branch-rate="0.6644" timestamp="1708499991902" complexity="0" version="0.1">
+<coverage lines-valid="1458" lines-covered="1207" line-rate="0.8278" branches-valid="450" branches-covered="299" branch-rate="0.6644" timestamp="1708500159250" complexity="0" version="0.1">
   <sources>
     <source>C:\dev\movinin\src\api</source>
   </sources>
@@ -318,9 +318,9 @@
                 <line number="201" hits="1"/>
               </lines>
             </method>
-            <method name="(anonymous_5)" hits="5" signature="()V">
+            <method name="(anonymous_5)" hits="6" signature="()V">
               <lines>
-                <line number="231" hits="5"/>
+                <line number="231" hits="6"/>
               </lines>
             </method>
             <method name="getAllAgencies" hits="1" signature="()V">
@@ -328,9 +328,9 @@
                 <line number="253" hits="1"/>
               </lines>
             </method>
-            <method name="(anonymous_7)" hits="6" signature="()V">
+            <method name="(anonymous_7)" hits="5" signature="()V">
               <lines>
-                <line number="264" hits="6"/>
+                <line number="264" hits="5"/>
               </lines>
             </method>
           </methods>
@@ -406,8 +406,8 @@
             <line number="208" hits="1" branch="false"/>
             <line number="230" hits="1" branch="true" condition-coverage="50% (1/2)"/>
             <line number="231" hits="1" branch="false"/>
-            <line number="232" hits="5" branch="false"/>
-            <line number="233" hits="5" branch="false"/>
+            <line number="232" hits="6" branch="false"/>
+            <line number="233" hits="6" branch="false"/>
             <line number="237" hits="1" branch="false"/>
             <line number="239" hits="0" branch="false"/>
             <line number="240" hits="0" branch="false"/>
@@ -415,8 +415,8 @@
             <line number="255" hits="1" branch="false"/>
             <line number="263" hits="1" branch="true" condition-coverage="50% (1/2)"/>
             <line number="264" hits="1" branch="false"/>
-            <line number="265" hits="6" branch="false"/>
-            <line number="266" hits="6" branch="false"/>
+            <line number="265" hits="5" branch="false"/>
+            <line number="266" hits="5" branch="false"/>
             <line number="270" hits="1" branch="false"/>
             <line number="272" hits="0" branch="false"/>
             <line number="273" hits="0" branch="false"/>
