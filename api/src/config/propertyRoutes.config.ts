@@ -1,4 +1,4 @@
-export default {
+const routes = {
   create: '/api/create-property',
   update: '/api/update-property',
   delete: '/api/delete-property/:id',
@@ -11,3 +11,5 @@ export default {
   getFrontendProperties: '/api/frontend-properties/:page/:size',
   checkProperty: '/api/check-property/:id',
 }
+
+export default routes

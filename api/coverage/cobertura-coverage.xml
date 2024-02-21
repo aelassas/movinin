@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="1412" lines-covered="1397" line-rate="0.9893000000000001" branches-valid="492" branches-covered="403" branch-rate="0.8190999999999999" timestamp="1708554528562" complexity="0" version="0.1">
+<coverage lines-valid="1419" lines-covered="1404" line-rate="0.9894" branches-valid="492" branches-covered="403" branch-rate="0.8190999999999999" timestamp="1708555181060" complexity="0" version="0.1">
   <sources>
     <source>C:\dev\movinin\src\api</source>
   </sources>
@@ -210,6 +210,7 @@
           <methods>
           </methods>
           <lines>
+            <line number="1" hits="7" branch="false"/>
           </lines>
         </class>
         <class name="app.config.ts" filename="src\config\app.config.ts" line-rate="1" branch-rate="0.5">
@@ -217,12 +218,14 @@
           </methods>
           <lines>
             <line number="3" hits="7" branch="true" condition-coverage="50% (1/2)"/>
+            <line number="5" hits="7" branch="false"/>
           </lines>
         </class>
         <class name="bookingRoutes.config.ts" filename="src\config\bookingRoutes.config.ts" line-rate="1" branch-rate="1">
           <methods>
           </methods>
           <lines>
+            <line number="1" hits="7" branch="false"/>
           </lines>
         </class>
         <class name="env.config.ts" filename="src\config\env.config.ts" line-rate="1" branch-rate="1">
@@ -279,24 +282,28 @@
           <methods>
           </methods>
           <lines>
+            <line number="1" hits="7" branch="false"/>
           </lines>
         </class>
         <class name="notificationRoutes.config.ts" filename="src\config\notificationRoutes.config.ts" line-rate="1" branch-rate="1">
           <methods>
           </methods>
           <lines>
+            <line number="1" hits="7" branch="false"/>
           </lines>
         </class>
         <class name="propertyRoutes.config.ts" filename="src\config\propertyRoutes.config.ts" line-rate="1" branch-rate="1">
           <methods>
           </methods>
           <lines>
+            <line number="1" hits="7" branch="false"/>
           </lines>
         </class>
         <class name="userRoutes.config.ts" filename="src\config\userRoutes.config.ts" line-rate="1" branch-rate="1">
           <methods>
           </methods>
           <lines>
+            <line number="1" hits="7" branch="false"/>
           </lines>
         </class>
       </classes>

@@ -2,7 +2,7 @@ import LocalizedStrings from 'localized-strings'
 
 const LocalizedStringsDefault: typeof LocalizedStrings = 'default' in LocalizedStrings ? LocalizedStrings.default as typeof LocalizedStrings : LocalizedStrings
 
-export default new LocalizedStringsDefault({
+const localizedStrings = new LocalizedStringsDefault({
     en: {
         ERROR: 'Internal error: ',
         DB_ERROR: 'Database Failure: ',
@@ -86,3 +86,5 @@ export default new LocalizedStringsDefault({
         PROPERTY_IMAGE_NOT_FOUND: 'Image file not found: ',
     },
 })
+
+export default localizedStrings
