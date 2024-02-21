@@ -893,7 +893,7 @@ export async function createAvatar(req: Request, res: Response) {
     if (!req.file) {
       const msg = 'req.file not found'
       console.error(`[user.createAvatar] ${msg}`)
-      return res.status(204).send(msg)
+      return res.status(400).send(msg)
     }
 
     const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
@@ -923,7 +923,7 @@ export async function updateAvatar(req: Request, res: Response) {
     if (!req.file) {
       const msg = 'req.file not found'
       console.error(`[user.createAvatar] ${msg}`)
-      return res.status(204).send(msg)
+      return res.status(400).send(msg)
     }
 
     const user = await User.findById(userId)
@@ -1211,13 +1211,22 @@ export async function deleteUsers(req: Request, res: Response) {
         }
 
         if (user.type === movininTypes.UserType.Agency) {
-          await Booking.deleteMany({ company: id })
+          await Booking.deleteMany({ agency: id })
           const properties = await Property.find({ agency: id })
           await Property.deleteMany({ agency: id })
           for (const property of properties) {
             const image = path.join(env.CDN_PROPERTIES, property.image)
             if (await Helper.exists(image)) {
               await fs.unlink(image)
+            }
+            // delete additional images
+            if (property.images) {
+              for (const additionalImageName of property.images) {
+                const additionalImage = path.join(env.CDN_PROPERTIES, additionalImageName)
+                if (await Helper.exists(additionalImage)) {
+                  await fs.unlink(additionalImage)
+                }
+              }
             }
           }
         } else if (user.type === movininTypes.UserType.User) {

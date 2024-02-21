@@ -12,6 +12,8 @@ import * as env from '../src/config/env.config'
 import User from '../src/models/User'
 import Token from '../src/models/Token'
 import PushNotification from '../src/models/PushNotification'
+import Property from '../src/models/Property'
+import Booking from '../src/models/Booking'
 import * as Helper from '../src/common/Helper'
 
 const __filename = url.fileURLToPath(import.meta.url)
@@ -57,6 +59,11 @@ afterAll(async () => {
 
 describe('POST /api/sign-up', () => {
     it('should create a user', async () => {
+        const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
+        if (!await Helper.exists(tempAvatar)) {
+            fs.copyFile(AVATAR1_PATH, tempAvatar)
+        }
+
         const payload: movininTypes.SignUpPayload = {
             email: USER1_EMAIL,
             password: USER1_PASSWORD,
@@ -64,6 +71,7 @@ describe('POST /api/sign-up', () => {
             language: TestHelper.LANGUAGE,
             birthDate: new Date(1992, 5, 25),
             phone: '09090909',
+            avatar: AVATAR1,
         }
 
         const res = await request(app)
@@ -117,6 +125,11 @@ describe('POST /api/create-user', () => {
     it('should create a user', async () => {
         const token = await TestHelper.signinAsAdmin()
 
+        const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
+        if (!await Helper.exists(tempAvatar)) {
+            fs.copyFile(AVATAR1_PATH, tempAvatar)
+        }
+
         const payload: movininTypes.CreateUserPayload = {
             email: USER2_EMAIL,
             fullName: 'user2',
@@ -125,15 +138,14 @@ describe('POST /api/create-user', () => {
             phone: '09090909',
             location: 'location',
             bio: 'bio',
+            avatar: AVATAR1,
         }
 
-        const res = await request(app)
+        let res = await request(app)
             .post('/api/create-user')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
-
         const user = await User.findOne({ email: USER2_EMAIL })
         expect(user).not.toBeNull()
         USER2_ID = user?.id
@@ -145,6 +157,17 @@ describe('POST /api/create-user', () => {
         expect(user?.phone).toBe(payload.phone)
         expect(user?.location).toBe(payload.location)
         expect(user?.bio).toBe(payload.bio)
+
+        const email = TestHelper.GetRandomEmail()
+        payload.email = email
+        payload.password = 'password'
+        res = await request(app)
+            .post('/api/create-user')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        const deleteRes = await User.deleteOne({ email })
+        expect(deleteRes.deletedCount).toBe(1)
 
         await TestHelper.signout(token)
     })
@@ -176,6 +199,10 @@ describe('GET /api/check-token/:type/:userId/:email/:token', () => {
 
         res = await request(app)
             .get(`/api/check-token/${movininTypes.AppType.Frontend}/${TestHelper.GetRandromObjectIdAsString()}/${USER1_EMAIL}/${token}`)
+        expect(res.statusCode).toBe(204)
+
+        res = await request(app)
+            .get(`/api/check-token/${movininTypes.AppType.Frontend}/${USER1_ID}/${USER1_EMAIL}/${uuid()}`)
         expect(res.statusCode).toBe(204)
     })
 })
@@ -317,15 +344,39 @@ describe('POST /api/sign-in/:type', () => {
             password: USER1_PASSWORD,
         }
 
-        const res = await request(app)
+        let res = await request(app)
             .post(`/api/sign-in/${movininTypes.AppType.Frontend}`)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
         const cookies = res.headers['set-cookie'] as unknown as string[]
         expect(cookies.length).toBeGreaterThan(1)
         const token = TestHelper.getToken(cookies[1])
         expect(token).toBeDefined()
+
+        payload.password = 'wrong-password'
+        res = await request(app)
+            .post(`/api/sign-in/${movininTypes.AppType.Frontend}`)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
+
+        payload.password = USER1_PASSWORD
+        res = await request(app)
+            .post(`/api/sign-in/${movininTypes.AppType.Backend}`)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
+
+        payload.stayConnected = true
+        res = await request(app)
+            .post(`/api/sign-in/${movininTypes.AppType.Frontend}`)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+
+        payload.stayConnected = false
+        payload.mobile = true
+        res = await request(app)
+            .post(`/api/sign-in/${movininTypes.AppType.Frontend}`)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
     })
 })
 
@@ -376,12 +427,16 @@ describe('GET /api/push-token/:userId', () => {
     it('should get push token', async () => {
         const token = await TestHelper.signinAsAdmin()
 
-        const res = await request(app)
+        let res = await request(app)
             .get(`/api/push-token/${USER1_ID}`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(200)
         expect(res.body.length).toBeGreaterThan(1)
+
+        res = await request(app)
+            .get(`/api/push-token/${TestHelper.GetRandromObjectIdAsString()}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -466,29 +521,33 @@ describe('POST /api/resend-link', () => {
             .post('/api/resend-link')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
 
         const user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
         user!.verified = true
         await user?.save()
-
         res = await request(app)
             .post('/api/resend-link')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
 
         payload.email = TestHelper.GetRandomEmail()
-
         res = await request(app)
             .post('/api/resend-link')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(400)
+
+        payload.email = USER1_EMAIL
+        user!.verified = false
+        await user?.save()
+        res = await request(app)
+            .post('/api/resend-link')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
 
         await TestHelper.signout(token)
     })
@@ -508,15 +567,12 @@ describe('POST /api/update-user', () => {
             type: movininTypes.UserType.Agency,
             payLater: false,
         }
-
-        const res = await request(app)
+        let res = await request(app)
             .post('/api/update-user')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
-
-        const user = await User.findById(USER1_ID)
+        let user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
         expect(user?.type).toBe(movininTypes.UserType.Agency)
         expect(user?.fullName).toBe(payload.fullName)
@@ -525,6 +581,24 @@ describe('POST /api/update-user', () => {
         expect(user?.location).toBe(payload.location)
         expect(user?.bio).toBe(payload.bio)
         expect(user?.payLater).toBeFalsy()
+
+        payload._id = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .post('/api/update-user')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
+
+        payload._id = USER1_ID
+        payload.enableEmailNotifications = false
+        res = await request(app)
+            .post('/api/update-user')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        user = await User.findById(USER1_ID)
+        expect(user).not.toBeNull()
+        expect(user?.enableEmailNotifications).toBeFalsy()
 
         await TestHelper.signout(token)
     })
@@ -536,23 +610,26 @@ describe('POST /api/update-email-notifications', () => {
 
         let user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
-        expect(user?.enableEmailNotifications).toBeTruthy()
-
+        expect(user?.enableEmailNotifications).toBeFalsy()
         const payload: movininTypes.UpdateEmailNotificationsPayload = {
             _id: USER1_ID,
-            enableEmailNotifications: false,
+            enableEmailNotifications: true,
         }
-
-        const res = await request(app)
+        let res = await request(app)
             .post('/api/update-email-notifications')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
-
         user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
-        expect(user?.enableEmailNotifications).toBeFalsy()
+        expect(user?.enableEmailNotifications).toBeTruthy()
+
+        payload._id = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .post('/api/update-email-notifications')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -565,22 +642,25 @@ describe('POST /api/update-language', () => {
         let user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
         expect(user?.language).toBe(TestHelper.LANGUAGE)
-
         const payload: movininTypes.UpdateLanguagePayload = {
             id: USER1_ID,
             language: 'fr',
         }
-
-        const res = await request(app)
+        let res = await request(app)
             .post('/api/update-language')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
-
         user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
         expect(user?.language).toBe(payload.language)
+
+        payload.id = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .post('/api/update-language')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -590,12 +670,16 @@ describe('GET /api/user/:id', () => {
     it('should get a user', async () => {
         const token = await TestHelper.signinAsAdmin()
 
-        const res = await request(app)
+        let res = await request(app)
             .get(`/api/user/${USER1_ID}`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(200)
         expect(res.body.email).toBe(USER1_EMAIL)
+
+        res = await request(app)
+            .get(`/api/user/${TestHelper.GetRandromObjectIdAsString()}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -605,17 +689,21 @@ describe('POST /api/create-avatar', () => {
     it("should create user's avatar", async () => {
         const token = await TestHelper.signinAsAdmin()
 
-        const res = await request(app)
+        let res = await request(app)
             .post('/api/create-avatar')
             .set(env.X_ACCESS_TOKEN, token)
             .attach('image', AVATAR1_PATH)
-
         expect(res.statusCode).toBe(200)
         const filename = res.body as string
         const filePath = path.resolve(env.CDN_TEMP_USERS, filename)
         const avatarExists = await Helper.exists(filePath)
         expect(avatarExists).toBeTruthy()
         await fs.unlink(filePath)
+
+        res = await request(app)
+            .post('/api/create-avatar')
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
 
         await TestHelper.signout(token)
     })
@@ -625,20 +713,29 @@ describe('POST /api/update-avatar/:userId', () => {
     it("should update user's avatar", async () => {
         const token = await TestHelper.signinAsAdmin()
 
-        const res = await request(app)
+        let res = await request(app)
             .post(`/api/update-avatar/${USER1_ID}`)
             .set(env.X_ACCESS_TOKEN, token)
             .attach('image', AVATAR2_PATH)
-
         expect(res.statusCode).toBe(200)
         const filename = res.body as string
         const avatarExists = await Helper.exists(path.resolve(env.CDN_USERS, filename))
         expect(avatarExists).toBeTruthy()
-
         const user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
         expect(user?.avatar).toBeDefined()
         expect(user?.avatar).not.toBeNull()
+
+        res = await request(app)
+            .post(`/api/update-avatar/${USER1_ID}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(400)
+
+        res = await request(app)
+            .post(`/api/update-avatar/${TestHelper.GetRandromObjectIdAsString()}`)
+            .set(env.X_ACCESS_TOKEN, token)
+            .attach('image', AVATAR2_PATH)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -652,22 +749,23 @@ describe('POST /api/delete-avatar/:userId', () => {
         expect(user).not.toBeNull()
         expect(user?.avatar).toBeDefined()
         expect(user?.avatar).not.toBeNull()
-
         const filePath = path.join(env.CDN_USERS, user?.avatar as string)
         let avatarExists = await Helper.exists(filePath)
         expect(avatarExists).toBeTruthy()
-
-        const res = await request(app)
+        let res = await request(app)
             .post(`/api/delete-avatar/${USER1_ID}`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(200)
         avatarExists = await Helper.exists(filePath)
         expect(avatarExists).toBeFalsy()
-
         user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
         expect(user?.avatar).toBeUndefined()
+
+        res = await request(app)
+            .post(`/api/delete-avatar/${TestHelper.GetRandromObjectIdAsString()}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -706,15 +804,33 @@ describe('POST /api/change-password', () => {
             newPassword,
             strict: true,
         }
-
-        const res = await request(app)
+        let res = await request(app)
             .post('/api/change-password')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
-
         USER1_PASSWORD = newPassword
+
+        payload.password = ''
+        res = await request(app)
+            .post('/api/change-password')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
+
+        payload.password = 'wrong-password'
+        res = await request(app)
+            .post('/api/change-password')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
+
+        payload._id = TestHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .post('/api/change-password')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
     })
@@ -728,21 +844,24 @@ describe('GET /api/check-password/:id/:password', () => {
         let res = await request(app)
             .get(`/api/check-password/${USER1_ID}/${encodeURIComponent(USER1_PASSWORD)}`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(200)
 
         // wrong password
         res = await request(app)
             .get(`/api/check-password/${USER1_ID}/wrong-password`)
             .set(env.X_ACCESS_TOKEN, token)
-
         expect(res.statusCode).toBe(204)
 
         // user.password undefined
         res = await request(app)
             .get(`/api/check-password/${USER2_ID}/some-password`)
             .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(204)
 
+        // user not found
+        res = await request(app)
+            .get(`/api/check-password/${TestHelper.GetRandromObjectIdAsString()}/some-password`)
+            .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(204)
 
         await TestHelper.signout(token)
@@ -774,20 +893,98 @@ describe('POST /api/delete-users', () => {
     it('should delete users', async () => {
         const token = await TestHelper.signinAsAdmin()
 
-        const payload: string[] = [USER1_ID, USER2_ID, ADMIN_ID]
-
+        let payload: string[] = [USER1_ID, USER2_ID, ADMIN_ID]
         let users = await User.find({ _id: { $in: payload } })
         expect(users.length).toBe(3)
-
-        const res = await request(app)
+        let res = await request(app)
             .post('/api/delete-users')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-
         expect(res.statusCode).toBe(200)
-
         users = await User.find({ _id: { $in: payload } })
         expect(users.length).toBe(0)
+
+        payload = [TestHelper.GetRandromObjectIdAsString()]
+        res = await request(app)
+            .post('/api/delete-users')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+
+        const agencyName = TestHelper.getAgencyName()
+        const agencyId = await TestHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
+        const locationId = await TestHelper.createLocation('Location 1 EN', 'Location 1 FR')
+        const mainImageName = 'main1.jpg'
+        const mainImagePath = path.resolve(__dirname, `./img/${mainImageName}`)
+        const mainImage = path.join(env.CDN_PROPERTIES, mainImageName)
+        if (!await Helper.exists(mainImage)) {
+            fs.copyFile(mainImagePath, mainImage)
+        }
+        const additionalImage1Name = 'additional1-1.jpg'
+        const additionalImage1Path = path.resolve(__dirname, `./img/${additionalImage1Name}`)
+        const additionalImage1 = path.join(env.CDN_PROPERTIES, additionalImage1Name)
+        if (!await Helper.exists(additionalImage1)) {
+            fs.copyFile(additionalImage1Path, additionalImage1)
+        }
+        const additionalImage2Name = 'additional1-2.jpg'
+        const additionalImage2Path = path.resolve(__dirname, `./img/${additionalImage2Name}`)
+        const additionalImage2 = path.join(env.CDN_PROPERTIES, additionalImage2Name)
+        if (!await Helper.exists(additionalImage2)) {
+            fs.copyFile(additionalImage2Path, additionalImage2)
+        }
+        const property = new Property({
+            name: 'Beautiful House in Detroit',
+            agency: agencyId,
+            type: movininTypes.PropertyType.House,
+            description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: mainImageName,
+            images: [additionalImage1Name, additionalImage2Name],
+            bedrooms: 3,
+            bathrooms: 2,
+            kitchens: 1,
+            parkingSpaces: 1,
+            size: 200,
+            petsAllowed: false,
+            furnished: true,
+            aircon: true,
+            minimumAge: 21,
+            location: locationId,
+            address: '',
+            price: 4000,
+            hidden: true,
+            cancellation: 0,
+            available: false,
+            rentalTerm: movininTypes.RentalTerm.Monthly,
+        })
+        await property.save()
+        const booking = new Booking({
+            agency: agencyId,
+            property: property._id,
+            renter: USER1_ID,
+            location: locationId,
+            from: new Date(2024, 2, 1),
+            to: new Date(1990, 2, 4),
+            status: movininTypes.BookingStatus.Pending,
+            cancellation: true,
+            price: 4000,
+        })
+        await booking.save()
+        payload = [agencyId]
+        res = await request(app)
+            .post('/api/delete-users')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        const b = await Booking.findById(booking._id)
+        expect(b).toBeNull()
+        const c = await Property.findById(property._id)
+        expect(c).toBeNull()
+        const s = await User.findById(agencyId)
+        expect(s).toBeNull()
+        expect(await Helper.exists(mainImage)).toBeFalsy()
+        expect(await Helper.exists(additionalImage1)).toBeFalsy()
+        expect(await Helper.exists(additionalImage2)).toBeFalsy()
+        TestHelper.deleteLocation(locationId)
 
         await TestHelper.signout(token)
     })
