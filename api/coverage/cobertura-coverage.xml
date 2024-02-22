@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="1419" lines-covered="1406" line-rate="0.9908" branches-valid="494" branches-covered="407" branch-rate="0.8238" timestamp="1708590777767" complexity="0" version="0.1">
+<coverage lines-valid="1419" lines-covered="1406" line-rate="0.9908" branches-valid="494" branches-covered="407" branch-rate="0.8238" timestamp="1708624700636" complexity="0" version="0.1">
   <sources>
     <source>C:\dev\movinin\src\api</source>
   </sources>
@@ -58,9 +58,9 @@
                 <line number="12" hits="9"/>
               </lines>
             </method>
-            <method name="Close" hits="10" signature="()V">
+            <method name="Close" hits="9" signature="()V">
               <lines>
-                <line number="44" hits="10"/>
+                <line number="44" hits="9"/>
               </lines>
             </method>
           </methods>
@@ -76,7 +76,7 @@
             <line number="29" hits="9" branch="false"/>
             <line number="31" hits="0" branch="false"/>
             <line number="32" hits="0" branch="false"/>
-            <line number="45" hits="10" branch="false"/>
+            <line number="45" hits="9" branch="false"/>
           </lines>
         </class>
         <class name="Helper.ts" filename="src\common\Helper.ts" line-rate="1" branch-rate="0.9285">
@@ -2042,7 +2042,7 @@
             <line number="25" hits="9" branch="false"/>
           </lines>
         </class>
-        <class name="LocationValue.ts" filename="src\models\LocationValue.ts" line-rate="1" branch-rate="1">
+        <class name="LocationValue.ts" filename="src\models\LocationValue.ts" line-rate="0.8332999999999999" branch-rate="0.5">
           <methods>
             <method name="(anonymous_0)" hits="9" signature="()V">
               <lines>
@@ -2054,16 +2054,16 @@
             <line number="4" hits="8" branch="false"/>
             <line number="29" hits="8" branch="false"/>
             <line number="31" hits="8" branch="false"/>
-            <line number="32" hits="9" branch="true" condition-coverage="100% (2/2)"/>
-            <line number="33" hits="1" branch="false"/>
-            <line number="35" hits="8" branch="false"/>
+            <line number="32" hits="9" branch="true" condition-coverage="50% (1/2)"/>
+            <line number="33" hits="0" branch="false"/>
+            <line number="35" hits="9" branch="false"/>
           </lines>
         </class>
         <class name="Notification.ts" filename="src\models\Notification.ts" line-rate="0.8332999999999999" branch-rate="0.5">
           <methods>
-            <method name="(anonymous_0)" hits="8" signature="()V">
+            <method name="(anonymous_0)" hits="9" signature="()V">
               <lines>
-                <line number="34" hits="8"/>
+                <line number="34" hits="9"/>
               </lines>
             </method>
           </methods>
@@ -2071,16 +2071,16 @@
             <line number="4" hits="8" branch="false"/>
             <line number="32" hits="8" branch="false"/>
             <line number="34" hits="8" branch="false"/>
-            <line number="35" hits="8" branch="true" condition-coverage="50% (1/2)"/>
+            <line number="35" hits="9" branch="true" condition-coverage="50% (1/2)"/>
             <line number="36" hits="0" branch="false"/>
-            <line number="38" hits="8" branch="false"/>
+            <line number="38" hits="9" branch="false"/>
           </lines>
         </class>
         <class name="NotificationCounter.ts" filename="src\models\NotificationCounter.ts" line-rate="0.8332999999999999" branch-rate="0.5">
           <methods>
-            <method name="(anonymous_0)" hits="8" signature="()V">
+            <method name="(anonymous_0)" hits="9" signature="()V">
               <lines>
-                <line number="30" hits="8"/>
+                <line number="30" hits="9"/>
               </lines>
             </method>
           </methods>
@@ -2088,9 +2088,9 @@
             <line number="4" hits="8" branch="false"/>
             <line number="28" hits="8" branch="false"/>
             <line number="30" hits="8" branch="false"/>
-            <line number="31" hits="8" branch="true" condition-coverage="50% (1/2)"/>
+            <line number="31" hits="9" branch="true" condition-coverage="50% (1/2)"/>
             <line number="32" hits="0" branch="false"/>
-            <line number="34" hits="8" branch="false"/>
+            <line number="34" hits="9" branch="false"/>
           </lines>
         </class>
         <class name="Property.ts" filename="src\models\Property.ts" line-rate="0.8332999999999999" branch-rate="0.5">
@@ -2144,7 +2144,7 @@
             <line number="33" hits="9" branch="false"/>
           </lines>
         </class>
-        <class name="User.ts" filename="src\models\User.ts" line-rate="0.8887999999999999" branch-rate="0.75">
+        <class name="User.ts" filename="src\models\User.ts" line-rate="1" branch-rate="1">
           <methods>
             <method name="(anonymous_0)" hits="26" signature="()V">
               <lines>
@@ -2164,9 +2164,9 @@
             <line number="37" hits="25" branch="false"/>
             <line number="106" hits="8" branch="false"/>
             <line number="108" hits="8" branch="false"/>
-            <line number="109" hits="9" branch="true" condition-coverage="50% (1/2)"/>
-            <line number="110" hits="0" branch="false"/>
-            <line number="112" hits="9" branch="false"/>
+            <line number="109" hits="9" branch="true" condition-coverage="100% (2/2)"/>
+            <line number="110" hits="1" branch="false"/>
+            <line number="112" hits="8" branch="false"/>
           </lines>
         </class>
       </classes>

@@ -28,7 +28,7 @@ beforeAll(async () => {
 
         // create a supplier
         const supplierName = TestHelper.getAgencyName()
-        AGENCY_ID = await TestHelper.createAgency(`${supplierName}@test.movinin.ma`, supplierName)
+        AGENCY_ID = await TestHelper.createAgency(`${supplierName}@test.movinin.io`, supplierName)
 
         // get user id
         RENTER1_ID = TestHelper.getUserId()

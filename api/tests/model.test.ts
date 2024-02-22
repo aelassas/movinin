@@ -34,17 +34,3 @@ describe('Test User phone validation', () => {
         expect(res).toBeFalsy()
     })
 })
-
-describe('Test indexing error', () => {
-    it('should test indexing error', async () => {
-        let res = true
-        try {
-            await DatabaseHelper.Close()
-            await TestHelper.initialize()
-        } catch (err) {
-            console.log(err)
-            res = false
-        }
-        expect(res).toBeFalsy()
-    })
-})

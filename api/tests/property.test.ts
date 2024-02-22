@@ -43,9 +43,9 @@ beforeAll(async () => {
 
         // create two agencies
         const agencyName1 = TestHelper.getAgencyName()
-        AGENCY1_ID = await TestHelper.createAgency(`${agencyName1}@test.movinin.ma`, agencyName1)
+        AGENCY1_ID = await TestHelper.createAgency(`${agencyName1}@test.movinin.io`, agencyName1)
         const agencyName2 = TestHelper.getAgencyName()
-        AGENCY2_ID = await TestHelper.createAgency(`${agencyName2}@test.movinin.ma`, agencyName2)
+        AGENCY2_ID = await TestHelper.createAgency(`${agencyName2}@test.movinin.io`, agencyName2)
 
         // create two locations
         LOCATION1_ID = await TestHelper.createLocation('Location 1 EN', 'Location 1 FR')
