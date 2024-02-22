@@ -45,7 +45,7 @@ function UpdateProperty() {
 
   const [image, setImage] = useState('')
   const [images, setImages] = useState<string[]>([])
-  const [tempImages, setTempImages] = useState<string[]>([])
+  const tempImages: string[] = []
   const [imageError, setImageError] = useState(false)
   const [imageRequired, setImageRequired] = useState(false)
   const [imageUpdated, setImageUpdated] = useState(false)
