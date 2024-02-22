@@ -45,7 +45,7 @@ function UpdateProperty() {
 
   const [image, setImage] = useState('')
   const [images, setImages] = useState<string[]>([])
-  const tempImages: string[] = []
+  const [tempImages, setTempImages] = useState<string[]>([])
   const [imageError, setImageError] = useState(false)
   const [imageRequired, setImageRequired] = useState(false)
   const [imageUpdated, setImageUpdated] = useState(false)
@@ -302,6 +302,7 @@ function UpdateProperty() {
               setRentalTerm(_property.rentalTerm)
               setImage(_property.image)
               setImages(_property.images || [])
+              setTempImages([])
               setBedrooms(_property.bedrooms.toString())
               setBathrooms(_property.bathrooms.toString())
               setKitchens(_property.kitchens.toString())
