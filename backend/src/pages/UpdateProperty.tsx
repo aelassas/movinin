@@ -45,8 +45,10 @@ function UpdateProperty() {
 
   const [image, setImage] = useState('')
   const [images, setImages] = useState<string[]>([])
+  const [tempImages, setTempImages] = useState<string[]>([])
   const [imageError, setImageError] = useState(false)
   const [imageRequired, setImageRequired] = useState(false)
+  const [imageUpdated, setImageUpdated] = useState(false)
 
   const [property, setProperty] = useState<movininTypes.Property>()
   const [name, setName] = useState('')
@@ -127,9 +129,9 @@ function UpdateProperty() {
       }
       return _minimumAgeValid
     }
-      setMinimumAgeValid(true)
-      setFormError(false)
-      return true
+    setMinimumAgeValid(true)
+    setFormError(false)
+    return true
   }
 
   const handleMinimumAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -349,13 +351,18 @@ function UpdateProperty() {
             <form onSubmit={handleSubmit}>
               <ImageEditor
                 title={strings.IMAGES}
-                onMainImageUpsert={(img) => setImage(img.filename)}
+                onMainImageUpsert={(img) => {
+                  setImage(img.filename)
+                  setImageUpdated(true)
+                }}
                 onAdd={(img) => {
                   images.push(img.filename)
+                  tempImages.push(img.filename)
                   setImages(images)
                 }}
                 onDelete={(img) => {
                   images.splice(images.indexOf(img.filename), 1)
+                  tempImages.splice(tempImages.indexOf(img.filename), 1)
                   setImages(images)
                 }}
                 onImageViewerOpen={() => setImageViewerOpen(true)}
@@ -619,10 +626,17 @@ function UpdateProperty() {
                   className="btn-secondary btn-margin-bottom"
                   size="small"
                   onClick={async () => {
-                    if (image) {
-                      await PropertyService.deleteTempImage(image)
-                      navigate('/properties')
+                    try {
+                      if (imageUpdated && image) {
+                        await PropertyService.deleteTempImage(image)
+                      }
+                      for (const tempImage of tempImages) {
+                        await PropertyService.deleteTempImage(tempImage)
+                      }
+                    } catch (err) {
+                      Helper.error(err)
                     }
+                    navigate('/properties')
                   }}
                 >
                   {commonStrings.CANCEL}

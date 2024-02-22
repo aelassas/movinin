@@ -193,7 +193,14 @@ function ImageEditor({
                                     tabIndex={0}
                                     onClick={async () => {
                                         try {
-                                            const status = await PropertyService.deleteTempImage(_image.filename)
+                                            let status = 200
+                                            try {
+                                                if (_image.temp) {
+                                                    status = await PropertyService.deleteTempImage(_image.filename)
+                                                }
+                                            } catch (err) {
+                                                Helper.error(err)
+                                            }
 
                                             if (status === 200) {
                                                 const _images = movininHelper.cloneArray(images) || []
@@ -211,7 +218,7 @@ function ImageEditor({
                                                 Helper.error()
                                             }
                                         } catch (err) {
-                                            Helper.error()
+                                            Helper.error(err)
                                         }
                                     }}
                                 >

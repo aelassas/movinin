@@ -130,9 +130,9 @@ function CreateProperty() {
       }
       return _minimumAgeValid
     }
-      setMinimumAgeValid(true)
-      setFormError(false)
-      return true
+    setMinimumAgeValid(true)
+    setFormError(false)
+    return true
   }
 
   const handleMinimumAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -558,10 +558,17 @@ function CreateProperty() {
                 className="btn-secondary btn-margin-bottom"
                 size="small"
                 onClick={async () => {
-                  if (image) {
-                    await PropertyService.deleteTempImage(image)
-                    navigate('/properties')
+                  try {
+                    if (image) {
+                      await PropertyService.deleteTempImage(image)
+                    }
+                    for (const tempImage of images) {
+                      await PropertyService.deleteTempImage(tempImage)
+                    }
+                  } catch (err) {
+                    Helper.error(err)
                   }
+                  navigate('/properties')
                 }}
               >
                 {commonStrings.CANCEL}
