@@ -4,6 +4,10 @@ import * as DatabaseHelper from '../src/common/DatabaseHelper'
 import * as TestHelper from './TestHelper'
 import User from '../src/models/User'
 
+beforeAll(() => {
+    TestHelper.initializeConsole()
+})
+
 describe('Test User phone validation', () => {
     it('should test User phone validation', async () => {
         await DatabaseHelper.Connect()

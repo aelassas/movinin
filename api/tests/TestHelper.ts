@@ -32,6 +32,10 @@ export const SIZE = 30
 let ADMIN_USER_ID: string
 let USER_ID: string
 
+export function initializeConsole() {
+    console.error = () => { }
+}
+
 export async function initialize() {
     const salt = await bcrypt.genSalt(10)
     const passwordHash = await bcrypt.hash(PASSWORD, salt)
@@ -55,7 +59,7 @@ export async function initialize() {
     expect(user.id).toBeDefined()
     USER_ID = user.id
 
-    console.error = () => { }
+    initializeConsole()
 }
 
 export function getAdminUserId() {
