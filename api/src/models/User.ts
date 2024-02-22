@@ -106,9 +106,7 @@ const userSchema = new Schema<env.User>(
 const User = model<env.User>('User', userSchema)
 
 User.on('index', (err) => {
-  if (err) {
-    console.error('User index error: %s', err)
-  } else {
+  if (!err) {
     console.info('User indexing complete')
   }
 })

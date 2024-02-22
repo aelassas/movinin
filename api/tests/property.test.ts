@@ -38,7 +38,7 @@ let PROPERTY_ID: string
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
-    if (await DatabaseHelper.Connect(false)) {
+    if (await DatabaseHelper.Connect()) {
         await TestHelper.initialize()
 
         // create two agencies
@@ -67,7 +67,7 @@ afterAll(async () => {
     await TestHelper.deleteLocation(LOCATION1_ID)
     await TestHelper.deleteLocation(LOCATION2_ID)
 
-    await DatabaseHelper.Close(false)
+    await DatabaseHelper.Close()
 })
 
 //

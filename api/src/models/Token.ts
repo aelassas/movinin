@@ -27,9 +27,7 @@ const tokenSchema = new Schema<env.Token>(
 const Token = model<env.Token>('Token', tokenSchema)
 
 Token.on('index', (err) => {
-  if (err) {
-    console.error('Token index error: %s', err)
-  } else {
+  if (!err) {
     console.info('Token indexing complete')
   }
 })

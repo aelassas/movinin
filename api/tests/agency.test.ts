@@ -23,7 +23,7 @@ let AGENCY1_NAME: string
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
-    if (await DatabaseHelper.Connect(false)) {
+    if (await DatabaseHelper.Connect()) {
         await TestHelper.initialize()
 
         // create two agencies
@@ -44,7 +44,7 @@ afterAll(async () => {
     await TestHelper.deleteAgency(AGENCY1_ID)
     await TestHelper.deleteAgency(AGENCY2_ID)
 
-    await DatabaseHelper.Close(false)
+    await DatabaseHelper.Close()
 })
 
 //
@@ -174,11 +174,11 @@ describe('GET /api/all-agencies', () => {
         expect(res.statusCode).toBe(200)
         expect(res.body.length).toBeGreaterThan(1)
 
-        await DatabaseHelper.Close(false)
+        await DatabaseHelper.Close()
         res = await request(app)
             .get('/api/all-agencies')
         expect(res.statusCode).toBe(400)
-        expect(await DatabaseHelper.Connect(false)).toBeTruthy()
+        expect(await DatabaseHelper.Connect()).toBeTruthy()
     })
 })
 

@@ -23,7 +23,7 @@ let BOOKING_ID: string
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
-    if (await DatabaseHelper.Connect(false)) {
+    if (await DatabaseHelper.Connect()) {
         await TestHelper.initialize()
 
         // create a supplier
@@ -89,7 +89,7 @@ afterAll(async () => {
     // delete the property
     await Property.deleteMany({ _id: { $in: [PROPERTY1_ID, PROPERTY2_ID] } })
 
-    await DatabaseHelper.Close(false)
+    await DatabaseHelper.Close()
 })
 
 //

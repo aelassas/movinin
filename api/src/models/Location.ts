@@ -19,9 +19,7 @@ const locationSchema = new Schema<env.Location>(
 const Location = model<env.Location>('Location', locationSchema)
 
 Location.on('index', (err) => {
-  if (err) {
-    console.error('Location index error: %s', err)
-  } else {
+  if (!err) {
     console.info('Location indexing complete')
   }
 })

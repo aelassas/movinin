@@ -67,9 +67,7 @@ const bookingSchema = new Schema<env.Booking>(
 const Booking = model<env.Booking>('Booking', bookingSchema)
 
 Booking.on('index', (err) => {
-  if (err) {
-    console.error('Booking index error: %s', err)
-  } else {
+  if (!err) {
     console.info('Booking indexing complete')
   }
 })
