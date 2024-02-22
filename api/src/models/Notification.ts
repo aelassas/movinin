@@ -32,7 +32,9 @@ const notificationSchema = new Schema<env.Notification>(
 const Notification = model<env.Notification>('Notification', notificationSchema)
 
 Notification.on('index', (err) => {
-  if (!err) {
+  if (err) {
+    console.error('Notification index error: %s', err)
+  } else {
     console.info('Notification indexing complete')
   }
 })

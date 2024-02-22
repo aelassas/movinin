@@ -134,7 +134,9 @@ const propertySchema = new Schema<env.Property>(
 const Property = model<env.Property>('Property', propertySchema)
 
 Property.on('index', (err) => {
-    if (!err) {
+    if (err) {
+        console.error('Property index error: %s', err)
+    } else {
         console.info('Property indexing complete')
     }
 })
