@@ -182,6 +182,7 @@ function ImageEditor({
                                 }}
                                 role="button"
                                 tabIndex={0}
+                                aria-label="image"
                             >
                                 <img alt="" className="image" src={src(_image)} />
                             </div>
