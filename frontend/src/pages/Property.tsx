@@ -132,6 +132,7 @@ function Property() {
                           }}
                           role="button"
                           tabIndex={0}
+                          aria-label="image"
                         >
                           <img alt="" className="image" src={_image} />
                         </div>

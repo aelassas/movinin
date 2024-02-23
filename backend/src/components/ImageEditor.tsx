@@ -191,6 +191,7 @@ function ImageEditor({
                                     title={commonStrings.DELETE}
                                     role="button"
                                     tabIndex={0}
+                                    aria-label="action"
                                     onClick={async () => {
                                         try {
                                             let status = 200

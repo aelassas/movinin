@@ -647,7 +647,7 @@ function Checkout() {
                         <table>
                           <tbody>
                             <tr>
-                              <td>
+                              <td aria-label="tos">
                                 <Checkbox checked={tosChecked} onChange={handleTosChange} color="primary" />
                               </td>
                               <td>

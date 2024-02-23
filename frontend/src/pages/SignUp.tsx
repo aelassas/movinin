@@ -73,10 +73,10 @@ function SignUp() {
             setEmailValid(true)
             return true
           }
-            setEmailError(true)
-            setEmailValid(true)
-            setError(false)
-            return false
+          setEmailError(true)
+          setEmailValid(true)
+          setError(false)
+          return false
         } catch (err) {
           Helper.error(err)
           setEmailError(false)
@@ -106,9 +106,9 @@ function SignUp() {
 
       return _phoneValid
     }
-      setPhoneValid(true)
+    setPhoneValid(true)
 
-      return true
+    return true
   }
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,8 +132,8 @@ function SignUp() {
       setBirthDateValid(_birthDateValid)
       return _birthDateValid
     }
-      setBirthDateValid(true)
-      return true
+    setBirthDateValid(true)
+    return true
   }
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -379,7 +379,7 @@ function SignUp() {
                   <table>
                     <tbody>
                       <tr>
-                        <td>
+                        <td aria-label="tos">
                           <Checkbox checked={tosChecked} onChange={handleTosChange} color="primary" />
                         </td>
                         <td>

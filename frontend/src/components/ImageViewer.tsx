@@ -185,6 +185,7 @@ function ImageViewer({
           onClick={handleClick}
           role="button"
           tabIndex={0}
+          aria-label="image"
         >
           <div className="slide image-viewer__slide">
             <img className="image" src={src[currentIndex]} alt="" style={imageStyle} />
@@ -206,6 +207,7 @@ function ImageViewer({
                     onClick={() => setCurrentIndex(index)}
                     role="button"
                     tabIndex={0}
+                    aria-label="thumbnail"
                   >
                     <img className="thumbnail" src={srcItem} alt="" />
                   </div>
