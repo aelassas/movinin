@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import * as movininTypes from 'movinin-types'
 import * as DatabaseHelper from '../src/common/DatabaseHelper'
+import * as MailHelper from '../src/common/MailHelper'
 import * as TestHelper from './TestHelper'
 import User from '../src/models/User'
 
@@ -33,6 +34,26 @@ describe('Test User phone validation', () => {
             if (userId) {
                 await User.deleteOne({ _id: userId })
             }
+        }
+        await DatabaseHelper.Close()
+        expect(res).toBeFalsy()
+    })
+})
+
+describe('Test email sending error', () => {
+    it('should test email sending error', async () => {
+        await DatabaseHelper.Connect()
+        let res = true
+        try {
+            await MailHelper.sendMail({
+                from: TestHelper.GetRandomEmail(),
+                to: 'wrong-email',
+                subject: 'dummy subject',
+                html: 'dummy body',
+            })
+        } catch (err) {
+            console.log(err)
+            res = false
         }
         await DatabaseHelper.Close()
         expect(res).toBeFalsy()
