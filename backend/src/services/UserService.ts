@@ -26,7 +26,7 @@ export const create = (data: movininTypes.CreateUserPayload): Promise<number> =>
 export const signup = (data: movininTypes.SignUpPayload): Promise<number> =>
   axiosInstance
     .post(
-      '/api/admin-sign-up/ ',
+      '/api/admin-sign-up',
       data
     )
     .then((res) => res.status)
@@ -83,7 +83,7 @@ export const resend = (email?: string, reset = false, appType: string = movininT
 export const activate = (data: movininTypes.ActivatePayload): Promise<number> =>
   axiosInstance
     .post(
-      '/api/activate/ ',
+      '/api/activate',
       data,
       { withCredentials: true }
     )
@@ -468,7 +468,7 @@ export const checkPassword = (id: string, pass: string): Promise<number> =>
 export const changePassword = (data: movininTypes.ChangePasswordPayload): Promise<number> =>
   axiosInstance
     .post(
-      '/api/change-password/ ',
+      '/api/change-password',
       data,
       { withCredentials: true }
     )

@@ -90,7 +90,7 @@ export const activate = async (data: movininTypes.ActivatePayload): Promise<numb
   const headers = await authHeader()
   return axiosInstance
     .post(
-      '/api/activate/ ',
+      '/api/activate',
       data,
       { headers }
     )
@@ -422,7 +422,7 @@ export const changePassword = async (data: movininTypes.ChangePasswordPayload): 
   const headers = await authHeader()
   return axiosInstance
     .post(
-      '/api/change-password/ ',
+      '/api/change-password',
       data,
       { headers }
     )

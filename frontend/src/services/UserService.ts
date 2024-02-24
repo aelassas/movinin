@@ -11,7 +11,7 @@ import Env from '../config/env.config'
 export const signup = (data: movininTypes.SignUpPayload): Promise<number> =>
   axiosInstance
     .post(
-      '/api/sign-up/ ',
+      '/api/sign-up',
       data
     )
     .then((res) => res.status)
@@ -67,7 +67,7 @@ export const resend = (email?: string, reset = false): Promise<number> =>
 export const activate = (data: movininTypes.ActivatePayload): Promise<number> =>
   axiosInstance
     .post(
-      '/api/activate/ ',
+      '/api/activate',
       data,
       { withCredentials: true }
     )
@@ -379,7 +379,7 @@ export const checkPassword = (id: string, pass: string): Promise<number> =>
 export const changePassword = (data: movininTypes.ChangePasswordPayload): Promise<number> =>
   axiosInstance
     .post(
-      '/api/change-password/ ',
+      '/api/change-password',
       data,
       { withCredentials: true }
     )
