@@ -45,7 +45,7 @@ function LocationSelectList({
     }
   }, [value, multiple, selectedOptions])
 
-  const _fetch = async (_page: number, _keyword: string, onFetch?: movininTypes.DataEvent<movininTypes.Location>) => {
+  const fetchData = async (_page: number, _keyword: string, onFetch?: movininTypes.DataEvent<movininTypes.Location>) => {
     try {
       if (fetch || _page === 1) {
         setLoading(true)
@@ -98,7 +98,7 @@ function LocationSelectList({
           if (fetch && !loading && listboxNode.scrollTop + listboxNode.clientHeight >= listboxNode.scrollHeight - Env.PAGE_OFFSET) {
             const p = page + 1
             setPage(p)
-            _fetch(p, keyword)
+            fetchData(p, keyword)
           }
         },
       }}
@@ -107,7 +107,7 @@ function LocationSelectList({
           const p = 1
           setRows([])
           setPage(p)
-          _fetch(p, keyword, () => {
+          fetchData(p, keyword, () => {
             setInit(true)
           })
         }
@@ -120,7 +120,7 @@ function LocationSelectList({
           setRows([])
           setPage(1)
           setKeyword(_value)
-          _fetch(1, _value)
+          fetchData(1, _value)
         }
       }}
       onClear={() => {
@@ -128,7 +128,7 @@ function LocationSelectList({
         setPage(1)
         setKeyword('')
         setFetch(true)
-        _fetch(1, '')
+        fetchData(1, '')
       }}
     />
   )

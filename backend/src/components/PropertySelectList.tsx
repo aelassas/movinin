@@ -105,7 +105,7 @@ function PropertySelectList({
     }
   }
 
-  const _fetch = async (_page: number, _keyword: string, _agency: string, _location: string) => {
+  const fetchData = async (_page: number, _keyword: string, _agency: string, _location: string) => {
     try {
       if (!_location) {
         return
@@ -161,7 +161,7 @@ function PropertySelectList({
             if (fetch && !loading && listboxNode.scrollTop + listboxNode.clientHeight >= listboxNode.scrollHeight - Env.PAGE_OFFSET) {
               const p = page + 1
               setPage(p)
-              _fetch(p, keyword, currentAgency, currentLocation)
+              fetchData(p, keyword, currentAgency, currentLocation)
             }
           },
         }}
@@ -170,7 +170,7 @@ function PropertySelectList({
             const p = 1
             setProperties([])
             setPage(p)
-            _fetch(p, keyword, currentAgency, currentLocation)
+            fetchData(p, keyword, currentAgency, currentLocation)
           }
         }}
         onInputChange={(event: React.SyntheticEvent<Element, Event>) => {
@@ -180,7 +180,7 @@ function PropertySelectList({
             setProperties([])
             setPage(1)
             setKeyword(_value)
-            _fetch(1, _value, currentAgency, currentLocation)
+            fetchData(1, _value, currentAgency, currentLocation)
           }
         }}
         onClear={() => {
@@ -188,7 +188,7 @@ function PropertySelectList({
           setPage(1)
           setKeyword('')
           setFetch(true)
-          _fetch(1, '', currentAgency, currentLocation)
+          fetchData(1, '', currentAgency, currentLocation)
         }}
       />
 

@@ -56,7 +56,7 @@ function AgencyList({
   const [agencyId, setAgencyId] = useState('')
   const [agencyIndex, setAgencyIndex] = useState(-1)
 
-  const _fetch = async (_page: number, _keyword?: string) => {
+  const fetchData = async (_page: number, _keyword?: string) => {
     try {
       setLoading(true)
       const data = await AgencyService.getAgencies(_keyword || '', _page, Env.PAGE_SIZE)
@@ -96,20 +96,20 @@ function AgencyList({
 
   useEffect(() => {
     if (agencyListKeyword !== keyword) {
-      _fetch(1, agencyListKeyword)
+      fetchData(1, agencyListKeyword)
     }
     setKeyword(agencyListKeyword || '')
   }, [agencyListKeyword, keyword]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (agencyListReload && !reload) {
-      _fetch(1, '')
+      fetchData(1, '')
     }
     setReload(agencyListReload || false)
   }, [agencyListReload, reload]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    _fetch(page, keyword)
+    fetchData(page, keyword)
   }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {

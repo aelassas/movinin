@@ -62,7 +62,7 @@ function PropertyList({
     }())
   }, [])
 
-  const _fetch = async (
+  const fetchData = async (
     _page: number,
     _location: string,
     _agencies: string[],
@@ -109,7 +109,7 @@ function PropertyList({
   useEffect(() => {
     if (agencies) {
       if (agencies.length > 0) {
-        _fetch(page, location, agencies, types, rentalTerms)
+        fetchData(page, location, agencies, types, rentalTerms)
       } else {
         setRows([])
         setFetch(false)

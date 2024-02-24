@@ -52,7 +52,7 @@ function BookingList({
   const [deleted, setDeleted] = useState(false)
   const [locale, setLoacle] = useState(fr)
 
-  const _fetch = async (reset = false) => {
+  const fetchData = async (reset = false) => {
     try {
       if (agencies && statuses && agencies.length > 0 && statuses.length > 0) {
         let _page = page
@@ -94,14 +94,14 @@ function BookingList({
 
   useEffect(() => {
     if (page > 0) {
-      _fetch()
+      fetchData()
     }
   }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     (async function () {
       if (firstLoad && agencies && agencies.length > 0 && statuses && statuses.length > 0) {
-        await _fetch()
+        await fetchData()
         setFirstLoad(false)
       }
     }())
@@ -111,9 +111,9 @@ function BookingList({
     if (!firstLoad) {
       if (agencies && statuses) {
         if (page > 0) {
-          _fetch(true)
+          fetchData(true)
         } else {
-          _fetch()
+          fetchData()
         }
       }
     }

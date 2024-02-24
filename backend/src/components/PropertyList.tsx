@@ -99,7 +99,7 @@ function PropertyList({
     }
   }, [fetch, loading, page])
 
-  const _fetch = async (_page: number) => {
+  const fetchData = async (_page: number) => {
     try {
       setLoading(true)
       const payload: movininTypes.GetPropertiesPayload = {
@@ -149,7 +149,7 @@ function PropertyList({
   useEffect(() => {
     if (agencies) {
       if (agencies.length > 0) {
-        _fetch(page)
+        fetchData(page)
       } else {
         setRows([])
         setRowCount(0)
@@ -194,7 +194,7 @@ function PropertyList({
   useEffect(() => {
     if (reload) {
       setPage(1)
-      _fetch(1)
+      fetchData(1)
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     reload,
