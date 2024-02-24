@@ -20,7 +20,6 @@ import validator from 'validator'
 import { intervalToDuration } from 'date-fns'
 import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
-
 import Master from '../components/Master'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
