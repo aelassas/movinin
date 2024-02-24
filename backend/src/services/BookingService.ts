@@ -1,6 +1,5 @@
-import axios from 'axios'
 import * as movininTypes from 'movinin-types'
-import Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
 
 /**
@@ -10,9 +9,9 @@ import * as UserService from './UserService'
  * @returns {Promise<movininTypes.Booking>}
  */
 export const create = (data: movininTypes.Booking): Promise<movininTypes.Booking> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/create-booking`,
+      '/api/create-booking',
       data,
       { withCredentials: true }
     )
@@ -25,9 +24,9 @@ export const create = (data: movininTypes.Booking): Promise<movininTypes.Booking
  * @returns {Promise<number>}
  */
 export const update = (data: movininTypes.Booking): Promise<number> =>
-  axios
+  axiosInstance
     .put(
-      `${Env.API_HOST}/api/update-booking`,
+      '/api/update-booking',
       data,
       { withCredentials: true }
     )
@@ -40,9 +39,9 @@ export const update = (data: movininTypes.Booking): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const updateStatus = (data: movininTypes.UpdateStatusPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/update-booking-status`,
+      '/api/update-booking-status',
       data,
       { withCredentials: true }
     )
@@ -55,9 +54,9 @@ export const updateStatus = (data: movininTypes.UpdateStatusPayload): Promise<nu
  * @returns {Promise<number>}
  */
 export const deleteBookings = (ids: string[]): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/delete-bookings`,
+      '/api/delete-bookings',
       ids,
       { withCredentials: true }
     )
@@ -70,9 +69,9 @@ export const deleteBookings = (ids: string[]): Promise<number> =>
  * @returns {Promise<movininTypes.Booking>}
  */
 export const getBooking = (id: string): Promise<movininTypes.Booking> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
+      `/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
       { withCredentials: true }
     )
     .then((res) => res.data)
@@ -86,9 +85,9 @@ export const getBooking = (id: string): Promise<movininTypes.Booking> =>
  * @returns {Promise<movininTypes.Result<movininTypes.Booking>>}
  */
 export const getBookings = (payload: movininTypes.GetBookingsPayload, page: number, size: number): Promise<movininTypes.Result<movininTypes.Booking>> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/bookings/${page}/${size}/${UserService.getLanguage()}`,
+      `/api/bookings/${page}/${size}/${UserService.getLanguage()}`,
       payload,
       { withCredentials: true }
     )

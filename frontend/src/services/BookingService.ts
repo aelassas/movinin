@@ -1,6 +1,5 @@
-import axios from 'axios'
 import * as movininTypes from 'movinin-types'
-import Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
 
 /**
@@ -10,9 +9,9 @@ import * as UserService from './UserService'
  * @returns {Promise<number>}
  */
 export const checkout = (data: movininTypes.CheckoutPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/checkout`,
+      '/api/checkout',
       data
     )
     .then((res) => res.status)
@@ -26,9 +25,9 @@ export const checkout = (data: movininTypes.CheckoutPayload): Promise<number> =>
  * @returns {Promise<movininTypes.Result<movininTypes.Booking>>}
  */
 export const getBookings = (payload: movininTypes.GetBookingsPayload, page: number, size: number): Promise<movininTypes.Result<movininTypes.Booking>> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/bookings/${page}/${size}/${UserService.getLanguage()}`,
+      `/api/bookings/${page}/${size}/${UserService.getLanguage()}`,
       payload,
       { withCredentials: true }
     )
@@ -41,9 +40,9 @@ export const getBookings = (payload: movininTypes.GetBookingsPayload, page: numb
  * @returns {Promise<movininTypes.Booking>}
  */
 export const getBooking = (id: string): Promise<movininTypes.Booking> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
+      `/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
       { withCredentials: true }
     )
     .then((res) => res.data)
@@ -55,9 +54,9 @@ export const getBooking = (id: string): Promise<movininTypes.Booking> =>
  * @returns {Promise<number>}
  */
 export const cancel = (id: string): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/cancel-booking/${encodeURIComponent(id)}`,
+      `/api/cancel-booking/${encodeURIComponent(id)}`,
       null,
       { withCredentials: true }
     ).then((res) => res.status)

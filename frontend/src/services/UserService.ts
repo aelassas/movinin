@@ -1,5 +1,5 @@
-import axios from 'axios'
 import * as movininTypes from 'movinin-types'
+import axiosInstance from './axiosInstance'
 import Env from '../config/env.config'
 
 /**
@@ -9,9 +9,9 @@ import Env from '../config/env.config'
  * @returns {Promise<number>}
  */
 export const signup = (data: movininTypes.SignUpPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/sign-up/ `,
+      '/api/sign-up/ ',
       data
     )
     .then((res) => res.status)
@@ -25,9 +25,9 @@ export const signup = (data: movininTypes.SignUpPayload): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const checkToken = (userId: string, email: string, token: string): Promise<number> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/check-token/${Env.APP_TYPE}/${encodeURIComponent(userId)}/${encodeURIComponent(email)}/${encodeURIComponent(token)}`
+      `/api/check-token/${Env.APP_TYPE}/${encodeURIComponent(userId)}/${encodeURIComponent(email)}/${encodeURIComponent(token)}`
     )
     .then((res) => res.status)
 
@@ -38,9 +38,9 @@ export const checkToken = (userId: string, email: string, token: string): Promis
  * @returns {Promise<number>}
  */
 export const deleteTokens = (userId: string): Promise<number> =>
-  axios
+  axiosInstance
     .delete(
-      `${Env.API_HOST}/api/delete-tokens/${encodeURIComponent(userId)}`
+      `/api/delete-tokens/${encodeURIComponent(userId)}`
     )
     .then((res) => res.status)
 
@@ -52,9 +52,9 @@ export const deleteTokens = (userId: string): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const resend = (email?: string, reset = false): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/resend/${Env.APP_TYPE}/${encodeURIComponent(email || '')}/${reset}`
+      `/api/resend/${Env.APP_TYPE}/${encodeURIComponent(email || '')}/${reset}`
     )
     .then((res) => res.status)
 
@@ -65,9 +65,9 @@ export const resend = (email?: string, reset = false): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const activate = (data: movininTypes.ActivatePayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/activate/ `,
+      '/api/activate/ ',
       data,
       { withCredentials: true }
     )
@@ -80,9 +80,9 @@ export const activate = (data: movininTypes.ActivatePayload): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const validateEmail = (data: movininTypes.ValidateEmailPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/validate-email`,
+      '/api/validate-email',
       data
     )
     .then((exist) => exist.status)
@@ -94,9 +94,9 @@ export const validateEmail = (data: movininTypes.ValidateEmailPayload): Promise<
  * @returns {Promise<{ status: number, data: movininTypes.User }>}
  */
 export const signin = (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/sign-in/${Env.APP_TYPE}`,
+      `/api/sign-in/${Env.APP_TYPE}`,
       data,
       { withCredentials: true }
     )
@@ -126,11 +126,13 @@ export const signout = async (redirect = true, redirectSignin = false) => {
   localStorage.removeItem('mi-user')
   deleteAllCookies()
 
-  await axios.post(
-    `${Env.API_HOST}/api/sign-out`,
-    null,
-    { withCredentials: true }
-  )
+  await
+    axiosInstance
+      .post(
+        '/api/sign-out',
+        null,
+        { withCredentials: true }
+      )
 
   if (redirect) {
     window.location.href = '/'
@@ -146,9 +148,9 @@ export const signout = async (redirect = true, redirectSignin = false) => {
  * @returns {Promise<number>}
  */
 export const validateAccessToken = (): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/validate-access-token`,
+      '/api/validate-access-token',
       null,
       { withCredentials: true }
     )
@@ -162,9 +164,9 @@ export const validateAccessToken = (): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const confirmEmail = (email: string, token: string): Promise<number> => (
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/confirm-email/${encodeURIComponent(email)}/${encodeURIComponent(token)}`
+      `/api/confirm-email/${encodeURIComponent(email)}/${encodeURIComponent(token)}`
     )
     .then((res) => res.status)
 )
@@ -176,9 +178,9 @@ export const confirmEmail = (email: string, token: string): Promise<number> => (
  * @returns {Promise<number>}
  */
 export const resendLink = (data: movininTypes.ResendLinkPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/resend-link`,
+      '/api/resend-link',
       data,
       { withCredentials: true }
     )
@@ -222,9 +224,9 @@ export const getQueryLanguage = () => {
  * @returns {Promise<number>}
  */
 export const updateLanguage = (data: movininTypes.UpdateLanguagePayload) =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/update-language`,
+      '/api/update-language',
       data,
       { withCredentials: true }
     )
@@ -264,9 +266,9 @@ export const getCurrentUser = (): movininTypes.User | null => {
  */
 export const getUser = (id?: string): Promise<movininTypes.User | null> => {
   if (id) {
-    return axios
+    return axiosInstance
       .get(
-        `${Env.API_HOST}/api/user/${encodeURIComponent(id)}`,
+        `/api/user/${encodeURIComponent(id)}`,
         { withCredentials: true }
       )
       .then((res) => res.data)
@@ -283,9 +285,9 @@ export const getUser = (id?: string): Promise<movininTypes.User | null> => {
  * @returns {Promise<number>}
  */
 export const updateUser = (data: movininTypes.UpdateUserPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/update-user`,
+      '/api/update-user',
       data,
       { withCredentials: true }
     )
@@ -298,9 +300,9 @@ export const updateUser = (data: movininTypes.UpdateUserPayload): Promise<number
  * @returns {Promise<number>}
  */
 export const updateEmailNotifications = (data: movininTypes.UpdateEmailNotificationsPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/update-email-notifications`,
+      '/api/update-email-notifications',
       data,
       { withCredentials: true }
     )
@@ -326,9 +328,9 @@ export const updateAvatar = (userId: string, file: Blob): Promise<number> => {
   const formData = new FormData()
   formData.append('image', file)
 
-  return axios
+  return axiosInstance
     .post(
-      `${Env.API_HOST}/api/update-avatar/${encodeURIComponent(userId)}`,
+      `/api/update-avatar/${encodeURIComponent(userId)}`,
       formData,
       {
         withCredentials: true,
@@ -345,9 +347,9 @@ export const updateAvatar = (userId: string, file: Blob): Promise<number> => {
  * @returns {Promise<number>}
  */
 export const deleteAvatar = (userId: string): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/delete-avatar/${encodeURIComponent(userId)}`,
+      `/api/delete-avatar/${encodeURIComponent(userId)}`,
       null,
       { withCredentials: true }
     )
@@ -361,9 +363,9 @@ export const deleteAvatar = (userId: string): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const checkPassword = (id: string, pass: string): Promise<number> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/check-password/${encodeURIComponent(id)}/${encodeURIComponent(pass)}`,
+      `/api/check-password/${encodeURIComponent(id)}/${encodeURIComponent(pass)}`,
       { withCredentials: true }
     )
     .then((res) => res.status)
@@ -375,9 +377,9 @@ export const checkPassword = (id: string, pass: string): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const changePassword = (data: movininTypes.ChangePasswordPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/change-password/ `,
+      '/api/change-password/ ',
       data,
       { withCredentials: true }
     )

@@ -1,6 +1,5 @@
-import axios from 'axios'
 import * as movininTypes from 'movinin-types'
-import Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
 
 /**
@@ -12,9 +11,9 @@ import * as UserService from './UserService'
  * @returns {Promise<movininTypes.Result<movininTypes.Property>>}
  */
 export const getProperties = (data: movininTypes.GetPropertiesPayload, page: number, size: number): Promise<movininTypes.Result<movininTypes.Property>> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/frontend-properties/${page}/${size}}`,
+      `/api/frontend-properties/${page}/${size}}`,
       data
     ).then((res) => res.data)
 
@@ -25,9 +24,9 @@ export const getProperties = (data: movininTypes.GetPropertiesPayload, page: num
  * @returns {Promise<movininTypes.Property>}
  */
 export const getProperty = (id: string): Promise<movininTypes.Property> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/property/${encodeURIComponent(id)}/${UserService.getLanguage()}`
+      `/api/property/${encodeURIComponent(id)}/${UserService.getLanguage()}`
     )
     .then((res) => res.data)
 
@@ -41,9 +40,9 @@ export const getProperty = (id: string): Promise<movininTypes.Property> =>
  * @returns {Promise<movininTypes.Property[]>}
  */
 export const getBookingProperties = (keyword: string, data: movininTypes.GetBookingPropertiesPayload, page: number, size: number): Promise<movininTypes.Property[]> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/booking-properties/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
+      `/api/booking-properties/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
       data,
       { withCredentials: true }
     )

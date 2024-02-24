@@ -1,6 +1,5 @@
-import axios from 'axios'
 import * as movininTypes from 'movinin-types'
-import Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 
 /**
  * Validate an Agency name.
@@ -9,9 +8,9 @@ import Env from '../config/env.config'
  * @returns {Promise<number>}
  */
 export const validate = (data: movininTypes.ValidateAgencyPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/validate-agency`,
+      '/api/validate-agency',
       data,
       { withCredentials: true }
     )
@@ -24,9 +23,9 @@ export const validate = (data: movininTypes.ValidateAgencyPayload): Promise<numb
  * @returns {Promise<number>}
  */
 export const update = (data: movininTypes.UpdateAgencyPayload): Promise<number> =>
-  axios
+  axiosInstance
     .put(
-      `${Env.API_HOST}/api/update-agency`,
+      '/api/update-agency',
       data,
       { withCredentials: true }
     )
@@ -39,9 +38,9 @@ export const update = (data: movininTypes.UpdateAgencyPayload): Promise<number> 
  * @returns {Promise<number>}
  */
 export const deleteAgency = (id: string): Promise<number> =>
-  axios
+  axiosInstance
     .delete(
-      `${Env.API_HOST}/api/delete-agency/${encodeURIComponent(id)}`,
+      `/api/delete-agency/${encodeURIComponent(id)}`,
       { withCredentials: true }
     )
     .then((res) => res.status)
@@ -53,9 +52,9 @@ export const deleteAgency = (id: string): Promise<number> =>
  * @returns {Promise<movininTypes.User>}
  */
 export const getAgency = (id: string): Promise<movininTypes.User> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/agency/${encodeURIComponent(id)}`,
+      `/api/agency/${encodeURIComponent(id)}`,
       { withCredentials: true }
     )
     .then((res) => res.data)
@@ -70,9 +69,9 @@ export const getAgency = (id: string): Promise<movininTypes.User> =>
  */
 export const getAgencies = (keyword: string, page: number, size: number)
   : Promise<movininTypes.Result<movininTypes.User>> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/agencies/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
+      `/api/agencies/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
       { withCredentials: true }
     )
     .then((res) => res.data)
@@ -83,9 +82,9 @@ export const getAgencies = (keyword: string, page: number, size: number)
  * @returns {Promise<movininTypes.User[]>}
  */
 export const getAllAgencies = (): Promise<movininTypes.User[]> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/all-agencies`,
+      '/api/all-agencies',
       { withCredentials: true }
 )
     .then((res) => res.data)

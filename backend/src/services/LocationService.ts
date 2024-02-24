@@ -1,6 +1,5 @@
-import axios from 'axios'
 import * as movininTypes from 'movinin-types'
-import Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
 
 /**
@@ -10,9 +9,9 @@ import * as UserService from './UserService'
  * @returns {Promise<number>}
  */
 export const validate = (data: movininTypes.ValidateLocationPayload): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-`${Env.API_HOST}/api/validate-location`,
+'/api/validate-location',
       data,
       { withCredentials: true }
     )
@@ -25,9 +24,9 @@ export const validate = (data: movininTypes.ValidateLocationPayload): Promise<nu
  * @returns {Promise<number>}
  */
 export const create = (data: movininTypes.LocationName[]): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-`${Env.API_HOST}/api/create-location`,
+'/api/create-location',
       data,
       { withCredentials: true }
     )
@@ -41,9 +40,9 @@ export const create = (data: movininTypes.LocationName[]): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const update = (id: string, data: movininTypes.LocationName[]): Promise<number> =>
-  axios
+  axiosInstance
     .put(
-`${Env.API_HOST}/api/update-location/${id}`,
+`/api/update-location/${id}`,
       data,
       { withCredentials: true }
     )
@@ -56,9 +55,9 @@ export const update = (id: string, data: movininTypes.LocationName[]): Promise<n
  * @returns {Promise<number>}
  */
 export const deleteLocation = (id: string): Promise<number> =>
-  axios
+  axiosInstance
     .delete(
-`${Env.API_HOST}/api/delete-location/${encodeURIComponent(id)}`,
+`/api/delete-location/${encodeURIComponent(id)}`,
       { withCredentials: true }
     )
     .then((res) => res.status)
@@ -70,9 +69,9 @@ export const deleteLocation = (id: string): Promise<number> =>
  * @returns {Promise<movininTypes.Location>}
  */
 export const getLocation = (id: string): Promise<movininTypes.Location> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/location/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
+      `/api/location/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
       { withCredentials: true }
     )
     .then((res) => res.data)
@@ -86,9 +85,9 @@ export const getLocation = (id: string): Promise<movininTypes.Location> =>
  * @returns {Promise<movininTypes.Result<movininTypes.Location>>}
  */
 export const getLocations = (keyword: string, page: number, size: number): Promise<movininTypes.Result<movininTypes.Location>> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/locations/${page}/${size}/${UserService.getLanguage()}/?s=${encodeURIComponent(keyword)}`,
+      `/api/locations/${page}/${size}/${UserService.getLanguage()}/?s=${encodeURIComponent(keyword)}`,
       { withCredentials: true }
     )
     .then((res) => res.data)
@@ -100,9 +99,9 @@ export const getLocations = (keyword: string, page: number, size: number): Promi
  * @returns {Promise<number>}
  */
 export const check = (id: string): Promise<number> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/check-location/${encodeURIComponent(id)}`,
+      `/api/check-location/${encodeURIComponent(id)}`,
       { withCredentials: true }
     )
     .then((res) => res.status)

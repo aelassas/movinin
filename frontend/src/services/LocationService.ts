@@ -1,6 +1,5 @@
-import axios from 'axios'
 import * as movininTypes from 'movinin-types'
-import Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
 
 /**
@@ -12,9 +11,9 @@ import * as UserService from './UserService'
  * @returns {Promise<movininTypes.Result<movininTypes.Location>>}
  */
 export const getLocations = (keyword: string, page: number, size: number): Promise<movininTypes.Result<movininTypes.Location>> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/locations/${page}/${size}/${UserService.getLanguage()}/?s=${encodeURIComponent(keyword)}`
+      `/api/locations/${page}/${size}/${UserService.getLanguage()}/?s=${encodeURIComponent(keyword)}`
     )
     .then((res) => res.data)
 
@@ -25,8 +24,8 @@ export const getLocations = (keyword: string, page: number, size: number): Promi
  * @returns {Promise<movininTypes.Location>}
  */
 export const getLocation = (id: string): Promise<movininTypes.Location> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/location/${encodeURIComponent(id)}/${UserService.getLanguage()}`
+      `/api/location/${encodeURIComponent(id)}/${UserService.getLanguage()}`
     )
     .then((res) => res.data)

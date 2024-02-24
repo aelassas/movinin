@@ -51,7 +51,7 @@ export const API_HOST: string = MI_API_HOST
 export const AXIOS_TIMEOUT: number = 5000
 
 /**
- * Number of maximum axios retries.
+ * Number of maximum axiosInstance retries.
  *
  * @type {number}
  */

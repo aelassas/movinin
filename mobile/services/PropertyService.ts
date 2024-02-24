@@ -1,10 +1,9 @@
-import axios from 'axios'
-import * as Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
 import * as AxiosHelper from '../common/AxiosHelper'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
-AxiosHelper.init(axios)
+AxiosHelper.init(axiosInstance)
 
 /**
  * Get Properties.
@@ -16,9 +15,9 @@ AxiosHelper.init(axios)
  * @returns {Promise<movininTypes.Result<movininTypes.Property>>}
  */
 export const getProperties = async (data: movininTypes.GetPropertiesPayload, page: number, size: number): Promise<movininTypes.Result<movininTypes.Property>> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/frontend-properties/${page}/${size}}`,
+      `/api/frontend-properties/${page}/${size}}`,
       data
     )
     .then((res) => res.data)
@@ -32,9 +31,9 @@ export const getProperties = async (data: movininTypes.GetPropertiesPayload, pag
  */
 export const getProperty = async (id: string): Promise<movininTypes.Property> => {
   const language = await UserService.getLanguage()
-  return axios
+  return axiosInstance
     .get(
-      `${Env.API_HOST}/api/property/${encodeURIComponent(id)}/${language}`
+      `/api/property/${encodeURIComponent(id)}/${language}`
     )
     .then((res) => res.data)
 }

@@ -1,9 +1,8 @@
-import axios from 'axios'
-import * as Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 import * as AxiosHelper from '../common/AxiosHelper'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
-AxiosHelper.init(axios)
+AxiosHelper.init(axiosInstance)
 
 /**
  * Get all agencies.
@@ -11,8 +10,8 @@ AxiosHelper.init(axios)
  * @returns {Promise<movininTypes.User[]>}
  */
 export const getAllAgencies = (): Promise<movininTypes.User[]> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/all-agencies`
+      '/api/all-agencies'
     )
     .then((res) => res.data)

@@ -1,6 +1,5 @@
-import axios from 'axios'
 import * as movininTypes from 'movinin-types'
-import Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
 
 /**
@@ -10,9 +9,9 @@ import * as UserService from './UserService'
  * @returns {Promise<movininTypes.Property>}
  */
 export const create = (data: movininTypes.CreatePropertyPayload): Promise<movininTypes.Property> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/create-property`,
+      '/api/create-property',
       data,
       { withCredentials: true }
     )
@@ -25,9 +24,9 @@ export const create = (data: movininTypes.CreatePropertyPayload): Promise<movini
  * @returns {Promise<number>}
  */
 export const update = (data: movininTypes.UpdatePropertyPayload): Promise<number> =>
-  axios
+  axiosInstance
     .put(
-      `${Env.API_HOST}/api/update-property`,
+      '/api/update-property',
       data,
       { withCredentials: true }
     )
@@ -40,9 +39,9 @@ export const update = (data: movininTypes.UpdatePropertyPayload): Promise<number
  * @returns {Promise<number>}
  */
 export const check = (id: string): Promise<number> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/check-property/${encodeURIComponent(id)}`,
+      `/api/check-property/${encodeURIComponent(id)}`,
       { withCredentials: true }
     )
     .then((res) => res.status)
@@ -54,9 +53,9 @@ export const check = (id: string): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const deleteProperty = (id: string): Promise<number> =>
-  axios
+  axiosInstance
     .delete(
-      `${Env.API_HOST}/api/delete-property/${encodeURIComponent(id)}`,
+      `/api/delete-property/${encodeURIComponent(id)}`,
       { withCredentials: true }
     )
     .then((res) => res.status)
@@ -71,9 +70,9 @@ export const uploadImage = (file: Blob): Promise<string> => {
   const formData = new FormData()
   formData.append('image', file)
 
-  return axios
+  return axiosInstance
     .post(
-      `${Env.API_HOST}/api/upload-property-image`,
+      '/api/upload-property-image',
       formData,
       {
         withCredentials: true,
@@ -90,9 +89,9 @@ export const uploadImage = (file: Blob): Promise<string> => {
  * @returns {Promise<number>}
  */
 export const deleteImage = (id: string): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/delete-property-image/${encodeURIComponent(id)}`,
+      `/api/delete-property-image/${encodeURIComponent(id)}`,
       null,
       { withCredentials: true }
     )
@@ -105,9 +104,9 @@ export const deleteImage = (id: string): Promise<number> =>
  * @returns {Promise<number>}
  */
 export const deleteTempImage = (image: string): Promise<number> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/delete-temp-property-image/${encodeURIComponent(image)}`,
+      `/api/delete-temp-property-image/${encodeURIComponent(image)}`,
       null,
       { withCredentials: true }
     )
@@ -120,9 +119,9 @@ export const deleteTempImage = (image: string): Promise<number> =>
  * @returns {Promise<movininTypes.Property>}
  */
 export const getProperty = (id: string): Promise<movininTypes.Property> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/property/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
+      `/api/property/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
       { withCredentials: true }
     )
     .then((res) => res.data)
@@ -137,9 +136,9 @@ export const getProperty = (id: string): Promise<movininTypes.Property> =>
  * @returns {Promise<movininTypes.Result<movininTypes.Property>>}
  */
 export const getProperties = (keyword: string, data: movininTypes.GetPropertiesPayload, page: number, size: number): Promise<movininTypes.Result<movininTypes.Property>> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/properties/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
+      `/api/properties/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
       data,
       { withCredentials: true }
     )
@@ -155,9 +154,9 @@ export const getProperties = (keyword: string, data: movininTypes.GetPropertiesP
  * @returns {Promise<movininTypes.Property[]>}
  */
 export const getBookingProperties = (keyword: string, data: movininTypes.GetBookingPropertiesPayload, page: number, size: number): Promise<movininTypes.Property[]> =>
-  axios
+  axiosInstance
     .post(
-      `${Env.API_HOST}/api/booking-properties/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
+      `/api/booking-properties/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
       data,
       { withCredentials: true }
     )

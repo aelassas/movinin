@@ -1,10 +1,10 @@
-import axios from 'axios'
+import axiosInstance from './axiosInstance'
 import * as Env from '../config/env.config'
 import * as UserService from './UserService'
 import * as AxiosHelper from '../common/AxiosHelper'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
-AxiosHelper.init(axios)
+AxiosHelper.init(axiosInstance)
 
 /**
  * Get a NotificationCounter by UserID.
@@ -15,9 +15,9 @@ AxiosHelper.init(axios)
  */
 export const getNotificationCounter = async (userId: string): Promise<movininTypes.NotificationCounter> => {
   const headers = await UserService.authHeader()
-  return axios
+  return axiosInstance
     .get(
-      `${Env.API_HOST}/api/notification-counter/${encodeURIComponent(userId)}`,
+      `/api/notification-counter/${encodeURIComponent(userId)}`,
       { headers }
     )
     .then((res) => res.data)
@@ -33,9 +33,9 @@ export const getNotificationCounter = async (userId: string): Promise<movininTyp
  */
 export const markAsRead = async (userId: string, ids: string[]): Promise<number> => {
   const headers = await UserService.authHeader()
-  return axios
+  return axiosInstance
     .post(
-      `${Env.API_HOST}/api/mark-notifications-as-read/${encodeURIComponent(userId)}`,
+      `/api/mark-notifications-as-read/${encodeURIComponent(userId)}`,
       { ids },
       { headers }
     )
@@ -52,9 +52,9 @@ export const markAsRead = async (userId: string, ids: string[]): Promise<number>
  */
 export const markAsUnread = async (userId: string, ids: string[]): Promise<number> => {
   const headers = await UserService.authHeader()
-  return axios
+  return axiosInstance
     .post(
-`${Env.API_HOST}/api/mark-notifications-as-unread/${encodeURIComponent(userId)}`,
+`/api/mark-notifications-as-unread/${encodeURIComponent(userId)}`,
       { ids },
       { headers }
     )
@@ -71,9 +71,9 @@ export const markAsUnread = async (userId: string, ids: string[]): Promise<numbe
  */
 export const deleteNotifications = async (userId: string, ids: string[]): Promise<number> => {
   const headers = await UserService.authHeader()
-  return axios
+  return axiosInstance
     .post(
-      `${Env.API_HOST}/api/delete-notifications/${encodeURIComponent(userId)}`,
+      `/api/delete-notifications/${encodeURIComponent(userId)}`,
       { ids },
       { headers }
     )
@@ -90,9 +90,9 @@ export const deleteNotifications = async (userId: string, ids: string[]): Promis
  */
 export const getNotifications = async (userId: string, page: number): Promise<movininTypes.Result<movininTypes.Notification>> => {
   const headers = await UserService.authHeader()
-  return axios
+  return axiosInstance
     .get(
-      `${Env.API_HOST}/api/notifications/${encodeURIComponent(userId)}/${page}/${Env.PAGE_SIZE}`,
+      `/api/notifications/${encodeURIComponent(userId)}/${page}/${Env.PAGE_SIZE}`,
       { headers }
     )
     .then((res) => res.data)

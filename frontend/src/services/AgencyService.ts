@@ -1,6 +1,5 @@
-import axios from 'axios'
 import * as movininTypes from 'movinin-types'
-import Env from '../config/env.config'
+import axiosInstance from './axiosInstance'
 
 /**
  * Get all agencies.
@@ -8,9 +7,9 @@ import Env from '../config/env.config'
  * @returns {Promise<movininTypes.User[]>}
  */
 export const getAllAgencies = (): Promise<movininTypes.User[]> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/all-agencies`,
+      '/api/all-agencies',
       { withCredentials: true }
 )
     .then((res) => res.data)
@@ -24,9 +23,9 @@ export const getAllAgencies = (): Promise<movininTypes.User[]> =>
  * @returns {Promise<movininTypes.Result<movininTypes.User>>}
  */
 export const getAgencies = (keyword: string, page: number, size: number): Promise<movininTypes.Result<movininTypes.User>> =>
-  axios
+  axiosInstance
     .get(
-      `${Env.API_HOST}/api/agencies/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
+      `/api/agencies/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
       { withCredentials: true }
     )
     .then((res) => res.data)
