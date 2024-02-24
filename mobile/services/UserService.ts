@@ -437,7 +437,6 @@ export const changePassword = async (data: movininTypes.ChangePasswordPayload): 
  * @param {BlobInfo} file
  * @returns {Promise<number | undefined>}
  */
-// eslint-disable-next-line consistent-return
 export const updateAvatar = async (userId: string, file: BlobInfo): Promise<number> => {
   const user = await AsyncStorage.getObject<movininTypes.User>('mi-user')
   const uri = Platform.OS === 'android' ? file.uri : file.uri.replace('file://', '')
