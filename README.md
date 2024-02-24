@@ -11,8 +11,6 @@
 
 Movin' In is a Rental Property Management Platform with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
-Movin' In is user-friendly, straightforward, secure against XSS, XST, CSRF and MITM, and subtly crafted.
-
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency as well.
 
 From the backend, administrators can create and manage agencies, properties, locations, users and bookings.
@@ -26,6 +24,8 @@ A key design decision was made to use TypeScript instead of JavaScript due to it
 <img src="https://movin-in.github.io/content/docker.png" alt="" width="220" />
 
 Movin' In can run in a Docker container. Follow this step by step [guide](https://github.com/aelassas/movinin/wiki/Docker) to walk you through on how to build Movin' In Docker image and run it in a Docker container.
+
+Movin' In is user-friendly, straightforward, secure against XSS, XST, CSRF and MITM, and subtly crafted.
 
 ## Features
 
@@ -44,7 +44,7 @@ Movin' In can run in a Docker container. Follow this step by step [guide](https:
 
 ## Contents
 
-1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)
+1. [Overview and Screenshots](https://github.com/aelassas/movinin/wiki/Overview)
 2. [Architecture](https://github.com/aelassas/movinin/wiki/Architecture)
 3. [Installing](https://github.com/aelassas/movinin/wiki/Installing)
 4. [Docker](https://github.com/aelassas/movinin/wiki/Docker)
