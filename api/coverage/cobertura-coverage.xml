@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="1419" lines-covered="1407" line-rate="0.9915" branches-valid="494" branches-covered="408" branch-rate="0.8259000000000001" timestamp="1708715783525" complexity="0" version="0.1">
+<coverage lines-valid="1419" lines-covered="1407" line-rate="0.9915" branches-valid="494" branches-covered="408" branch-rate="0.8259000000000001" timestamp="1708856781647" complexity="0" version="0.1">
   <sources>
     <source>C:\dev\movinin\src\api</source>
   </sources>
@@ -2110,7 +2110,7 @@
             <line number="140" hits="10" branch="false"/>
           </lines>
         </class>
-        <class name="PushNotification.ts" filename="src\models\PushNotification.ts" line-rate="0.8332999999999999" branch-rate="0.5">
+        <class name="PushToken.ts" filename="src\models\PushToken.ts" line-rate="0.8332999999999999" branch-rate="0.5">
           <methods>
             <method name="(anonymous_0)" hits="10" signature="()V">
               <lines>

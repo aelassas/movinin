@@ -8,7 +8,7 @@ import * as TestHelper from './TestHelper'
 import Property from '../src/models/Property'
 import Booking from '../src/models/Booking'
 import User from '../src/models/User'
-import PushNotification from '../src/models/PushNotification'
+import PushToken from '../src/models/PushToken'
 import * as env from '../src/config/env.config'
 
 let AGENCY_ID: string
@@ -250,24 +250,24 @@ describe('POST /api/update-booking', () => {
 
         payload.renter = RENTER1_ID
         payload.status = movininTypes.BookingStatus.Void
-        let pushNotification = new PushNotification({ user: payload.renter, token: uuid() })
-        await pushNotification.save()
+        let pushToken = new PushToken({ user: payload.renter, token: uuid() })
+        await pushToken.save()
         res = await request(app)
             .put('/api/update-booking')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
-        await PushNotification.deleteOne({ _id: pushNotification._id })
+        await PushToken.deleteOne({ _id: pushToken._id })
 
         payload.status = movininTypes.BookingStatus.Cancelled
-        pushNotification = new PushNotification({ user: payload.renter, token: '0' })
-        await pushNotification.save()
+        pushToken = new PushToken({ user: payload.renter, token: '0' })
+        await pushToken.save()
         res = await request(app)
             .put('/api/update-booking')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
-        await PushNotification.deleteOne({ _id: pushNotification._id })
+        await PushToken.deleteOne({ _id: pushToken._id })
 
         res = await request(app)
             .put('/api/update-booking')

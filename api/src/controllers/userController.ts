@@ -12,7 +12,7 @@ import * as env from '../config/env.config'
 import User from '../models/User'
 import Booking from '../models/Booking'
 import Token from '../models/Token'
-import PushNotification from '../models/PushNotification'
+import PushToken from '../models/PushToken'
 import * as Helper from '../common/Helper'
 import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
@@ -529,9 +529,9 @@ export async function pushToken(req: Request, res: Response) {
       throw new Error('userId is not valid')
     }
 
-    const pushNotification = await PushNotification.findOne({ user: userId })
-    if (pushNotification) {
-      return res.status(200).json(pushNotification.token)
+    const pushToken = await PushToken.findOne({ user: userId })
+    if (pushToken) {
+      return res.status(200).json(pushToken.token)
     }
 
     return res.sendStatus(204)
@@ -558,14 +558,14 @@ export async function createPushToken(req: Request, res: Response) {
       throw new Error('userId is not valid')
     }
 
-    const exist = await PushNotification.exists({ user: userId })
+    const exist = await PushToken.exists({ user: userId })
 
     if (!exist) {
-      const pushNotification = new PushNotification({
+      const pushToken = new PushToken({
         user: userId,
         token,
       })
-      await pushNotification.save()
+      await pushToken.save()
       return res.sendStatus(200)
     }
 
@@ -593,7 +593,7 @@ export async function deletePushToken(req: Request, res: Response) {
       throw new Error('userId is not valid')
     }
 
-    await PushNotification.deleteMany({ user: userId })
+    await PushToken.deleteMany({ user: userId })
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.deletePushToken] ${strings.DB_ERROR} ${userId}`, err)
