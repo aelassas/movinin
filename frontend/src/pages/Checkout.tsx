@@ -43,7 +43,7 @@ import Info from './Info'
 import SecurePayment from '../assets/img/secure-payment.png'
 import '../assets/css/checkout.css'
 
-function Checkout() {
+const Checkout = () => {
   const [user, setUser] = useState<movininTypes.User>()
   const [property, setProperty] = useState<movininTypes.Property>()
   const [location, setLocation] = useState<movininTypes.Location>()

@@ -16,7 +16,7 @@ interface ImageViewerProps {
   onClose: () => void
 }
 
-function ImageViewer({
+const ImageViewer = ({
   title,
   currentIndex: ivCurentIndex,
   src,
@@ -28,7 +28,7 @@ function ImageViewer({
   rightArrowComponent,
   imageStyle,
   onClose
-}: ImageViewerProps) {
+}: ImageViewerProps) => {
   const [currentIndex, setCurrentIndex] = useState(ivCurentIndex ?? 0)
   const thumbnails = useMemo<(HTMLDivElement | null)[]>(() => [], [])
 

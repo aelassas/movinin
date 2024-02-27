@@ -16,13 +16,13 @@ interface PropertyFilterProps {
   onSubmit: movininTypes.PropertyFilterSubmitEvent
 }
 
-function PropertyFilter({
+const PropertyFilter = ({
   from: filterFrom,
   to: filterTo,
   location: filterLocation,
   className,
   onSubmit
-}: PropertyFilterProps) {
+}: PropertyFilterProps) => {
   const _minDate = new Date()
   _minDate.setDate(_minDate.getDate() + 1)
 

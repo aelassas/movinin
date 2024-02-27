@@ -14,12 +14,12 @@ interface AgencyFilterProps {
   onChange?: (value: string[]) => void
 }
 
-function AgencyFilter({
+const AgencyFilter = ({
   agencies: filterAgencies,
   collapse,
   className,
   onChange
-}: AgencyFilterProps) {
+}: AgencyFilterProps) => {
   const [agencies, setAgencies] = useState<movininTypes.User[]>([])
   const [checkedAgencies, setCheckedAgencies] = useState<string[]>([])
   const [allChecked, setAllChecked] = useState(true)

@@ -8,17 +8,15 @@ interface InfoProps {
   style?: React.CSSProperties
 }
 
-function Info({
+const Info = ({
   className,
   message,
   style
-}: InfoProps) {
-  return (
-    <div style={style} className={`${className ? `${className} ` : ''}msg`}>
-      <p>{message}</p>
-      <Link href="/">{commonStrings.GO_TO_HOME}</Link>
-    </div>
+}: InfoProps) => (
+  <div style={style} className={`${className ? `${className} ` : ''}msg`}>
+    <p>{message}</p>
+    <Link href="/">{commonStrings.GO_TO_HOME}</Link>
+  </div>
   )
-}
 
 export default Info

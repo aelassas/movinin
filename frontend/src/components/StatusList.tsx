@@ -23,7 +23,7 @@ interface StatusListProps {
   onChange?: (value: movininTypes.BookingStatus) => void
 }
 
-function StatusList({
+const StatusList = ({
   value: statusListValue,
   label,
   required,
@@ -32,7 +32,7 @@ function StatusList({
   style,
   readOnly,
   onChange
-}: StatusListProps) {
+}: StatusListProps) => {
   const [value, setValue] = useState('')
 
   useEffect(() => {

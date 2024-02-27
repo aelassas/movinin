@@ -15,7 +15,7 @@ import PropertyTypeFilter from '../components/PropertyTypeFilter'
 
 import '../assets/css/properties.css'
 
-function Properties() {
+const Properties = () => {
   const [visible, setVisible] = useState(false)
   const [noMatch, setNoMatch] = useState(false)
   const [location, setLocation] = useState<movininTypes.Location>()

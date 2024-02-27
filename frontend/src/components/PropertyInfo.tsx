@@ -32,11 +32,11 @@ interface PropertyInfoProps {
   className?: string
 }
 
-function PropertyInfo({
+const PropertyInfo = ({
   property,
   description,
   className,
-}: PropertyInfoProps) {
+}: PropertyInfoProps) => {
   const fr = LangHelper.fr()
 
   const getExtraIcon = (option: string, extra: number) => (extra === -1

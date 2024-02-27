@@ -19,7 +19,7 @@ interface LocationSelectListProps {
   onChange?: (values: movininTypes.Option[]) => void
 }
 
-function LocationSelectList({
+const LocationSelectList = ({
   value,
   multiple,
   label,
@@ -29,7 +29,7 @@ function LocationSelectList({
   hidePopupIcon,
   customOpen,
   onChange
-}: LocationSelectListProps) {
+}: LocationSelectListProps) => {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [rows, setRows] = useState<movininTypes.Location[]>([])

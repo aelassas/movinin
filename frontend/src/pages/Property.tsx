@@ -22,7 +22,7 @@ import * as UserService from '../services/UserService'
 
 import '../assets/css/property.css'
 
-function Property() {
+const Property = () => {
   const navigate = useNavigate()
 
   const _minDate = new Date()

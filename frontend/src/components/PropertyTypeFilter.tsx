@@ -13,10 +13,10 @@ interface PropertyTypeFilterProps {
   onChange?: (values: movininTypes.PropertyType[]) => void
 }
 
-function PropertyTypeFilter({
+const PropertyTypeFilter = ({
   className,
   onChange
-}: PropertyTypeFilterProps) {
+}: PropertyTypeFilterProps) => {
   const allPropertyTypes = [
     movininTypes.PropertyType.Apartment,
     movininTypes.PropertyType.Commercial,

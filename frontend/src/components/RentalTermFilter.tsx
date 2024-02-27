@@ -13,10 +13,10 @@ interface RentalTermFilterProps {
   onChange?: (values: movininTypes.RentalTerm[]) => void
 }
 
-function RentalTermFilter({
+const RentalTermFilter = ({
   className,
   onChange
-}: RentalTermFilterProps) {
+}: RentalTermFilterProps) => {
   const allRentalTerms = movininHelper.getAllRentalTerms()
 
   const [allChecked, setAllChecked] = useState(true)

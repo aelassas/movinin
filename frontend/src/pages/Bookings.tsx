@@ -12,7 +12,7 @@ import * as AgencyService from '../services/AgencyService'
 
 import '../assets/css/bookings.css'
 
-function Bookings() {
+const Bookings = () => {
   const [user, setUser] = useState<movininTypes.User>()
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
   const [agencies, setAgencies] = useState<string[]>()

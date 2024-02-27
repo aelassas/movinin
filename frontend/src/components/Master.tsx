@@ -16,14 +16,14 @@ interface MasterProps {
   onLoad?: (user?: movininTypes.User) => void
 }
 
-function Master({
+const Master = ({
   user: masterUser,
   strict,
   hideSignin,
   notificationCount,
   children,
   onLoad
-}: MasterProps) {
+}: MasterProps) => {
   const [user, setUser] = useState<movininTypes.User>()
   const [loading, setLoading] = useState(true)
 

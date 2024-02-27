@@ -9,8 +9,7 @@ interface AgencyBadgeProps {
   agency: movininTypes.User
 }
 
-function AgencyBadge({ agency }: AgencyBadgeProps) {
-  return agency
+const AgencyBadge = ({ agency }: AgencyBadgeProps) => (agency
     ? (
       <div className="agency-badge">
         <span className="agency-badge-logo">
@@ -22,7 +21,6 @@ function AgencyBadge({ agency }: AgencyBadgeProps) {
         {agency.fullName}
       </div>
     )
-    : <></>
-}
+    : <></>)
 
 export default AgencyBadge

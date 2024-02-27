@@ -37,7 +37,7 @@ interface PropertyListProps {
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
 }
 
-function PropertyList({
+const PropertyList = ({
   agencies,
   types,
   rentalTerms,
@@ -52,7 +52,7 @@ function PropertyList({
   hidePrice,
   hideActions,
   onLoad,
-}: PropertyListProps) {
+}: PropertyListProps) => {
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(false)

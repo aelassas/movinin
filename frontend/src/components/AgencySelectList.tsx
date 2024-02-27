@@ -17,7 +17,7 @@ interface AgencySelectListProps {
   onChange?: (values: movininTypes.Option[]) => void
 }
 
-function AgencySelectList({
+const AgencySelectList = ({
   value,
   multiple,
   label,
@@ -25,7 +25,7 @@ function AgencySelectList({
   readOnly,
   variant,
   onChange
-}: AgencySelectListProps) {
+}: AgencySelectListProps) => {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [rows, setRows] = useState<movininTypes.Option[]>([])

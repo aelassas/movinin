@@ -12,7 +12,7 @@ import DatePicker from '../components/DatePicker'
 import SecurePayment from '../assets/img/secure-payment.png'
 import '../assets/css/home.css'
 
-function Home() {
+const Home = () => {
   const navigate = useNavigate()
 
   const _minDate = new Date()
