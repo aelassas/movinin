@@ -35,7 +35,7 @@ const Header = ({
   const [avatar, setAvatar] = useState<string | null | undefined>(null)
 
   useEffect(() => {
-    async function init() {
+    const init = async () => {
       const currentUser = await UserService.getCurrentUser()
       if (currentUser && currentUser._id) {
         const user = await UserService.getUser(currentUser._id)

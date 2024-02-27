@@ -86,7 +86,7 @@ const SignIn = () => {
   }
 
   useEffect(() => {
-    (async function () {
+    const init = async () => {
       try {
         LangHelper.setLanguage(strings)
 
@@ -110,7 +110,9 @@ const SignIn = () => {
       } catch {
         await UserService.signout()
       }
-    }())
+    }
+
+    init()
   }, [navigate])
 
   return (

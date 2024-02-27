@@ -6,14 +6,14 @@ import * as movininTypes from 'movinin-types';
  * @param {?number} [x]
  * @returns {string}
  */
-export function formatNumber(x) {
+export const formatNumber = (x) => {
     if (typeof x === 'number') {
         const parts = String(x % 1 !== 0 ? x.toFixed(2) : x).split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
         return parts.join('.');
     }
     return '';
-}
+};
 /**
  * Format a Date number to two digits.
  *
@@ -21,9 +21,9 @@ export function formatNumber(x) {
  * @param {number} n
  * @returns {string}
  */
-export function formatDatePart(n) {
+export const formatDatePart = (n) => {
     return n > 9 ? String(n) : '0' + n;
-}
+};
 /**
  * Capitalize a string.
  *
@@ -31,9 +31,9 @@ export function formatDatePart(n) {
  * @param {string} str
  * @returns {string}
  */
-export function capitalize(str) {
+export const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
 /**
  * Check if a value is a Date.
  *
@@ -41,9 +41,9 @@ export function capitalize(str) {
  * @param {?*} [value]
  * @returns {boolean}
  */
-export function isDate(value) {
+export const isDate = (value) => {
     return value instanceof Date && !Number.isNaN(value.valueOf());
-}
+};
 /**
  * Join two url parts.
  *
@@ -137,7 +137,7 @@ export const clone = (obj) => {
  * @param {T[]} arr
  * @returns {(T[] | undefined | null)}
  */
-export function cloneArray(arr) {
+export const cloneArray = (arr) => {
     if (typeof arr === 'undefined') {
         return undefined;
     }
@@ -145,7 +145,7 @@ export function cloneArray(arr) {
         return null;
     }
     return [...arr];
-}
+};
 /**
  * Check if two filters are equal.
  *
