@@ -29,7 +29,7 @@ import * as Env from '../config/env.config'
 import * as Helper from '../common/Helper'
 import Checkbox from '../components/Checkbox'
 
-function NotificationsScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'Notifications'>) {
+const NotificationsScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Notifications'>) => {
   const isFocused = useIsFocused()
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)

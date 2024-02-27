@@ -14,11 +14,11 @@ interface PropertyTypeFilterProps {
   onChange?: (values: movininTypes.PropertyType[]) => void
 }
 
-function PropertyTypeFilter({
+const PropertyTypeFilter = ({
   visible,
   style,
   onChange
-}: PropertyTypeFilterProps) {
+}: PropertyTypeFilterProps) => {
   const allPropertyTypes = movininHelper.getAllPropertyTypes()
 
   const [values, setValues] = useState(allPropertyTypes)

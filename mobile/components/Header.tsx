@@ -23,14 +23,14 @@ interface HeaderProps {
   _avatar?: string | null
 }
 
-function Header({
+const Header = ({
   title,
   hideTitle,
   loggedIn,
   notificationCount,
   reload,
   _avatar
-}: HeaderProps) {
+}: HeaderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams, keyof StackParams>>()
   const [avatar, setAvatar] = useState<string | null | undefined>(null)
 

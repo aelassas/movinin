@@ -31,14 +31,14 @@ const iconColor = '#000'
 const getExtraIcon = (extra: number) =>
   (extra === -1 ? 'clear' : extra === 0 ? 'check' : 'info')
 
-function Property({
+const Property = ({
   property,
   fr,
   from,
   to,
   location,
   navigation
-}: PropertyProps) {
+}: PropertyProps) => {
   const { width } = useWindowDimensions()
   const days = movininHelper.days(from, to)
   const price = Helper.price(property, from, to)

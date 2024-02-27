@@ -19,7 +19,7 @@ import * as Helper from '../common/Helper'
 import Link from '../components/Link'
 import Header from '../components/Header'
 
-function ForgotPasswordScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'ForgotPassword'>) {
+const ForgotPasswordScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'ForgotPassword'>) => {
   const isFocused = useIsFocused()
   const [email, setEmail] = useState('')
   const [emailRequired, setEmailRequired] = useState(false)

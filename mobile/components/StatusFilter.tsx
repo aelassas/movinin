@@ -17,12 +17,12 @@ interface StatusFilterProps {
   onChange?: (checkedStatuses: movininTypes.BookingStatus[]) => void
 }
 
-function StatusFilter({
+const StatusFilter = ({
   visible,
   style,
   onLoad,
   onChange
-}: StatusFilterProps) {
+}: StatusFilterProps) => {
   const [statuses, setStatuses] = useState<movininTypes.StatusFilterItem[]>(
     Helper.getBookingStatuses().map((status) => ({ ...status, checked: true }))
   )

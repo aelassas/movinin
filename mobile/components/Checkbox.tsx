@@ -8,12 +8,11 @@ interface CheckboxProps {
   onChange?: (_checked: boolean) => void
 }
 
-function Checkbox({
+const Checkbox = ({
   indeterminate,
   checked,
   onChange
-}: CheckboxProps) {
-  return (
+}: CheckboxProps) => (
     <Pressable
       onPress={() => {
         if (onChange) {
@@ -26,7 +25,6 @@ function Checkbox({
       <MaterialIcons name={indeterminate ? 'indeterminate-check-box' : checked ? 'check-box' : 'check-box-outline-blank'} size={24} color={indeterminate || checked ? '#1976d2' : '#606264'} />
     </Pressable>
   )
-}
 
 const styles = StyleSheet.create({
   checkbox: {

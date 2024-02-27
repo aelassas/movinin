@@ -13,7 +13,7 @@ import AgencyFilter from '../components/AgencyFilter'
 import RentalTermFilter from '../components/RentalTermFilter'
 import PropertyTypeFilter from '../components/PropertyTypeFilter'
 
-function PropertiesScreen({ navigation, route }: NativeStackScreenProps<StackParams, 'Properties'>) {
+const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Properties'>) => {
   const isFocused = useIsFocused()
   const [reload, setReload] = useState(false)
   const [loaded, setLoaded] = useState(false)

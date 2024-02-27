@@ -28,7 +28,7 @@ interface PropertyListProps {
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
 }
 
-function PropertyList({
+const PropertyList = ({
   navigation,
   from,
   to,
@@ -38,7 +38,7 @@ function PropertyList({
   rentalTerms,
   header,
   onLoad
-}: PropertyListProps) {
+}: PropertyListProps) => {
   const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
   const [onScrollEnd, setOnScrollEnd] = useState(false)
   const [loading, setLoading] = useState(true)
