@@ -13,7 +13,7 @@ import NotificationCounter from '../models/NotificationCounter'
  * @param {Response} res
  * @returns {unknown}
  */
-export async function notificationCounter(req: Request, res: Response) {
+export const notificationCounter = async (req: Request, res: Response) => {
   const { userId } = req.params
   try {
     const counter = await NotificationCounter.findOne({ user: userId })
@@ -40,7 +40,7 @@ export async function notificationCounter(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getNotifications(req: Request, res: Response) {
+export const getNotifications = async (req: Request, res: Response) => {
   const { userId: _userId, page: _page, size: _size } = req.params
 
   try {
@@ -78,7 +78,7 @@ export async function getNotifications(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function markAsRead(req: Request, res: Response) {
+export const markAsRead = async (req: Request, res: Response) => {
   try {
     const { body }: { body: { ids: string[] } } = req
     const { ids: _ids } = body
@@ -125,7 +125,7 @@ export async function markAsRead(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function markAsUnRead(req: Request, res: Response) {
+export const markAsUnRead = async (req: Request, res: Response) => {
   try {
     const { body }: { body: { ids: string[] } } = req
     const { ids: _ids } = body
@@ -172,7 +172,7 @@ export async function markAsUnRead(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deleteNotifications(req: Request, res: Response) {
+export const deleteNotifications = async (req: Request, res: Response) => {
   try {
     const { body }: { body: { ids: string[] } } = req
     const { ids: _ids } = body

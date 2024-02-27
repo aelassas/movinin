@@ -20,7 +20,7 @@ import * as Helper from '../common/Helper.js'
  * @param {Response} res
  * @returns {unknown}
  */
-export async function create(req: Request, res: Response) {
+export const create = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.CreatePropertyPayload } = req
 
   try {
@@ -129,7 +129,7 @@ export async function create(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function update(req: Request, res: Response) {
+export const update = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.UpdatePropertyPayload } = req
   const { _id } = body
 
@@ -265,7 +265,7 @@ export async function update(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function checkProperty(req: Request, res: Response) {
+export const checkProperty = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
@@ -295,7 +295,7 @@ export async function checkProperty(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deleteProperty(req: Request, res: Response) {
+export const deleteProperty = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
@@ -329,7 +329,7 @@ export async function deleteProperty(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function uploadImage(req: Request, res: Response) {
+export const uploadImage = async (req: Request, res: Response) => {
   try {
     if (!req.file) {
       throw new Error('[property.uploadImage] req.file not found')
@@ -355,7 +355,7 @@ export async function uploadImage(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deleteTempImage(req: Request, res: Response) {
+export const deleteTempImage = async (req: Request, res: Response) => {
   try {
     const imageFile = path.join(env.CDN_TEMP_PROPERTIES, req.params.fileName)
     if (!await Helper.exists(imageFile)) {
@@ -380,7 +380,7 @@ export async function deleteTempImage(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deleteImage(req: Request, res: Response) {
+export const deleteImage = async (req: Request, res: Response) => {
   try {
     const { property: propertyId, image: imageFileName } = req.params
 
@@ -418,7 +418,7 @@ export async function deleteImage(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getProperty(req: Request, res: Response) {
+export const getProperty = async (req: Request, res: Response) => {
   const { id, language } = req.params
 
   try {
@@ -471,7 +471,7 @@ export async function getProperty(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getProperties(req: Request, res: Response) {
+export const getProperties = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.GetPropertiesPayload } = req
     const page = Number.parseInt(req.params.page, 10)
@@ -606,7 +606,7 @@ export async function getProperties(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getBookingProperties(req: Request, res: Response) {
+export const getBookingProperties = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.GetBookingPropertiesPayload } = req
     const agency = new mongoose.Types.ObjectId(body.agency)
@@ -649,7 +649,7 @@ export async function getBookingProperties(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getFrontendProperties(req: Request, res: Response) {
+export const getFrontendProperties = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.GetPropertiesPayload } = req
     const page = Number.parseInt(req.params.page, 10)

@@ -14,10 +14,11 @@ import Booking from '../models/Booking'
 import Token from '../models/Token'
 import PushToken from '../models/PushToken'
 import * as Helper from '../common/Helper'
+import * as AuthHelper from '../common/AuthHelper'
+import * as MailHelper from '../common/MailHelper'
 import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Property from '../models/Property'
-import * as MailHelper from '../common/MailHelper'
 
 /**
  * Get status message as HTML.
@@ -44,7 +45,7 @@ const generateToken = () => `${uuid()}-${Date.now()}`
  * @param {bookcarsTypes.UserType} userType
  * @returns {unknown}
  */
-async function _signup(req: Request, res: Response, userType: movininTypes.UserType) {
+const _signup = async (req: Request, res: Response, userType: movininTypes.UserType) => {
   const { body }: { body: movininTypes.SignUpPayload } = req
 
   try {
@@ -108,7 +109,7 @@ async function _signup(req: Request, res: Response, userType: movininTypes.UserT
  * @param {Response} res
  * @returns {unknown}
  */
-export async function signup(req: Request, res: Response) {
+export const signup = async (req: Request, res: Response) => {
   await _signup(req, res, movininTypes.UserType.User)
 }
 
@@ -121,7 +122,7 @@ export async function signup(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function adminSignup(req: Request, res: Response) {
+export const adminSignup = async (req: Request, res: Response) => {
   await _signup(req, res, movininTypes.UserType.Admin)
 }
 
@@ -134,7 +135,7 @@ export async function adminSignup(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function create(req: Request, res: Response) {
+export const create = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.CreateUserPayload } = req
 
   try {
@@ -206,7 +207,7 @@ export async function create(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function checkToken(req: Request, res: Response) {
+export const checkToken = async (req: Request, res: Response) => {
   const { userId, email } = req.params
 
   try {
@@ -255,7 +256,7 @@ export async function checkToken(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deleteTokens(req: Request, res: Response) {
+export const deleteTokens = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   try {
@@ -283,7 +284,7 @@ export async function deleteTokens(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function resend(req: Request, res: Response) {
+export const resend = async (req: Request, res: Response) => {
   const { email } = req.params
 
   try {
@@ -350,7 +351,7 @@ export async function resend(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function activate(req: Request, res: Response) {
+export const activate = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.ActivatePayload } = req
   const { userId } = body
 
@@ -394,7 +395,7 @@ export async function activate(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function signin(req: Request, res: Response) {
+export const signin = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.SignInPayload } = req
   const { email, password, stayConnected, mobile } = body
 
@@ -479,7 +480,7 @@ export async function signin(req: Request, res: Response) {
       //
       // On web, we return the token in a httpOnly, signed, secure and strict sameSite cookie.
       //
-      const cookieName = Helper.getAuthCookieName(req)
+      const cookieName = AuthHelper.getAuthCookieName(req)
 
       return res
         .clearCookie(cookieName)
@@ -504,8 +505,8 @@ export async function signin(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function signout(req: Request, res: Response) {
-  const cookieName = Helper.getAuthCookieName(req)
+export const signout = async (req: Request, res: Response) => {
+  const cookieName = AuthHelper.getAuthCookieName(req)
 
   return res
     .clearCookie(cookieName)
@@ -521,7 +522,7 @@ export async function signout(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getPushToken(req: Request, res: Response) {
+export const getPushToken = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   try {
@@ -550,7 +551,7 @@ export async function getPushToken(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function createPushToken(req: Request, res: Response) {
+export const createPushToken = async (req: Request, res: Response) => {
   const { userId, token } = req.params
 
   try {
@@ -585,7 +586,7 @@ export async function createPushToken(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deletePushToken(req: Request, res: Response) {
+export const deletePushToken = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   try {
@@ -610,7 +611,7 @@ export async function deletePushToken(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function validateEmail(req: Request, res: Response) {
+export const validateEmail = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.ValidateEmailPayload } = req
   const { email } = body
 
@@ -640,7 +641,7 @@ export async function validateEmail(req: Request, res: Response) {
  * @param {Response} res
  * @returns {*}
  */
-export const validateAccessToken = (req: Request, res: Response) => res.sendStatus(200)
+export const validateAccessToken = async (req: Request, res: Response) => res.sendStatus(200)
 
 /**
  * Get Validation result as HTML.
@@ -651,7 +652,7 @@ export const validateAccessToken = (req: Request, res: Response) => res.sendStat
  * @param {Response} res
  * @returns {unknown}
  */
-export async function confirmEmail(req: Request, res: Response) {
+export const confirmEmail = async (req: Request, res: Response) => {
   try {
     const { token: _token, email: _email } = req.params
 
@@ -703,7 +704,7 @@ export async function confirmEmail(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function resendLink(req: Request, res: Response) {
+export const resendLink = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.ResendLinkPayload } = req
   const { email } = body
 
@@ -762,7 +763,7 @@ export async function resendLink(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function update(req: Request, res: Response) {
+export const update = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.UpdateUserPayload } = req
     const { _id } = body
@@ -823,7 +824,7 @@ export async function update(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function updateEmailNotifications(req: Request, res: Response) {
+export const updateEmailNotifications = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.UpdateEmailNotificationsPayload } = req
 
   try {
@@ -860,7 +861,7 @@ export async function updateEmailNotifications(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function updateLanguage(req: Request, res: Response) {
+export const updateLanguage = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.UpdateLanguage } = req
     const { id, language } = body
@@ -894,7 +895,7 @@ export async function updateLanguage(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getUser(req: Request, res: Response) {
+export const getUser = async (req: Request, res: Response) => {
   const { id } = req.params
   try {
     if (!Helper.isValidObjectId(id)) {
@@ -939,7 +940,7 @@ export async function getUser(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function createAvatar(req: Request, res: Response) {
+export const createAvatar = async (req: Request, res: Response) => {
   try {
     if (!req.file) {
       throw new Error('[user.createAvatar] req.file not found')
@@ -965,7 +966,7 @@ export async function createAvatar(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function updateAvatar(req: Request, res: Response) {
+export const updateAvatar = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   try {
@@ -1012,7 +1013,7 @@ export async function updateAvatar(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deleteAvatar(req: Request, res: Response) {
+export const deleteAvatar = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   try {
@@ -1048,7 +1049,7 @@ export async function deleteAvatar(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deleteTempAvatar(req: Request, res: Response) {
+export const deleteTempAvatar = async (req: Request, res: Response) => {
   const { avatar } = req.params
 
   try {
@@ -1075,7 +1076,7 @@ export async function deleteTempAvatar(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function changePassword(req: Request, res: Response) {
+export const changePassword = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.changePasswordPayload } = req
   const {
     _id,
@@ -1134,7 +1135,7 @@ export async function changePassword(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function checkPassword(req: Request, res: Response) {
+export const checkPassword = async (req: Request, res: Response) => {
   const { id, password } = req.params
 
   try {
@@ -1175,7 +1176,7 @@ export async function checkPassword(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getUsers(req: Request, res: Response) {
+export const getUsers = async (req: Request, res: Response) => {
   try {
     const keyword: string = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
@@ -1251,7 +1252,7 @@ export async function getUsers(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deleteUsers(req: Request, res: Response) {
+export const deleteUsers = async (req: Request, res: Response) => {
   try {
     const { body }: { body: string[] } = req
     const ids: mongoose.Types.ObjectId[] = body.map((id: string) => new mongoose.Types.ObjectId(id))

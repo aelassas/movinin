@@ -26,7 +26,7 @@ import * as Helper from '../common/Helper'
  * @param {Response} res
  * @returns {unknown}
  */
-export async function create(req: Request, res: Response) {
+export const create = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.Booking } = req
     const booking = new Booking(body)
@@ -49,7 +49,7 @@ export async function create(req: Request, res: Response) {
  * @param {string} notificationMessage
  * @returns {*}
  */
-async function notifyAgency(user: env.User, bookingId: string, agency: env.User, notificationMessage: string) {
+const notifyAgency = async (user: env.User, bookingId: string, agency: env.User, notificationMessage: string) => {
   // notification
   const message = `${user.fullName} ${notificationMessage} ${bookingId}.`
   const notification = new Notification({
@@ -94,7 +94,7 @@ async function notifyAgency(user: env.User, bookingId: string, agency: env.User,
  * @param {Response} res
  * @returns {unknown}
  */
-export async function checkout(req: Request, res: Response) {
+export const checkout = async (req: Request, res: Response) => {
   try {
     let user: env.User | null
     const { body }: { body: movininTypes.CheckoutPayload } = req
@@ -211,7 +211,7 @@ export async function checkout(req: Request, res: Response) {
  * @param {env.Booking} booking
  * @returns {*}
  */
-async function notifyRenter(booking: env.Booking) {
+const notifyRenter = async (booking: env.Booking) => {
   const renter = await User.findById(booking.renter)
 
   if (!renter) {
@@ -314,7 +314,7 @@ async function notifyRenter(booking: env.Booking) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function update(req: Request, res: Response) {
+export const update = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.Booking } = req
     if (!body._id) {
@@ -374,7 +374,7 @@ export async function update(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function updateStatus(req: Request, res: Response) {
+export const updateStatus = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.UpdateStatusPayload } = req
     const { ids: _ids, status } = body
@@ -406,7 +406,7 @@ export async function updateStatus(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function deleteBookings(req: Request, res: Response) {
+export const deleteBookings = async (req: Request, res: Response) => {
   try {
     const { body }: { body: string[] } = req
     const ids = body.map((id) => new mongoose.Types.ObjectId(id))
@@ -429,7 +429,7 @@ export async function deleteBookings(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getBooking(req: Request, res: Response) {
+export const getBooking = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
@@ -504,7 +504,7 @@ export async function getBooking(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function getBookings(req: Request, res: Response) {
+export const getBookings = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.GetBookingsPayload } = req
     const page = Number.parseInt(req.params.page, 10)
@@ -688,7 +688,7 @@ export async function getBookings(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function hasBookings(req: Request, res: Response) {
+export const hasBookings = async (req: Request, res: Response) => {
   const { renter } = req.params
 
   try {
@@ -719,7 +719,7 @@ export async function hasBookings(req: Request, res: Response) {
  * @param {Response} res
  * @returns {unknown}
  */
-export async function cancelBooking(req: Request, res: Response) {
+export const cancelBooking = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {

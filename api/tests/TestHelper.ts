@@ -12,14 +12,12 @@ import Location from '../src/models/Location'
 import Notification from '../src/models/Notification'
 import NotificationCounter from '../src/models/NotificationCounter'
 
-export function getName(prefix: string) {
+export const getName = (prefix: string) => {
     expect(prefix.length).toBeGreaterThan(1)
     return `${prefix}.${uuid()}`
 }
 
-export function getAgencyName() {
-    return getName('agency')
-}
+export const getAgencyName = () => getName('agency')
 
 export const ADMIN_EMAIL = `${getName('admin')}@test.movinin.io`
 export const USER_EMAIL = `${getName('user')}@test.movinin.io`
@@ -32,11 +30,11 @@ export const SIZE = 30
 let ADMIN_USER_ID: string
 let USER_ID: string
 
-export function initializeConsole() {
+export const initializeConsole = () => {
     console.error = () => { }
 }
 
-export async function initialize() {
+export const initialize = async () => {
     const salt = await bcrypt.genSalt(10)
     const passwordHash = await bcrypt.hash(PASSWORD, salt)
     const body = {
@@ -62,15 +60,11 @@ export async function initialize() {
     initializeConsole()
 }
 
-export function getAdminUserId() {
-    return ADMIN_USER_ID
-}
+export const getAdminUserId = () => ADMIN_USER_ID
 
-export function getUserId() {
-    return USER_ID
-}
+export const getUserId = () => USER_ID
 
-export async function close() {
+export const close = async () => {
     const res = await User.deleteMany({ email: { $in: [ADMIN_EMAIL, USER_EMAIL] } })
     expect(res.deletedCount).toBe(2)
     await Notification.deleteMany({ user: { $in: [ADMIN_USER_ID, USER_ID] } })
@@ -101,15 +95,11 @@ const signin = async (appType: movininTypes.AppType, email: string) => {
     return token
 }
 
-export async function signinAsAdmin() {
-    return signin(movininTypes.AppType.Backend, ADMIN_EMAIL)
-}
+export const signinAsAdmin = () => signin(movininTypes.AppType.Backend, ADMIN_EMAIL)
 
-export async function signinAsUser() {
-    return signin(movininTypes.AppType.Frontend, USER_EMAIL)
-}
+export const signinAsUser = () => signin(movininTypes.AppType.Frontend, USER_EMAIL)
 
-export async function signout(token: string) {
+export const signout = async (token: string) => {
     const res = await request(app)
         .post('/api/sign-out')
         .set('Cookie', [`${env.X_ACCESS_TOKEN}=${token};`])
@@ -120,7 +110,7 @@ export async function signout(token: string) {
     expect(cookies[0]).toContain(`${env.X_ACCESS_TOKEN}=;`)
 }
 
-export async function createAgency(email: string, fullName: string) {
+export const createAgency = async (email: string, fullName: string) => {
     const salt = await bcrypt.genSalt(10)
     const passwordHash = await bcrypt.hash(PASSWORD, salt)
     const body = {
@@ -136,7 +126,7 @@ export async function createAgency(email: string, fullName: string) {
     return agency.id as string
 }
 
-export async function deleteAgency(id: string) {
+export const deleteAgency = async (id: string) => {
     const res = await User.deleteOne({ _id: id })
     expect(res.deletedCount).toBe(1)
 
@@ -144,7 +134,7 @@ export async function deleteAgency(id: string) {
     await NotificationCounter.deleteMany({ user: id })
 }
 
-export async function deleteLocation(id: string) {
+export const deleteLocation = async (id: string) => {
     const location = await Location.findById(id)
     expect(location).toBeDefined()
 
@@ -155,7 +145,7 @@ export async function deleteLocation(id: string) {
     expect(res.deletedCount).toBe(1)
 }
 
-export async function createLocation(nameEN: string, nameFR: string) {
+export const createLocation = async (nameEN: string, nameFR: string) => {
     const locationValueBodyEN = {
         language: 'en',
         value: nameEN,
@@ -177,14 +167,8 @@ export async function createLocation(nameEN: string, nameFR: string) {
     return location.id as string
 }
 
-export function GetRandomEmail() {
-    return `random.${uuid()}@test.movinin.io`
-}
+export const GetRandomEmail = () => `random.${uuid()}@test.movinin.io`
 
-export function GetRandromObjectId() {
-    return new mongoose.Types.ObjectId()
-}
+export const GetRandromObjectId = () => new mongoose.Types.ObjectId()
 
-export function GetRandromObjectIdAsString() {
-    return GetRandromObjectId().toString()
-}
+export const GetRandromObjectIdAsString = () => GetRandromObjectId().toString()
