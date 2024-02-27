@@ -33,7 +33,7 @@ import DatePicker from '../components/DatePicker'
 
 import '../assets/css/create-user.css'
 
-function CreateUser() {
+const CreateUser = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [admin, setAdmin] = useState(false)

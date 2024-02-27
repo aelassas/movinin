@@ -28,7 +28,7 @@ import NoMatch from './NoMatch'
 
 import '../assets/css/agency.css'
 
-function Agency() {
+const Agency = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [agency, setAgency] = useState<movininTypes.User>()

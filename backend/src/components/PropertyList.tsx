@@ -50,7 +50,7 @@ interface PropertyListProps {
   onDelete?: (rowCount: number) => void
 }
 
-function PropertyList({
+const PropertyList = ({
   agencies,
   keyword,
   types,
@@ -67,7 +67,7 @@ function PropertyList({
   language,
   onLoad,
   onDelete
-}: PropertyListProps) {
+}: PropertyListProps) => {
   const [user, setUser] = useState<movininTypes.User>()
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)

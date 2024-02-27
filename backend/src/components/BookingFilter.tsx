@@ -26,12 +26,12 @@ interface BookingFilterProps {
   onSubmit?: (filter: movininTypes.Filter | null) => void
 }
 
-function BookingFilter({
+const BookingFilter = ({
   collapse,
   className,
   language,
   onSubmit
-}: BookingFilterProps) {
+}: BookingFilterProps) => {
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [location, setLocation] = useState('')

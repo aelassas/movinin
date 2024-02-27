@@ -11,10 +11,10 @@ interface UserTypeFilterProps {
   onChange?: (types: movininTypes.UserType[]) => void
 }
 
-function UserTypeFilter({
+const UserTypeFilter = ({
   className,
   onChange
-}: UserTypeFilterProps) {
+}: UserTypeFilterProps) => {
   const userTypes = Helper.getUserTypes()
   const [checkedUserTypes, setCheckedUserTypes] = useState<movininTypes.UserType[]>(userTypes.map((user) => user.value))
   const [allChecked, setAllChecked] = useState(true)

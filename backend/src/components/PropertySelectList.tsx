@@ -28,7 +28,7 @@ interface PropertySelectListProps {
   onChange?: (values: movininTypes.Property[]) => void
 }
 
-function PropertySelectList({
+const PropertySelectList = ({
   label,
   required,
   multiple,
@@ -37,7 +37,7 @@ function PropertySelectList({
   agency,
   location,
   onChange
-}: PropertySelectListProps) {
+}: PropertySelectListProps) => {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(true)

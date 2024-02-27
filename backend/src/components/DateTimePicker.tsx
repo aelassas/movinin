@@ -15,7 +15,7 @@ interface DateTimePickerProps {
   onChange?: (value: Date | null) => void
 }
 
-function DateTimePicker({
+const DateTimePicker = ({
   value: dateTimeValue,
   label,
   minDate,
@@ -23,7 +23,7 @@ function DateTimePicker({
   variant,
   language,
   onChange
-}: DateTimePickerProps) {
+}: DateTimePickerProps) => {
   const [value, setValue] = useState<Date | null>(null)
 
   useEffect(() => {

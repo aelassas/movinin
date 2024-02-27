@@ -30,7 +30,7 @@ import * as AgencyService from '../services/AgencyService'
 
 import '../assets/css/user.css'
 
-function User() {
+const User = () => {
   const navigate = useNavigate()
   const statuses = Helper.getBookingStatuses().map((status) => status.value)
 

@@ -39,7 +39,7 @@ import Env from '../config/env.config'
 
 import '../assets/css/booking.css'
 
-function UpdateBooking() {
+const UpdateBooking = () => {
   const navigate = useNavigate()
 
   const [user, setUser] = useState<movininTypes.User>()

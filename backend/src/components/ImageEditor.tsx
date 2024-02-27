@@ -25,7 +25,7 @@ interface ImageEditorProps {
     onImageViewerClose?: () => void
 }
 
-function ImageEditor({
+const ImageEditor = ({
     title,
     image: mainImage,
     images: ieImages,
@@ -34,7 +34,7 @@ function ImageEditor({
     onDelete,
     onImageViewerOpen,
     onImageViewerClose
-}: ImageEditorProps) {
+}: ImageEditorProps) => {
     const [currentImage, setCurrentImage] = useState(0)
     const [openImageDialog, setOpenImageDialog] = useState(false)
     const [image, setImage] = useState<ImageItem | undefined>(mainImage)

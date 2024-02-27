@@ -36,13 +36,13 @@ interface AgencyListProps {
   onDelete?: (rowCount: number) => void
 }
 
-function AgencyList({
+const AgencyList = ({
   user,
   keyword: agencyListKeyword,
   reload: agencyListReload,
   onDelete,
   onLoad
-}: AgencyListProps) {
+}: AgencyListProps) => {
   const [keyword, setKeyword] = useState(agencyListKeyword)
   const [reload, setReload] = useState(false)
   const [init, setInit] = useState(true)

@@ -10,7 +10,7 @@ import * as Helper from '../common/Helper'
 
 import '../assets/css/agencies.css'
 
-function Agencies() {
+const Agencies = () => {
   const [user, setUser] = useState<movininTypes.User>()
   const [keyword, setKeyword] = useState('')
   const [rowCount, setRowCount] = useState(-1)

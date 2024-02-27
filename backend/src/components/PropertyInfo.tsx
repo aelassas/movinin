@@ -38,13 +38,13 @@ interface PropertyInfoProps {
   className?: string
 }
 
-function PropertyInfo({
+const PropertyInfo = ({
   property,
   user,
   booking,
   description,
   className,
-}: PropertyInfoProps) {
+}: PropertyInfoProps) => {
   const fr = movininHelper.fr(user)
   const edit = Helper.admin(user) || (user?._id === property.agency._id)
 

@@ -59,7 +59,7 @@ interface BookingListProps {
   onLoad?: movininTypes.DataEvent<movininTypes.Booking>
 }
 
-function BookingList({
+const BookingList = ({
   agencies: bookingAgencies,
   statuses: bookingStatuses,
   filter: bookingFilter,
@@ -75,7 +75,7 @@ function BookingList({
   loading: bookingLoading,
   checkboxSelection,
   onLoad,
-}: BookingListProps) {
+}: BookingListProps) => {
   const [loggedUser, setLoggedUser] = useState<movininTypes.User>()
   const [user, setUser] = useState<movininTypes.User>()
   const [columns, setColumns] = useState<GridColDef<movininTypes.Booking>[]>([])

@@ -16,13 +16,13 @@ interface RentalTermListProps {
   onChange?: (value: string) => void
 }
 
-function RentalTermList({
+const RentalTermList = ({
   value: rentalTermValue,
   required,
   label,
   variant,
   onChange
-}: RentalTermListProps) {
+}: RentalTermListProps) => {
   const [value, setValue] = useState(rentalTermValue || '')
   useEffect(() => {
     setValue(rentalTermValue || '')

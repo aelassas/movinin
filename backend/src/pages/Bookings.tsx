@@ -14,7 +14,7 @@ import * as AgencyService from '../services/AgencyService'
 
 import '../assets/css/bookings.css'
 
-function Bookings() {
+const Bookings = () => {
   const [user, setUser] = useState<movininTypes.User>()
   const [leftPanel, setLeftPanel] = useState(false)
   const [admin, setAdmin] = useState(false)

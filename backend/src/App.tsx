@@ -33,8 +33,7 @@ const ChangePassword = lazy(() => import('./pages/ChangePassword'))
 const Contact = lazy(() => import('./pages/Contact'))
 const NoMatch = lazy(() => import('./pages/NoMatch'))
 
-function App() {
-  return (
+const App = () => (
     <Router>
       <div className="App">
         <Suspense fallback={<></>}>
@@ -76,6 +75,5 @@ function App() {
       </div>
     </Router>
   )
-}
 
 export default App

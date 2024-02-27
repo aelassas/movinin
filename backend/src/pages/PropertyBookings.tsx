@@ -32,7 +32,7 @@ import PropertyInfo from '../components/PropertyInfo'
 import '../assets/css/property-bookings.css'
 import AgencyBadge from '../components/AgencyBadge'
 
-function PropertyBookings() {
+const PropertyBookings = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [property, setProperty] = useState<movininTypes.Property>()

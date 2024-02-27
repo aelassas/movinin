@@ -30,7 +30,7 @@ import Backdrop from '../components/SimpleBackdrop'
 
 import '../assets/css/create-booking.css'
 
-function CreateBooking() {
+const CreateBooking = () => {
   const navigate = useNavigate()
   const [isAgency, setIsAgency] = useState(false)
   const [visible, setVisible] = useState(false)

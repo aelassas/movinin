@@ -8,8 +8,7 @@ interface HiddenProps {
   className?: string
 }
 
-function Hidden({ className }: HiddenProps) {
-  return (
+const Hidden = ({ className }: HiddenProps) => (
     <div className={`label hidden${className ? ` ${className}` : ''}`} title={strings.HIDDEN_INFO}>
       <HiddenIcon className="label-icon" />
       <span>
@@ -19,6 +18,5 @@ function Hidden({ className }: HiddenProps) {
       </span>
     </div>
   )
-}
 
 export default Hidden

@@ -30,7 +30,7 @@ import AgencyBadge from '../components/AgencyBadge'
 
 import '../assets/css/property.css'
 
-function Property() {
+const Property = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [loading, setLoading] = useState(false)

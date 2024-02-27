@@ -16,13 +16,13 @@ interface PropertyTypeListProps {
   onChange?: (value: string) => void
 }
 
-function PropertyTypeList({
+const PropertyTypeList = ({
   value: propertyTypeValue,
   required,
   label,
   variant,
   onChange
-}: PropertyTypeListProps) {
+}: PropertyTypeListProps) => {
   const [value, setValue] = useState(propertyTypeValue || '')
   useEffect(() => {
     setValue(propertyTypeValue || '')

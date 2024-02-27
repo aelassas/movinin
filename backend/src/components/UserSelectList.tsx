@@ -16,14 +16,14 @@ interface UserSelectListProps {
   onChange?: (values: movininTypes.Option[]) => void
 }
 
-function UserSelectList({
+const UserSelectList = ({
   multiple,
   value,
   label,
   required,
   variant,
   onChange
-}: UserSelectListProps) {
+}: UserSelectListProps) => {
   const [init, setInit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [renters, setRenters] = useState<movininTypes.Option[]>([])

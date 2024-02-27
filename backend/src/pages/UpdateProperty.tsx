@@ -35,7 +35,7 @@ import RentalTermList from '../components/RentalTermList'
 import '../assets/css/create-property.css'
 import '../assets/css/update-property.css'
 
-function UpdateProperty() {
+const UpdateProperty = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [loading, setLoading] = useState(false)

@@ -34,7 +34,7 @@ import Backdrop from '../components/SimpleBackdrop'
 
 import '../assets/css/create-property.css'
 
-function CreateProperty() {
+const CreateProperty = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState<movininTypes.User>()
   const [isAgency, setIsAgency] = useState(false)

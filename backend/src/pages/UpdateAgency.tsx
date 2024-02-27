@@ -27,7 +27,7 @@ import Avatar from '../components/Avatar'
 
 import '../assets/css/update-agency.css'
 
-function UpdateAgency() {
+const UpdateAgency = () => {
   const [user, setUser] = useState<movininTypes.User>()
   const [agency, setAgency] = useState<movininTypes.User>()
   const [fullName, setFullName] = useState('')

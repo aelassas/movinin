@@ -44,14 +44,14 @@ interface UserListProps {
   onLoad?: movininTypes.DataEvent<movininTypes.User>
 }
 
-function UserList({
+const UserList = ({
   types: userListTypes,
   keyword: userListKeyword,
   user: userListUser,
   hideDesktopColumns,
   checkboxSelection,
   onLoad
-}: UserListProps) {
+}: UserListProps) => {
   const [user, setUser] = useState<movininTypes.User>()
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(Env.PAGE_SIZE)

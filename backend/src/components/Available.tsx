@@ -12,11 +12,10 @@ interface AvailableProps {
   className?: string
 }
 
-function Available({
+const Available = ({
   available,
   className
-}: AvailableProps) {
-  return (
+}: AvailableProps) => (
     <div
       className={`label ${available ? 'available' : 'unavailable'}${className ? ` ${className}` : ''}`}
       title={available ? strings.AVAILABLE_INFO : strings.UNAVAILABLE_INFO}
@@ -29,6 +28,5 @@ function Available({
       </span>
     </div>
   )
-}
 
 export default Available

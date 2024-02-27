@@ -18,7 +18,7 @@ import Env from '../config/env.config'
 
 import '../assets/css/properties.css'
 
-function Properties() {
+const Properties = () => {
   const [user, setUser] = useState<movininTypes.User>()
   const [admin, setAdmin] = useState(false)
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])

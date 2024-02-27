@@ -35,7 +35,7 @@ import DatePicker from '../components/DatePicker'
 
 import '../assets/css/update-user.css'
 
-function UpdateUser() {
+const UpdateUser = () => {
   const navigate = useNavigate()
   const [loggedUser, setLoggedUser] = useState<movininTypes.User>()
   const [user, setUser] = useState<movininTypes.User>()

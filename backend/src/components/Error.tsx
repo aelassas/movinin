@@ -10,8 +10,7 @@ interface ErrorProps {
   homeLink?: boolean
 }
 
-function Error({ message, style, homeLink }: ErrorProps) {
-  return (
+const Error = ({ message, style, homeLink }: ErrorProps) => (
     <div style={style}>
       <div className="error">
         <span className="message">{message}</span>
@@ -23,6 +22,5 @@ function Error({ message, style, homeLink }: ErrorProps) {
       )}
     </div>
   )
-}
 
 export default Error
