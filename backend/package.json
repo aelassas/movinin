@@ -3,19 +3,19 @@
   "version": "2.2.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.11.3",
+    "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.6",
-    "@mui/material": "^5.15.6",
-    "@mui/x-data-grid": "^6.19.2",
-    "@mui/x-date-pickers": "^6.19.2",
+    "@mui/icons-material": "^5.15.11",
+    "@mui/material": "^5.15.11",
+    "@mui/x-data-grid": "^6.19.5",
+    "@mui/x-date-pickers": "^6.19.5",
     "@types/draftjs-to-html": "^0.8.4",
     "@types/html-to-draftjs": "^1.4.3",
-    "@types/node": "^20.11.10",
-    "@types/react": "^18.2.48",
-    "@types/react-dom": "^18.2.18",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
     "@types/react-draft-wysiwyg": "^1.13.8",
-    "@types/validator": "^13.11.8",
+    "@types/validator": "^13.11.9",
     "axios": "^1.6.7",
     "date-fns": "^2.25.0",
     "disable-react-devtools": "file:../packages/disable-react-devtools",
@@ -28,7 +28,7 @@
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
     "react-localization": "^1.0.19",
-    "react-router-dom": "^6.21.3",
+    "react-router-dom": "^6.22.2",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.4",
     "typescript": "^4.9.5",
@@ -64,6 +64,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "eslint-config-airbnb": "^19.0.4",
-    "npm-check-updates": "^16.14.14"
+    "npm-check-updates": "^16.14.15"
   }
 }
