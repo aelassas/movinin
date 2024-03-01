@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import Const from '../config/const'
 import { strings as commonStrings } from '../lang/common'
 import { strings as csStrings, strings } from '../lang/properties'
@@ -62,7 +62,7 @@ const PropertyList = ({
   const [totalRecords, setTotalRecords] = useState(0)
 
   useEffect(() => {
-    if (Env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || Env.isMobile()) {
+    if (env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || env.isMobile()) {
       const element = document.querySelector('body')
 
       if (element) {
@@ -70,7 +70,7 @@ const PropertyList = ({
           if (fetch
             && !loading
             && window.scrollY > 0
-            && window.scrollY + window.innerHeight + Env.INFINITE_SCROLL_OFFSET >= document.body.scrollHeight) {
+            && window.scrollY + window.innerHeight + env.INFINITE_SCROLL_OFFSET >= document.body.scrollHeight) {
             setLoading(true)
             setPage(page + 1)
           }
@@ -89,7 +89,7 @@ const PropertyList = ({
         rentalTerms,
         location,
       }
-      const data = await PropertyService.getProperties(payload, _page, Env.PROPERTIES_PAGE_SIZE)
+      const data = await PropertyService.getProperties(payload, _page, env.PROPERTIES_PAGE_SIZE)
 
       const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
       if (!_data) {
@@ -99,18 +99,18 @@ const PropertyList = ({
       const _totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
       let _rows = []
-      if (Env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || Env.isMobile()) {
+      if (env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || env.isMobile()) {
         _rows = _page === 1 ? _data.resultData : [...rows, ..._data.resultData]
       } else {
         _rows = _data.resultData
       }
 
       setRows(_rows)
-      setRowCount((_page - 1) * Env.PROPERTIES_PAGE_SIZE + _rows.length)
+      setRowCount((_page - 1) * env.PROPERTIES_PAGE_SIZE + _rows.length)
       setTotalRecords(_totalRecords)
       setFetch(_data.resultData.length > 0)
 
-      if (((Env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || Env.isMobile()) && _page === 1) || (Env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !Env.isMobile())) {
+      if (((env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || env.isMobile()) && _page === 1) || (env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !env.isMobile())) {
         window.scrollTo(0, 0)
       }
 
@@ -204,7 +204,7 @@ const PropertyList = ({
 
                 <div className="left-panel">
                   <img
-                    src={movininHelper.joinURL(Env.CDN_PROPERTIES, property.image)}
+                    src={movininHelper.joinURL(env.CDN_PROPERTIES, property.image)}
                     alt={property.name}
                     className="property-img"
                   />
@@ -267,10 +267,10 @@ const PropertyList = ({
           })}
       </section>
 
-      {Env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !Env.isMobile() && (
+      {env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !env.isMobile() && (
         <Pager
           page={page}
-          pageSize={Env.PROPERTIES_PAGE_SIZE}
+          pageSize={env.PROPERTIES_PAGE_SIZE}
           rowCount={rowCount}
           totalRecords={totalRecords}
           onNext={() => setPage(page + 1)}

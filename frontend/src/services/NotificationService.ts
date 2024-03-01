@@ -1,6 +1,6 @@
 import * as movininTypes from 'movinin-types'
 import axiosInstance from './axiosInstance'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 
 /**
  * Get a NotificationCounter by UserID.
@@ -78,7 +78,7 @@ export const deleteNotifications = (userId: string, ids: string[]): Promise<numb
 export const getNotifications = (userId: string, page: number): Promise<movininTypes.Result<movininTypes.Notification>> => (
   axiosInstance
     .get(
-      `/api/notifications/${encodeURIComponent(userId)}/${page}/${Env.PAGE_SIZE}`,
+      `/api/notifications/${encodeURIComponent(userId)}/${page}/${env.PAGE_SIZE}`,
       { withCredentials: true }
     )
     .then((res) => res.data)

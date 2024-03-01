@@ -1,7 +1,7 @@
 import React from 'react'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 
 import '../assets/css/agency-badge.css'
 
@@ -14,7 +14,7 @@ const AgencyBadge = ({ agency }: AgencyBadgeProps) => (agency
       <div className="agency-badge">
         <span className="agency-badge-logo">
           <img
-            src={movininHelper.joinURL(Env.CDN_USERS, agency.avatar)}
+            src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)}
             alt={agency.fullName}
           />
         </span>

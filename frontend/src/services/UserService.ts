@@ -1,6 +1,6 @@
 import * as movininTypes from 'movinin-types'
 import axiosInstance from './axiosInstance'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 
 /**
  * Sign up.
@@ -27,7 +27,7 @@ export const signup = (data: movininTypes.SignUpPayload): Promise<number> =>
 export const checkToken = (userId: string, email: string, token: string): Promise<number> =>
   axiosInstance
     .get(
-      `/api/check-token/${Env.APP_TYPE}/${encodeURIComponent(userId)}/${encodeURIComponent(email)}/${encodeURIComponent(token)}`
+      `/api/check-token/${env.APP_TYPE}/${encodeURIComponent(userId)}/${encodeURIComponent(email)}/${encodeURIComponent(token)}`
     )
     .then((res) => res.status)
 
@@ -54,7 +54,7 @@ export const deleteTokens = (userId: string): Promise<number> =>
 export const resend = (email?: string, reset = false): Promise<number> =>
   axiosInstance
     .post(
-      `/api/resend/${Env.APP_TYPE}/${encodeURIComponent(email || '')}/${reset}`
+      `/api/resend/${env.APP_TYPE}/${encodeURIComponent(email || '')}/${reset}`
     )
     .then((res) => res.status)
 
@@ -96,7 +96,7 @@ export const validateEmail = (data: movininTypes.ValidateEmailPayload): Promise<
 export const signin = (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> =>
   axiosInstance
     .post(
-      `/api/sign-in/${Env.APP_TYPE}`,
+      `/api/sign-in/${env.APP_TYPE}`,
       data,
       { withCredentials: true }
     )
@@ -201,7 +201,7 @@ export const getLanguage = () => {
   if (lang && lang.length === 2) {
     return lang
   }
-  return Env.DEFAULT_LANGUAGE
+  return env.DEFAULT_LANGUAGE
 }
 
 /**

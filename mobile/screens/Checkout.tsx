@@ -30,7 +30,7 @@ import RadioButton from '../components/RadioButton'
 import * as PropertyService from '../services/PropertyService'
 import * as LocationService from '../services/LocationService'
 import * as BookingService from '../services/BookingService'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 import Backdrop from '../components/Backdrop'
 
 const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Checkout'>) => {
@@ -41,7 +41,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   const [loading, setLoading] = useState(false)
   const [authenticated, setAuthenticated] = useState(false)
   const [user, setUser] = useState<movininTypes.User | null>()
-  const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
+  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -343,7 +343,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         start: birthDate,
         end: new Date(),
       }).years ?? 0
-      const _birthDateValid = sub >= Env.MINIMUM_AGE
+      const _birthDateValid = sub >= env.MINIMUM_AGE
 
       setBirthDateValid(_birthDateValid)
       setError(!_birthDateValid)
@@ -673,7 +673,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                     <Image
                       style={styles.agencyImg}
                       source={{
-                        uri: movininHelper.joinURL(Env.CDN_USERS, property.agency.avatar),
+                        uri: movininHelper.joinURL(env.CDN_USERS, property.agency.avatar),
                       }}
                     />
                     <Text style={styles.agencyText}>{property.agency.fullName}</Text>
@@ -965,8 +965,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   agencyImg: {
-    width: Env.AGENCY_IMAGE_WIDTH,
-    height: Env.AGENCY_IMAGE_HEIGHT,
+    width: env.AGENCY_IMAGE_WIDTH,
+    height: env.AGENCY_IMAGE_HEIGHT,
   },
   agencyText: {
     color: '#a1a1a1',

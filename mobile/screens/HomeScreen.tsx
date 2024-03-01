@@ -10,7 +10,7 @@ import {
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
 import * as Helper from '../common/Helper'
@@ -32,7 +32,7 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [minDate, setMinDate] = useState(_minDate)
-  const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
+  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
   const [blur, setBlur] = useState(false)
   const [reload, setReload] = useState(false)
 

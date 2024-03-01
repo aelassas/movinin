@@ -13,7 +13,7 @@ import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 import Button from './Button'
 import * as Helper from '../common/Helper'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 
 interface PropertyProps {
@@ -50,7 +50,7 @@ const Property = ({
         <Text style={styles.name}>{property.name}</Text>
 
         <View style={styles.imgView}>
-          <Image style={styles.img} source={{ uri: movininHelper.joinURL(Env.CDN_PROPERTIES, property.image) }} />
+          <Image style={styles.img} source={{ uri: movininHelper.joinURL(env.CDN_PROPERTIES, property.image) }} />
         </View>
 
         <View style={styles.infos}>
@@ -106,7 +106,7 @@ const Property = ({
             && (
               <View style={styles.extra}>
                 <MaterialIcons name="photo-size-select-small" size={iconSize} style={styles.infoIcon} />
-                <Text style={styles.text}>{`${property.size} ${Env.SIZE_UNIT}`}</Text>
+                <Text style={styles.text}>{`${property.size} ${env.SIZE_UNIT}`}</Text>
               </View>
             )
           }
@@ -128,7 +128,7 @@ const Property = ({
             <Image
               style={styles.agencyImg}
               source={{
-                uri: movininHelper.joinURL(Env.CDN_USERS, property.agency.avatar),
+                uri: movininHelper.joinURL(env.CDN_USERS, property.agency.avatar),
               }}
             />
             <Text style={styles.agencyText}>{property.agency.fullName}</Text>
@@ -189,12 +189,12 @@ const styles = StyleSheet.create({
   },
   imgView: {
     width: '100%',
-    height: Env.PROPERTY_IMAGE_HEIGHT,
+    height: env.PROPERTY_IMAGE_HEIGHT,
     alignItems: 'center',
   },
   img: {
-    width: Env.PROPERTY_IMAGE_WIDTH,
-    height: Env.PROPERTY_IMAGE_HEIGHT,
+    width: env.PROPERTY_IMAGE_WIDTH,
+    height: env.PROPERTY_IMAGE_HEIGHT,
   },
   infos: {
     flexDirection: 'row',
@@ -246,8 +246,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   agencyImg: {
-    width: Env.AGENCY_IMAGE_WIDTH,
-    height: Env.AGENCY_IMAGE_HEIGHT,
+    width: env.AGENCY_IMAGE_WIDTH,
+    height: env.AGENCY_IMAGE_HEIGHT,
   },
   agencyText: {
     color: '#a1a1a1',

@@ -22,7 +22,7 @@ import { strings as cpStrings } from '../lang/property'
 import { strings } from '../lang/properties'
 import * as Helper from '../common/Helper'
 import * as LangHelper from '../common/LangHelper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 
 import '../assets/css/property-info.css'
 
@@ -45,7 +45,7 @@ const PropertyInfo = ({
       ? <CheckIcon className="available" />
       : <InfoIcon className="extra-info" />)
 
-  const size = `${property.size} ${Env.SIZE_UNIT}`
+  const size = `${property.size} ${env.SIZE_UNIT}`
 
   return (
     (

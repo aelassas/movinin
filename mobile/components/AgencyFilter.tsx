@@ -4,7 +4,7 @@ import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 
 import * as Helper from '../common/Helper'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import * as AgencyService from '../services/AgencyService'
 import Link from './Link'
@@ -93,7 +93,7 @@ const AgencyFilter = ({
                     <Image
                       style={styles.image}
                       source={{
-                        uri: movininHelper.joinURL(Env.CDN_USERS, agency.avatar),
+                        uri: movininHelper.joinURL(env.CDN_USERS, agency.avatar),
                       }}
                     />
                   </Switch>
@@ -156,8 +156,8 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   image: {
-    width: Env.AGENCY_IMAGE_WIDTH,
-    height: Env.AGENCY_IMAGE_HEIGHT,
+    width: env.AGENCY_IMAGE_WIDTH,
+    height: env.AGENCY_IMAGE_HEIGHT,
   },
   link: {
     marginTop: 10,

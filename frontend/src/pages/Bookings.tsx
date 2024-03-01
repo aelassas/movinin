@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import Master from '../components/Master'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import * as Helper from '../common/Helper'
 import BookingList from '../components/BookingList'
 import AgencyFilter from '../components/AgencyFilter'
@@ -61,7 +61,7 @@ const Bookings = () => {
             <div>
               <AgencyFilter agencies={allAgencies} onChange={handleAgencyFilterChange} className="cl-agency-filter" />
               <StatusFilter onChange={handleStatusFilterChange} className="cl-status-filter" />
-              <BookingFilter onSubmit={handleBookingFilterSubmit} language={(user && user.language) || Env.DEFAULT_LANGUAGE} className="cl-booking-filter" collapse={!Env.isMobile()} />
+              <BookingFilter onSubmit={handleBookingFilterSubmit} language={(user && user.language) || env.DEFAULT_LANGUAGE} className="cl-booking-filter" collapse={!env.isMobile()} />
             </div>
           </div>
           <div className="col-2">
@@ -74,7 +74,7 @@ const Bookings = () => {
               statuses={statuses}
               filter={filter}
               loading={loadingAgencies}
-              hideDates={Env.isMobile()}
+              hideDates={env.isMobile()}
               checkboxSelection={false}
             />
           </div>

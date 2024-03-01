@@ -7,7 +7,7 @@ import * as movininHelper from 'movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/image-editor'
 import ImageViewer from './ImageViewer'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import * as Helper from '../common/Helper'
 import * as PropertyService from '../services/PropertyService'
 
@@ -107,7 +107,7 @@ const ImageEditor = ({
 
     const src = (_image: ImageItem) =>
         movininHelper.joinURL(
-            _image.temp ? Env.CDN_TEMP_PROPERTIES : Env.CDN_PROPERTIES,
+            _image.temp ? env.CDN_TEMP_PROPERTIES : env.CDN_PROPERTIES,
             _image.filename
         )
 
@@ -121,8 +121,8 @@ const ImageEditor = ({
                     src={
                         image
                             ? image.temp
-                                ? movininHelper.joinURL(Env.CDN_TEMP_PROPERTIES, image.filename)
-                                : movininHelper.joinURL(Env.CDN_PROPERTIES, image.filename)
+                                ? movininHelper.joinURL(env.CDN_TEMP_PROPERTIES, image.filename)
+                                : movininHelper.joinURL(env.CDN_PROPERTIES, image.filename)
                             : Property
                     }
                 />

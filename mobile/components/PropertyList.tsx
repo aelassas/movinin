@@ -10,7 +10,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
 import * as Helper from '../common/Helper'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
 import * as PropertyService from '../services/PropertyService'
@@ -39,7 +39,7 @@ const PropertyList = ({
   header,
   onLoad
 }: PropertyListProps) => {
-  const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
+  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
   const [onScrollEnd, setOnScrollEnd] = useState(false)
   const [loading, setLoading] = useState(true)
   const [fetch, setFetch] = useState(false)
@@ -79,7 +79,7 @@ const PropertyList = ({
           rentalTerms: _rentalTerms,
         }
 
-        const data = await PropertyService.getProperties(payload, _page, Env.PROPERTIES_PAGE_SIZE)
+        const data = await PropertyService.getProperties(payload, _page, env.PROPERTIES_PAGE_SIZE)
         const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
         if (!_data) {
           Helper.error()
@@ -123,7 +123,7 @@ const PropertyList = ({
   }, [location, agencies, types, rentalTerms])
 
   const fr = language === 'fr'
-  const numToRender = Math.floor(Env.PROPERTIES_PAGE_SIZE / 2)
+  const numToRender = Math.floor(env.PROPERTIES_PAGE_SIZE / 2)
 
   return (
     <View style={styles.container}>

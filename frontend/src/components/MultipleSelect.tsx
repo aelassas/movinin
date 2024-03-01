@@ -12,7 +12,7 @@ import {
 import { LocationOn as LocationIcon, AccountCircle } from '@mui/icons-material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 
 import '../assets/css/multiple-select.css'
 
@@ -188,7 +188,7 @@ const MultipleSelect = ({
                     <>
                       <InputAdornment position="start">
                         {option.image ? (
-                          <Avatar src={movininHelper.joinURL(Env.CDN_USERS, option.image)} className="avatar-small suo" />
+                          <Avatar src={movininHelper.joinURL(env.CDN_USERS, option.image)} className="avatar-small suo" />
                         ) : (
                           <AccountCircle className="avatar-small suo" color="disabled" />
                         )}
@@ -217,9 +217,9 @@ const MultipleSelect = ({
                       <InputAdornment position="start">
                         <div className="agency-ia">
                           <img
-                            src={movininHelper.joinURL(Env.CDN_USERS, option.image)}
+                            src={movininHelper.joinURL(env.CDN_USERS, option.image)}
                             alt={option.name}
-                            style={{ height: Env.AGENCY_IMAGE_HEIGHT }}
+                            style={{ height: env.AGENCY_IMAGE_HEIGHT }}
                           />
                         </div>
                       </InputAdornment>
@@ -268,10 +268,10 @@ const MultipleSelect = ({
                     <>
                       <InputAdornment position="start">
                         <img
-                          src={movininHelper.joinURL(Env.CDN_PROPERTIES, option.image)}
+                          src={movininHelper.joinURL(env.CDN_PROPERTIES, option.image)}
                           alt={option.name}
                           style={{
-                            height: Env.SELECTED_PROPERTY_OPTION_IMAGE_HEIGHT,
+                            height: env.SELECTED_PROPERTY_OPTION_IMAGE_HEIGHT,
                           }}
                         />
                       </InputAdornment>
@@ -300,7 +300,7 @@ const MultipleSelect = ({
             return (
               <li {...props} className={`${props.className} ms-option`}>
                 <span className="option-image">
-                  {option.image ? <Avatar src={movininHelper.joinURL(Env.CDN_USERS, option.image)} className="avatar-medium" /> : <AccountCircle className="avatar-medium" color="disabled" />}
+                  {option.image ? <Avatar src={movininHelper.joinURL(env.CDN_USERS, option.image)} className="avatar-medium" /> : <AccountCircle className="avatar-medium" color="disabled" />}
                 </span>
                 <span className="option-name">{option.name}</span>
               </li>
@@ -310,9 +310,9 @@ const MultipleSelect = ({
               <li {...props} className={`${props.className} ms-option`}>
                 <span className="option-image agency-ia">
                   <img
-                    src={movininHelper.joinURL(Env.CDN_USERS, option.image)}
+                    src={movininHelper.joinURL(env.CDN_USERS, option.image)}
                     alt={option.name}
-                    style={{ height: Env.AGENCY_IMAGE_HEIGHT }}
+                    style={{ height: env.AGENCY_IMAGE_HEIGHT }}
                   />
                 </span>
                 <span className="option-name">{option.name}</span>
@@ -332,10 +332,10 @@ const MultipleSelect = ({
               <li {...props} className={`${props.className} ms-option`}>
                 <span className="option-image property-ia">
                   <img
-                    src={movininHelper.joinURL(Env.CDN_PROPERTIES, option.image)}
+                    src={movininHelper.joinURL(env.CDN_PROPERTIES, option.image)}
                     alt={option.name}
                     style={{
-                      height: Env.PROPERTY_OPTION_IMAGE_HEIGHT,
+                      height: env.PROPERTY_OPTION_IMAGE_HEIGHT,
                     }}
                   />
                 </span>

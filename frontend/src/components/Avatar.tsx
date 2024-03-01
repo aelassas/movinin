@@ -15,7 +15,7 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import * as Helper from '../common/Helper'
 import { strings as commonStrings } from '../lang/common'
 import * as UserService from '../services/UserService'
@@ -195,7 +195,7 @@ const Avatar = ({
                   </Box>
                 )}
               >
-                <MaterialAvatar src={movininHelper.joinURL(Env.CDN_USERS, user.avatar)} className="avatar" />
+                <MaterialAvatar src={movininHelper.joinURL(env.CDN_USERS, user.avatar)} className="avatar" />
               </Badge>
             </Badge>
           ) : (
@@ -220,7 +220,7 @@ const Avatar = ({
           )}
         </div>
       ) : user.avatar ? (
-        <MaterialAvatar src={movininHelper.joinURL(Env.CDN_USERS, user.avatar)} className={size ? `avatar-${size}` : 'avatar'} />
+        <MaterialAvatar src={movininHelper.joinURL(env.CDN_USERS, user.avatar)} className={size ? `avatar-${size}` : 'avatar'} />
       ) : (
         <AccountCircle className={size ? `avatar-${size}` : 'avatar'} color={color || 'inherit'} />
       )}

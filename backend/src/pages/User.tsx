@@ -16,7 +16,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as ulStrings } from '../lang/user-list'
 import * as UserService from '../services/UserService'
@@ -204,8 +204,8 @@ const User = () => {
                 user={agency ? undefined : user}
                 agencies={agency ? [user._id as string] : agencies}
                 statuses={statuses}
-                hideDates={Env.isMobile()}
-                checkboxSelection={!Env.isMobile()}
+                hideDates={env.isMobile()}
+                checkboxSelection={!env.isMobile()}
                 hideAgencyColumn={agency}
               />
             )}

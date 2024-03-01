@@ -13,7 +13,7 @@ import * as movininHelper from '../miscellaneous/movininHelper'
 import BookingStatus from './BookingStatus'
 import Button from './Button'
 import * as Helper from '../common/Helper'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 
 interface BookingProps {
@@ -74,7 +74,7 @@ const Booking = ({
           <Image
             style={styles.agencyImg}
             source={{
-              uri: movininHelper.joinURL(Env.CDN_USERS, agency.avatar),
+              uri: movininHelper.joinURL(env.CDN_USERS, agency.avatar),
             }}
           />
           <Text style={styles.agencyText}>{agency.fullName}</Text>
@@ -203,8 +203,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   agencyImg: {
-    width: Env.AGENCY_IMAGE_WIDTH,
-    height: Env.AGENCY_IMAGE_HEIGHT,
+    width: env.AGENCY_IMAGE_WIDTH,
+    height: env.AGENCY_IMAGE_HEIGHT,
   },
   agencyText: {
     color: '#a1a1a1',

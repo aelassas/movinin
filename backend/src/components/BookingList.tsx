@@ -31,7 +31,7 @@ import { format } from 'date-fns'
 import { fr as dfnsFR, enUS as dfnsENUS } from 'date-fns/locale'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as csStrings } from '../lang/properties'
 import { strings } from '../lang/booking-list'
@@ -94,11 +94,11 @@ const BookingList = ({
   const [openDeleteDialog, setopenDeleteDialog] = useState(false)
   const [offset, setOffset] = useState(0)
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-    pageSize: Env.BOOKINGS_PAGE_SIZE,
+    pageSize: env.BOOKINGS_PAGE_SIZE,
     page: 0,
   })
   const [page, setPage] = useState(0)
-  const [pageSize, setPageSize] = useState(Env.isMobile() ? Env.BOOKINGS_MOBILE_PAGE_SIZE : Env.BOOKINGS_PAGE_SIZE)
+  const [pageSize, setPageSize] = useState(env.isMobile() ? env.BOOKINGS_MOBILE_PAGE_SIZE : env.BOOKINGS_PAGE_SIZE)
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
 
@@ -109,7 +109,7 @@ const BookingList = ({
 
   const fetchData = async (_page: number, _user?: movininTypes.User) => {
     try {
-      const _pageSize = Env.isMobile() ? Env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
+      const _pageSize = env.isMobile() ? env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
 
       if (agencies && statuses) {
         setLoading(true)
@@ -135,7 +135,7 @@ const BookingList = ({
         }
         const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
-        if (Env.isMobile()) {
+        if (env.isMobile()) {
           const _rows = _page === 0 ? _data.resultData : [...rows, ..._data.resultData]
           setRows(_rows)
           setRowCount(totalRecords)
@@ -334,7 +334,7 @@ const BookingList = ({
         flex: 1,
         renderCell: ({ row, value }: GridRenderCellParams<movininTypes.Booking, string>) => (
           <Link href={`/agency?c=${(row.agency as movininTypes.User)._id}`} className="cell-agency">
-            <img src={movininHelper.joinURL(Env.CDN_USERS, (row.agency as movininTypes.User).avatar)} alt={value} />
+            <img src={movininHelper.joinURL(env.CDN_USERS, (row.agency as movininTypes.User).avatar)} alt={value} />
           </Link>
         ),
         valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, movininTypes.User>) => value?.fullName,
@@ -369,7 +369,7 @@ const BookingList = ({
   }, [bookingLoggedUser])
 
   useEffect(() => {
-    if (Env.isMobile()) {
+    if (env.isMobile()) {
       const element: HTMLDivElement | null = containerClassName
         ? document.querySelector(`.${containerClassName}`)
         : document.querySelector('div.bookings')
@@ -380,7 +380,7 @@ const BookingList = ({
             const target = event.target as HTMLDivElement
 
             if (target.scrollTop > 0
-              && target.offsetHeight + target.scrollTop + Env.INFINITE_SCROLL_OFFSET >= target.scrollHeight) {
+              && target.offsetHeight + target.scrollTop + env.INFINITE_SCROLL_OFFSET >= target.scrollHeight) {
               setLoading(true)
               setPage(page + 1)
             }
@@ -444,7 +444,7 @@ const BookingList = ({
 
   const handleConfirmDelete = async () => {
     try {
-      if (Env.isMobile()) {
+      if (env.isMobile()) {
         const ids = [selectedId]
 
         const _status = await BookingService.deleteBookings(ids)
@@ -484,7 +484,7 @@ const BookingList = ({
   const _fr = language === 'fr'
   const _locale = _fr ? dfnsFR : dfnsENUS
   const _format = _fr ? 'eee d LLL kk:mm' : 'eee, d LLL, kk:mm'
-  const bookingDetailHeight = Env.AGENCY_IMAGE_HEIGHT + 10
+  const bookingDetailHeight = env.AGENCY_IMAGE_HEIGHT + 10
 
   return (
     <div className="bs-list">
@@ -500,7 +500,7 @@ const BookingList = ({
               </CardContent>
             </Card>
           )
-        ) : Env.isMobile() ? (
+        ) : env.isMobile() ? (
           <>
             {rows.map((booking, index) => {
               const from = new Date(booking.from)
@@ -539,7 +539,7 @@ const BookingList = ({
                     <span className="booking-detail-title">{commonStrings.AGENCY}</span>
                     <div className="booking-detail-value">
                       <div className="property-agency">
-                        <img src={movininHelper.joinURL(Env.CDN_USERS, (booking.agency as movininTypes.User).avatar)} alt={(booking.agency as movininTypes.User).fullName} />
+                        <img src={movininHelper.joinURL(env.CDN_USERS, (booking.agency as movininTypes.User).avatar)} alt={(booking.agency as movininTypes.User).fullName} />
                         <span className="property-agency-name">{(booking.agency as movininTypes.User).fullName}</span>
                       </div>
                     </div>
@@ -600,10 +600,10 @@ const BookingList = ({
             loading={loading}
             initialState={{
               pagination: {
-                paginationModel: { pageSize: Env.BOOKINGS_PAGE_SIZE },
+                paginationModel: { pageSize: env.BOOKINGS_PAGE_SIZE },
               },
             }}
-            pageSizeOptions={[Env.BOOKINGS_PAGE_SIZE, 50, 100]}
+            pageSizeOptions={[env.BOOKINGS_PAGE_SIZE, 50, 100]}
             pagination
             paginationMode="server"
             paginationModel={paginationModel}

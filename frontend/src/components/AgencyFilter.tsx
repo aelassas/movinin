@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import Accordion from './Accordion'
 
@@ -108,7 +108,7 @@ const AgencyFilter = ({
         <Accordion
           title={commonStrings.AGENCY}
           collapse={collapse}
-          offsetHeight={Math.floor((agencies.length / 2) * Env.AGENCY_IMAGE_HEIGHT)}
+          offsetHeight={Math.floor((agencies.length / 2) * env.AGENCY_IMAGE_HEIGHT)}
           className={`${className ? `${className} ` : ''}agency-filter`}
         >
           <ul className="agency-list">
@@ -128,7 +128,7 @@ const AgencyFilter = ({
                   role="button"
                   tabIndex={0}
                 >
-                  <img src={movininHelper.joinURL(Env.CDN_USERS, agency.avatar)} alt={agency.fullName} />
+                  <img src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)} alt={agency.fullName} />
                 </span>
               </li>
             ))}

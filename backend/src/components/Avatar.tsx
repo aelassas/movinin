@@ -20,7 +20,7 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import * as Helper from '../common/Helper'
 import * as UserService from '../services/UserService'
@@ -291,9 +291,9 @@ const Avatar = ({
 
   const cdn = () => {
     if (type === movininTypes.RecordType.Property) {
-      return mode === 'create' ? Env.CDN_TEMP_PROPERTIES : Env.CDN_PROPERTIES
+      return mode === 'create' ? env.CDN_TEMP_PROPERTIES : env.CDN_PROPERTIES
     }
-    return mode === 'create' ? Env.CDN_TEMP_USERS : Env.CDN_USERS
+    return mode === 'create' ? env.CDN_TEMP_USERS : env.CDN_USERS
   }
 
   useEffect(() => {
@@ -319,9 +319,9 @@ const Avatar = ({
     }
   }, [record, type, mode])
 
-  const agencyImageStyle = { width: Env.AGENCY_IMAGE_WIDTH }
+  const agencyImageStyle = { width: env.AGENCY_IMAGE_WIDTH }
 
-  const propertyImageStyle = { width: Env.PROPERTY_IMAGE_WIDTH }
+  const propertyImageStyle = { width: env.PROPERTY_IMAGE_WIDTH }
 
   const userAvatar = avatar ? <MaterialAvatar src={movininHelper.joinURL(cdn(), avatar)} className={size ? `avatar-${size}` : 'avatar'} /> : <></>
 

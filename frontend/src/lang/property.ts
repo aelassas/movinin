@@ -1,5 +1,5 @@
 import LocalizedStrings from 'react-localization'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import * as LangHelper from '../common/LangHelper'
 
 const strings = new LocalizedStrings({
@@ -11,7 +11,7 @@ const strings = new LocalizedStrings({
     PROPERTY_TYPE: 'Type',
     PRICE: 'Prix',
     MINIMUM_AGE: 'Âge minimum',
-    MINIMUM_AGE_NOT_VALID: `L'âge minimum doit être supérieur ou égal à ${Env.MINIMUM_AGE} ans.`,
+    MINIMUM_AGE_NOT_VALID: `L'âge minimum doit être supérieur ou égal à ${env.MINIMUM_AGE} ans.`,
     ADDRESS: 'Adresse',
     DESCRIPTION: 'Description',
     BEDROOMS: 'Chambres à couche',
@@ -36,7 +36,7 @@ const strings = new LocalizedStrings({
     PROPERTY_TYPE: 'Type',
     PRICE: 'Price',
     MINIMUM_AGE: 'Minimum age',
-    MINIMUM_AGE_NOT_VALID: `Minimum age must be greater than or equal to ${Env.MINIMUM_AGE} years old.`,
+    MINIMUM_AGE_NOT_VALID: `Minimum age must be greater than or equal to ${env.MINIMUM_AGE} years old.`,
     ADDRESS: 'Address',
     DESCRIPTION: 'Description',
     BEDROOMS: 'Bedrooms',

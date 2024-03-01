@@ -18,7 +18,7 @@ import htmlToDraft from 'html-to-draftjs'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import Master from '../components/Master'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as csStrings } from '../lang/properties'
 import { strings } from '../lang/create-property'
@@ -57,7 +57,7 @@ const UpdateProperty = () => {
   const [address, setAddress] = useState('')
   const [type, setType] = useState('')
   const [price, setPrice] = useState('')
-  const [minimumAge, setMinimumAge] = useState(String(Env.MINIMUM_AGE))
+  const [minimumAge, setMinimumAge] = useState(String(env.MINIMUM_AGE))
   const [minimumAgeValid, setMinimumAgeValid] = useState(true)
   const [available, setAvailable] = useState(false)
   const [description, setDescription] = useState('')
@@ -120,7 +120,7 @@ const UpdateProperty = () => {
   const validateMinimumAge = (age: string, updateState = true) => {
     if (age) {
       const _age = Number.parseInt(age, 10)
-      const _minimumAgeValid = _age >= Env.MINIMUM_AGE && _age <= 99
+      const _minimumAgeValid = _age >= env.MINIMUM_AGE && _age <= 99
       if (updateState) {
         setMinimumAgeValid(_minimumAgeValid)
       }
@@ -540,7 +540,7 @@ const UpdateProperty = () => {
               </FormControl>
 
               <FormControl fullWidth margin="dense">
-                <InputLabel>{`${strings.SIZE} (${Env.SIZE_UNIT})`}</InputLabel>
+                <InputLabel>{`${strings.SIZE} (${env.SIZE_UNIT})`}</InputLabel>
                 <Input
                   type="text"
                   value={size}

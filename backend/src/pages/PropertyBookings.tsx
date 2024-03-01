@@ -17,7 +17,7 @@ import {
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import Master from '../components/Master'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/properties'
 import * as PropertyService from '../services/PropertyService'
@@ -132,7 +132,7 @@ const PropertyBookings = () => {
           <div className="col-1">
             <section className="property-sec">
               <div className="property-img">
-                <img alt="" src={movininHelper.joinURL(Env.CDN_PROPERTIES, property.image)} />
+                <img alt="" src={movininHelper.joinURL(env.CDN_PROPERTIES, property.image)} />
               </div>
               <div className="agency">
                 <AgencyBadge agency={property.agency} />
@@ -177,8 +177,8 @@ const PropertyBookings = () => {
               property={property._id}
               hideAgencyColumn
               hidePropertyColumn
-              hideDates={Env.isMobile()}
-              checkboxSelection={!Env.isMobile()}
+              hideDates={env.isMobile()}
+              checkboxSelection={!env.isMobile()}
             />
           </div>
 

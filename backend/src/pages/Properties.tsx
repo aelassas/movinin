@@ -14,7 +14,7 @@ import AvailabilityFilter from '../components/AvailabilityFilter'
 import PropertyList from '../components/PropertyList'
 import * as AgencyService from '../services/AgencyService'
 import RentalTermFilter from '../components/RentalTermFilter'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 
 import '../assets/css/properties.css'
 
@@ -127,7 +127,7 @@ const Properties = () => {
               availability={availability}
               keyword={keyword}
               loading={loading}
-              language={user.language || Env.DEFAULT_LANGUAGE}
+              language={user.language || env.DEFAULT_LANGUAGE}
               onLoad={handlePropertyListLoad}
               onDelete={handlePropertyDelete}
             />

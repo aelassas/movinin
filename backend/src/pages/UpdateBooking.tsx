@@ -35,7 +35,7 @@ import LocationSelectList from '../components/LocationSelectList'
 import PropertySelectList from '../components/PropertySelectList'
 import StatusList from '../components/StatusList'
 import DatePicker from '../components/DatePicker'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 
 import '../assets/css/booking.css'
 
@@ -434,7 +434,7 @@ const UpdateBooking = () => {
               user={user}
               booking={booking}
               properties={((property && [booking.property]) as movininTypes.Property[]) || []}
-              language={user?.language || Env.DEFAULT_LANGUAGE}
+              language={user?.language || env.DEFAULT_LANGUAGE}
               hidePrice
             />
           </div>

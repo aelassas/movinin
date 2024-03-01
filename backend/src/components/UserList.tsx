@@ -27,7 +27,7 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/user-list'
 import * as Helper from '../common/Helper'
@@ -54,7 +54,7 @@ const UserList = ({
 }: UserListProps) => {
   const [user, setUser] = useState<movininTypes.User>()
   const [page, setPage] = useState(0)
-  const [pageSize, setPageSize] = useState(Env.PAGE_SIZE)
+  const [pageSize, setPageSize] = useState(env.PAGE_SIZE)
   const [columns, setColumns] = useState<GridColDef<movininTypes.User>[]>([])
   const [rows, setRows] = useState<movininTypes.User[]>([])
   const [rowCount, setRowCount] = useState(0)
@@ -66,7 +66,7 @@ const UserList = ({
   const [keyword, setKeyword] = useState(userListKeyword)
   const [reloadColumns, setReloadColumns] = useState(false)
   const [paginationModel, setPaginationModel] = useState({
-    pageSize: Env.PAGE_SIZE,
+    pageSize: env.PAGE_SIZE,
     page: 0,
   })
 
@@ -146,9 +146,9 @@ const UserList = ({
 
           if (__user.avatar) {
             if (__user.type === movininTypes.RecordType.Agency) {
-              userAvatar = <img src={movininHelper.joinURL(Env.CDN_USERS, row.avatar)} alt={row.fullName} />
+              userAvatar = <img src={movininHelper.joinURL(env.CDN_USERS, row.avatar)} alt={row.fullName} />
             } else {
-              const avatar = <Avatar src={movininHelper.joinURL(Env.CDN_USERS, row.avatar)} className="avatar-small" />
+              const avatar = <Avatar src={movininHelper.joinURL(env.CDN_USERS, row.avatar)} className="avatar-small" />
               if (__user.verified) {
                 userAvatar = (
                   <Badge
@@ -347,9 +347,9 @@ const UserList = ({
           rowCount={rowCount}
           loading={loading}
           initialState={{
-            pagination: { paginationModel: { pageSize: Env.PAGE_SIZE } },
+            pagination: { paginationModel: { pageSize: env.PAGE_SIZE } },
           }}
-          pageSizeOptions={[Env.PAGE_SIZE, 50, 100]}
+          pageSizeOptions={[env.PAGE_SIZE, 50, 100]}
           pagination
           paginationMode="server"
           paginationModel={paginationModel}

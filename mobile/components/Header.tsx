@@ -12,7 +12,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import * as UserService from '../services/UserService'
 import * as movininHelper from '../miscellaneous/movininHelper'
-import * as Env from '../config/env.config'
+import * as env from '../config/env.config'
 
 interface HeaderProps {
   title?: string
@@ -40,7 +40,7 @@ const Header = ({
       if (currentUser && currentUser._id) {
         const user = await UserService.getUser(currentUser._id)
         if (user.avatar) {
-          setAvatar(movininHelper.joinURL(Env.CDN_USERS, user.avatar))
+          setAvatar(movininHelper.joinURL(env.CDN_USERS, user.avatar))
         } else {
           setAvatar('')
         }

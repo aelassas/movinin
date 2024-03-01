@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import * as Helper from '../common/Helper'
 import * as LocationService from '../services/LocationService'
 import * as AgencyService from '../services/AgencyService'
@@ -114,7 +114,7 @@ const Properties = () => {
                   className="filter"
                   agencies={allAgencies}
                   onChange={handleAgencyFilterChange}
-                  collapse={!Env.isMobile()}
+                  collapse={!env.isMobile()}
                 />
                 <PropertyTypeFilter
                   className="filter"

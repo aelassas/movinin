@@ -18,7 +18,7 @@ import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import Backdrop from '../components/SimpleBackdrop'
 import Master from '../components/Master'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/properties'
 import * as PropertyService from '../services/PropertyService'
@@ -46,7 +46,7 @@ const Property = () => {
   const edit = Helper.admin(user) || (user?._id === property?.agency._id)
 
   useEffect(() => {
-    const src = (img: string) => movininHelper.joinURL(Env.CDN_PROPERTIES, img)
+    const src = (img: string) => movininHelper.joinURL(env.CDN_PROPERTIES, img)
 
     if (property) {
       const _image = src(property.image)

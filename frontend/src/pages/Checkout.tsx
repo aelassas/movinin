@@ -24,7 +24,7 @@ import { format, intervalToDuration } from 'date-fns'
 import { fr, enUS } from 'date-fns/locale'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import * as BookingService from '../services/BookingService'
 import { strings as commonStrings } from '../lang/common'
 import { strings as csStrings } from '../lang/properties'
@@ -51,7 +51,7 @@ const Checkout = () => {
   const [to, setTo] = useState<Date>()
   const [visible, setVisible] = useState(false)
   const [authenticated, setAuthenticated] = useState(false)
-  const [language, setLanguage] = useState(Env.DEFAULT_LANGUAGE)
+  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
   const [noMatch, setNoMatch] = useState(false)
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
@@ -509,7 +509,7 @@ const Checkout = () => {
   const _fr = language === 'fr'
   const _locale = _fr ? fr : enUS
   const _format = _fr ? 'eee d LLL kk:mm' : 'eee, d LLL, kk:mm'
-  const bookingDetailHeight = Env.AGENCY_IMAGE_HEIGHT + 10
+  const bookingDetailHeight = env.AGENCY_IMAGE_HEIGHT + 10
 
   return (
     <Master onLoad={onLoad} strict={false}>
@@ -572,7 +572,7 @@ const Checkout = () => {
                       <span className="booking-detail-title">{commonStrings.AGENCY}</span>
                       <div className="booking-detail-value">
                         <div className="property-agency">
-                          <img src={movininHelper.joinURL(Env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: Env.AGENCY_IMAGE_HEIGHT }} />
+                          <img src={movininHelper.joinURL(env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: env.AGENCY_IMAGE_HEIGHT }} />
                           <span className="property-agency-name">{property.agency.fullName}</span>
                         </div>
                       </div>

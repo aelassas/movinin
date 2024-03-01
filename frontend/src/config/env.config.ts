@@ -16,7 +16,7 @@ const LANGUAGES = [
   },
 ]
 
-const Env = {
+const env = {
   isMobile: () => window.innerWidth <= 960,
 
   APP_TYPE: movininTypes.AppType.Frontend,
@@ -52,4 +52,4 @@ const Env = {
   SIZE_UNIT: 'm²',
 }
 
-export default Env
+export default env

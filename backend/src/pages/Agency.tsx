@@ -13,7 +13,7 @@ import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import Env from '../config/env.config'
+import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as clStrings } from '../lang/agency-list'
 import * as AgencyService from '../services/AgencyService'
@@ -153,7 +153,7 @@ const Agency = () => {
               ) : (
                 <div className="property-agency">
                   <span className="property-agency-logo">
-                    <img src={movininHelper.joinURL(Env.CDN_USERS, agency.avatar)} alt={agency.fullName} style={{ width: Env.AGENCY_IMAGE_WIDTH }} />
+                    <img src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)} alt={agency.fullName} style={{ width: env.AGENCY_IMAGE_WIDTH }} />
                   </span>
                   <span className="property-agency-info">{agency.fullName}</span>
                 </div>
@@ -206,7 +206,7 @@ const Agency = () => {
               agencies={agencies}
               keyword=""
               reload={false}
-              language={user?.language || Env.DEFAULT_LANGUAGE}
+              language={user?.language || env.DEFAULT_LANGUAGE}
               hideAgency
               onLoad={handlePropertyListLoad}
               onDelete={handlePropertyDelete}
