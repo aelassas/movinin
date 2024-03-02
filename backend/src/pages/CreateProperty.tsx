@@ -23,7 +23,7 @@ import { strings as commonStrings } from '../lang/common'
 import { strings as csStrings } from '../lang/properties'
 import { strings } from '../lang/create-property'
 import * as PropertyService from '../services/PropertyService'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import Error from '../components/Error'
 import AgencySelectList from '../components/AgencySelectList'
 import LocationSelectList from '../components/LocationSelectList'
@@ -256,10 +256,10 @@ const CreateProperty = () => {
       if (property && property._id) {
         navigate('/properties')
       } else {
-        Helper.error()
+        helper.error()
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     } finally {
       setLoading(false)
     }
@@ -368,7 +368,7 @@ const CreateProperty = () => {
 
             <FormControl fullWidth margin="dense">
               <TextField
-                label={`${strings.PRICE} ${rentalTerm ? `(${commonStrings.CURRENCY}/${Helper.rentalTermUnit(rentalTerm as movininTypes.RentalTerm)})` : ''}`}
+                label={`${strings.PRICE} ${rentalTerm ? `(${commonStrings.CURRENCY}/${helper.rentalTermUnit(rentalTerm as movininTypes.RentalTerm)})` : ''}`}
                 // eslint-disable-next-line
                 inputProps={{ inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }}
                 onChange={handlePriceChange}
@@ -566,7 +566,7 @@ const CreateProperty = () => {
                       await PropertyService.deleteTempImage(tempImage)
                     }
                   } catch (err) {
-                    Helper.error(err)
+                    helper.error(err)
                   }
                   navigate('/properties')
                 }}

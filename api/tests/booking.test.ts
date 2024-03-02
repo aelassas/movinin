@@ -3,8 +3,8 @@ import request from 'supertest'
 import * as movininTypes from 'movinin-types'
 import { v1 as uuid } from 'uuid'
 import app from '../src/app'
-import * as DatabaseHelper from '../src/common/DatabaseHelper'
-import * as TestHelper from './TestHelper'
+import * as databaseHelper from '../src/common/databaseHelper'
+import * as testHelper from './testHelper'
 import Property from '../src/models/Property'
 import Booking from '../src/models/Booking'
 import User from '../src/models/User'
@@ -23,18 +23,18 @@ let BOOKING_ID: string
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
-    if (await DatabaseHelper.Connect()) {
-        await TestHelper.initialize()
+    if (await databaseHelper.Connect()) {
+        await testHelper.initialize()
 
         // create a supplier
-        const supplierName = TestHelper.getAgencyName()
-        AGENCY_ID = await TestHelper.createAgency(`${supplierName}@test.movinin.io`, supplierName)
+        const supplierName = testHelper.getAgencyName()
+        AGENCY_ID = await testHelper.createAgency(`${supplierName}@test.movinin.io`, supplierName)
 
         // get user id
-        RENTER1_ID = TestHelper.getUserId()
+        RENTER1_ID = testHelper.getUserId()
 
         // create a location
-        LOCATION_ID = await TestHelper.createLocation('Location 1 EN', 'Location 1 FR')
+        LOCATION_ID = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
 
         // create property
         const payload: movininTypes.CreatePropertyPayload = {
@@ -78,13 +78,13 @@ beforeAll(async () => {
 // Closing and cleaning the database connection after running the test suite
 //
 afterAll(async () => {
-    await TestHelper.close()
+    await testHelper.close()
 
     // delete the supplier
-    await TestHelper.deleteAgency(AGENCY_ID)
+    await testHelper.deleteAgency(AGENCY_ID)
 
     // delete the location
-    await TestHelper.deleteLocation(LOCATION_ID)
+    await testHelper.deleteLocation(LOCATION_ID)
 
     // delete the property
     await Property.deleteMany({ _id: { $in: [PROPERTY1_ID, PROPERTY2_ID] } })
@@ -92,7 +92,7 @@ afterAll(async () => {
     // delete renters
     await User.deleteOne({ _id: { $in: [RENTER1_ID, RENTER2_ID] } })
 
-    await DatabaseHelper.Close()
+    await databaseHelper.Close()
 })
 
 //
@@ -101,7 +101,7 @@ afterAll(async () => {
 
 describe('POST /api/create-booking', () => {
     it('should create a booking', async () => {
-        const token = await TestHelper.signinAsAdmin()
+        const token = await testHelper.signinAsAdmin()
 
         const payload: movininTypes.Booking = {
             agency: AGENCY_ID,
@@ -126,7 +126,7 @@ describe('POST /api/create-booking', () => {
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
-        await TestHelper.signout(token)
+        await testHelper.signout(token)
     })
 })
 
@@ -156,7 +156,7 @@ describe('POST /api/checkout', () => {
         bookings = await Booking.find({ renter: RENTER1_ID })
         expect(bookings.length).toBeGreaterThan(1)
 
-        payload.booking.agency = TestHelper.GetRandromObjectIdAsString()
+        payload.booking.agency = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .post('/api/checkout')
             .send(payload)
@@ -165,8 +165,8 @@ describe('POST /api/checkout', () => {
         payload.booking.agency = AGENCY_ID
         payload.renter = {
             fullName: 'renter',
-            email: TestHelper.GetRandomEmail(),
-            language: TestHelper.LANGUAGE,
+            email: testHelper.GetRandomEmail(),
+            language: testHelper.LANGUAGE,
         }
         res = await request(app)
             .post('/api/checkout')
@@ -182,21 +182,21 @@ describe('POST /api/checkout', () => {
             .send(payload)
         expect(res.statusCode).toBe(200)
 
-        payload.booking!.property = TestHelper.GetRandromObjectIdAsString()
+        payload.booking!.property = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .post('/api/checkout')
             .send(payload)
         expect(res.statusCode).toBe(204)
 
         payload.booking!.property = PROPERTY1_ID
-        payload.booking!.location = TestHelper.GetRandromObjectIdAsString()
+        payload.booking!.location = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .post('/api/checkout')
             .send(payload)
         expect(res.statusCode).toBe(204)
 
         payload.booking!.agency = AGENCY_ID
-        payload.booking!.renter = TestHelper.GetRandromObjectIdAsString()
+        payload.booking!.renter = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .post('/api/checkout')
             .send(payload)
@@ -211,7 +211,7 @@ describe('POST /api/checkout', () => {
 
 describe('POST /api/update-booking', () => {
     it('should update a booking', async () => {
-        const token = await TestHelper.signinAsAdmin()
+        const token = await testHelper.signinAsAdmin()
 
         const payload: movininTypes.Booking = {
             _id: BOOKING_ID,
@@ -234,7 +234,7 @@ describe('POST /api/update-booking', () => {
         expect(res.body.price).toBe(4800)
         expect(res.body.status).toBe(movininTypes.BookingStatus.Paid)
 
-        payload._id = TestHelper.GetRandromObjectIdAsString()
+        payload._id = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .put('/api/update-booking')
             .set(env.X_ACCESS_TOKEN, token)
@@ -244,7 +244,7 @@ describe('POST /api/update-booking', () => {
         // notifyDriver
         payload._id = BOOKING_ID
         payload.status = movininTypes.BookingStatus.Cancelled
-        payload.renter = TestHelper.GetRandromObjectIdAsString()
+        payload.renter = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .put('/api/update-booking')
             .set(env.X_ACCESS_TOKEN, token)
@@ -277,13 +277,13 @@ describe('POST /api/update-booking', () => {
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
-        await TestHelper.signout(token)
+        await testHelper.signout(token)
     })
 })
 
 describe('POST /api/update-booking-status', () => {
     it('should update booking status', async () => {
-        const token = await TestHelper.signinAsAdmin()
+        const token = await testHelper.signinAsAdmin()
 
         const payload: movininTypes.UpdateStatusPayload = {
             ids: [BOOKING_ID],
@@ -302,37 +302,37 @@ describe('POST /api/update-booking-status', () => {
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
-        await TestHelper.signout(token)
+        await testHelper.signout(token)
     })
 })
 
 describe('GET /api/booking/:id/:language', () => {
     it('should get a booking', async () => {
-        const token = await TestHelper.signinAsAdmin()
+        const token = await testHelper.signinAsAdmin()
 
         let res = await request(app)
-            .get(`/api/booking/${BOOKING_ID}/${TestHelper.LANGUAGE}`)
+            .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(200)
         expect(res.body.property._id).toBe(PROPERTY2_ID)
 
         res = await request(app)
-            .get(`/api/booking/${TestHelper.GetRandromObjectIdAsString()}/${TestHelper.LANGUAGE}`)
+            .get(`/api/booking/${testHelper.GetRandromObjectIdAsString()}/${testHelper.LANGUAGE}`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(204)
 
         res = await request(app)
-            .get(`/api/booking/${uuid()}/${TestHelper.LANGUAGE}`)
+            .get(`/api/booking/${uuid()}/${testHelper.LANGUAGE}`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
-        await TestHelper.signout(token)
+        await testHelper.signout(token)
     })
 })
 
 describe('POST /api/bookings/:page/:size/:language', () => {
     it('should get bookings', async () => {
-        const token = await TestHelper.signinAsAdmin()
+        const token = await testHelper.signinAsAdmin()
 
         const payload: movininTypes.GetBookingsPayload = {
             agencies: [AGENCY_ID],
@@ -341,13 +341,13 @@ describe('POST /api/bookings/:page/:size/:language', () => {
                 location: LOCATION_ID,
                 from: new Date(2024, 2, 1),
                 to: new Date(1990, 2, 4),
-                keyword: TestHelper.USER_FULL_NAME,
+                keyword: testHelper.USER_FULL_NAME,
             },
-            user: TestHelper.getUserId(),
+            user: testHelper.getUserId(),
             property: PROPERTY2_ID,
         }
         let res = await request(app)
-            .post(`/api/bookings/${TestHelper.PAGE}/${TestHelper.SIZE}/${TestHelper.LANGUAGE}`)
+            .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
@@ -355,24 +355,24 @@ describe('POST /api/bookings/:page/:size/:language', () => {
 
         payload.filter!.keyword = BOOKING_ID
         res = await request(app)
-            .post(`/api/bookings/${TestHelper.PAGE}/${TestHelper.SIZE}/${TestHelper.LANGUAGE}`)
+            .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
         expect(res.body[0].resultData.length).toBe(1)
 
         res = await request(app)
-            .post(`/api/bookings/${TestHelper.PAGE}/${TestHelper.SIZE}/${TestHelper.LANGUAGE}`)
+            .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
-        await TestHelper.signout(token)
+        await testHelper.signout(token)
     })
 })
 
 describe('GET /api/has-bookings/:renter', () => {
     it("should check renter's bookings", async () => {
-        const token = await TestHelper.signinAsAdmin()
+        const token = await testHelper.signinAsAdmin()
 
         let res = await request(app)
             .get(`/api/has-bookings/${RENTER1_ID}`)
@@ -391,13 +391,13 @@ describe('GET /api/has-bookings/:renter', () => {
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
-        await TestHelper.signout(token)
+        await testHelper.signout(token)
     })
 })
 
 describe('POST /api/cancel-booking/:id', () => {
     it('should cancel a booking', async () => {
-        const token = await TestHelper.signinAsUser()
+        const token = await testHelper.signinAsUser()
 
         let booking = await Booking.findById(BOOKING_ID)
         expect(booking?.cancelRequest).toBeFalsy()
@@ -409,7 +409,7 @@ describe('POST /api/cancel-booking/:id', () => {
         expect(booking?.cancelRequest).toBeTruthy()
 
         res = await request(app)
-            .post(`/api/cancel-booking/${TestHelper.GetRandromObjectIdAsString()}`)
+            .post(`/api/cancel-booking/${testHelper.GetRandromObjectIdAsString()}`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(204)
 
@@ -418,13 +418,13 @@ describe('POST /api/cancel-booking/:id', () => {
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
-        await TestHelper.signout(token)
+        await testHelper.signout(token)
     })
 })
 
 describe('DELETE /api/delete-bookings', () => {
     it('should delete bookings', async () => {
-        const token = await TestHelper.signinAsAdmin()
+        const token = await testHelper.signinAsAdmin()
 
         const renters = [RENTER1_ID, RENTER2_ID]
 
@@ -444,6 +444,6 @@ describe('DELETE /api/delete-bookings', () => {
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
-        await TestHelper.signout(token)
+        await testHelper.signout(token)
     })
 })

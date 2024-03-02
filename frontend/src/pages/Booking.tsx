@@ -11,7 +11,7 @@ import { strings as commonStrings } from '../lang/common'
 import { strings as blStrings } from '../lang/booking-list'
 import { strings as bfStrings } from '../lang/booking-filter'
 import { strings as csStrings } from '../lang/properties'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import Master from '../components/Master'
 import * as UserService from '../services/UserService'
 import * as BookingService from '../services/BookingService'
@@ -174,7 +174,7 @@ const Booking = () => {
                   control={<Switch checked={cancellation} color="primary" readOnly />}
                   label={csStrings.CANCELLATION}
                   className="checkbox-fcl"
-                  disabled={!Helper.propertyOptionAvailable(property, 'cancellation')}
+                  disabled={!helper.propertyOptionAvailable(property, 'cancellation')}
                 />
               </FormControl>
             </form>
@@ -182,7 +182,7 @@ const Booking = () => {
           <div className="col-2">
             <div className="col-2-header">
               <div className="price">
-                <span className="price-days">{Helper.getDays(days)}</span>
+                <span className="price-days">{helper.getDays(days)}</span>
                 <span className="price-main">{`${movininHelper.formatNumber(price ?? 0)} ${commonStrings.CURRENCY}`}</span>
                 <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</span>
               </div>

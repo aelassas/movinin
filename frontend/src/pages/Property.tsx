@@ -12,7 +12,7 @@ import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/properties'
 import * as PropertyService from '../services/PropertyService'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import PropertyInfo from '../components/PropertyInfo'
 import NoMatch from './NoMatch'
 import ImageViewer from '../components/ImageViewer'
@@ -94,7 +94,7 @@ const Property = () => {
         setNoMatch(true)
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     } finally {
       setLoading(false)
     }
@@ -145,7 +145,7 @@ const Property = () => {
                 <div className="right-panel">
                   <div className="right-panel-header">
                     <div className="name"><h2>{property.name}</h2></div>
-                    <div className="price">{Helper.priceLabel(property)}</div>
+                    <div className="price">{helper.priceLabel(property)}</div>
                   </div>
                   <PropertyInfo
                     property={property}

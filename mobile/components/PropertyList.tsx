@@ -9,7 +9,7 @@ import {
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
@@ -53,7 +53,7 @@ const PropertyList = ({
         i18n.locale = _language
         setLanguage(_language)
       } catch (err) {
-        Helper.error(err)
+        helper.error(err)
       }
     }
 
@@ -82,7 +82,7 @@ const PropertyList = ({
         const data = await PropertyService.getProperties(payload, _page, env.PROPERTIES_PAGE_SIZE)
         const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
         if (!_data) {
-          Helper.error()
+          helper.error()
           return
         }
         const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
@@ -98,7 +98,7 @@ const PropertyList = ({
         setFetch(false)
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     } finally {
       setLoading(false)
     }

@@ -13,9 +13,9 @@ import User from '../models/User'
 import Booking from '../models/Booking'
 import Token from '../models/Token'
 import PushToken from '../models/PushToken'
-import * as Helper from '../common/Helper'
-import * as AuthHelper from '../common/AuthHelper'
-import * as MailHelper from '../common/MailHelper'
+import * as helper from '../common/helper'
+import * as authHelper from '../common/authHelper'
+import * as mailHelper from '../common/mailHelper'
 import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Property from '../models/Property'
@@ -64,7 +64,7 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
 
     if (body.avatar) {
       const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
-      if (await Helper.exists(avatar)) {
+      if (await helper.exists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
         const newPath = path.join(env.CDN_USERS, filename)
 
@@ -92,7 +92,7 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
         http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
-    await MailHelper.sendMail(mailOptions)
+    await mailHelper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.signup] ${strings.DB_ERROR} ${body}`, err)
@@ -155,7 +155,7 @@ export const create = async (req: Request, res: Response) => {
     // avatar
     if (body.avatar) {
       const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
-      if (await Helper.exists(avatar)) {
+      if (await helper.exists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
         const newPath = path.join(env.CDN_USERS, filename)
 
@@ -183,14 +183,14 @@ export const create = async (req: Request, res: Response) => {
       html:
         `<p>${strings.HELLO}${user.fullName},<br><br>
         ${strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-        ${Helper.joinURL(
+        ${helper.joinURL(
           user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.BACKEND_HOST,
           'activate',
         )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${strings.REGARDS}<br></p>`,
     }
 
-    await MailHelper.sendMail(mailOptions)
+    await mailHelper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
     console.error(`[user.create] ${strings.DB_ERROR} ${body}`, err)
@@ -288,7 +288,7 @@ export const resend = async (req: Request, res: Response) => {
   const { email } = req.params
 
   try {
-    if (!Helper.isValidEmail(email)) {
+    if (!helper.isValidEmail(email)) {
       throw new Error('email is not valid')
     }
 
@@ -324,14 +324,14 @@ export const resend = async (req: Request, res: Response) => {
         html:
           `<p>${strings.HELLO}${user.fullName},<br><br>
             ${reset ? strings.PASSWORD_RESET_LINK : strings.ACCOUNT_ACTIVATION_LINK}<br><br>
-            ${Helper.joinURL(
+            ${helper.joinURL(
             user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.BACKEND_HOST,
             reset ? 'reset-password' : 'activate',
           )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
             ${strings.REGARDS}<br></p>`,
       }
 
-      await MailHelper.sendMail(mailOptions)
+      await mailHelper.sendMail(mailOptions)
       return res.sendStatus(200)
     }
 
@@ -356,7 +356,7 @@ export const activate = async (req: Request, res: Response) => {
   const { userId } = body
 
   try {
-    if (!Helper.isValidObjectId(userId)) {
+    if (!helper.isValidObjectId(userId)) {
       throw new Error('body.userId is not valid')
     }
 
@@ -400,7 +400,7 @@ export const signin = async (req: Request, res: Response) => {
   const { email, password, stayConnected, mobile } = body
 
   try {
-    if (!Helper.isValidEmail(email)) {
+    if (!helper.isValidEmail(email)) {
       throw new Error('body.email is not valid')
     }
 
@@ -429,7 +429,7 @@ export const signin = async (req: Request, res: Response) => {
       // These options prevent XSS, CSRF and MITM attacks.
       // Authentication cookies are protected against XST attacks as well via allowedMethods middleware.
       //
-      const cookieOptions: CookieOptions = Helper.clone(env.COOKIE_OPTIONS)
+      const cookieOptions: CookieOptions = helper.clone(env.COOKIE_OPTIONS)
 
       if (stayConnected) {
         //
@@ -480,7 +480,7 @@ export const signin = async (req: Request, res: Response) => {
       //
       // On web, we return the token in a httpOnly, signed, secure and strict sameSite cookie.
       //
-      const cookieName = AuthHelper.getAuthCookieName(req)
+      const cookieName = authHelper.getAuthCookieName(req)
 
       return res
         .clearCookie(cookieName)
@@ -506,7 +506,7 @@ export const signin = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const signout = async (req: Request, res: Response) => {
-  const cookieName = AuthHelper.getAuthCookieName(req)
+  const cookieName = authHelper.getAuthCookieName(req)
 
   return res
     .clearCookie(cookieName)
@@ -526,7 +526,7 @@ export const getPushToken = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   try {
-    if (!Helper.isValidObjectId(userId)) {
+    if (!helper.isValidObjectId(userId)) {
       throw new Error('userId is not valid')
     }
 
@@ -555,7 +555,7 @@ export const createPushToken = async (req: Request, res: Response) => {
   const { userId, token } = req.params
 
   try {
-    if (!Helper.isValidObjectId(userId)) {
+    if (!helper.isValidObjectId(userId)) {
       throw new Error('userId is not valid')
     }
 
@@ -590,7 +590,7 @@ export const deletePushToken = async (req: Request, res: Response) => {
   const { userId } = req.params
 
   try {
-    if (!Helper.isValidObjectId(userId)) {
+    if (!helper.isValidObjectId(userId)) {
       throw new Error('userId is not valid')
     }
 
@@ -616,7 +616,7 @@ export const validateEmail = async (req: Request, res: Response) => {
   const { email } = body
 
   try {
-    if (!Helper.isValidEmail(email)) {
+    if (!helper.isValidEmail(email)) {
       throw new Error('body.email is not valid')
     }
 
@@ -656,7 +656,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
   try {
     const { token: _token, email: _email } = req.params
 
-    if (!Helper.isValidEmail(_email)) {
+    if (!helper.isValidEmail(_email)) {
       throw new Error('email is not valid')
     }
 
@@ -709,7 +709,7 @@ export const resendLink = async (req: Request, res: Response) => {
   const { email } = body
 
   try {
-    if (!email || !Helper.isValidEmail(email)) {
+    if (!email || !helper.isValidEmail(email)) {
       throw new Error('email is not valid')
     }
 
@@ -744,7 +744,7 @@ export const resendLink = async (req: Request, res: Response) => {
           ${strings.REGARDS}<br></p>`,
     }
 
-    await MailHelper.sendMail(mailOptions)
+    await mailHelper.sendMail(mailOptions)
     return res
       .status(200)
       .send(getStatusMessage(user.language, strings.ACCOUNT_ACTIVATION_EMAIL_SENT_PART_1 + user.email + strings.ACCOUNT_ACTIVATION_EMAIL_SENT_PART_2))
@@ -768,7 +768,7 @@ export const update = async (req: Request, res: Response) => {
     const { body }: { body: movininTypes.UpdateUserPayload } = req
     const { _id } = body
 
-    if (!Helper.isValidObjectId(_id)) {
+    if (!helper.isValidObjectId(_id)) {
       throw new Error('User id is not valid')
     }
 
@@ -830,7 +830,7 @@ export const updateEmailNotifications = async (req: Request, res: Response) => {
   try {
     const { _id } = body
 
-    if (!Helper.isValidObjectId(_id)) {
+    if (!helper.isValidObjectId(_id)) {
       throw new Error('User id is not valid')
     }
 
@@ -866,7 +866,7 @@ export const updateLanguage = async (req: Request, res: Response) => {
     const { body }: { body: movininTypes.UpdateLanguage } = req
     const { id, language } = body
 
-    if (!Helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id)) {
       throw new Error('User id is not valid')
     }
 
@@ -898,7 +898,7 @@ export const updateLanguage = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
   const { id } = req.params
   try {
-    if (!Helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id)) {
       throw new Error('User id is not valid')
     }
 
@@ -946,7 +946,7 @@ export const createAvatar = async (req: Request, res: Response) => {
       throw new Error('[user.createAvatar] req.file not found')
     }
 
-    const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+    const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
@@ -982,7 +982,7 @@ export const updateAvatar = async (req: Request, res: Response) => {
       if (user.avatar && !user.avatar.startsWith('http')) {
         const avatar = path.join(env.CDN_USERS, user.avatar)
 
-        if (await Helper.exists(avatar)) {
+        if (await helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
       }
@@ -1022,7 +1022,7 @@ export const deleteAvatar = async (req: Request, res: Response) => {
     if (user) {
       if (user.avatar && !user.avatar.startsWith('http')) {
         const avatar = path.join(env.CDN_USERS, user.avatar)
-        if (await Helper.exists(avatar)) {
+        if (await helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
       }
@@ -1054,7 +1054,7 @@ export const deleteTempAvatar = async (req: Request, res: Response) => {
 
   try {
     const avatarFile = path.join(env.CDN_TEMP_USERS, avatar)
-    if (!await Helper.exists(avatarFile)) {
+    if (!await helper.exists(avatarFile)) {
       throw new Error(`[user.deleteTempAvatar] temp avatar ${avatarFile} not found`)
     }
 
@@ -1086,7 +1086,7 @@ export const changePassword = async (req: Request, res: Response) => {
   } = body
 
   try {
-    if (!Helper.isValidObjectId(_id)) {
+    if (!helper.isValidObjectId(_id)) {
       throw new Error('User id is not valid')
     }
 
@@ -1139,7 +1139,7 @@ export const checkPassword = async (req: Request, res: Response) => {
   const { id, password } = req.params
 
   try {
-    if (!Helper.isValidObjectId(id)) {
+    if (!helper.isValidObjectId(id)) {
       throw new Error('User id is not valid')
     }
 
@@ -1265,7 +1265,7 @@ export const deleteUsers = async (req: Request, res: Response) => {
 
         if (user.avatar) {
           const avatar = path.join(env.CDN_USERS, user.avatar)
-          if (await Helper.exists(avatar)) {
+          if (await helper.exists(avatar)) {
             await fs.unlink(avatar)
           }
         }
@@ -1276,14 +1276,14 @@ export const deleteUsers = async (req: Request, res: Response) => {
           await Property.deleteMany({ agency: id })
           for (const property of properties) {
             const image = path.join(env.CDN_PROPERTIES, property.image)
-            if (await Helper.exists(image)) {
+            if (await helper.exists(image)) {
               await fs.unlink(image)
             }
             // delete additional images
             if (property.images) {
               for (const additionalImageName of property.images) {
                 const additionalImage = path.join(env.CDN_PROPERTIES, additionalImageName)
-                if (await Helper.exists(additionalImage)) {
+                if (await helper.exists(additionalImage)) {
                   await fs.unlink(additionalImage)
                 }
               }

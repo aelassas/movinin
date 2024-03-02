@@ -35,7 +35,7 @@ import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as csStrings } from '../lang/properties'
 import { strings } from '../lang/booking-list'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as BookingService from '../services/BookingService'
 import StatusList from './StatusList'
 
@@ -130,7 +130,7 @@ const BookingList = ({
 
         const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
         if (!_data) {
-          Helper.error()
+          helper.error()
           return
         }
         const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
@@ -158,7 +158,7 @@ const BookingList = ({
         }
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     } finally {
       setLoading(false)
       setInit(false)
@@ -252,7 +252,7 @@ const BookingList = ({
         field: 'status',
         headerName: strings.STATUS,
         flex: 1,
-        renderCell: ({ value }: GridRenderCellParams<movininTypes.Booking, movininTypes.BookingStatus>) => <span className={`bs bs-${value?.toLowerCase()}`}>{Helper.getBookingStatus(value)}</span>,
+        renderCell: ({ value }: GridRenderCellParams<movininTypes.Booking, movininTypes.BookingStatus>) => <span className={`bs bs-${value?.toLowerCase()}`}>{helper.getBookingStatus(value)}</span>,
         valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, string>) => value,
       },
       {
@@ -327,7 +327,7 @@ const BookingList = ({
       })
     }
 
-    if (Helper.admin(loggedUser) && !hideAgencyColumn) {
+    if (helper.admin(loggedUser) && !hideAgencyColumn) {
       _columns.unshift({
         field: 'agency',
         headerName: commonStrings.AGENCY,
@@ -401,7 +401,7 @@ const BookingList = ({
   const handleConfirmUpdate = async () => {
     try {
       if (!status) {
-        Helper.error()
+        helper.error()
         return
       }
 
@@ -417,12 +417,12 @@ const BookingList = ({
         })
         setRows(movininHelper.clone(rows))
       } else {
-        Helper.error()
+        helper.error()
       }
 
       setOpenUpdateDialog(false)
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -455,7 +455,7 @@ const BookingList = ({
           setSelectedId('')
           setSelectedIndex(-1)
         } else {
-          Helper.error()
+          helper.error()
         }
 
         setopenDeleteDialog(false)
@@ -471,13 +471,13 @@ const BookingList = ({
             setRows(rows.filter((row) => row._id !== selectedId))
           }
         } else {
-          Helper.error()
+          helper.error()
         }
 
         setopenDeleteDialog(false)
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -509,7 +509,7 @@ const BookingList = ({
               return (
                 <div key={booking._id} className="booking-details">
                   <div className={`bs bs-${booking.status.toLowerCase()}`}>
-                    <span>{Helper.getBookingStatus(booking.status)}</span>
+                    <span>{helper.getBookingStatus(booking.status)}</span>
                   </div>
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                     <span className="booking-detail-title">{strings.PROPERTY}</span>
@@ -526,7 +526,7 @@ const BookingList = ({
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                     <span className="booking-detail-title">{strings.DAYS}</span>
                     <div className="booking-detail-value">
-                      {`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
+                      {`${helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
                         format(from, _format, { locale: _locale }),
                       )} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`}
                     </div>
@@ -553,7 +553,7 @@ const BookingList = ({
                           <div className="extra">
                             <CheckIcon className="extra-icon" />
                             <span className="extra-title">{csStrings.CANCELLATION}</span>
-                            <span className="extra-text">{Helper.getCancellationOption((booking.property as movininTypes.Property).cancellation, _fr, true)}</span>
+                            <span className="extra-text">{helper.getCancellationOption((booking.property as movininTypes.Property).cancellation, _fr, true)}</span>
                           </div>
                         )}
 

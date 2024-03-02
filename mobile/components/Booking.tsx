@@ -12,7 +12,7 @@ import * as movininHelper from '../miscellaneous/movininHelper'
 
 import BookingStatus from './BookingStatus'
 import Button from './Button'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 
@@ -58,7 +58,7 @@ const Booking = ({
 
         <Text style={styles.detailTitle}>{i18n.t('DAYS')}</Text>
         <Text style={styles.detailText}>
-          {`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(format(from, _format, { locale }))} - ${movininHelper.capitalize(
+          {`${helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(format(from, _format, { locale }))} - ${movininHelper.capitalize(
             format(to, _format, { locale }),
           )})`}
         </Text>
@@ -67,7 +67,7 @@ const Booking = ({
         <Text style={styles.detailText}>{(booking.location as movininTypes.Location).name}</Text>
 
         <Text style={styles.detailTitle}>{i18n.t('PROPERTY')}</Text>
-        <Text style={styles.detailText}>{`${property.name} (${Helper.priceLabel(property)})`}</Text>
+        <Text style={styles.detailText}>{`${property.name} (${helper.priceLabel(property)})`}</Text>
 
         <Text style={styles.detailTitle}>{i18n.t('AGENCY')}</Text>
         <View style={styles.agency}>
@@ -88,7 +88,7 @@ const Booking = ({
                 <View style={styles.extra}>
                   <MaterialIcons style={styles.extraIcon} name="check" size={extraIconSize} color={extraIconColor} />
                   <Text style={styles.extraTitle}>{i18n.t('CANCELLATION')}</Text>
-                  <Text style={styles.extraText}>{Helper.getCancellationOption(property.cancellation, fr, true)}</Text>
+                  <Text style={styles.extraText}>{helper.getCancellationOption(property.cancellation, fr, true)}</Text>
                 </View>
               )}
             </View>

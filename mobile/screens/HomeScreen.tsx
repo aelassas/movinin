@@ -13,7 +13,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import Master from '../components/Master'
 import Button from '../components/Button'
 import LocationSelectList from '../components/LocationSelectList'
@@ -83,17 +83,17 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
     blurLocations()
 
     if (!location) {
-      Helper.toast(i18n.t('LOCATION_EMPTY'))
+      helper.toast(i18n.t('LOCATION_EMPTY'))
       return
     }
 
     if (!from) {
-      Helper.toast(i18n.t('FROM_DATE_EMPTY'))
+      helper.toast(i18n.t('FROM_DATE_EMPTY'))
       return
     }
 
     if (!to) {
-      Helper.toast(i18n.t('TO_DATE_EMPTY'))
+      helper.toast(i18n.t('TO_DATE_EMPTY'))
       return
     }
 

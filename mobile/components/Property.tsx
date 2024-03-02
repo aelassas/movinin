@@ -12,7 +12,7 @@ import HTML from 'react-native-render-html'
 import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 import Button from './Button'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 
@@ -41,7 +41,7 @@ const Property = ({
 }: PropertyProps) => {
   const { width } = useWindowDimensions()
   const days = movininHelper.days(from, to)
-  const price = Helper.price(property, from, to)
+  const price = helper.price(property, from, to)
   const pricePerDay = price / days
 
   return (
@@ -56,7 +56,7 @@ const Property = ({
         <View style={styles.infos}>
           <View style={styles.info}>
             <MaterialIcons name="house" size={iconSize} color={iconColor} style={styles.infoIcon} />
-            <Text style={styles.text}>{Helper.getPropertyType(property.type)}</Text>
+            <Text style={styles.text}>{helper.getPropertyType(property.type)}</Text>
           </View>
           <View style={styles.info}>
             <MaterialIcons name="single-bed" size={iconSize} color={iconColor} style={styles.infoIcon} />
@@ -112,7 +112,7 @@ const Property = ({
           }
           <View style={styles.extra}>
             <MaterialIcons name={getExtraIcon(property.cancellation)} size={iconSize} style={styles.infoIcon} />
-            <Text style={styles.text}>{Helper.getCancellation(property.cancellation, fr)}</Text>
+            <Text style={styles.text}>{helper.getCancellation(property.cancellation, fr)}</Text>
           </View>
         </View>
 
@@ -135,7 +135,7 @@ const Property = ({
           </View>
 
           <View style={styles.price}>
-            <Text style={styles.priceSecondary}>{Helper.getDays(days)}</Text>
+            <Text style={styles.priceSecondary}>{helper.getDays(days)}</Text>
             <Text style={styles.pricePrimary}>{`${movininHelper.formatNumber(price)} ${i18n.t('CURRENCY')}`}</Text>
             <Text style={styles.priceSecondary}>{`${i18n.t('PRICE_PER_DAY')} ${movininHelper.formatNumber(pricePerDay)} ${i18n.t('CURRENCY')}`}</Text>
           </View>

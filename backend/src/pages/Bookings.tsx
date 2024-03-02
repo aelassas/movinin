@@ -5,7 +5,7 @@ import * as movininHelper from 'movinin-helper'
 import Master from '../components/Master'
 import env from '../config/env.config'
 import { strings } from '../lang/bookings'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import BookingList from '../components/BookingList'
 import AgencyFilter from '../components/AgencyFilter'
 import StatusFilter from '../components/StatusFilter'
@@ -20,7 +20,7 @@ const Bookings = () => {
   const [admin, setAdmin] = useState(false)
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
   const [agencies, setAgencies] = useState<string[]>()
-  const [statuses, setStatuses] = useState(Helper.getBookingStatuses().map((status) => status.value))
+  const [statuses, setStatuses] = useState(helper.getBookingStatuses().map((status) => status.value))
   const [filter, setFilter] = useState<movininTypes.Filter | null>()
   const [loadingAgencies, setLoadingAgencies] = useState(true)
   const [offset, setOffset] = useState(0)
@@ -48,7 +48,7 @@ const Bookings = () => {
 
   const onLoad = async (_user?: movininTypes.User) => {
     if (_user) {
-      const _admin = Helper.admin(_user)
+      const _admin = helper.admin(_user)
       setUser(_user)
       setAdmin(_admin)
       setLeftPanel(!_admin)

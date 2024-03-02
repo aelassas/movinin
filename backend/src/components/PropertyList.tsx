@@ -23,7 +23,7 @@ import env from '../config/env.config'
 import Const from '../config/const'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/properties'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as PropertyService from '../services/PropertyService'
 import Pager from './Pager'
 import PropertyInfo from './PropertyInfo'
@@ -114,7 +114,7 @@ const PropertyList = ({
 
       const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
       if (!_data) {
-        Helper.error()
+        helper.error()
         return
       }
       const _totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
@@ -139,7 +139,7 @@ const PropertyList = ({
         onLoad({ rows: _data.resultData, rowCount: _totalRecords })
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     } finally {
       setLoading(false)
       setInit(false)
@@ -223,10 +223,10 @@ const PropertyList = ({
         setPropertyId(_propertyId)
         setPropertyIndex(_propertyIndex)
       } else {
-        Helper.error()
+        helper.error()
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -254,19 +254,19 @@ const PropertyList = ({
           }
           setLoading(false)
         } else {
-          Helper.error()
+          helper.error()
           setPropertyId('')
           setPropertyIndex(-1)
           setLoading(false)
         }
       } else {
-        Helper.error()
+        helper.error()
         setPropertyId('')
         setPropertyIndex(-1)
         setOpenDeleteDialog(false)
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -275,7 +275,7 @@ const PropertyList = ({
     setPropertyId('')
   }
 
-  const admin = Helper.admin(user)
+  const admin = helper.admin(user)
 
   return (
     (user && (
@@ -322,7 +322,7 @@ const PropertyList = ({
                   <div className="right-panel">
                     {!hidePrice && (
                       <div className="price">
-                        {Helper.priceLabel(property)}
+                        {helper.priceLabel(property)}
                       </div>
                     )}
 

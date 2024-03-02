@@ -23,7 +23,7 @@ import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as ccStrings } from '../lang/create-agency'
 import { strings } from '../lang/create-user'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as UserService from '../services/UserService'
 import * as AgencyService from '../services/AgencyService'
 import Error from '../components/Error'
@@ -71,7 +71,7 @@ const CreateUser = () => {
         setError(false)
         return false
       } catch (err) {
-        Helper.error(err)
+        helper.error(err)
         return true
       }
     } else {
@@ -133,7 +133,7 @@ const CreateUser = () => {
           setError(false)
           return false
         } catch (err) {
-          Helper.error(err)
+          helper.error(err)
           return true
         }
       } else {
@@ -225,7 +225,7 @@ const CreateUser = () => {
 
   const onLoad = (_user?: movininTypes.User) => {
     if (_user && _user.verified) {
-      const _admin = Helper.admin(_user)
+      const _admin = helper.admin(_user)
       setUser(_user)
       setAdmin(_admin)
       setType(_admin ? '' : movininTypes.RecordType.User)
@@ -238,7 +238,7 @@ const CreateUser = () => {
       e.preventDefault()
 
       if (!user) {
-        Helper.error()
+        helper.error()
         return
       }
 
@@ -301,7 +301,7 @@ const CreateUser = () => {
         setError(true)
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -342,9 +342,9 @@ const CreateUser = () => {
                 <FormControl fullWidth margin="dense" style={{ marginTop: agency ? 0 : 39 }}>
                   <InputLabel className="required">{commonStrings.TYPE}</InputLabel>
                   <Select label={commonStrings.TYPE} value={type} onChange={handleUserTypeChange} variant="standard" required fullWidth>
-                    <MenuItem value={movininTypes.RecordType.Admin}>{Helper.getUserType(movininTypes.UserType.Admin)}</MenuItem>
-                    <MenuItem value={movininTypes.RecordType.Agency}>{Helper.getUserType(movininTypes.UserType.Agency)}</MenuItem>
-                    <MenuItem value={movininTypes.RecordType.User}>{Helper.getUserType(movininTypes.UserType.User)}</MenuItem>
+                    <MenuItem value={movininTypes.RecordType.Admin}>{helper.getUserType(movininTypes.UserType.Admin)}</MenuItem>
+                    <MenuItem value={movininTypes.RecordType.Agency}>{helper.getUserType(movininTypes.UserType.Agency)}</MenuItem>
+                    <MenuItem value={movininTypes.RecordType.User}>{helper.getUserType(movininTypes.UserType.User)}</MenuItem>
                   </Select>
                 </FormControl>
               )}

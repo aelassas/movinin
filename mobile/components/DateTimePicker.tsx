@@ -10,7 +10,7 @@ import { format } from 'date-fns'
 import { enUS, fr } from 'date-fns/locale'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as movininHelper from '../miscellaneous/movininHelper'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 
 interface DateTimePickerProps {
   value?: Date
@@ -132,7 +132,7 @@ const DateTimePicker = ({
           style={styles.dateButton}
           onPress={() => {
             if (hidePicker && hidePickerMessage) {
-              Helper.toast(hidePickerMessage)
+              helper.toast(hidePickerMessage)
             } else {
               setShow(true)
 

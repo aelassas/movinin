@@ -22,7 +22,7 @@ import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/properties'
 import * as PropertyService from '../services/PropertyService'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import PropertyInfo from '../components/PropertyInfo'
 import NoMatch from './NoMatch'
 import ImageViewer from '../components/ImageViewer'
@@ -43,7 +43,7 @@ const Property = () => {
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
   const [openInfoDialog, setOpenInfoDialog] = useState(false)
-  const edit = Helper.admin(user) || (user?._id === property?.agency._id)
+  const edit = helper.admin(user) || (user?._id === property?.agency._id)
 
   useEffect(() => {
     const src = (img: string) => movininHelper.joinURL(env.CDN_PROPERTIES, img)
@@ -77,7 +77,7 @@ const Property = () => {
               setNoMatch(true)
             }
           } catch (err) {
-            Helper.error(err)
+            helper.error(err)
             setLoading(false)
           }
         } else {
@@ -136,7 +136,7 @@ const Property = () => {
                 <div className="right-panel">
                   <div className="right-panel-header">
                     <div className="name"><h2>{property.name}</h2></div>
-                    <div className="price">{Helper.priceLabel(property)}</div>
+                    <div className="price">{helper.priceLabel(property)}</div>
                   </div>
                   <PropertyInfo
                     property={property}
@@ -175,10 +175,10 @@ const Property = () => {
                             } else if (status === 204) {
                               setOpenDeleteDialog(true)
                             } else {
-                              Helper.error()
+                              helper.error()
                             }
                           } catch (err) {
-                            Helper.error(err)
+                            helper.error(err)
                           }
                         }}
                       >
@@ -216,10 +216,10 @@ const Property = () => {
                         if (status === 200) {
                           navigate('/properties')
                         } else {
-                          Helper.error()
+                          helper.error()
                         }
                       } catch (err) {
-                        Helper.error(err)
+                        helper.error(err)
                       }
                     }}
                     variant="contained"

@@ -31,7 +31,7 @@ import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/notifications'
 import Master from '../components/Master'
 import * as NotificationService from '../services/NotificationService'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import env from '../config/env.config'
 import Backdrop from '../components/SimpleBackdrop'
 
@@ -61,7 +61,7 @@ const Notifications = () => {
         const data = await NotificationService.getNotifications(user._id, page)
         const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
         if (!_data) {
-          Helper.error()
+          helper.error()
           return
         }
         const _rows = _data.resultData.map((row) => ({
@@ -77,7 +77,7 @@ const Notifications = () => {
         }
         setLoading(false)
       } catch (err) {
-        Helper.error(err)
+        helper.error(err)
       }
     }
   }, [user, page])
@@ -147,7 +147,7 @@ const Notifications = () => {
                           onClick={async () => {
                             try {
                               if (!user || !user._id) {
-                                Helper.error()
+                                helper.error()
                                 return
                               }
                               const _rows = checkedRows.filter((row) => !row.isRead)
@@ -161,10 +161,10 @@ const Notifications = () => {
                                 setRows(movininHelper.clone(rows))
                                 setNotificationCount(notificationCount - _rows.length)
                               } else {
-                                Helper.error()
+                                helper.error()
                               }
                             } catch (err) {
-                              Helper.error(err)
+                              helper.error(err)
                             }
                           }}
                         >
@@ -178,7 +178,7 @@ const Notifications = () => {
                           onClick={async () => {
                             try {
                               if (!user || !user._id) {
-                                Helper.error()
+                                helper.error()
                                 return
                               }
                               const _rows = checkedRows.filter((row) => row.isRead)
@@ -192,10 +192,10 @@ const Notifications = () => {
                                 setRows(movininHelper.clone(rows))
                                 setNotificationCount(notificationCount + _rows.length)
                               } else {
-                                Helper.error()
+                                helper.error()
                               }
                             } catch (err) {
-                              Helper.error(err)
+                              helper.error(err)
                             }
                           }}
                         >
@@ -246,7 +246,7 @@ const Notifications = () => {
                               onClick={async () => {
                                 try {
                                   if (!user || !user._id) {
-                                    Helper.error()
+                                    helper.error()
                                     return
                                   }
 
@@ -263,13 +263,13 @@ const Notifications = () => {
                                       setNotificationCount(notificationCount - 1)
                                       __navigate__()
                                     } else {
-                                      Helper.error()
+                                      helper.error()
                                     }
                                   } else {
                                     __navigate__()
                                   }
                                 } catch (err) {
-                                  Helper.error(err)
+                                  helper.error(err)
                                 }
                               }}
                             >
@@ -283,7 +283,7 @@ const Notifications = () => {
                               onClick={async () => {
                                 try {
                                   if (!user || !user._id) {
-                                    Helper.error()
+                                    helper.error()
                                     return
                                   }
 
@@ -294,10 +294,10 @@ const Notifications = () => {
                                     setRows(movininHelper.clone(rows))
                                     setNotificationCount(notificationCount - 1)
                                   } else {
-                                    Helper.error()
+                                    helper.error()
                                   }
                                 } catch (err) {
-                                  Helper.error(err)
+                                  helper.error(err)
                                 }
                               }}
                             >
@@ -310,7 +310,7 @@ const Notifications = () => {
                               onClick={async () => {
                                 try {
                                   if (!user || !user._id) {
-                                    Helper.error()
+                                    helper.error()
                                     return
                                   }
 
@@ -321,10 +321,10 @@ const Notifications = () => {
                                     setRows(movininHelper.clone(rows))
                                     setNotificationCount(notificationCount + 1)
                                   } else {
-                                    Helper.error()
+                                    helper.error()
                                   }
                                 } catch (err) {
-                                  Helper.error(err)
+                                  helper.error(err)
                                 }
                               }}
                             >
@@ -392,7 +392,7 @@ const Notifications = () => {
                   onClick={async () => {
                     try {
                       if (!user || !user._id) {
-                        Helper.error()
+                        helper.error()
                         return
                       }
 
@@ -424,10 +424,10 @@ const Notifications = () => {
                         setNotificationCount(notificationCount - selectedRows.length)
                         setOpenDeleteDialog(false)
                       } else {
-                        Helper.error()
+                        helper.error()
                       }
                     } catch (err) {
-                      Helper.error(err)
+                      helper.error(err)
                     }
                   }}
                   variant="contained"

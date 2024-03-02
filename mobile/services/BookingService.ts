@@ -1,9 +1,9 @@
 import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
-import * as AxiosHelper from '../common/AxiosHelper'
+import * as axiosHelper from '../common/axiosHelper'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
-AxiosHelper.init(axiosInstance)
+axiosHelper.init(axiosInstance)
 
 /**
  * Complete the checkout process and create the booking.

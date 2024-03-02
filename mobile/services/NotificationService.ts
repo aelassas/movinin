@@ -1,10 +1,10 @@
 import axiosInstance from './axiosInstance'
 import * as env from '../config/env.config'
 import * as UserService from './UserService'
-import * as AxiosHelper from '../common/AxiosHelper'
+import * as axiosHelper from '../common/axiosHelper'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
-AxiosHelper.init(axiosInstance)
+axiosHelper.init(axiosInstance)
 
 /**
  * Get a NotificationCounter by UserID.

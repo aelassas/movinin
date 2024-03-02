@@ -1,20 +1,20 @@
 import 'dotenv/config'
 import * as movininTypes from 'movinin-types'
-import * as DatabaseHelper from '../src/common/DatabaseHelper'
-import * as MailHelper from '../src/common/MailHelper'
-import * as TestHelper from './TestHelper'
+import * as databaseHelper from '../src/common/databaseHelper'
+import * as mailHelper from '../src/common/mailHelper'
+import * as testHelper from './testHelper'
 import User from '../src/models/User'
 
 beforeAll(() => {
-    TestHelper.initializeConsole()
+    testHelper.initializeConsole()
 })
 
 describe('Test User phone validation', () => {
     it('should test User phone validation', async () => {
-        await DatabaseHelper.Connect()
+        await databaseHelper.Connect()
         let res = true
         const USER: movininTypes.User = {
-            email: TestHelper.GetRandomEmail(),
+            email: testHelper.GetRandomEmail(),
             fullName: 'Additional Driver 1',
             birthDate: new Date(1990, 5, 20),
             phone: '',
@@ -35,18 +35,18 @@ describe('Test User phone validation', () => {
                 await User.deleteOne({ _id: userId })
             }
         }
-        await DatabaseHelper.Close()
+        await databaseHelper.Close()
         expect(res).toBeFalsy()
     })
 })
 
 describe('Test email sending error', () => {
     it('should test email sending error', async () => {
-        await DatabaseHelper.Connect()
+        await databaseHelper.Connect()
         let res = true
         try {
-            await MailHelper.sendMail({
-                from: TestHelper.GetRandomEmail(),
+            await mailHelper.sendMail({
+                from: testHelper.GetRandomEmail(),
                 to: 'wrong-email',
                 subject: 'dummy subject',
                 html: 'dummy body',
@@ -55,7 +55,7 @@ describe('Test email sending error', () => {
             console.log(err)
             res = false
         }
-        await DatabaseHelper.Close()
+        await databaseHelper.Close()
         expect(res).toBeFalsy()
     })
 })

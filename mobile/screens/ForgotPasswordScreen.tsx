@@ -15,7 +15,7 @@ import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import Link from '../components/Link'
 import Header from '../components/Header'
 
@@ -63,7 +63,7 @@ const ForgotPasswordScreen = ({ navigation, route }: NativeStackScreenProps<Stac
           setEmailValid(true)
           return true
         } catch (err) {
-          Helper.toast(i18n.t('GENERIC_ERROR'))
+          helper.toast(i18n.t('GENERIC_ERROR'))
           setEmailError(false)
           setEmailValid(true)
           return false
@@ -103,10 +103,10 @@ const ForgotPasswordScreen = ({ navigation, route }: NativeStackScreenProps<Stac
         setEmailError(false)
         setSent(true)
       } else {
-        Helper.error()
+        helper.error()
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 

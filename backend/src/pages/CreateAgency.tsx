@@ -21,7 +21,7 @@ import * as AgencyService from '../services/AgencyService'
 import Error from '../components/Error'
 import Backdrop from '../components/SimpleBackdrop'
 import Avatar from '../components/Avatar'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 
 import '../assets/css/create-agency.css'
 
@@ -63,7 +63,7 @@ const CreateAgency = () => {
         setFullNameError(true)
         return false
       } catch (err) {
-        Helper.error(err)
+        helper.error(err)
         return true
       }
     } else {
@@ -100,7 +100,7 @@ const CreateAgency = () => {
           setEmailValid(true)
           return false
         } catch (err) {
-          Helper.error(err)
+          helper.error(err)
           return true
         }
       } else {
@@ -232,7 +232,7 @@ const CreateAgency = () => {
         setError(true)
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     } finally {
       setLoading(false)
     }

@@ -4,7 +4,7 @@ import * as movininTypes from 'movinin-types'
 import Master from '../components/Master'
 import env from '../config/env.config'
 import { strings } from '../lang/users'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import UserTypeFilter from '../components/UserTypeFilter'
 import Search from '../components/Search'
 import UserList from '../components/UserList'
@@ -26,9 +26,9 @@ const Users = () => {
   }
 
   const onLoad = (_user?: movininTypes.User) => {
-    const _admin = Helper.admin(_user)
+    const _admin = helper.admin(_user)
     const _types = _admin
-      ? Helper.getUserTypes().map((userType) => userType.value)
+      ? helper.getUserTypes().map((userType) => userType.value)
       : [movininTypes.UserType.Agency, movininTypes.UserType.User]
 
     setUser(_user)

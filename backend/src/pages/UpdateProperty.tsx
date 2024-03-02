@@ -23,7 +23,7 @@ import { strings as commonStrings } from '../lang/common'
 import { strings as csStrings } from '../lang/properties'
 import { strings } from '../lang/create-property'
 import * as PropertyService from '../services/PropertyService'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import Error from '../components/Error'
 import Backdrop from '../components/SimpleBackdrop'
 import AgencySelectList from '../components/AgencySelectList'
@@ -203,7 +203,7 @@ const UpdateProperty = () => {
       e.preventDefault()
 
       if (!property || !agency) {
-        Helper.error()
+        helper.error()
         return
       }
 
@@ -255,12 +255,12 @@ const UpdateProperty = () => {
       const status = await PropertyService.update(data)
 
       if (status === 200) {
-        Helper.info(commonStrings.UPDATED)
+        helper.info(commonStrings.UPDATED)
       } else {
-        Helper.error()
+        helper.error()
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -326,7 +326,7 @@ const UpdateProperty = () => {
               setNoMatch(true)
             }
           } catch (err) {
-            Helper.error(err)
+            helper.error(err)
             setLoading(false)
             setError(true)
             setVisible(false)
@@ -342,7 +342,7 @@ const UpdateProperty = () => {
     }
   }
 
-  const admin = Helper.admin(user)
+  const admin = helper.admin(user)
 
   return (
     <Master onLoad={onLoad} strict>
@@ -437,7 +437,7 @@ const UpdateProperty = () => {
 
               <FormControl fullWidth margin="dense">
                 <TextField
-                  label={`${strings.PRICE} ${`(${commonStrings.CURRENCY}/${Helper.rentalTermUnit(rentalTerm as movininTypes.RentalTerm)})`}`}
+                  label={`${strings.PRICE} ${`(${commonStrings.CURRENCY}/${helper.rentalTermUnit(rentalTerm as movininTypes.RentalTerm)})`}`}
                   // eslint-disable-next-line
                   inputProps={{ inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }}
                   onChange={handlePriceChange}
@@ -635,7 +635,7 @@ const UpdateProperty = () => {
                         await PropertyService.deleteTempImage(tempImage)
                       }
                     } catch (err) {
-                      Helper.error(err)
+                      helper.error(err)
                     }
                     navigate('/properties')
                   }}

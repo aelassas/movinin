@@ -19,7 +19,7 @@ import { strings as csStrings } from '../lang/properties'
 import { strings } from '../lang/create-booking'
 import * as UserService from '../services/UserService'
 import * as BookingService from '../services/BookingService'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import AgencySelectList from '../components/AgencySelectList'
 import UserSelectList from '../components/UserSelectList'
 import LocationSelectList from '../components/LocationSelectList'
@@ -63,7 +63,7 @@ const CreateBooking = () => {
       if (_property) {
         setProperty(_property)
       } else {
-        Helper.error()
+        helper.error()
       }
     }
   }, [])
@@ -80,7 +80,7 @@ const CreateBooking = () => {
     e.preventDefault()
 
     if (!property || !from || !to || !status) {
-      Helper.error()
+      helper.error()
       return
     }
 
@@ -97,7 +97,7 @@ const CreateBooking = () => {
       cancellation
     }
 
-    Helper.price(
+    helper.price(
       booking,
       null,
       async (price) => {
@@ -108,16 +108,16 @@ const CreateBooking = () => {
           if (_booking && _booking._id) {
             navigate('/')
           } else {
-            Helper.error()
+            helper.error()
           }
         } catch (err) {
-          Helper.error(err)
+          helper.error(err)
         } finally {
           setLoading(false)
         }
       },
       (err) => {
-        Helper.error(err)
+        helper.error(err)
         setLoading(false)
       },
     )
@@ -234,7 +234,7 @@ const CreateBooking = () => {
                 control={<Switch checked={cancellation} onChange={handleCancellationChange} color="primary" />}
                 label={csStrings.CANCELLATION}
                 className="checkbox-fcl"
-                disabled={!Helper.propertyOptionAvailable(property, 'cancellation')}
+                disabled={!helper.propertyOptionAvailable(property, 'cancellation')}
               />
             </FormControl>
 

@@ -29,7 +29,7 @@ import * as BookingService from '../services/BookingService'
 import { strings as commonStrings } from '../lang/common'
 import { strings as csStrings } from '../lang/properties'
 import { strings } from '../lang/checkout'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as UserService from '../services/UserService'
 import * as PropertyService from '../services/PropertyService'
 import * as LocationService from '../services/LocationService'
@@ -89,7 +89,7 @@ const Checkout = () => {
       const options: movininTypes.PropertyOptions = {
         cancellation: _cancellation
       }
-      const _price = Helper.price(property, from, to, options)
+      const _price = helper.price(property, from, to, options)
 
       setCancellation(_cancellation)
       setPrice(_price)
@@ -126,7 +126,7 @@ const Checkout = () => {
           setEmailInfo(false)
           return false
         } catch (err) {
-          Helper.error(err)
+          helper.error(err)
           setEmailRegitered(false)
           setEmailValid(true)
           setEmailInfo(true)
@@ -336,7 +336,7 @@ const Checkout = () => {
       e.preventDefault()
 
       if (!property || !location || !from || !to) {
-        Helper.error()
+        helper.error()
         return
       }
 
@@ -436,10 +436,10 @@ const Checkout = () => {
         setSuccess(true)
       } else {
         setLoading(false)
-        Helper.error()
+        helper.error()
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -490,7 +490,7 @@ const Checkout = () => {
         return
       }
 
-      const _price = Helper.price(_property, _from, _to)
+      const _price = helper.price(_property, _from, _to)
 
       const included = (val: number) => val === 0
 
@@ -502,7 +502,7 @@ const Checkout = () => {
       setCancellation(included(_property.cancellation))
       setVisible(true)
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -536,7 +536,7 @@ const Checkout = () => {
                         label={(
                           <span>
                             <span className="booking-option-label">{csStrings.CANCELLATION}</span>
-                            <span className="booking-option-value">{Helper.getCancellationOption(property.cancellation, _fr)}</span>
+                            <span className="booking-option-value">{helper.getCancellationOption(property.cancellation, _fr)}</span>
                           </span>
                         )}
                       />
@@ -554,7 +554,7 @@ const Checkout = () => {
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                       <span className="booking-detail-title">{strings.DAYS}</span>
                       <div className="booking-detail-value">
-                        {`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
+                        {`${helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
                           format(from, _format, { locale: _locale }),
                         )} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`}
                       </div>
@@ -566,7 +566,7 @@ const Checkout = () => {
 
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                       <span className="booking-detail-title">{strings.PROPERTY}</span>
-                      <div className="booking-detail-value">{`${property.name} (${Helper.priceLabel(property)})`}</div>
+                      <div className="booking-detail-value">{`${property.name} (${helper.priceLabel(property)})`}</div>
                     </div>
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                       <span className="booking-detail-title">{commonStrings.AGENCY}</span>
@@ -641,7 +641,7 @@ const Checkout = () => {
                           }}
                           language={language}
                         />
-                        <FormHelperText error={!birthDateValid}>{(!birthDateValid && Helper.getBirthDateError(property.minimumAge)) || ''}</FormHelperText>
+                        <FormHelperText error={!birthDateValid}>{(!birthDateValid && helper.getBirthDateError(property.minimumAge)) || ''}</FormHelperText>
                       </FormControl>
                       <div className="booking-tos">
                         <table>

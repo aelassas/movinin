@@ -10,7 +10,7 @@ import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Booking from '../models/Booking'
 import Property from '../models/Property'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 
 /**
  * Validate Agency fullname.
@@ -53,7 +53,7 @@ export const update = async (req: Request, res: Response) => {
   const { _id } = body
 
   try {
-    if (!Helper.isValidObjectId(_id)) {
+    if (!helper.isValidObjectId(_id)) {
       throw new Error('body._id is not valid')
     }
     const agency = await User.findById(_id)
@@ -111,7 +111,7 @@ export const deleteAgency = async (req: Request, res: Response) => {
 
       if (agency.avatar) {
         const avatar = path.join(env.CDN_USERS, agency.avatar)
-        if (await Helper.exists(avatar)) {
+        if (await helper.exists(avatar)) {
           await fs.unlink(avatar)
         }
 
@@ -122,13 +122,13 @@ export const deleteAgency = async (req: Request, res: Response) => {
         await Property.deleteMany({ agency: id })
         for (const property of properties) {
           const image = path.join(env.CDN_PROPERTIES, property.image)
-          if (await Helper.exists(image)) {
+          if (await helper.exists(image)) {
             await fs.unlink(image)
           }
           if (property.images) {
             for (const imageFile of property.images) {
               const additionalImage = path.join(env.CDN_PROPERTIES, imageFile)
-              if (await Helper.exists(additionalImage)) {
+              if (await helper.exists(additionalImage)) {
                 await fs.unlink(additionalImage)
               }
             }

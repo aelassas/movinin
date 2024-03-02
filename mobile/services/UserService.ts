@@ -4,11 +4,11 @@ import * as Localization from 'expo-localization'
 import axiosInstance from './axiosInstance'
 import * as env from '../config/env.config'
 import * as AsyncStorage from '../common/AsyncStorage'
-import * as AxiosHelper from '../common/AxiosHelper'
-import * as ToastHelper from '../common/ToastHelper'
+import * as axiosHelper from '../common/axiosHelper'
+import * as toastHelper from '../common/toastHelper'
 import * as movininTypes from '../miscellaneous/movininTypes'
 
-AxiosHelper.init(axiosInstance)
+axiosHelper.init(axiosInstance)
 
 /**
  * Get authentication header.
@@ -300,7 +300,7 @@ export const updateLanguage = async (data: movininTypes.UpdateLanguagePayload) =
           user.language = data.language
           await AsyncStorage.storeObject('mi-user', user)
         } else {
-          ToastHelper.error()
+          toastHelper.error()
         }
       }
       return res.status

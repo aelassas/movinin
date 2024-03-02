@@ -3,7 +3,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import * as movininTypes from '../miscellaneous/movininTypes'
 import * as movininHelper from '../miscellaneous/movininHelper'
 
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import * as AgencyService from '../services/AgencyService'
@@ -43,10 +43,10 @@ const AgencyFilter = ({
           onLoad(_checkedAgencies)
         }
       } else {
-        Helper.error()
+        helper.error()
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 

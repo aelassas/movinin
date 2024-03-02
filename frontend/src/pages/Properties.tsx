@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import env from '../config/env.config'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as LocationService from '../services/LocationService'
 import * as AgencyService from '../services/AgencyService'
 import Master from '../components/Master'
@@ -92,7 +92,7 @@ const Properties = () => {
         setVisible(true)
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 

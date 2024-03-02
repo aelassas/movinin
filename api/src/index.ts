@@ -4,10 +4,10 @@ import fs from 'node:fs/promises'
 import http from 'node:http'
 import https from 'node:https'
 import app from './app'
-import * as DatabaseHelper from './common/DatabaseHelper'
+import * as databaseHelper from './common/databaseHelper'
 import * as env from './config/env.config'
 
-if (await DatabaseHelper.Connect(env.DB_DEBUG)) {
+if (await databaseHelper.Connect(env.DB_DEBUG)) {
     let server: http.Server | https.Server
 
     if (env.HTTPS) {
@@ -30,7 +30,7 @@ if (await DatabaseHelper.Connect(env.DB_DEBUG)) {
         console.log('\nGracefully stopping...')
         server.close(async () => {
             console.log(`HTTP${env.HTTPS ? 'S' : ''} server closed`)
-            await DatabaseHelper.Close(true)
+            await databaseHelper.Close(true)
             console.log('MongoDB connection closed')
             process.exit(0)
         })

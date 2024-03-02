@@ -15,7 +15,7 @@ import { strings as blStrings } from '../lang/booking-list'
 import { strings } from '../lang/booking-property-list'
 import * as PropertyService from '../services/PropertyService'
 import MultipleSelect from './MultipleSelect'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 
 interface PropertySelectListProps {
   label?: string
@@ -132,7 +132,7 @@ const PropertySelectList = ({
       setInit(true)
       setLoading(false)
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     } finally {
       setLoading(false)
     }

@@ -26,7 +26,7 @@ import Backdrop from '../components/SimpleBackdrop'
 import NoMatch from './NoMatch'
 import Error from './Error'
 import BookingList from '../components/BookingList'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import PropertyInfo from '../components/PropertyInfo'
 
 import '../assets/css/property-bookings.css'
@@ -45,7 +45,7 @@ const PropertyBookings = () => {
   const [offset, setOffset] = useState(0)
   const [openInfoDialog, setOpenInfoDialog] = useState(false)
 
-  const statuses = Helper.getBookingStatuses().map((status) => status.value)
+  const statuses = helper.getBookingStatuses().map((status) => status.value)
 
   useEffect(() => {
     if (visible) {
@@ -66,11 +66,11 @@ const PropertyBookings = () => {
         } else if (status === 204) {
           setOpenDeleteDialog(true)
         } else {
-          Helper.error()
+          helper.error()
         }
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -95,7 +95,7 @@ const PropertyBookings = () => {
                 setVisible(true)
                 setLoading(false)
               } catch (err) {
-                Helper.error(err)
+                helper.error(err)
               }
             } else if (_property.agency._id === _user._id) {
               setAgencies([_user._id as string])
@@ -139,7 +139,7 @@ const PropertyBookings = () => {
               </div>
               <div className="name"><h2>{property.name}</h2></div>
               <div className="price">
-                {Helper.priceLabel(property)}
+                {helper.priceLabel(property)}
               </div>
               <PropertyInfo
                 property={property}
@@ -209,10 +209,10 @@ const PropertyBookings = () => {
                   if (status === 200) {
                     navigate('/properties')
                   } else {
-                    Helper.error()
+                    helper.error()
                   }
                 } catch (err) {
-                  Helper.error(err)
+                  helper.error(err)
                 }
               }}
                 variant="contained"

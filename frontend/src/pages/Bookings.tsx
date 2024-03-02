@@ -3,7 +3,7 @@ import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import Master from '../components/Master'
 import env from '../config/env.config'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import BookingList from '../components/BookingList'
 import AgencyFilter from '../components/AgencyFilter'
 import StatusFilter from '../components/StatusFilter'
@@ -16,7 +16,7 @@ const Bookings = () => {
   const [user, setUser] = useState<movininTypes.User>()
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
   const [agencies, setAgencies] = useState<string[]>()
-  const [statuses, setStatuses] = useState(Helper.getBookingStatuses().map((status) => status.value))
+  const [statuses, setStatuses] = useState(helper.getBookingStatuses().map((status) => status.value))
   const [filter, setFilter] = useState<movininTypes.Filter | null>()
   const [loadingAgencies, setLoadingAgencies] = useState(true)
   const [offset, setOffset] = useState(0)

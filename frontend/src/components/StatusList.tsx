@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import * as movininTypes from 'movinin-types'
 import { strings as commonStrings } from '../lang/common'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 
 import '../assets/css/status-list.css'
 
@@ -53,7 +53,7 @@ const StatusList = ({
     <div style={style}>
       {disabled ? (
         <span className={`bs-s-sv bs-s-${value.toLowerCase()}`} style={{ marginTop: 5 }}>
-          {Helper.getBookingStatus(value as movininTypes.BookingStatus)}
+          {helper.getBookingStatus(value as movininTypes.BookingStatus)}
         </span>
       ) : (
         <>
@@ -68,7 +68,7 @@ const StatusList = ({
             fullWidth
             renderValue={(_value) => (
               <span className={`bs-s-sv bs-s-${_value.toLowerCase()}`}>
-                {Helper.getBookingStatus(_value as movininTypes.BookingStatus)}
+                {helper.getBookingStatus(_value as movininTypes.BookingStatus)}
               </span>
             )}
           >

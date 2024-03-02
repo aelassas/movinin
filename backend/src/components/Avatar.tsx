@@ -22,7 +22,7 @@ import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as UserService from '../services/UserService'
 import * as PropertyService from '../services/PropertyService'
 
@@ -94,7 +94,7 @@ const Avatar = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
-      Helper.error()
+      helper.error()
       return
     }
 
@@ -120,7 +120,7 @@ const Avatar = ({
                 onChange(data)
               }
             } catch (err) {
-              Helper.error(err)
+              helper.error(err)
             }
           }
 
@@ -131,7 +131,7 @@ const Avatar = ({
               const { _id } = avatarRecord
 
               if (!_id) {
-                Helper.error()
+                helper.error()
                 return
               }
 
@@ -148,13 +148,13 @@ const Avatar = ({
                     onChange(user.avatar || '')
                   }
                 } else {
-                  Helper.error()
+                  helper.error()
                 }
               } else {
-                Helper.error()
+                helper.error()
               }
             } catch (err) {
-              Helper.error(err)
+              helper.error(err)
             }
           }
 
@@ -207,7 +207,7 @@ const Avatar = ({
           const { _id } = avatarRecord
 
           if (!_id) {
-            Helper.error()
+            helper.error()
             return
           }
 
@@ -225,10 +225,10 @@ const Avatar = ({
               }
               closeDialog()
             } else {
-              Helper.error()
+              helper.error()
             }
           } else {
-            Helper.error()
+            helper.error()
           }
         } else if (!avatarRecord && mode === 'create') {
           const status = await UserService.deleteTempAvatar(avatar as string)
@@ -240,7 +240,7 @@ const Avatar = ({
             }
             closeDialog()
           } else {
-            Helper.error()
+            helper.error()
           }
         }
       } else if (type === movininTypes.RecordType.Property) {
@@ -254,13 +254,13 @@ const Avatar = ({
             }
             closeDialog()
           } else {
-            Helper.error()
+            helper.error()
           }
         } else if (avatarRecord && mode === 'update') {
           const { _id } = avatarRecord
 
           if (!_id) {
-            Helper.error()
+            helper.error()
             return
           }
 
@@ -277,15 +277,15 @@ const Avatar = ({
               }
               closeDialog()
             } else {
-              Helper.error()
+              helper.error()
             }
           } else {
-            Helper.error()
+            helper.error()
           }
         }
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -315,7 +315,7 @@ const Avatar = ({
       }
     } else {
       setError(true)
-      Helper.error()
+      helper.error()
     }
   }, [record, type, mode])
 

@@ -20,7 +20,7 @@ import { strings as blStrings } from '../lang/booking-list'
 import { strings as bfStrings } from '../lang/booking-filter'
 import { strings as csStrings } from '../lang/properties'
 import { strings } from '../lang/booking'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import Master from '../components/Master'
 import * as UserService from '../services/UserService'
 import * as BookingService from '../services/BookingService'
@@ -85,21 +85,21 @@ const UpdateBooking = () => {
           if (_property) {
             const _booking = movininHelper.clone(booking)
             _booking.property = _property
-            Helper.price(
+            helper.price(
               _booking,
               _property,
               (_price) => {
                 setPrice(_price)
               },
               (err) => {
-                Helper.error(err)
+                helper.error(err)
               },
             )
 
             setBooking(_booking)
             setProperty(newProperty)
           } else {
-            Helper.error()
+            helper.error()
           }
         } else if (!newProperty) {
           setPrice(0)
@@ -108,7 +108,7 @@ const UpdateBooking = () => {
           setProperty(newProperty)
         }
       } catch (err) {
-        Helper.error(err)
+        helper.error(err)
       }
     },
     [property, booking],
@@ -122,7 +122,7 @@ const UpdateBooking = () => {
     if (booking) {
       booking.cancellation = e.target.checked
 
-      Helper.price(
+      helper.price(
         booking,
         booking.property as movininTypes.Property,
         (_price) => {
@@ -131,14 +131,14 @@ const UpdateBooking = () => {
           setCancellation(booking.cancellation || false)
         },
         (err) => {
-          Helper.error(err)
+          helper.error(err)
         },
       )
     }
   }
 
   const toastErr = (err?: unknown, hideLoading?: boolean): void => {
-    Helper.error(err)
+    helper.error(err)
     if (hideLoading) {
       setLoading(false)
     }
@@ -165,10 +165,10 @@ const UpdateBooking = () => {
           toastErr(true)
         }
       } catch (err) {
-        Helper.error(err)
+        helper.error(err)
       }
     } else {
-      Helper.error()
+      helper.error()
     }
   }
 
@@ -177,7 +177,7 @@ const UpdateBooking = () => {
       e.preventDefault()
 
       if (!booking || !agency || !property || !renter || !location || !from || !to || !status) {
-        Helper.error()
+        helper.error()
         return
       }
 
@@ -197,12 +197,12 @@ const UpdateBooking = () => {
       const _status = await BookingService.update(_booking)
 
       if (_status === 200) {
-        Helper.info(commonStrings.UPDATED)
+        helper.info(commonStrings.UPDATED)
       } else {
         toastErr()
       }
     } catch (err) {
-      Helper.error(err)
+      helper.error(err)
     }
   }
 
@@ -219,7 +219,7 @@ const UpdateBooking = () => {
             const _booking = await BookingService.getBooking(id)
 
             if (_booking) {
-              if (!Helper.admin(_user) && (_booking.agency as movininTypes.User)._id !== _user._id) {
+              if (!helper.admin(_user) && (_booking.agency as movininTypes.User)._id !== _user._id) {
                 setLoading(false)
                 setNoMatch(true)
                 return
@@ -332,7 +332,7 @@ const UpdateBooking = () => {
                     if (date) {
                       booking.from = date
 
-                      Helper.price(
+                      helper.price(
                         booking,
                         booking.property as movininTypes.Property,
                         (_price) => {
@@ -370,7 +370,7 @@ const UpdateBooking = () => {
                     if (_to) {
                       booking.to = _to
 
-                      Helper.price(
+                      helper.price(
                         booking,
                         booking.property as movininTypes.Property,
                         (_price) => {
@@ -402,7 +402,7 @@ const UpdateBooking = () => {
                   control={<Switch checked={cancellation} onChange={handleCancellationChange} color="primary" />}
                   label={csStrings.CANCELLATION}
                   className="checkbox-fcl"
-                  disabled={!Helper.propertyOptionAvailable(property, 'cancellation')}
+                  disabled={!helper.propertyOptionAvailable(property, 'cancellation')}
                 />
               </FormControl>
 
@@ -424,7 +424,7 @@ const UpdateBooking = () => {
           <div className="col-2">
             <div className="col-2-header">
               <div className="price">
-                <span className="price-days">{Helper.getDays(days)}</span>
+                <span className="price-days">{helper.getDays(days)}</span>
                 <span className="price-main">{`${movininHelper.formatNumber(price ?? 0)} ${commonStrings.CURRENCY}`}</span>
                 <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</span>
               </div>

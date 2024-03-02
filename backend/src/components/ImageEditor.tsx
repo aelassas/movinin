@@ -8,7 +8,7 @@ import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/image-editor'
 import ImageViewer from './ImageViewer'
 import env from '../config/env.config'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import * as PropertyService from '../services/PropertyService'
 
 import '../assets/css/image-editor.css'
@@ -55,7 +55,7 @@ const ImageEditor = ({
                         const status = await PropertyService.deleteTempImage(image.filename)
 
                         if (status !== 200) {
-                            Helper.error()
+                            helper.error()
                         }
                     }
                     const filename = await PropertyService.uploadImage(file)
@@ -67,7 +67,7 @@ const ImageEditor = ({
                         onMainImageUpsert(mainImg)
                     }
                 } catch (err) {
-                    Helper.error(err)
+                    helper.error(err)
                 }
             }
 
@@ -96,7 +96,7 @@ const ImageEditor = ({
                             }
                         }
                     } catch (err) {
-                        Helper.error()
+                        helper.error()
                     }
                 }
 
@@ -201,7 +201,7 @@ const ImageEditor = ({
                                                     status = await PropertyService.deleteTempImage(_image.filename)
                                                 }
                                             } catch (err) {
-                                                Helper.error(err)
+                                                helper.error(err)
                                             }
 
                                             if (status === 200) {
@@ -217,10 +217,10 @@ const ImageEditor = ({
                                                     onDelete(_image)
                                                 }
                                             } else {
-                                                Helper.error()
+                                                helper.error()
                                             }
                                         } catch (err) {
-                                            Helper.error(err)
+                                            helper.error(err)
                                         }
                                     }}
                                 >

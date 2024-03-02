@@ -21,7 +21,7 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import { strings } from '../lang/properties'
 import { strings as cpStrings } from '../lang/create-property'
 import Hidden from './Hidden'
@@ -46,7 +46,7 @@ const PropertyInfo = ({
   className,
 }: PropertyInfoProps) => {
   const fr = movininHelper.fr(user)
-  const edit = Helper.admin(user) || (user?._id === property.agency._id)
+  const edit = helper.admin(user) || (user?._id === property.agency._id)
 
   const getExtraIcon = (option: string, extra: number) => {
     let available = false
@@ -71,15 +71,15 @@ const PropertyInfo = ({
         <div className={`property-info${className ? ` ${className}` : ''}`}>
           <ul className="property-info-list">
             <li className="property-type">
-              <Tooltip title={Helper.getPropertyType(property.type)} placement="top">
+              <Tooltip title={helper.getPropertyType(property.type)} placement="top">
                 <div className="property-info-list-item">
                   <PropertyTypeIcon />
-                  <span className="property-info-list-text">{Helper.getPropertyType(property.type)}</span>
+                  <span className="property-info-list-text">{helper.getPropertyType(property.type)}</span>
                 </div>
               </Tooltip>
             </li>
             <li className="bedrooms">
-              <Tooltip title={Helper.getBedroomsTooltip(property.bedrooms, fr)} placement="top">
+              <Tooltip title={helper.getBedroomsTooltip(property.bedrooms, fr)} placement="top">
                 <div className="property-info-list-item">
                   <BedroomsIcon />
                   <span className="property-info-list-text">{property.bedrooms}</span>
@@ -87,7 +87,7 @@ const PropertyInfo = ({
               </Tooltip>
             </li>
             <li className="bathrooms">
-              <Tooltip title={Helper.getBathroomsTooltip(property.bathrooms, fr)} placement="top">
+              <Tooltip title={helper.getBathroomsTooltip(property.bathrooms, fr)} placement="top">
                 <div className="property-info-list-item">
                   <BathroomsIcon />
                   <span className="property-info-list-text">{property.bathrooms}</span>
@@ -95,7 +95,7 @@ const PropertyInfo = ({
               </Tooltip>
             </li>
             <li className="kitchens">
-              <Tooltip title={Helper.getKitchensTooltip(property.kitchens)} placement="top">
+              <Tooltip title={helper.getKitchensTooltip(property.kitchens)} placement="top">
                 <div className="property-info-list-item">
                   <KitchensIcon />
                   <span className="property-info-list-text">{property.kitchens}</span>
@@ -103,7 +103,7 @@ const PropertyInfo = ({
               </Tooltip>
             </li>
             <li className="parking-spaces">
-              <Tooltip title={Helper.getKParkingSpacesTooltip(property.parkingSpaces, fr)} placement="top">
+              <Tooltip title={helper.getKParkingSpacesTooltip(property.parkingSpaces, fr)} placement="top">
                 <div className="property-info-list-item">
                   <ParkingSpacesIcon />
                   <span className="property-info-list-text">{property.parkingSpaces}</span>
@@ -159,10 +159,10 @@ const PropertyInfo = ({
               )
             }
             <li>
-              <Tooltip title={booking ? '' : property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : Helper.getCancellation(property.cancellation, fr)} placement="left">
+              <Tooltip title={booking ? '' : property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : helper.getCancellation(property.cancellation, fr)} placement="left">
                 <div className="property-info-list-item">
                   {getExtraIcon('cancellation', property.cancellation)}
-                  <span className="property-info-list-text">{Helper.getCancellation(property.cancellation, fr)}</span>
+                  <span className="property-info-list-text">{helper.getCancellation(property.cancellation, fr)}</span>
                 </div>
               </Tooltip>
             </li>
@@ -190,7 +190,7 @@ const PropertyInfo = ({
               <Tooltip title={cpStrings.RENTAL_TERM} placement="left">
                 <div className="property-info-list-item">
                   <RentalTermIcon />
-                  <span className="property-info-list-text">{Helper.rentalTerm(property.rentalTerm)}</span>
+                  <span className="property-info-list-text">{helper.rentalTerm(property.rentalTerm)}</span>
                 </div>
               </Tooltip>
             </li>

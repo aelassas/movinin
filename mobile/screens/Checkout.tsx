@@ -23,7 +23,7 @@ import TextInput from '../components/TextInput'
 import DateTimePicker from '../components/DateTimePicker'
 import Switch from '../components/Switch'
 import Link from '../components/Link'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import Error from '../components/Error'
 import Button from '../components/Button'
 import RadioButton from '../components/RadioButton'
@@ -217,7 +217,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       const _to = new Date(route.params.to)
       setTo(_to)
 
-      const _price = Helper.price(_property, _from, _to)
+      const _price = helper.price(_property, _from, _to)
       setPrice(_price)
 
       const included = (val: number) => val === 0
@@ -277,7 +277,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
           setError(true)
           return false
         } catch (err) {
-          Helper.error(err)
+          helper.error(err)
           setEmailInfo(true)
           setEmailError(false)
           setEmailValid(true)
@@ -492,20 +492,20 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     const options = {
       cancellation: checked
     }
-    const _price = Helper.price(property as movininTypes.Property, from as Date, to as Date, options)
+    const _price = helper.price(property as movininTypes.Property, from as Date, to as Date, options)
     setCancellation(checked)
     setPrice(_price)
   }
 
   const _error = (err?: unknown) => {
-    Helper.error(err)
+    helper.error(err)
     setLoading(false)
   }
 
   const onPressBook = async () => {
     try {
       if (!property || !location || !from || !to) {
-        Helper.error()
+        helper.error()
         return
       }
 
@@ -645,7 +645,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                       value={cancellation}
                       onValueChange={onCancellationChange}
                     />
-                    <Text style={styles.extraText}>{Helper.getCancellationOption(property.cancellation, _fr)}</Text>
+                    <Text style={styles.extraText}>{helper.getCancellationOption(property.cancellation, _fr)}</Text>
                   </View>
                 </View>
 
@@ -657,7 +657,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
                   <Text style={styles.detailTitle}>{i18n.t('DAYS')}</Text>
                   <Text style={styles.detailText}>
-                    {`${Helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(format(from, _format, { locale }))} - ${movininHelper.capitalize(
+                    {`${helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(format(from, _format, { locale }))} - ${movininHelper.capitalize(
                       format(to, _format, { locale }),
                     )})`}
                   </Text>
@@ -666,7 +666,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   <Text style={styles.detailText}>{location.name}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('PROPERTY')}</Text>
-                  <Text style={styles.detailText}>{`${property.name} (${Helper.priceLabel(property)})`}</Text>
+                  <Text style={styles.detailText}>{`${property.name} (${helper.priceLabel(property)})`}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('AGENCY')}</Text>
                   <View style={styles.agency}>
@@ -736,7 +736,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                       label={i18n.t('BIRTH_DATE')}
                       value={birthDate}
                       error={birthDateRequired || !birthDateValid}
-                      helperText={(birthDateRequired && i18n.t('REQUIRED')) || (!birthDateValid && Helper.getBirthDateError(property.minimumAge)) || ''}
+                      helperText={(birthDateRequired && i18n.t('REQUIRED')) || (!birthDateValid && helper.getBirthDateError(property.minimumAge)) || ''}
                       onChange={onChangeBirthDate}
                       backgroundColor="#fbfbfb"
                     />

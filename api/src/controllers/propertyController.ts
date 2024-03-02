@@ -9,7 +9,7 @@ import Booking from '../models/Booking.js'
 import Property from '../models/Property.js'
 import strings from '../config/app.config.js'
 import * as env from '../config/env.config.js'
-import * as Helper from '../common/Helper.js'
+import * as helper from '../common/helper.js'
 
 /**
  * Create a Property.
@@ -75,7 +75,7 @@ export const create = async (req: Request, res: Response) => {
 
     // image
     const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
-    if (await Helper.exists(_image)) {
+    if (await helper.exists(_image)) {
       const filename = `${property._id}_${Date.now()}${path.extname(imageFile)}`
       const newPath = path.join(env.CDN_PROPERTIES, filename)
 
@@ -95,7 +95,7 @@ export const create = async (req: Request, res: Response) => {
       for (const img of images) {
         const _img = path.join(env.CDN_TEMP_PROPERTIES, img)
 
-        if (await Helper.exists(_img)) {
+        if (await helper.exists(_img)) {
           const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(img)}`
           const newPath = path.join(env.CDN_PROPERTIES, filename)
 
@@ -134,7 +134,7 @@ export const update = async (req: Request, res: Response) => {
   const { _id } = body
 
   try {
-    if (!Helper.isValidObjectId(_id)) {
+    if (!helper.isValidObjectId(_id)) {
       throw new Error('body._id is not valid')
     }
     const property = await Property.findById(_id)
@@ -188,7 +188,7 @@ export const update = async (req: Request, res: Response) => {
 
       if (image && image !== property.image) {
         const oldImage = path.join(env.CDN_PROPERTIES, property.image)
-        if (await Helper.exists(oldImage)) {
+        if (await helper.exists(oldImage)) {
           await fs.unlink(oldImage)
         }
 
@@ -206,7 +206,7 @@ export const update = async (req: Request, res: Response) => {
         if (images.length === 0) {
           for (const img of property.images) {
             const _image = path.join(env.CDN_PROPERTIES, img)
-            if (await Helper.exists(_image)) {
+            if (await helper.exists(_image)) {
               await fs.unlink(_image)
             }
           }
@@ -214,7 +214,7 @@ export const update = async (req: Request, res: Response) => {
           for (const img of property.images) {
             if (!images.includes(img)) {
               const _image = path.join(env.CDN_PROPERTIES, img)
-              if (await Helper.exists(_image)) {
+              if (await helper.exists(_image)) {
                 await fs.unlink(_image)
               }
             } else {
@@ -232,7 +232,7 @@ export const update = async (req: Request, res: Response) => {
           if (!property.images.includes(img)) {
             const _image = path.join(env.CDN_TEMP_PROPERTIES, img)
 
-            if (await Helper.exists(_image)) {
+            if (await helper.exists(_image)) {
               const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(img)}`
               const newPath = path.join(env.CDN_PROPERTIES, filename)
 
@@ -305,7 +305,7 @@ export const deleteProperty = async (req: Request, res: Response) => {
 
       if (property.image) {
         const image = path.join(env.CDN_PROPERTIES, property.image)
-        if (await Helper.exists(image)) {
+        if (await helper.exists(image)) {
           await fs.unlink(image)
         }
       }
@@ -335,7 +335,7 @@ export const uploadImage = async (req: Request, res: Response) => {
       throw new Error('[property.uploadImage] req.file not found')
     }
 
-    const filename = `${Helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+    const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_PROPERTIES, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
@@ -358,7 +358,7 @@ export const uploadImage = async (req: Request, res: Response) => {
 export const deleteTempImage = async (req: Request, res: Response) => {
   try {
     const imageFile = path.join(env.CDN_TEMP_PROPERTIES, req.params.fileName)
-    if (!await Helper.exists(imageFile)) {
+    if (!await helper.exists(imageFile)) {
       throw new Error(`[property.deleteTempImage] temp image ${imageFile} not found`)
     }
 
@@ -391,7 +391,7 @@ export const deleteImage = async (req: Request, res: Response) => {
 
       if (index > -1) {
         const _image = path.join(env.CDN_PROPERTIES, imageFileName)
-        if (await Helper.exists(_image)) {
+        if (await helper.exists(_image)) {
           await fs.unlink(_image)
         }
         property.images.splice(index, 1)

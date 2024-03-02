@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button } from '@mui/material'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
-import * as Helper from '../common/Helper'
+import * as helper from '../common/helper'
 import { strings } from '../lang/properties'
 import { strings as commonStrings } from '../lang/common'
 import Master from '../components/Master'
@@ -67,7 +67,7 @@ const Properties = () => {
 
   const onLoad = async (_user?: movininTypes.User) => {
     setUser(_user)
-    setAdmin(Helper.admin(_user))
+    setAdmin(helper.admin(_user))
     const _allAgencies = await AgencyService.getAllAgencies()
     const _agencies = movininHelper.flattenAgencies(_allAgencies)
     setAllAgencies(_allAgencies)
