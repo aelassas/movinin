@@ -9,6 +9,7 @@ import Property from '../src/models/Property'
 import Booking from '../src/models/Booking'
 import User from '../src/models/User'
 import PushToken from '../src/models/PushToken'
+import Token from '../src/models/Token'
 import * as env from '../src/config/env.config'
 
 let AGENCY_ID: string
@@ -175,6 +176,10 @@ describe('POST /api/checkout', () => {
         const renter2 = await User.findOne({ email: payload.renter.email })
         expect(renter2).not.toBeNull()
         RENTER2_ID = renter2?.id
+        const token = await Token.findOne({ user: RENTER2_ID })
+        expect(token).not.toBeNull()
+        expect(token?.token.length).toBeGreaterThan(0)
+        await token?.deleteOne()
 
         payload.renter = undefined
         res = await request(app)
