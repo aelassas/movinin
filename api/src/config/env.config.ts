@@ -143,14 +143,14 @@ export const X_ACCESS_TOKEN = 'x-access-token'
 export const JWT_SECRET = __env__('MI_JWT_SECRET', false, 'Movinin')
 
 /**
- * JWT expiration in seconds. Dedault is 86400 seconds.
+ * JWT expiration in seconds. Default is 86400 seconds.
  *
  * @type {number}
  */
 export const JWT_EXPIRE_AT = Number.parseInt(__env__('MI_JWT_EXPIRE_AT', false, '86400'), 10) // in seconds (default: 1d)
 
 /**
- * Validation Token expiration in seconds. Dedault is 86400 seconds.
+ * Validation Token expiration in seconds. Default is 86400 seconds.
  *
  * @type {number}
  */
