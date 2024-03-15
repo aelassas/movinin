@@ -23,7 +23,7 @@ let AGENCY1_NAME: string
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
-    if (await databaseHelper.Connect()) {
+    if (await databaseHelper.Connect(env.DB_URI, false, false)) {
         await testHelper.initialize()
 
         // create two agencies
@@ -178,7 +178,7 @@ describe('GET /api/all-agencies', () => {
         res = await request(app)
             .get('/api/all-agencies')
         expect(res.statusCode).toBe(400)
-        expect(await databaseHelper.Connect()).toBeTruthy()
+        expect(await databaseHelper.Connect(env.DB_URI, false, false)).toBeTruthy()
     })
 })
 

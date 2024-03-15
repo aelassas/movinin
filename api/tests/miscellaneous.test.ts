@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import * as movininTypes from 'movinin-types'
+import * as env from '../src/config/env.config'
 import * as databaseHelper from '../src/common/databaseHelper'
 import * as mailHelper from '../src/common/mailHelper'
 import * as testHelper from './testHelper'
@@ -11,11 +12,11 @@ beforeAll(() => {
 
 describe('Test User phone validation', () => {
     it('should test User phone validation', async () => {
-        await databaseHelper.Connect()
+        await databaseHelper.Connect(env.DB_URI, false, false)
         let res = true
         const USER: movininTypes.User = {
             email: testHelper.GetRandomEmail(),
-            fullName: 'Additional Driver 1',
+            fullName: 'Renter 1',
             birthDate: new Date(1990, 5, 20),
             phone: '',
         }
@@ -42,7 +43,7 @@ describe('Test User phone validation', () => {
 
 describe('Test email sending error', () => {
     it('should test email sending error', async () => {
-        await databaseHelper.Connect()
+        await databaseHelper.Connect(env.DB_URI, false, false)
         let res = true
         try {
             await mailHelper.sendMail({

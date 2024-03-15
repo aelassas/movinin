@@ -37,7 +37,7 @@ const ADMIN_EMAIL = `${testHelper.getName('admin')}@test.movinin.io`
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
-    if (await databaseHelper.Connect()) {
+    if (await databaseHelper.Connect(env.DB_URI, false, false)) {
         await testHelper.initialize()
     }
 })
