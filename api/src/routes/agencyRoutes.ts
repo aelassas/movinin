@@ -1,6 +1,6 @@
 import express from 'express'
-import routeNames from '../config/agencyRoutes.config.js'
-import authJwt from '../middlewares/authJwt.js'
+import routeNames from '../config/agencyRoutes.config'
+import authJwt from '../middlewares/authJwt'
 import * as agencyController from '../controllers/agencyController'
 
 const routes = express.Router()

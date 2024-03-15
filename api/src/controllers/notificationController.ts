@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
-import strings from '../config/app.config'
+import i18n from '../lang/i18n'
 import Notification from '../models/Notification'
 import NotificationCounter from '../models/NotificationCounter'
 
@@ -26,8 +26,8 @@ export const notificationCounter = async (req: Request, res: Response) => {
     await cnt.save()
     return res.json(cnt)
   } catch (err) {
-    console.error(`[notification.notificationCounter] ${strings.DB_ERROR} ${userId}`, err)
-    return res.status(400).send(strings.ERROR + err)
+    console.error(`[notification.notificationCounter] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -64,8 +64,8 @@ export const getNotifications = async (req: Request, res: Response) => {
 
     return res.json(notifications)
   } catch (err) {
-    console.error(`[notification.getNotifications] ${strings.DB_ERROR} ${_userId}`, err)
-    return res.status(400).send(strings.DB_ERROR + err)
+    console.error(`[notification.getNotifications] ${i18n.t('DB_ERROR')} ${_userId}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -98,8 +98,8 @@ export const markAsRead = async (req: Request, res: Response) => {
     // const result = await bulk.execute()
 
     // if (result.modifiedCount !== length) {
-    //   console.error(`[notification.markAsRead] ${strings.DB_ERROR}`)
-    //   return res.status(400).send(strings.DB_ERROR)
+    //   console.error(`[notification.markAsRead] ${i18n.t('DB_ERROR')}`)
+    //   return res.status(400).send(i18n.t('DB_ERROR'))
     // }
 
     const counter = await NotificationCounter.findOne({ user: userId })
@@ -111,8 +111,8 @@ export const markAsRead = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[notification.markAsRead] ${strings.DB_ERROR}`, err)
-    return res.status(400).send(strings.DB_ERROR + err)
+    console.error(`[notification.markAsRead] ${i18n.t('DB_ERROR')}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -145,8 +145,8 @@ export const markAsUnRead = async (req: Request, res: Response) => {
     // const result = await bulk.execute()
 
     // if (result.modifiedCount !== length) {
-    //   console.error(`[notification.markAsUnRead] ${strings.DB_ERROR}`)
-    //   return res.status(400).send(strings.DB_ERROR)
+    //   console.error(`[notification.markAsUnRead] ${i18n.t('DB_ERROR')}`)
+    //   return res.status(400).send(i18n.t('DB_ERROR'))
     // }
 
     const counter = await NotificationCounter.findOne({ user: userId })
@@ -158,8 +158,8 @@ export const markAsUnRead = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[notification.markAsUnRead] ${strings.DB_ERROR}`, err)
-    return res.status(400).send(strings.DB_ERROR + err)
+    console.error(`[notification.markAsUnRead] ${i18n.t('DB_ERROR')}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -195,7 +195,7 @@ export const deleteNotifications = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[notification.deleteNotifications] ${strings.DB_ERROR}`, err)
-    return res.status(400).send(strings.DB_ERROR + err)
+    console.error(`[notification.deleteNotifications] ${i18n.t('DB_ERROR')}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

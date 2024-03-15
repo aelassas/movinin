@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="1460" lines-covered="1459" line-rate="0.9993000000000001" branches-valid="475" branches-covered="398" branch-rate="0.8378" timestamp="1710523025455" complexity="0" version="0.1">
+<coverage lines-valid="1462" lines-covered="1461" line-rate="0.9993000000000001" branches-valid="473" branches-covered="397" branch-rate="0.8393" timestamp="1710532492909" complexity="0" version="0.1">
   <sources>
     <source>C:\dev\movinin\src\api</source>
   </sources>
@@ -224,21 +224,13 @@
         </class>
       </classes>
     </package>
-    <package name="src.config" line-rate="1" branch-rate="0.9">
+    <package name="src.config" line-rate="1" branch-rate="1">
       <classes>
         <class name="agencyRoutes.config.ts" filename="src\config\agencyRoutes.config.ts" line-rate="1" branch-rate="1">
           <methods>
           </methods>
           <lines>
             <line number="1" hits="8" branch="false"/>
-          </lines>
-        </class>
-        <class name="app.config.ts" filename="src\config\app.config.ts" line-rate="1" branch-rate="0.5">
-          <methods>
-          </methods>
-          <lines>
-            <line number="3" hits="8" branch="true" condition-coverage="50% (1/2)"/>
-            <line number="5" hits="8" branch="false"/>
           </lines>
         </class>
         <class name="bookingRoutes.config.ts" filename="src\config\bookingRoutes.config.ts" line-rate="1" branch-rate="1">
@@ -357,9 +349,9 @@
                 <line number="204" hits="2"/>
               </lines>
             </method>
-            <method name="(anonymous_5)" hits="8" signature="()V">
+            <method name="(anonymous_5)" hits="9" signature="()V">
               <lines>
-                <line number="234" hits="8"/>
+                <line number="234" hits="9"/>
               </lines>
             </method>
             <method name="(anonymous_6)" hits="2" signature="()V">
@@ -452,8 +444,8 @@
             <line number="211" hits="2" branch="false"/>
             <line number="233" hits="1" branch="true" condition-coverage="50% (1/2)"/>
             <line number="234" hits="1" branch="false"/>
-            <line number="235" hits="8" branch="false"/>
-            <line number="236" hits="8" branch="false"/>
+            <line number="235" hits="9" branch="false"/>
+            <line number="236" hits="9" branch="false"/>
             <line number="240" hits="1" branch="false"/>
             <line number="242" hits="1" branch="false"/>
             <line number="243" hits="1" branch="false"/>
@@ -2018,6 +2010,32 @@
             <line number="1296" hits="3" branch="false"/>
             <line number="1298" hits="1" branch="false"/>
             <line number="1299" hits="1" branch="false"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="src.lang" line-rate="1" branch-rate="1">
+      <classes>
+        <class name="en.ts" filename="src\lang\en.ts" line-rate="1" branch-rate="1">
+          <methods>
+          </methods>
+          <lines>
+            <line number="1" hits="8" branch="false"/>
+          </lines>
+        </class>
+        <class name="fr.ts" filename="src\lang\fr.ts" line-rate="1" branch-rate="1">
+          <methods>
+          </methods>
+          <lines>
+            <line number="1" hits="8" branch="false"/>
+          </lines>
+        </class>
+        <class name="i18n.ts" filename="src\lang\i18n.ts" line-rate="1" branch-rate="1">
+          <methods>
+          </methods>
+          <lines>
+            <line number="5" hits="8" branch="false"/>
+            <line number="6" hits="8" branch="false"/>
           </lines>
         </class>
       </classes>
