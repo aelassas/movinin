@@ -264,7 +264,7 @@ describe('DELETE /api/delete-agency/:id', () => {
         expect(res.statusCode).toBe(400)
 
         agencyName = testHelper.getAgencyName()
-        agencyId = await testHelper.createAgency(`${agencyName}@test.bookpropertys.ma`, agencyName)
+        agencyId = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
         agency = await User.findById(agencyId)
         expect(agency).not.toBeNull()
         await agency?.save()
@@ -276,10 +276,11 @@ describe('DELETE /api/delete-agency/:id', () => {
         expect(agency).toBeNull()
 
         agencyName = testHelper.getAgencyName()
-        agencyId = await testHelper.createAgency(`${agencyName}@test.bookpropertys.ma`, agencyName)
+        agencyId = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
         agency = await User.findById(agencyId)
         expect(agency).not.toBeNull()
-        avatarName = 'avatar1.jpg'
+        agency!.avatar = `${uuid()}.jpg`
+        await agency?.save()
         avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
         avatar = path.join(env.CDN_USERS, avatarName)
         if (!await helper.exists(avatar)) {
@@ -322,7 +323,7 @@ describe('DELETE /api/delete-agency/:id', () => {
         await testHelper.deleteLocation(locationId)
 
         agencyName = testHelper.getAgencyName()
-        agencyId = await testHelper.createAgency(`${agencyName}@test.bookpropertys.ma`, agencyName)
+        agencyId = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
         agency = await User.findById(agencyId)
         expect(agency).not.toBeNull()
         avatarName = 'avatar1.jpg'
