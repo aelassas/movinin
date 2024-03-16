@@ -255,7 +255,6 @@ describe('PUT /api/update-property', () => {
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
-        const { images } = property
         property = res.body
         expect(property.image).toBeDefined()
         expect(property.images.length).toBe(0)
@@ -263,17 +262,13 @@ describe('PUT /api/update-property', () => {
         if (!await helper.exists(mainImage)) {
             fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
         }
-        payload.images = images
-        res = await request(app)
-            .put('/api/update-property')
-            .set(env.X_ACCESS_TOKEN, token)
-            .send(payload)
-        expect(res.statusCode).toBe(200)
-
-        if (await helper.exists(additionalImage1)) {
-            fs.unlink(additionalImage1)
+        if (!await helper.exists(additionalImage1)) {
+            fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
         }
-        payload.images = [...property.images, `${uuid()}.jpg`]
+        if (!await helper.exists(additionalImage2)) {
+            fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
+        }
+        payload.images = [ADDITIONAL_IMAGE2_1, ADDITIONAL_IMAGE2_2]
         res = await request(app)
             .put('/api/update-property')
             .set(env.X_ACCESS_TOKEN, token)
@@ -290,6 +285,26 @@ describe('PUT /api/update-property', () => {
             .send(payload)
         expect(res.statusCode).toBe(200)
 
+        if (await helper.exists(additionalImage1)) {
+            fs.unlink(additionalImage1)
+        }
+        if (!await helper.exists(additionalImage1)) {
+            fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
+        }
+        if (!await helper.exists(additionalImage2)) {
+            fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
+        }
+        property = await Property.findById(PROPERTY_ID)
+        property.images = [ADDITIONAL_IMAGE2_1, ADDITIONAL_IMAGE2_2, `${uuid()}.jpg`]
+        property.image = `${uuid()}.jpg`
+        await property.save()
+        payload.images = [ADDITIONAL_IMAGE2_1, `${uuid()}.jpg`]
+        res = await request(app)
+            .put('/api/update-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+
         payload._id = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .put('/api/update-property')
@@ -297,6 +312,9 @@ describe('PUT /api/update-property', () => {
             .send(payload)
         expect(res.statusCode).toBe(204)
 
+        property = await Property.findById(PROPERTY_ID)
+        property.images = []
+        await property.save()
         if (!await helper.exists(mainImage)) {
             fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
         }
@@ -332,6 +350,7 @@ describe('POST /api/delete-property-image/:id/:image', () => {
         expect(property?.images).toBeDefined()
         expect(property?.images?.length).toBe(2)
         const additionalImageName = (property?.images ?? [])[0]
+        console.log(additionalImageName)
         const additionalImagePath = path.join(env.CDN_PROPERTIES, additionalImageName)
         let imageExists = await helper.exists(additionalImagePath)
         expect(imageExists).toBeTruthy()
