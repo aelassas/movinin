@@ -277,7 +277,17 @@ describe('POST /api/update-booking', () => {
 
         payload.renter = RENTER1_ID
         payload.status = movininTypes.BookingStatus.Void
-        let pushToken = new PushToken({ user: payload.renter, token: 'ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]' })
+        let pushToken = new PushToken({ user: payload.renter, token: 'ExponentPushToken[CokU9KJ9-Yq2ulVTyYOI8J]' })
+        await pushToken.save()
+        res = await request(app)
+            .put('/api/update-booking')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        await PushToken.deleteOne({ _id: pushToken._id })
+
+        payload.status = movininTypes.BookingStatus.Deposit
+        pushToken = new PushToken({ user: payload.renter, token: 'ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]' })
         await pushToken.save()
         res = await request(app)
             .put('/api/update-booking')
