@@ -230,12 +230,10 @@ export const getAgencies = async (req: Request, res: Response) => {
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
-    if (data.length > 0) {
-      data[0].resultData = data[0].resultData.map((agency: env.User) => {
-        const { _id, fullName, avatar } = agency
-        return { _id, fullName, avatar }
-      })
-    }
+    data[0].resultData = data[0].resultData.map((agency: env.User) => {
+      const { _id, fullName, avatar } = agency
+      return { _id, fullName, avatar }
+    })
 
     return res.json(data)
   } catch (err) {
@@ -263,12 +261,10 @@ export const getAllAgencies = async (req: Request, res: Response) => {
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
-    if (data.length > 0) {
-      data = data.map((agency: env.User) => {
-        const { _id, fullName, avatar } = agency
-        return { _id, fullName, avatar }
-      })
-    }
+    data = data.map((agency: env.User) => {
+      const { _id, fullName, avatar } = agency
+      return { _id, fullName, avatar }
+    })
 
     return res.json(data)
   } catch (err) {

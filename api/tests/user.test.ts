@@ -76,7 +76,7 @@ describe('POST /api/sign-up', () => {
             .post('/api/sign-up')
             .send(payload)
         expect(res.statusCode).toBe(200)
-        const user = await User.findOne({ email: USER1_EMAIL })
+        let user = await User.findOne({ email: USER1_EMAIL })
         expect(user).not.toBeNull()
         USER1_ID = user?.id
         expect(user?.type).toBe(movininTypes.UserType.User)
@@ -88,6 +88,17 @@ describe('POST /api/sign-up', () => {
         const token = await Token.findOne({ user: USER1_ID })
         expect(token).not.toBeNull()
         expect(token?.token.length).toBeGreaterThan(0)
+
+        const email = testHelper.GetRandomEmail()
+        payload.email = email
+        payload.avatar = `${uuid()}.jpg`
+        res = await request(app)
+            .post('/api/sign-up')
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        user = await User.findOne({ email })
+        expect(user).not.toBeNull()
+        await user?.deleteOne()
 
         res = await request(app)
             .post('/api/sign-up')
@@ -152,7 +163,7 @@ describe('POST /api/create-user', () => {
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
-        const user = await User.findOne({ email: USER2_EMAIL })
+        let user = await User.findOne({ email: USER2_EMAIL })
         expect(user).not.toBeNull()
         USER2_ID = user?.id
         expect(user?.type).toBe(movininTypes.UserType.User)
@@ -168,6 +179,19 @@ describe('POST /api/create-user', () => {
         expect(userToken?.token.length).toBeGreaterThan(0)
         await userToken?.deleteOne()
 
+        let email = testHelper.GetRandomEmail()
+        payload.email = email
+        payload.avatar = undefined
+        res = await request(app)
+            .post('/api/create-user')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        user = await User.findOne({ email })
+        expect(user).not.toBeNull()
+        await user?.deleteOne()
+
+        payload.email = USER2_EMAIL
         payload.avatar = 'unknown.jpg'
         res = await request(app)
             .post('/api/create-user')
@@ -180,7 +204,7 @@ describe('POST /api/create-user', () => {
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
-        const email = testHelper.GetRandomEmail()
+        email = testHelper.GetRandomEmail()
         payload.email = email
         payload.password = 'password'
         res = await request(app)
@@ -625,6 +649,26 @@ describe('POST /api/update-user', () => {
         expect(user?.bio).toBe(payload.bio)
         expect(user?.payLater).toBeFalsy()
 
+        const { fullName, payLater } = (user!)
+        payload!.fullName = ''
+        payload!.birthDate = undefined
+        payload!.type = undefined
+        payload.payLater = undefined
+        res = await request(app)
+            .post('/api/update-user')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        user = await User.findById(USER1_ID)
+        expect(user).not.toBeNull()
+        expect(user?.type).toBe(movininTypes.UserType.Agency)
+        expect(user?.fullName).toBe(fullName)
+        expect(user?.birthDate).toBeUndefined()
+        expect(user?.phone).toBe(payload.phone)
+        expect(user?.location).toBe(payload.location)
+        expect(user?.bio).toBe(payload.bio)
+        expect(user?.payLater).toBe(payLater)
+
         payload._id = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .post('/api/update-user')
@@ -788,12 +832,32 @@ describe('POST /api/update-avatar/:userId', () => {
             .attach('image', AVATAR2_PATH)
         expect(res.statusCode).toBe(200)
         const filename = res.body as string
-        const avatarExists = await helper.exists(path.resolve(env.CDN_USERS, filename))
+        let avatarExists = await helper.exists(path.resolve(env.CDN_USERS, filename))
         expect(avatarExists).toBeTruthy()
         const user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
         expect(user?.avatar).toBeDefined()
         expect(user?.avatar).not.toBeNull()
+
+        user!.avatar = undefined
+        await user?.save()
+        res = await request(app)
+            .post(`/api/update-avatar/${USER1_ID}`)
+            .set(env.X_ACCESS_TOKEN, token)
+            .attach('image', AVATAR2_PATH)
+        expect(res.statusCode).toBe(200)
+        avatarExists = await helper.exists(path.resolve(env.CDN_USERS, filename))
+        expect(avatarExists).toBeTruthy()
+
+        user!.avatar = `${uuid()}.jpg`
+        await user?.save()
+        res = await request(app)
+            .post(`/api/update-avatar/${USER1_ID}`)
+            .set(env.X_ACCESS_TOKEN, token)
+            .attach('image', AVATAR2_PATH)
+        expect(res.statusCode).toBe(200)
+        avatarExists = await helper.exists(path.resolve(env.CDN_USERS, filename))
+        expect(avatarExists).toBeTruthy()
 
         res = await request(app)
             .post(`/api/update-avatar/${USER1_ID}`)
@@ -836,6 +900,20 @@ describe('POST /api/delete-avatar/:userId', () => {
         user = await User.findById(USER1_ID)
         expect(user).not.toBeNull()
         expect(user?.avatar).toBeUndefined()
+
+        user!.avatar = undefined
+        await user?.save()
+        res = await request(app)
+            .post(`/api/delete-avatar/${USER1_ID}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(200)
+
+        user!.avatar = `${uuid()}.jpg`
+        await user?.save()
+        res = await request(app)
+            .post(`/api/delete-avatar/${USER1_ID}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(200)
 
         res = await request(app)
             .post(`/api/delete-avatar/${testHelper.GetRandromObjectIdAsString()}`)
@@ -1002,6 +1080,14 @@ describe('POST /api/users/:page/:size', () => {
         expect(res.statusCode).toBe(200)
         expect(res.body[0].resultData.length).toBeGreaterThan(3)
 
+        payload.user = ''
+        res = await request(app)
+            .post(`/api/users/${testHelper.PAGE}/${testHelper.SIZE}`)
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        expect(res.body[0].resultData.length).toBeGreaterThan(3)
+
         res = await request(app)
             .post(`/api/users/unknown/${testHelper.SIZE}`)
             .set(env.X_ACCESS_TOKEN, token)
@@ -1017,6 +1103,9 @@ describe('POST /api/delete-users', () => {
         const token = await testHelper.signinAsAdmin()
 
         let payload: string[] = [USER1_ID, USER2_ID, ADMIN_ID]
+        const user1 = await User.findById(USER1_ID)
+        user1!.avatar = `${uuid()}.jpg`
+        await user1?.save()
         let users = await User.find({ _id: { $in: payload } })
         expect(users.length).toBe(3)
         let res = await request(app)
@@ -1055,13 +1144,63 @@ describe('POST /api/delete-users', () => {
         if (!await helper.exists(additionalImage2)) {
             fs.copyFile(additionalImage2Path, additionalImage2)
         }
-        const property = new Property({
+        let property = new Property({
             name: 'Beautiful House in Detroit',
             agency: agencyId,
             type: movininTypes.PropertyType.House,
             description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
             image: mainImageName,
             images: [additionalImage1Name, additionalImage2Name],
+            bedrooms: 3,
+            bathrooms: 2,
+            kitchens: 1,
+            parkingSpaces: 1,
+            size: 200,
+            petsAllowed: false,
+            furnished: true,
+            aircon: true,
+            minimumAge: 21,
+            location: locationId,
+            address: '',
+            price: 4000,
+            hidden: true,
+            cancellation: 0,
+            available: false,
+            rentalTerm: movininTypes.RentalTerm.Monthly,
+        })
+        await property.save()
+        property = new Property({
+            name: 'Beautiful House in Detroit',
+            agency: agencyId,
+            type: movininTypes.PropertyType.House,
+            description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: mainImageName,
+            images: undefined,
+            bedrooms: 3,
+            bathrooms: 2,
+            kitchens: 1,
+            parkingSpaces: 1,
+            size: 200,
+            petsAllowed: false,
+            furnished: true,
+            aircon: true,
+            minimumAge: 21,
+            location: locationId,
+            address: '',
+            price: 4000,
+            hidden: true,
+            cancellation: 0,
+            available: false,
+            rentalTerm: movininTypes.RentalTerm.Monthly,
+        })
+        await property.save()
+        property = new Property({
+            name: 'Beautiful House in Detroit',
+            agency: agencyId,
+            type: movininTypes.PropertyType.House,
+            description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: `${uuid()}.jpg`,
+            images: [`${uuid()}.jpg`],
             bedrooms: 3,
             bathrooms: 2,
             kitchens: 1,
