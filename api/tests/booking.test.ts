@@ -157,6 +157,16 @@ describe('POST /api/checkout', () => {
         bookings = await Booking.find({ renter: RENTER1_ID })
         expect(bookings.length).toBeGreaterThan(1)
 
+        const renter = await User.findOne({ _id: RENTER1_ID })
+        renter!.language = 'fr'
+        await renter?.save()
+        res = await request(app)
+            .post('/api/checkout')
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        bookings = await Booking.find({ renter: RENTER1_ID })
+        expect(bookings.length).toBeGreaterThan(2)
+
         payload.booking.agency = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .post('/api/checkout')
@@ -299,7 +309,15 @@ describe('POST /api/update-booking-status', () => {
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
-        const booking = await Booking.findById(BOOKING_ID)
+        let booking = await Booking.findById(BOOKING_ID)
+        expect(booking?.status).toBe(movininTypes.BookingStatus.Reserved)
+
+        res = await request(app)
+            .post('/api/update-booking-status')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        booking = await Booking.findById(BOOKING_ID)
         expect(booking?.status).toBe(movininTypes.BookingStatus.Reserved)
 
         res = await request(app)
@@ -352,6 +370,19 @@ describe('POST /api/bookings/:page/:size/:language', () => {
             property: PROPERTY2_ID,
         }
         let res = await request(app)
+            .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        expect(res.body[0].resultData.length).toBe(1)
+
+        payload.user = undefined
+        payload.property = undefined
+        payload.filter!.from = undefined
+        payload.filter!.to = undefined
+        payload.filter!.location = undefined
+        payload.filter!.keyword = undefined
+        res = await request(app)
             .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
@@ -441,7 +472,7 @@ describe('DELETE /api/delete-bookings', () => {
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
-        bookings = await Booking.find({ driver: { $in: renters } })
+        bookings = await Booking.find({ renter: { $in: renters } })
         expect(bookings.length).toBe(0)
 
         res = await request(app)

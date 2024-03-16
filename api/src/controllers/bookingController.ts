@@ -132,11 +132,8 @@ export const checkout = async (req: Request, res: Response) => {
       return res.sendStatus(204)
     }
 
-    let language = env.DEFAULT_LANGUAGE
-    if (user.language) {
-      language = user.language
-      i18n.locale = user.language
-    }
+    const { language } = user
+    i18n.locale = language
 
     const booking = new Booking(body.booking)
 
@@ -218,9 +215,7 @@ const notifyRenter = async (booking: env.Booking) => {
     return
   }
 
-  if (renter.language) {
-    i18n.locale = renter.language
-  }
+  i18n.locale = renter.language
 
   const message = `${i18n.t('BOOKING_UPDATED_NOTIFICATION_PART1')} ${booking._id} ${i18n.t('BOOKING_UPDATED_NOTIFICATION_PART2')}`
   const notification = new Notification({
@@ -454,34 +449,20 @@ export const getBooking = async (req: Request, res: Response) => {
     if (booking) {
       const { language } = req.params
 
-      if (booking.agency) {
-        const {
-          _id,
-          fullName,
-          avatar,
-          payLater,
-        } = booking.agency
-        booking.agency = {
-          _id,
-          fullName,
-          avatar,
-          payLater,
-        }
+      booking.agency = {
+        _id: booking.agency._id,
+        fullName: booking.agency.fullName,
+        avatar: booking.agency.avatar,
+        payLater: booking.agency.payLater,
       }
-      if (booking.property.agency) {
-        const {
-          _id,
-          fullName,
-          avatar,
-          payLater,
-        } = booking.property.agency
-        booking.property.agency = {
-          _id,
-          fullName,
-          avatar,
-          payLater,
-        }
+
+      booking.property.agency = {
+        _id: booking.property.agency._id,
+        fullName: booking.property.agency.fullName,
+        avatar: booking.property.agency.avatar,
+        payLater: booking.property.agency.payLater,
       }
+
       booking.location.name = booking.location.values.filter((value) => value.language === language)[0].value
       return res.json(booking)
     }
@@ -523,43 +504,42 @@ export const getBookings = async (req: Request, res: Response) => {
     const $match: mongoose.FilterQuery<any> = {
       $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }],
     }
-    if ($match.$and) {
-      if (user) {
-        $match.$and.push({
-          'renter._id': { $eq: new mongoose.Types.ObjectId(user) },
+
+    if (user) {
+      $match.$and!.push({
+        'renter._id': { $eq: new mongoose.Types.ObjectId(user) },
+      })
+    }
+    if (property) {
+      $match.$and!.push({
+        'property._id': { $eq: new mongoose.Types.ObjectId(property) },
+      })
+    }
+    if (location) {
+      $match.$and!.push({ 'location._id': { $eq: new mongoose.Types.ObjectId(location) } })
+    }
+    if (from) {
+      $match.$and!.push({ from: { $gte: from } })
+    } // $from > from
+    if (to) {
+      $match.$and!.push({ to: { $lte: to } })
+    } // $to < to
+    if (keyword) {
+      const isObjectId = helper.isValidObjectId(keyword)
+      if (isObjectId) {
+        $match.$and!.push({
+          _id: { $eq: new mongoose.Types.ObjectId(keyword) },
         })
-      }
-      if (property) {
-        $match.$and.push({
-          'property._id': { $eq: new mongoose.Types.ObjectId(property) },
+      } else {
+        keyword = escapeStringRegexp(keyword)
+        $match.$and!.push({
+          $or: [
+            { 'agency.fullName': { $regex: keyword, $options: options } },
+            { 'renter.fullName': { $regex: keyword, $options: options } },
+            { 'property.name': { $regex: keyword, $options: options } },
+            { 'location.name': { $regex: keyword, $options: options } },
+          ],
         })
-      }
-      if (location) {
-        $match.$and.push({ 'location._id': { $eq: new mongoose.Types.ObjectId(location) } })
-      }
-      if (from) {
-        $match.$and.push({ from: { $gte: from } })
-      } // $from > from
-      if (to) {
-        $match.$and.push({ to: { $lte: to } })
-      } // $to < to
-      if (keyword) {
-        const isObjectId = helper.isValidObjectId(keyword)
-        if (isObjectId) {
-          $match.$and.push({
-            _id: { $eq: new mongoose.Types.ObjectId(keyword) },
-          })
-        } else {
-          keyword = escapeStringRegexp(keyword)
-          $match.$and.push({
-            $or: [
-              { 'agency.fullName': { $regex: keyword, $options: options } },
-              { 'renter.fullName': { $regex: keyword, $options: options } },
-              { 'property.name': { $regex: keyword, $options: options } },
-              { 'location.name': { $regex: keyword, $options: options } },
-            ],
-          })
-        }
       }
     }
 
@@ -662,13 +642,11 @@ export const getBookings = async (req: Request, res: Response) => {
       },
     ])
 
-    if (data.length > 0) {
-      const bookings: env.BookingInfo[] = data[0].resultData
+    const bookings: env.BookingInfo[] = data[0].resultData
 
-      for (const booking of bookings) {
-        const { _id, fullName, avatar } = booking.agency
-        booking.agency = { _id, fullName, avatar }
-      }
+    for (const booking of bookings) {
+      const { _id, fullName, avatar } = booking.agency
+      booking.agency = { _id, fullName, avatar }
     }
 
     return res.json(data)
