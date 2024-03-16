@@ -3,6 +3,7 @@ import request from 'supertest'
 import url from 'url'
 import path from 'path'
 import fs from 'node:fs/promises'
+import { v1 as uuid } from 'uuid'
 import * as movininTypes from 'movinin-types'
 import * as databaseHelper from '../src/common/databaseHelper'
 import * as testHelper from './testHelper'
@@ -163,6 +164,12 @@ describe('GET /api/agencies/:page/:size', () => {
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
 
+        res = await request(app)
+            .get(`/api/agencies/${testHelper.PAGE}/${testHelper.SIZE}?s=${uuid()}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(200)
+        expect(res.body[0].resultData.length).toBe(0)
+
         await testHelper.signout(token)
     })
 })
@@ -186,24 +193,24 @@ describe('DELETE /api/delete-agency/:id', () => {
     it('should delete a agency', async () => {
         const token = await testHelper.signinAsAdmin()
 
-        const agencyName = testHelper.getAgencyName()
-        const agencyId = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
+        let agencyName = testHelper.getAgencyName()
+        let agencyId = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
         let agency = await User.findById(agencyId)
         expect(agency).not.toBeNull()
-        const avatarName = 'avatar1.jpg'
-        const avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
-        const avatar = path.join(env.CDN_USERS, avatarName)
+        let avatarName = 'avatar1.jpg'
+        let avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
+        let avatar = path.join(env.CDN_USERS, avatarName)
         if (!await helper.exists(avatar)) {
             fs.copyFile(avatarPath, avatar)
         }
         agency!.avatar = avatarName
         await agency?.save()
-        const locationId = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
+        let locationId = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
         const propertyImageName = 'main1.jpg'
         const propertyImagePath = path.resolve(__dirname, `./img/${propertyImageName}`)
         const additionalImageName = 'additional1-1.jpg'
         const additionalImagePath = path.resolve(__dirname, `./img/${additionalImageName}`)
-        const property = new Property({
+        let property = new Property({
             name: 'Beautiful House in Detroit',
             agency: agencyId,
             type: movininTypes.PropertyType.House,
@@ -255,6 +262,110 @@ describe('DELETE /api/delete-agency/:id', () => {
             .delete('/api/delete-agency/0')
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(400)
+
+        agencyName = testHelper.getAgencyName()
+        agencyId = await testHelper.createAgency(`${agencyName}@test.bookpropertys.ma`, agencyName)
+        agency = await User.findById(agencyId)
+        expect(agency).not.toBeNull()
+        await agency?.save()
+        res = await request(app)
+            .delete(`/api/delete-agency/${agencyId}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(200)
+        agency = await User.findById(agencyId)
+        expect(agency).toBeNull()
+
+        agencyName = testHelper.getAgencyName()
+        agencyId = await testHelper.createAgency(`${agencyName}@test.bookpropertys.ma`, agencyName)
+        agency = await User.findById(agencyId)
+        expect(agency).not.toBeNull()
+        avatarName = 'avatar1.jpg'
+        avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
+        avatar = path.join(env.CDN_USERS, avatarName)
+        if (!await helper.exists(avatar)) {
+            fs.copyFile(avatarPath, avatar)
+        }
+        agency!.avatar = avatarName
+        await agency?.save()
+        locationId = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
+        property = new Property({
+            name: 'Beautiful House in Detroit',
+            agency: agencyId,
+            type: movininTypes.PropertyType.House,
+            description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: null,
+            images: null,
+            bedrooms: 3,
+            bathrooms: 2,
+            kitchens: 1,
+            parkingSpaces: 1,
+            size: 200,
+            petsAllowed: false,
+            furnished: true,
+            aircon: true,
+            minimumAge: 21,
+            location: locationId,
+            address: '',
+            price: 4000,
+            hidden: true,
+            cancellation: 0,
+            available: false,
+            rentalTerm: movininTypes.RentalTerm.Monthly,
+        })
+        await property.save()
+        res = await request(app)
+            .delete(`/api/delete-agency/${agencyId}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(200)
+        agency = await User.findById(agencyId)
+        expect(agency).toBeNull()
+        await testHelper.deleteLocation(locationId)
+
+        agencyName = testHelper.getAgencyName()
+        agencyId = await testHelper.createAgency(`${agencyName}@test.bookpropertys.ma`, agencyName)
+        agency = await User.findById(agencyId)
+        expect(agency).not.toBeNull()
+        avatarName = 'avatar1.jpg'
+        avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
+        avatar = path.join(env.CDN_USERS, avatarName)
+        if (!await helper.exists(avatar)) {
+            fs.copyFile(avatarPath, avatar)
+        }
+        agency!.avatar = avatarName
+        await agency?.save()
+        locationId = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
+        property = new Property({
+            name: 'Beautiful House in Detroit',
+            agency: agencyId,
+            type: movininTypes.PropertyType.House,
+            description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: `${uuid()}.jpg`,
+            images: [`${uuid()}.jpg`],
+            bedrooms: 3,
+            bathrooms: 2,
+            kitchens: 1,
+            parkingSpaces: 1,
+            size: 200,
+            petsAllowed: false,
+            furnished: true,
+            aircon: true,
+            minimumAge: 21,
+            location: locationId,
+            address: '',
+            price: 4000,
+            hidden: true,
+            cancellation: 0,
+            available: false,
+            rentalTerm: movininTypes.RentalTerm.Monthly,
+        })
+        await property.save()
+        res = await request(app)
+            .delete(`/api/delete-agency/${agencyId}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(200)
+        agency = await User.findById(agencyId)
+        expect(agency).toBeNull()
+        await testHelper.deleteLocation(locationId)
 
         await testHelper.signout(token)
     })
