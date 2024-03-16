@@ -309,6 +309,16 @@ export const deleteProperty = async (req: Request, res: Response) => {
           await fs.unlink(image)
         }
       }
+
+      if (Array.isArray(property.images)) {
+        for (const imageName of property.images) {
+          const image = path.join(env.CDN_PROPERTIES, imageName)
+          if (await helper.exists(image)) {
+            await fs.unlink(image)
+          }
+        }
+      }
+
       await Booking.deleteMany({ property: property._id })
     } else {
       return res.sendStatus(204)
@@ -492,15 +502,13 @@ export const getProperties = async (req: Request, res: Response) => {
       ],
     }
 
-    if ($match.$and) {
-      if (availability) {
-        if (availability.length === 1 && availability[0] === movininTypes.Availablity.Available) {
-          $match.$and.push({ available: true })
-        } else if (availability.length === 1 && availability[0] === movininTypes.Availablity.Unavailable) {
-          $match.$and.push({ available: false })
-        } else if (availability.length === 0) {
-          return res.json([{ resultData: [], pageInfo: [] }])
-        }
+    if (availability) {
+      if (availability.length === 1 && availability[0] === movininTypes.Availablity.Available) {
+        $match.$and!.push({ available: true })
+      } else if (availability.length === 1 && availability[0] === movininTypes.Availablity.Unavailable) {
+        $match.$and!.push({ available: false })
+      } else if (availability.length === 0) {
+        return res.json([{ resultData: [], pageInfo: [] }])
       }
     }
 
@@ -581,12 +589,10 @@ export const getProperties = async (req: Request, res: Response) => {
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
-    if (data.length > 0) {
-      for (const property of data[0].resultData) {
-        if (property.agency) {
-          const { _id, fullName, avatar } = property.agency
-          property.agency = { _id, fullName, avatar }
-        }
+    for (const property of data[0].resultData) {
+      if (property.agency) {
+        const { _id, fullName, avatar } = property.agency
+        property.agency = { _id, fullName, avatar }
       }
     }
 
@@ -716,12 +722,10 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
-    if (data.length > 0) {
-      for (const property of data[0].resultData) {
-        if (property.agency) {
-          const { _id, fullName, avatar } = property.agency
-          property.agency = { _id, fullName, avatar }
-        }
+    for (const property of data[0].resultData) {
+      if (property.agency) {
+        const { _id, fullName, avatar } = property.agency
+        property.agency = { _id, fullName, avatar }
       }
     }
 

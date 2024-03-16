@@ -4,6 +4,7 @@ import * as movininTypes from 'movinin-types'
 import url from 'url'
 import path from 'path'
 import fs from 'node:fs/promises'
+import { v1 as uuid } from 'uuid'
 import * as databaseHelper from '../src/common/databaseHelper'
 import app from '../src/app'
 import * as env from '../src/config/env.config'
@@ -300,7 +301,6 @@ describe('POST /api/delete-property-image/:id/:image', () => {
         const additionalImagePath = path.join(env.CDN_PROPERTIES, additionalImageName)
         let imageExists = await helper.exists(additionalImagePath)
         expect(imageExists).toBeTruthy()
-
         let res = await request(app)
             .post(`/api/delete-property-image/${PROPERTY_ID}/${additionalImageName}`)
             .set(env.X_ACCESS_TOKEN, token)
@@ -309,6 +309,14 @@ describe('POST /api/delete-property-image/:id/:image', () => {
         expect(property?.images?.length).toBe(1)
         imageExists = await helper.exists(additionalImagePath)
         expect(imageExists).toBeFalsy()
+
+        const image = `${uuid()}.jpg`
+        property!.images?.push(image)
+        await property?.save()
+        res = await request(app)
+            .post(`/api/delete-property-image/${PROPERTY_ID}/${image}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(200)
 
         res = await request(app)
             .post(`/api/delete-property-image/${testHelper.GetRandromObjectIdAsString()}/${additionalImageName}`)
@@ -538,6 +546,66 @@ describe('DELETE /api/delete-property/:id', () => {
 
         let res = await request(app)
             .delete(`/api/delete-property/${PROPERTY_ID}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(200)
+
+        let property = new Property({
+            name: 'Beautiful House in Detroit',
+            agency: AGENCY1_ID,
+            type: movininTypes.PropertyType.House,
+            description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: null,
+            images: null,
+            bedrooms: 3,
+            bathrooms: 2,
+            kitchens: 1,
+            parkingSpaces: 1,
+            size: 200,
+            petsAllowed: false,
+            furnished: true,
+            aircon: true,
+            minimumAge: 21,
+            location: LOCATION1_ID,
+            address: '',
+            price: 1000,
+            hidden: true,
+            cancellation: 0,
+            available: false,
+            rentalTerm: movininTypes.RentalTerm.Daily,
+        })
+        await property.save()
+        res = await request(app)
+            .delete(`/api/delete-property/${property.id}`)
+            .set(env.X_ACCESS_TOKEN, token)
+        expect(res.statusCode).toBe(200)
+
+        property = new Property({
+            name: 'Beautiful House in Detroit',
+            agency: AGENCY1_ID,
+            type: movininTypes.PropertyType.House,
+            description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+            image: `${uuid()}.jpg`,
+            images: [`${uuid()}.jpg`],
+            bedrooms: 3,
+            bathrooms: 2,
+            kitchens: 1,
+            parkingSpaces: 1,
+            size: 200,
+            petsAllowed: false,
+            furnished: true,
+            aircon: true,
+            minimumAge: 21,
+            location: LOCATION1_ID,
+            address: '',
+            price: 1000,
+            hidden: true,
+            cancellation: 0,
+            available: false,
+            rentalTerm: movininTypes.RentalTerm.Daily,
+        })
+        await property.save()
+        res = await request(app)
+            .delete(`/api/delete-property/${property.id}`)
             .set(env.X_ACCESS_TOKEN, token)
         expect(res.statusCode).toBe(200)
 
