@@ -313,6 +313,8 @@ describe('PUT /api/update-property', () => {
         expect(res.statusCode).toBe(204)
 
         property = await Property.findById(PROPERTY_ID)
+        property.images = [...property.images, `${uuid()}.jpg`]
+        await property.save()
         property.images = []
         await property.save()
         if (!await helper.exists(mainImage)) {

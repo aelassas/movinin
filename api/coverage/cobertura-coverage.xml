@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="1451" lines-covered="1450" line-rate="0.9993000000000001" branches-valid="443" branches-covered="432" branch-rate="0.9751000000000001" timestamp="1710577437630" complexity="0" version="0.1">
+<coverage lines-valid="1451" lines-covered="1450" line-rate="0.9993000000000001" branches-valid="443" branches-covered="432" branch-rate="0.9751000000000001" timestamp="1710577682287" complexity="0" version="0.1">
   <sources>
     <source>C:\dev\movinin\src\api</source>
   </sources>
@@ -171,8 +171,8 @@
             <line number="30" hits="11" branch="false"/>
             <line number="31" hits="101" branch="false"/>
             <line number="32" hits="101" branch="false"/>
-            <line number="33" hits="45" branch="false"/>
-            <line number="35" hits="56" branch="false"/>
+            <line number="33" hits="44" branch="false"/>
+            <line number="35" hits="57" branch="false"/>
             <line number="48" hits="11" branch="false"/>
             <line number="49" hits="32" branch="false"/>
             <line number="60" hits="11" branch="false"/>
@@ -359,9 +359,9 @@
                 <line number="256" hits="2"/>
               </lines>
             </method>
-            <method name="(anonymous_7)" hits="12" signature="()V">
+            <method name="(anonymous_7)" hits="13" signature="()V">
               <lines>
-                <line number="266" hits="12"/>
+                <line number="266" hits="13"/>
               </lines>
             </method>
           </methods>
@@ -453,8 +453,8 @@
             <line number="257" hits="2" branch="false"/>
             <line number="258" hits="2" branch="false"/>
             <line number="266" hits="1" branch="false"/>
-            <line number="267" hits="12" branch="false"/>
-            <line number="268" hits="12" branch="false"/>
+            <line number="267" hits="13" branch="false"/>
+            <line number="268" hits="13" branch="false"/>
             <line number="271" hits="1" branch="false"/>
             <line number="273" hits="1" branch="false"/>
             <line number="274" hits="1" branch="false"/>
