@@ -90,8 +90,8 @@ export const create = async (req: Request, res: Response) => {
 
     // images
     property.images = []
-    let i = 1
     if (images) {
+      let i = 1
       for (const img of images) {
         const _img = path.join(env.CDN_TEMP_PROPERTIES, img)
 
@@ -444,19 +444,17 @@ export const getProperty = async (req: Request, res: Response) => {
       .lean()
 
     if (property) {
-      if (property.agency) {
-        const {
-          _id,
-          fullName,
-          avatar,
-          payLater,
-        } = property.agency
-        property.agency = {
-          _id,
-          fullName,
-          avatar,
-          payLater,
-        }
+      const {
+        _id,
+        fullName,
+        avatar,
+        payLater,
+      } = property.agency
+      property.agency = {
+        _id,
+        fullName,
+        avatar,
+        payLater,
       }
 
       property.location.name = property.location.values.filter((value) => value.language === language)[0].value
@@ -590,10 +588,8 @@ export const getProperties = async (req: Request, res: Response) => {
     )
 
     for (const property of data[0].resultData) {
-      if (property.agency) {
-        const { _id, fullName, avatar } = property.agency
-        property.agency = { _id, fullName, avatar }
-      }
+      const { _id, fullName, avatar } = property.agency
+      property.agency = { _id, fullName, avatar }
     }
 
     return res.json(data)
@@ -723,10 +719,8 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
     )
 
     for (const property of data[0].resultData) {
-      if (property.agency) {
-        const { _id, fullName, avatar } = property.agency
-        property.agency = { _id, fullName, avatar }
-      }
+      const { _id, fullName, avatar } = property.agency
+      property.agency = { _id, fullName, avatar }
     }
 
     return res.json(data)

@@ -125,6 +125,18 @@ describe('POST /api/create-property', () => {
         if (!await helper.exists(mainImage)) {
             fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
         }
+        payload.images = undefined
+        res = await request(app)
+            .post('/api/create-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        const deleteRes = await Property.deleteOne({ _id: res.body._id })
+        expect(deleteRes.deletedCount).toBe(1)
+
+        if (!await helper.exists(mainImage)) {
+            fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
+        }
         payload.images = ['unknown.jpg']
         res = await request(app)
             .post('/api/create-property')
@@ -212,7 +224,7 @@ describe('PUT /api/update-property', () => {
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
-        const property = res.body
+        let property = res.body
         expect(property.name).toBe('Beautiful Townhouse in Detroit')
         expect(property.agency).toBe(AGENCY2_ID)
         expect(property.type).toBe(movininTypes.PropertyType.Townhouse)
@@ -236,10 +248,32 @@ describe('PUT /api/update-property', () => {
         expect(property.available).toBeTruthy()
         expect(property.rentalTerm).toBe(movininTypes.RentalTerm.Weekly)
 
+        payload.image = ''
+        payload.images = undefined
+        res = await request(app)
+            .put('/api/update-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        const { images } = property
+        property = res.body
+        expect(property.image).toBeDefined()
+        expect(property.images.length).toBe(0)
+
         if (!await helper.exists(mainImage)) {
             fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
         }
-        payload.images = property.images
+        payload.images = images
+        res = await request(app)
+            .put('/api/update-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+
+        if (await helper.exists(additionalImage1)) {
+            fs.unlink(additionalImage1)
+        }
+        payload.images = [...property.images, `${uuid()}.jpg`]
         res = await request(app)
             .put('/api/update-property')
             .set(env.X_ACCESS_TOKEN, token)
@@ -450,6 +484,17 @@ describe('POST /api/properties/:page/:size', () => {
         expect(res.statusCode).toBe(200)
         expect(res.body[0].resultData.length).toBe(0)
 
+        payload.types = undefined
+        payload.rentalTerms = undefined
+        payload.availability = undefined
+        payload.language = undefined
+        res = await request(app)
+            .post(`/api/properties/${testHelper.PAGE}/${testHelper.SIZE}`)
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        expect(res.body[0].resultData.length).toBe(0)
+
         await testHelper.signout(token)
     })
 })
@@ -492,6 +537,14 @@ describe('POST /api/frontend-properties/:page/:size', () => {
             .send(payload)
         expect(res.statusCode).toBe(200)
         expect(res.body[0].resultData.length).toBeGreaterThan(0)
+
+        payload.types = undefined
+        payload.rentalTerms = undefined
+        res = await request(app)
+            .post(`/api/frontend-properties/${testHelper.PAGE}/${testHelper.SIZE}`)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        expect(res.body[0].resultData.length).toBe(0)
 
         res = await request(app)
             .post(`/api/frontend-properties/${testHelper.PAGE}/${testHelper.SIZE}`)
