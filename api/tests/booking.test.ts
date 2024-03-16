@@ -157,6 +157,7 @@ describe('POST /api/checkout', () => {
         bookings = await Booking.find({ renter: RENTER1_ID })
         expect(bookings.length).toBeGreaterThan(1)
 
+        payload.payLater = false
         const renter = await User.findOne({ _id: RENTER1_ID })
         renter!.language = 'fr'
         await renter?.save()
@@ -166,6 +167,7 @@ describe('POST /api/checkout', () => {
         expect(res.statusCode).toBe(200)
         bookings = await Booking.find({ renter: RENTER1_ID })
         expect(bookings.length).toBeGreaterThan(2)
+        payload.payLater = true
 
         payload.booking.agency = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
