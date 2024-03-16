@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import escapeStringRegexp from 'escape-string-regexp'
-import { Expo, ExpoPushMessage } from 'expo-server-sdk'
+import { Expo, ExpoPushMessage, ExpoPushTicket } from 'expo-server-sdk'
 import { Request, Response } from 'express'
 import * as movininTypes from 'movinin-types'
 import i18n from '../lang/i18n'
@@ -274,7 +274,7 @@ const notifyRenter = async (booking: env.Booking) => {
     // and to compress them (notifications with similar content will get
     // compressed).
     const chunks = expo.chunkPushNotifications(messages)
-    const tickets = [];
+    const tickets: ExpoPushTicket[] = [];
 
     (async () => {
       // Send the chunks to the Expo push notification service. There are
