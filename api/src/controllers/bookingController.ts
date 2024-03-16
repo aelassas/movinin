@@ -188,9 +188,7 @@ export const checkout = async (req: Request, res: Response) => {
       console.log(`Agency ${booking.agency} not found`)
       return res.sendStatus(204)
     }
-    if (agency.language) {
-      i18n.locale = agency.language
-    }
+    i18n.locale = agency.language
     await notifyAgency(user, booking._id.toString(), agency, i18n.t('BOOKING_NOTIFICATION'))
 
     return res.sendStatus(200)

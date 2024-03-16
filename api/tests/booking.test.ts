@@ -249,6 +249,15 @@ describe('POST /api/update-booking', () => {
         expect(res.body.price).toBe(4800)
         expect(res.body.status).toBe(movininTypes.BookingStatus.Paid)
 
+        res = await request(app)
+            .put('/api/update-booking')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(200)
+        expect(res.body.property).toBe(PROPERTY2_ID)
+        expect(res.body.price).toBe(4800)
+        expect(res.body.status).toBe(movininTypes.BookingStatus.Paid)
+
         payload._id = testHelper.GetRandromObjectIdAsString()
         res = await request(app)
             .put('/api/update-booking')
