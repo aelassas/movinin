@@ -1273,7 +1273,7 @@ export const deleteUsers = async (req: Request, res: Response) => {
               await fs.unlink(image)
             }
             // delete additional images
-            if (property.images) {
+            if (Array.isArray(property.images)) {
               for (const additionalImageName of property.images) {
                 const additionalImage = path.join(env.CDN_PROPERTIES, additionalImageName)
                 if (await helper.exists(additionalImage)) {

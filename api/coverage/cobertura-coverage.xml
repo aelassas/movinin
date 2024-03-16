@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="1460" lines-covered="1459" line-rate="0.9993000000000001" branches-valid="461" branches-covered="402" branch-rate="0.872" timestamp="1710570833050" complexity="0" version="0.1">
+<coverage lines-valid="1460" lines-covered="1459" line-rate="0.9993000000000001" branches-valid="461" branches-covered="402" branch-rate="0.872" timestamp="1710571121190" complexity="0" version="0.1">
   <sources>
     <source>C:\dev\movinin\src\api</source>
   </sources>
@@ -359,9 +359,9 @@
                 <line number="254" hits="2"/>
               </lines>
             </method>
-            <method name="(anonymous_7)" hits="6" signature="()V">
+            <method name="(anonymous_7)" hits="5" signature="()V">
               <lines>
-                <line number="264" hits="6"/>
+                <line number="264" hits="5"/>
               </lines>
             </method>
           </methods>
@@ -452,8 +452,8 @@
             <line number="255" hits="2" branch="false"/>
             <line number="256" hits="2" branch="false"/>
             <line number="264" hits="1" branch="false"/>
-            <line number="265" hits="6" branch="false"/>
-            <line number="266" hits="6" branch="false"/>
+            <line number="265" hits="5" branch="false"/>
+            <line number="266" hits="5" branch="false"/>
             <line number="269" hits="1" branch="false"/>
             <line number="271" hits="1" branch="false"/>
             <line number="272" hits="1" branch="false"/>
