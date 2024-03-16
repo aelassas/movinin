@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="1452" lines-covered="1451" line-rate="0.9993000000000001" branches-valid="451" branches-covered="417" branch-rate="0.9246" timestamp="1710573176121" complexity="0" version="0.1">
+<coverage lines-valid="1452" lines-covered="1451" line-rate="0.9993000000000001" branches-valid="451" branches-covered="418" branch-rate="0.9268000000000001" timestamp="1710573337026" complexity="0" version="0.1">
   <sources>
     <source>C:\dev\movinin\src\api</source>
   </sources>
@@ -117,9 +117,9 @@
                 <line number="14" hits="33"/>
               </lines>
             </method>
-            <method name="(anonymous_1)" hits="88" signature="()V">
+            <method name="(anonymous_1)" hits="87" signature="()V">
               <lines>
-                <line number="30" hits="88"/>
+                <line number="30" hits="87"/>
               </lines>
             </method>
             <method name="(anonymous_2)" hits="32" signature="()V">
@@ -169,9 +169,9 @@
             <line number="16" hits="33" branch="false"/>
             <line number="18" hits="1" branch="false"/>
             <line number="30" hits="11" branch="false"/>
-            <line number="31" hits="88" branch="false"/>
-            <line number="32" hits="88" branch="false"/>
-            <line number="33" hits="40" branch="false"/>
+            <line number="31" hits="87" branch="false"/>
+            <line number="32" hits="87" branch="false"/>
+            <line number="33" hits="39" branch="false"/>
             <line number="35" hits="48" branch="false"/>
             <line number="48" hits="11" branch="false"/>
             <line number="49" hits="32" branch="false"/>
@@ -320,9 +320,9 @@
         </class>
       </classes>
     </package>
-    <package name="src.controllers" line-rate="0.9991" branch-rate="0.9195">
+    <package name="src.controllers" line-rate="0.9991" branch-rate="0.9218999999999999">
       <classes>
-        <class name="agencyController.ts" filename="src\controllers\agencyController.ts" line-rate="1" branch-rate="0.9582999999999999">
+        <class name="agencyController.ts" filename="src\controllers\agencyController.ts" line-rate="1" branch-rate="1">
           <methods>
             <method name="(anonymous_0)" hits="3" signature="()V">
               <lines>
@@ -349,9 +349,9 @@
                 <line number="206" hits="3"/>
               </lines>
             </method>
-            <method name="(anonymous_5)" hits="6" signature="()V">
+            <method name="(anonymous_5)" hits="5" signature="()V">
               <lines>
-                <line number="235" hits="6"/>
+                <line number="235" hits="5"/>
               </lines>
             </method>
             <method name="(anonymous_6)" hits="2" signature="()V">
@@ -404,8 +404,8 @@
             <line number="110" hits="4" branch="false"/>
             <line number="112" hits="4" branch="true" condition-coverage="100% (2/2)"/>
             <line number="113" hits="3" branch="false"/>
-            <line number="114" hits="3" branch="true" condition-coverage="50% (1/2)"/>
-            <line number="115" hits="3" branch="false"/>
+            <line number="114" hits="3" branch="true" condition-coverage="100% (2/2)"/>
+            <line number="115" hits="2" branch="false"/>
             <line number="118" hits="3" branch="false"/>
             <line number="119" hits="3" branch="false"/>
             <line number="120" hits="3" branch="false"/>
@@ -444,8 +444,8 @@
             <line number="211" hits="3" branch="false"/>
             <line number="213" hits="3" branch="false"/>
             <line number="235" hits="2" branch="false"/>
-            <line number="236" hits="6" branch="false"/>
-            <line number="237" hits="6" branch="false"/>
+            <line number="236" hits="5" branch="false"/>
+            <line number="237" hits="5" branch="false"/>
             <line number="240" hits="2" branch="false"/>
             <line number="242" hits="1" branch="false"/>
             <line number="243" hits="1" branch="false"/>

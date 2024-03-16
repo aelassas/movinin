@@ -281,13 +281,6 @@ describe('DELETE /api/delete-agency/:id', () => {
         expect(agency).not.toBeNull()
         agency!.avatar = `${uuid()}.jpg`
         await agency?.save()
-        avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
-        avatar = path.join(env.CDN_USERS, avatarName)
-        if (!await helper.exists(avatar)) {
-            fs.copyFile(avatarPath, avatar)
-        }
-        agency!.avatar = avatarName
-        await agency?.save()
         locationId = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
         property = new Property({
             name: 'Beautiful House in Detroit',
