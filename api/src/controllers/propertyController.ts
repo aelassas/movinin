@@ -488,7 +488,7 @@ export const getProperties = async (req: Request, res: Response) => {
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const types = body.types || []
     const rentalTerms = body.rentalTerms || []
-    const availability = body.availability || []
+    const { availability } = body
     const options = 'i'
     const language = body.language || env.DEFAULT_LANGUAGE
 

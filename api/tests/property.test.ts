@@ -305,16 +305,17 @@ describe('PUT /api/update-property', () => {
             .send(payload)
         expect(res.statusCode).toBe(200)
 
-        payload._id = testHelper.GetRandromObjectIdAsString()
+        property = await Property.findById(PROPERTY_ID)
+        property.images = [`${uuid()}.jpg`]
+        await property.save()
+        payload.images = []
         res = await request(app)
             .put('/api/update-property')
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
-        expect(res.statusCode).toBe(204)
+        expect(res.statusCode).toBe(200)
 
         property = await Property.findById(PROPERTY_ID)
-        property.images = [...property.images, `${uuid()}.jpg`]
-        await property.save()
         property.images = []
         await property.save()
         if (!await helper.exists(mainImage)) {
@@ -334,6 +335,13 @@ describe('PUT /api/update-property', () => {
             .set(env.X_ACCESS_TOKEN, token)
             .send(payload)
         expect(res.statusCode).toBe(200)
+
+        payload._id = testHelper.GetRandromObjectIdAsString()
+        res = await request(app)
+            .put('/api/update-property')
+            .set(env.X_ACCESS_TOKEN, token)
+            .send(payload)
+        expect(res.statusCode).toBe(204)
 
         res = await request(app)
             .put('/api/update-property')
