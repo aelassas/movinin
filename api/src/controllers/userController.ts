@@ -1268,9 +1268,11 @@ export const deleteUsers = async (req: Request, res: Response) => {
           const properties = await Property.find({ agency: id })
           await Property.deleteMany({ agency: id })
           for (const property of properties) {
-            const image = path.join(env.CDN_PROPERTIES, property.image)
-            if (await helper.exists(image)) {
-              await fs.unlink(image)
+            if (property.image) {
+              const image = path.join(env.CDN_PROPERTIES, property.image)
+              if (await helper.exists(image)) {
+                await fs.unlink(image)
+              }
             }
             // delete additional images
             if (Array.isArray(property.images)) {
