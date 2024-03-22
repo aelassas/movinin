@@ -110,7 +110,7 @@ div.property div.action {
   justify-content: flex-end;
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <= 960px) {
   div.property {
     top: 56px;
   }
@@ -131,7 +131,7 @@ div.property div.action {
 
 /* Device width is greater than or equal to 960px */
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >= 960px) {
   div.property {
     top: 64px;
   }
@@ -152,9 +152,6 @@ div.property div.action {
 
   div.property div.col-2 {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 400px;
+    inset: 0 0 0 400px;
   }
 }

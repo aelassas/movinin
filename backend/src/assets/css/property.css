@@ -1,11 +1,11 @@
-@media only screen and (max-width: 960px) {
+@media only screen and (width <= 960px) {
     div.main div.property {
         display: flex;
         flex-direction: column;
     }
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >= 960px) {
     div.main {
         max-width: 872px;
         margin-right: auto;
@@ -54,9 +54,8 @@ div.main div.property img.main-image {
 
 div.main div.property div.images {
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     overflow-x: auto;
-    flex-wrap: wrap;
 }
 
 div.main div.property div.images div.image {

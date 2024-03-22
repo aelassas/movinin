@@ -68,7 +68,7 @@ section.agency-list article .agency-actions button {
 
 /* Device width is greater than or equal to 960px */
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >= 960px) {
   section.agency-list article {
     margin-left: calc(50% - 300px);
     width: 600px;

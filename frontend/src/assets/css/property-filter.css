@@ -22,7 +22,7 @@ div.property-filter .btn-search {
 }
 
 div.property-filter .chk-same-location {
-  color: rgba(0, 0, 0, 0.7);
+  color: rgb(0 0 0 / 70%);
   font-weight: 400;
   line-height: 1.4em;
   font-size: 0.9em;

@@ -5,12 +5,12 @@
 
 .btn-primary {
   background-color: #0D63C9 !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 .btn-secondary {
-  background-color: #999999 !important;
-  color: #ffffff !important;
+  background-color: #999 !important;
+  color: #fff !important;
 }
 
 .btn-primary:hover,
@@ -42,7 +42,7 @@
   margin: 0 10px !important;
 }
 
-.required:after {
+.required::after {
   content: ' *';
 }
 
@@ -192,12 +192,12 @@
 }
 
 .d-adornment-icon {
-  color: rgba(0, 0, 0, 0.54);
+  color: rgb(0 0 0 / 54%);
   width: 20px !important;
   height: 20px !important;
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (width <= 960px) {
   div.content {
     margin: 0;
     padding: 0;
@@ -227,7 +227,7 @@
   }
 }
 
-@media only screen and (min-width: 960px) {
+@media only screen and (width >= 960px) {
   div.content {
     margin: 0;
     padding: 0;

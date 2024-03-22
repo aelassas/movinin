@@ -33,7 +33,6 @@ import ImageEditor from '../components/ImageEditor'
 import RentalTermList from '../components/RentalTermList'
 
 import '../assets/css/create-property.css'
-import '../assets/css/update-property.css'
 
 const UpdateProperty = () => {
   const navigate = useNavigate()

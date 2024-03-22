@@ -195,7 +195,7 @@ const ImageViewer = ({
         {
           src.length > 0
           && (
-            <div className="thumbnailsContainer">
+            <div className="thumbnails-container">
               <div className="thumbnails">
                 {src.map((srcItem, index) => (
                   <div

@@ -53,7 +53,7 @@ div.property-info ul.extras-list div.property-info-list-item {
 }
 
 div.property-info ul.extras-list .extra-info {
-    color: rgba(0, 0, 0, 0.35);
+    color: rgb(0 0 0 / 35%);
 }
 
 div.property-info ul.extras-list span.property-info-list-text {
