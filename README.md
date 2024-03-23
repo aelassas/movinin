@@ -22,7 +22,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 
 A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
 
-<img src="https://movin-in.github.io/content/docker.png" alt="" width="220" />
+![Docker](https://movin-in.github.io/content/docker-small.png)
 
 Movin' In can run in a Docker container. Follow this step by step [guide](https://github.com/aelassas/movinin/wiki/Docker) to walk you through on how to build Movin' In Docker image and run it in a Docker container.
 
