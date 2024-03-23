@@ -3,11 +3,11 @@
 |**Supported Platforms**|  ![iOS](https://img.shields.io/badge/iOS-4630EB.svg?logo=APPLE&labelColor=999999&logoColor=fff) ![Android](https://img.shields.io/badge/Android-4630EB.svg?&logo=ANDROID&labelColor=A4C639&logoColor=fff) ![Web](https://img.shields.io/badge/web-4630EB.svg?logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff) |
 | ----------- | ----------- |
 | **Lines of Code** | [![loc](https://raw.githubusercontent.com/aelassas/movinin/loc/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml) |
-| **CodeFactor**    | [![CodeFactor](https://www.codefactor.io/repository/github/aelassas/movinin/badge)](https://www.codefactor.io/repository/github/aelassas/movinin) |
 | **API**           | [![API CI](https://github.com/aelassas/movinin/actions/workflows/api.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/api.yml) |
 | **Backend**       | [![Backend CI](https://github.com/aelassas/movinin/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/backend.yml) |
 | **Frontend**      | [![Frontend CI](https://github.com/aelassas/movinin/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/frontend.yml) |
 | **Mobile App**    | [![Mobile CI](https://github.com/aelassas/movinin/actions/workflows/mobile.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/mobile.yml) |
+| **CodeFactor**    | [![CodeFactor](https://www.codefactor.io/repository/github/aelassas/movinin/badge)](https://www.codefactor.io/repository/github/aelassas/movinin) |
 | **Coverage**      | [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin) |
 
 Movin' In is an open-source and cross-platform Rental Property Management Platform with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
