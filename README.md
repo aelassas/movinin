@@ -7,6 +7,9 @@
 | **Frontend**      | [![Frontend CI](https://github.com/aelassas/movinin/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/frontend.yml) |
 | **Mobile App**    | [![Mobile CI](https://github.com/aelassas/movinin/actions/workflows/mobile.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/mobile.yml) |
 | **Coverage**      | [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin) |
+| **Lines of Code**     | [![loc](https://raw.githubusercontent.com/aelassas/movinin/loc/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml) |
+| **CodeFactor**        | [![CodeFactor](https://www.codefactor.io/repository/github/aelassas/movinin/badge)](https://www.codefactor.io/repository/github/aelassas/movinin) |
+| **Latest Release**    | [![Latest release](https://img.shields.io/github/v/release/aelassas/movinin?label=Release&logo=github)](https://github.com/aelassas/movinin/releases/latest) |
 
 Movin' In is an open-source and cross-platform Rental Property Management Platform with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
