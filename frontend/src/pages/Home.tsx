@@ -43,7 +43,7 @@ const Home = () => {
       return
     }
 
-    navigate('/properties', {
+    navigate('/search', {
       state: {
         locationId: location,
         from,
