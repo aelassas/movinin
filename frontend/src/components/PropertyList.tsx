@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Card,
   CardContent,
@@ -53,6 +54,8 @@ const PropertyList = ({
   hideActions,
   onLoad,
 }: PropertyListProps) => {
+  const navigate = useNavigate()
+
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(false)
@@ -237,20 +240,35 @@ const PropertyList = ({
                     && (
                       <div className="action">
                         <Button
-                          type="submit"
                           variant="contained"
                           className="btn-action btn-margin-bottom"
-                          href={`/property?p=${property._id}${(from && `&f=${from?.getTime()}`) || ''}${(to && `&t=${to?.getTime()}`) || ''}`}
+                          onClick={() => {
+                            navigate('/property', {
+                              state: {
+                                propertyId: property._id,
+                                from,
+                                to
+                              }
+                            })
+                          }}
                         >
                           {strings.VIEW}
                         </Button>
                         {
                           !hidePrice && (
                             <Button
-                              type="submit"
                               variant="contained"
                               className="btn-action btn-margin-bottom"
-                              href={`/checkout?p=${property._id}&l=${location}&f=${(from as Date).getTime()}&t=${(to as Date).getTime()}`}
+                              onClick={() => {
+                                navigate('/checkout', {
+                                  state: {
+                                    propertyId: property._id,
+                                    locationId: location,
+                                    from,
+                                    to
+                                  }
+                                })
+                              }}
                             >
                               {strings.BOOK}
                             </Button>

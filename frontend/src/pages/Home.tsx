@@ -43,7 +43,13 @@ const Home = () => {
       return
     }
 
-    navigate(`/properties?l=${location}&f=${from.getTime()}&t=${to.getTime()}`)
+    navigate('/properties', {
+      state: {
+        locationId: location,
+        from,
+        to
+      }
+    })
   }
 
   const onLoad = () => { }

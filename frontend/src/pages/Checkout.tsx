@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import {
   OutlinedInput, InputLabel,
   FormControl,
@@ -44,6 +45,8 @@ import SecurePayment from '../assets/img/secure-payment.png'
 import '../assets/css/checkout.css'
 
 const Checkout = () => {
+  const reactLocation = useLocation()
+
   const [user, setUser] = useState<movininTypes.User>()
   const [property, setProperty] = useState<movininTypes.Property>()
   const [location, setLocation] = useState<movininTypes.Location>()
@@ -448,34 +451,24 @@ const Checkout = () => {
     setAuthenticated(_user !== undefined)
     setLanguage(UserService.getLanguage())
 
-    let propertyId: string | null = null
-    let _property: movininTypes.Property | null = null
-    let locationId: string | null = null
-    let _location: movininTypes.Location | null = null
-    let _from: Date | null = null
-    let _to: Date | null = null
-    const params = new URLSearchParams(window.location.search)
+    const { state } = reactLocation
+    if (!state) {
+      setNoMatch(true)
+      return
+    }
 
-    if (params.has('p')) {
-      propertyId = params.get('p')
-    }
-    if (params.has('l')) {
-      locationId = params.get('l')
-    }
-    if (params.has('f')) {
-      const val = params.get('f')
-      _from = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
-    }
-    if (params.has('t')) {
-      const val = params.get('t')
-      _to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
-    }
+    const { propertyId } = state
+    const { locationId } = state
+    const { from: _from } = state
+    const { to: _to } = state
 
     if (!propertyId || !locationId || !_from || !_to) {
       setNoMatch(true)
       return
     }
 
+    let _property: movininTypes.Property | null = null
+    let _location: movininTypes.Location | null = null
     try {
       _property = await PropertyService.getProperty(propertyId)
       if (!_property) {

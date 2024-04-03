@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   Button,
   FormControl,
 } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import Backdrop from '../components/SimpleBackdrop'
@@ -24,6 +24,7 @@ import '../assets/css/property.css'
 
 const Property = () => {
   const navigate = useNavigate()
+  const location = useLocation()
 
   const _minDate = new Date()
   _minDate.setDate(_minDate.getDate() + 1)
@@ -53,23 +54,14 @@ const Property = () => {
   }, [property])
 
   const onLoad = async () => {
-    let propertyId: string | null = null
-    let _from: Date | null = null
-    let _to: Date | null = null
-    const params = new URLSearchParams(window.location.search)
-
-    if (params.has('p')) {
-      propertyId = params.get('p')
+    const { state } = location
+    if (!state) {
+      setNoMatch(true)
+      return
     }
-
-    if (params.has('f')) {
-      const val = params.get('f')
-      _from = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
-    }
-    if (params.has('t')) {
-      const val = params.get('t')
-      _to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
-    }
+    const { propertyId } = state
+    const { from: _from } = state
+    const { to: _to } = state
 
     if (!propertyId) {
       setNoMatch(true)
@@ -168,8 +160,15 @@ const Property = () => {
                       className="action"
                       onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                         e.preventDefault()
-                        const url = `/checkout?p=${property._id}&l=${property.location._id}&f=${from?.getTime()}&t=${to?.getTime()}`
-                        navigate(url)
+
+                        navigate('/checkout', {
+                          state: {
+                            propertyId: property._id,
+                            locationId: property.location._id,
+                            from,
+                            to
+                          }
+                        })
                       }}
                     >
                       <FormControl className="from">

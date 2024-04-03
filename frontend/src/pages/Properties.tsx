@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
 import * as movininHelper from 'movinin-helper'
 import env from '../config/env.config'
@@ -16,6 +17,8 @@ import PropertyTypeFilter from '../components/PropertyTypeFilter'
 import '../assets/css/properties.css'
 
 const Properties = () => {
+  const reactLocation = useLocation()
+
   const [visible, setVisible] = useState(false)
   const [noMatch, setNoMatch] = useState(false)
   const [location, setLocation] = useState<movininTypes.Location>()
@@ -46,23 +49,14 @@ const Properties = () => {
   }
 
   const onLoad = async (user?: movininTypes.User) => {
-    let locationId: string | null = null
-    let _location: movininTypes.Location | null = null
-    let _from: Date | null = null
-    let _to: Date | null = null
-
-    const params = new URLSearchParams(window.location.search)
-    if (params.has('l')) {
-      locationId = params.get('l')
+    const { state } = reactLocation
+    if (!state) {
+      setNoMatch(true)
+      return
     }
-    if (params.has('f')) {
-      const val = params.get('f')
-      _from = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
-    }
-    if (params.has('t')) {
-      const val = params.get('t')
-      _to = val && movininHelper.isInteger(val) ? new Date(Number.parseInt(val, 10)) : null
-    }
+    const { locationId } = state
+    const { from: _from } = state
+    const { to: _to } = state
 
     if (!locationId || !_from || !_to) {
       setLoading(false)
@@ -70,6 +64,7 @@ const Properties = () => {
       return
     }
 
+    let _location: movininTypes.Location | null = null
     try {
       _location = await LocationService.getLocation(locationId)
 
