@@ -38,7 +38,7 @@ Movin' In is user-friendly, straightforward, secure against XSS, XST, CSRF and M
 
 ## Contents
 
-1. [Overview and Screenshots](https://github.com/aelassas/movinin/wiki/Overview)
+1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)
 2. [Architecture](https://github.com/aelassas/movinin/wiki/Architecture)
 3. [Installing](https://github.com/aelassas/movinin/wiki/Installing)
 4. [Docker](https://github.com/aelassas/movinin/wiki/Docker)
