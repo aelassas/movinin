@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="1455" lines-covered="1455" line-rate="1" branches-valid="443" branches-covered="441" branch-rate="0.9954000000000001" timestamp="1710604709644" complexity="0" version="0.1">
+<coverage lines-valid="1455" lines-covered="1455" line-rate="1" branches-valid="443" branches-covered="441" branch-rate="0.9954000000000001" timestamp="1712189528354" complexity="0" version="0.1">
   <sources>
     <source>C:\dev\movinin\src\api</source>
   </sources>
@@ -349,9 +349,9 @@
                 <line number="206" hits="3"/>
               </lines>
             </method>
-            <method name="(anonymous_5)" hits="7" signature="()V">
+            <method name="(anonymous_5)" hits="8" signature="()V">
               <lines>
-                <line number="235" hits="7"/>
+                <line number="235" hits="8"/>
               </lines>
             </method>
             <method name="(anonymous_6)" hits="2" signature="()V">
@@ -359,9 +359,9 @@
                 <line number="256" hits="2"/>
               </lines>
             </method>
-            <method name="(anonymous_7)" hits="7" signature="()V">
+            <method name="(anonymous_7)" hits="9" signature="()V">
               <lines>
-                <line number="266" hits="7"/>
+                <line number="266" hits="9"/>
               </lines>
             </method>
           </methods>
@@ -444,8 +444,8 @@
             <line number="211" hits="3" branch="false"/>
             <line number="213" hits="3" branch="false"/>
             <line number="235" hits="2" branch="false"/>
-            <line number="236" hits="7" branch="false"/>
-            <line number="237" hits="7" branch="false"/>
+            <line number="236" hits="8" branch="false"/>
+            <line number="237" hits="8" branch="false"/>
             <line number="240" hits="2" branch="false"/>
             <line number="242" hits="1" branch="false"/>
             <line number="243" hits="1" branch="false"/>
@@ -453,8 +453,8 @@
             <line number="257" hits="2" branch="false"/>
             <line number="258" hits="2" branch="false"/>
             <line number="266" hits="1" branch="false"/>
-            <line number="267" hits="7" branch="false"/>
-            <line number="268" hits="7" branch="false"/>
+            <line number="267" hits="9" branch="false"/>
+            <line number="268" hits="9" branch="false"/>
             <line number="271" hits="1" branch="false"/>
             <line number="273" hits="1" branch="false"/>
             <line number="274" hits="1" branch="false"/>
