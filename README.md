@@ -1,15 +1,6 @@
-[![Cover](https://movin-in.github.io/content/cover.jpg)](https://movin-in.github.io)
+[![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin) 
 
-|**Supported Platforms**|  ![iOS](https://img.shields.io/badge/iOS-4630EB.svg?logo=APPLE&labelColor=999999&logoColor=fff) ![Android](https://img.shields.io/badge/Android-4630EB.svg?&logo=ANDROID&labelColor=A4C639&logoColor=fff) ![Web](https://img.shields.io/badge/web-4630EB.svg?logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff) |
-| ----------- | ----------- |
-| **API**           | [![API CI](https://github.com/aelassas/movinin/actions/workflows/api.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/api.yml) |
-| **Backend**       | [![Backend CI](https://github.com/aelassas/movinin/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/backend.yml) |
-| **Frontend**      | [![Frontend CI](https://github.com/aelassas/movinin/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/frontend.yml) |
-| **Mobile App**    | [![Mobile CI](https://github.com/aelassas/movinin/actions/workflows/mobile.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/mobile.yml) |
-| **Coverage**      | [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin) |
-| **Lines of Code**     | [![loc](https://raw.githubusercontent.com/aelassas/movinin/loc/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml) |
-| **CodeFactor**        | [![CodeFactor](https://www.codefactor.io/repository/github/aelassas/movinin/badge)](https://www.codefactor.io/repository/github/aelassas/movinin) |
-| **Latest Release**    | [![Latest release](https://img.shields.io/github/v/release/aelassas/movinin?label=Release&logo=github)](https://github.com/aelassas/movinin/releases/latest) |
+[![Cover](https://movin-in.github.io/content/cover.jpg)](https://movin-in.github.io)
 
 Movin' In is an open-source and cross-platform Rental Property Management Platform with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
@@ -43,6 +34,7 @@ Movin' In is user-friendly, straightforward, secure against XSS, XST, CSRF and M
 * Native Mobile app for Android and iOS with single codebase
 * Push notifications
 * Secure against XSS, XST, CSRF and MITM
+* Supported Platforms: ![Web](https://img.shields.io/badge/web-4630EB.svg?logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff) ![Android](https://img.shields.io/badge/Android-4630EB.svg?&logo=ANDROID&labelColor=A4C639&logoColor=fff) ![iOS](https://img.shields.io/badge/iOS-4630EB.svg?logo=APPLE&labelColor=999999&logoColor=fff) ![Docker](https://img.shields.io/badge/Docker-4630EB.svg?logo=DOCKER&labelColor=4285F4&logoColor=fff)
 
 ## Contents
 
