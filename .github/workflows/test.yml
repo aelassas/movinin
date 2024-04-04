@@ -1,0 +1,90 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    environment: TEST
+    
+    strategy:
+      matrix:
+        node-version: [lts/*]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './api/package-lock.json'
+    - name: test API
+      run: |
+           cd ./api
+           touch .env
+           echo NODE_ENV=$NODE_ENV >> .env
+           echo MI_HTTPS=$MI_HTTPS >> .env
+           echo MI_DB_URI=$MI_DB_URI >> .env
+           echo MI_DB_SSL=$MI_DB_SSL >> .env
+           echo MI_COOKIE_SECRET=$MI_COOKIE_SECRET >> .env
+           echo MI_AUTH_COOKIE_DOMAIN=$MI_AUTH_COOKIE_DOMAIN >> .env
+           echo MI_JWT_SECRET=$MI_JWT_SECRET >> .env
+           echo MI_JWT_EXPIRE_AT=$MI_JWT_EXPIRE_AT >> .env
+           echo MI_TOKEN_EXPIRE_AT=$MI_TOKEN_EXPIRE_AT >> .env
+           echo MI_SMTP_HOST=$MI_SMTP_HOST >> .env
+           echo MI_SMTP_PORT=$MI_SMTP_PORT >> .env
+           echo MI_SMTP_USER=$MI_SMTP_USER >> .env
+           echo MI_SMTP_PASS=$MI_SMTP_PASS >> .env
+           echo MI_SMTP_FROM=$MI_SMTP_FROM >> .env
+           echo MI_DEFAULT_LANGUAGE=$MI_DEFAULT_LANGUAGE >> .env
+           echo MI_CDN_USERS=$MI_CDN_USERS >> .env
+           echo MI_CDN_TEMP_USERS=$MI_CDN_TEMP_USERS >> .env
+           echo MI_CDN_PROPERTIES=$MI_CDN_PROPERTIES >> .env
+           echo MI_CDN_TEMP_PROPERTIES=$MI_CDN_TEMP_PROPERTIES >> .env
+           echo MI_BACKEND_HOST=$MI_BACKEND_HOST >> .env
+           echo MI_FRONTEND_HOST=$MI_FRONTEND_HOST >> .env
+           echo MI_MINIMUM_AGE=$MI_MINIMUM_AGE >> .env
+           echo MI_EXPO_ACCESS_TOKEN=$MI_EXPO_ACCESS_TOKEN >> .env
+           npm install
+           npm test
+      env:
+        NODE_ENV: ${{ vars.NODE_ENV }}
+        MI_HTTPS: ${{ vars.MI_HTTPS }}
+        MI_DB_URI: ${{ vars.MI_DB_URI }}
+        MI_DB_SSL: ${{ vars.MI_DB_SSL }}
+        MI_DB_DEBUG: ${{ vars.MI_DB_DEBUG }}
+        MI_COOKIE_SECRET: ${{ vars.MI_COOKIE_SECRET }}
+        MI_AUTH_COOKIE_DOMAIN: ${{ vars.MI_AUTH_COOKIE_DOMAIN }}
+        MI_JWT_SECRET: ${{ vars.MI_JWT_SECRET }}
+        MI_JWT_EXPIRE_AT: ${{ vars.MI_JWT_EXPIRE_AT }}
+        MI_TOKEN_EXPIRE_AT: ${{ vars.MI_TOKEN_EXPIRE_AT }}
+        MI_SMTP_HOST: ${{ vars.MI_SMTP_HOST }}
+        MI_SMTP_PORT: ${{ vars.MI_SMTP_PORT }}
+        MI_SMTP_USER: ${{ vars.MI_SMTP_USER }}
+        MI_SMTP_PASS: ${{ vars.MI_SMTP_PASS }}
+        MI_SMTP_FROM: ${{ vars.MI_SMTP_FROM }}
+        MI_DEFAULT_LANGUAGE: ${{ vars.MI_DEFAULT_LANGUAGE }}
+        MI_CDN_USERS: ${{ vars.MI_CDN_USERS }}
+        MI_CDN_TEMP_USERS: ${{ vars.MI_CDN_TEMP_USERS }}
+        MI_CDN_PROPERTIES: ${{ vars.MI_CDN_PROPERTIES }}
+        MI_CDN_TEMP_PROPERTIES: ${{ vars.MI_CDN_TEMP_PROPERTIES }}
+        MI_BACKEND_HOST: ${{ vars.MI_BACKEND_HOST }}
+        MI_FRONTEND_HOST: ${{ vars.MI_FRONTEND_HOST }}
+        MI_MINIMUM_AGE: ${{ vars.MI_MINIMUM_AGE }}
+        MI_EXPO_ACCESS_TOKEN: ${{ vars.MI_EXPO_ACCESS_TOKEN }}
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: cobertura-coverage.xml
+          directory: ./api/coverage
