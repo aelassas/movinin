@@ -1,4 +1,4 @@
-[![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin) [![Latest Release](https://img.shields.io/github/v/release/aelassas/movinin?label=release&logo=github)](https://github.com/aelassas/movinin/releases/latest)
+[![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) [![test](https://github.com/aelassas/movinin/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/test.yml) [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin) [![Latest Release](https://img.shields.io/github/v/release/aelassas/movinin?label=release&logo=github)](https://github.com/aelassas/movinin/releases/latest)
 
 [![Cover](https://movin-in.github.io/content/cover.jpg)](https://movin-in.github.io)
 
