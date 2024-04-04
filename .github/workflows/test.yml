@@ -34,25 +34,17 @@ jobs:
            touch .env
            echo NODE_ENV=$NODE_ENV >> .env
            echo MI_HTTPS=$MI_HTTPS >> .env
-           echo "::add-mask::$MI_DB_URI" 
-           echo MI_DB_URI=$MI_DB_URI >> .env
+           echo MI_DB_URI=::add-mask::$MI_DB_URI >> .env
            echo MI_DB_SSL=$MI_DB_SSL >> .env
-           echo "::add-mask::$MI_COOKIE_SECRET" 
            echo MI_COOKIE_SECRET=$MI_COOKIE_SECRET >> .env
            echo MI_AUTH_COOKIE_DOMAIN=$MI_AUTH_COOKIE_DOMAIN >> .env
-           echo "::add-mask::$MI_JWT_SECRET" 
            echo MI_JWT_SECRET=$MI_JWT_SECRET >> .env
            echo MI_JWT_EXPIRE_AT=$MI_JWT_EXPIRE_AT >> .env
            echo MI_TOKEN_EXPIRE_AT=$MI_TOKEN_EXPIRE_AT >> .env
-           echo "::add-mask::$MI_SMTP_HOST" 
            echo MI_SMTP_HOST=$MI_SMTP_HOST >> .env
-           echo "::add-mask::$MI_SMTP_PORT" 
            echo MI_SMTP_PORT=$MI_SMTP_PORT >> .env
-           echo "::add-mask::$MI_SMTP_USER" 
            echo MI_SMTP_USER=$MI_SMTP_USER >> .env
-           echo "::add-mask::$MI_SMTP_PASS" 
            echo MI_SMTP_PASS=$MI_SMTP_PASS >> .env
-           echo "::add-mask::$MI_SMTP_FROM" 
            echo MI_SMTP_FROM=$MI_SMTP_FROM >> .env
            echo MI_DEFAULT_LANGUAGE=$MI_DEFAULT_LANGUAGE >> .env
            echo MI_CDN_USERS=$MI_CDN_USERS >> .env
@@ -62,7 +54,6 @@ jobs:
            echo MI_BACKEND_HOST=$MI_BACKEND_HOST >> .env
            echo MI_FRONTEND_HOST=$MI_FRONTEND_HOST >> .env
            echo MI_MINIMUM_AGE=$MI_MINIMUM_AGE >> .env
-           echo "::add-mask::$MI_EXPO_ACCESS_TOKEN" 
            echo MI_EXPO_ACCESS_TOKEN=$MI_EXPO_ACCESS_TOKEN >> .env
            npm install
            npm test
