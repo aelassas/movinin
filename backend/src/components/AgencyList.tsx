@@ -31,7 +31,6 @@ import '../assets/css/agency-list.css'
 interface AgencyListProps {
   user?: movininTypes.User
   keyword?: string
-  reload?: boolean
   onLoad?: movininTypes.DataEvent<movininTypes.User>
   onDelete?: (rowCount: number) => void
 }
@@ -39,12 +38,10 @@ interface AgencyListProps {
 const AgencyList = ({
   user,
   keyword: agencyListKeyword,
-  reload: agencyListReload,
   onDelete,
   onLoad
 }: AgencyListProps) => {
   const [keyword, setKeyword] = useState(agencyListKeyword)
-  const [reload, setReload] = useState(false)
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(false)
@@ -100,13 +97,6 @@ const AgencyList = ({
     }
     setKeyword(agencyListKeyword || '')
   }, [agencyListKeyword, keyword]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (agencyListReload && !reload) {
-      fetchData(1, '')
-    }
-    setReload(agencyListReload || false)
-  }, [agencyListReload, reload]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     fetchData(page, keyword)
