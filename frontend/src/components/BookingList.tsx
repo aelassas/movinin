@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {
   DataGrid,
-  frFR,
-  enUS,
   GridPaginationModel,
   GridColDef,
   GridRowId,
-  GridValueGetterParams,
   GridRenderCellParams
 } from '@mui/x-data-grid'
 import {
@@ -219,27 +216,27 @@ const BookingList = ({
         field: 'from',
         headerName: commonStrings.FROM,
         flex: 1,
-        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, string>) => getDate(value),
+        valueGetter: (value: string) => getDate(value),
       },
       {
         field: 'to',
         headerName: commonStrings.TO,
         flex: 1,
-        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, string>) => getDate(value),
+        valueGetter: (value: string) => getDate(value),
       },
       {
         field: 'price',
         headerName: strings.PRICE,
         flex: 1,
         renderCell: ({ value }: GridRenderCellParams<movininTypes.Booking, string>) => <span className="bp">{value}</span>,
-        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, number>) => `${movininHelper.formatNumber(value)} ${commonStrings.CURRENCY}`,
+        valueGetter: (value: number) => `${movininHelper.formatNumber(value)} ${commonStrings.CURRENCY}`,
       },
       {
         field: 'status',
         headerName: strings.STATUS,
         flex: 1,
         renderCell: ({ value }: GridRenderCellParams<movininTypes.Booking, movininTypes.BookingStatus>) => <span className={`bs bs-${value?.toLowerCase()}`}>{helper.getBookingStatus(value)}</span>,
-        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, string>) => value,
+        valueGetter: (value: string) => value,
       },
       {
         field: 'action',
@@ -296,7 +293,7 @@ const BookingList = ({
             <span>{value}</span>
           </Tooltip>
         ),
-        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, movininTypes.Property>) => value?.name,
+        valueGetter: (value: movininTypes.Property) => value?.name,
       })
     }
 
@@ -310,7 +307,7 @@ const BookingList = ({
             <img src={movininHelper.joinURL(env.CDN_USERS, (row.agency as movininTypes.User).avatar)} alt={value} />
           </div>
         ),
-        valueGetter: ({ value }: GridValueGetterParams<movininTypes.Booking, movininTypes.User>) => value?.fullName,
+        valueGetter: (value: movininTypes.User) => value?.fullName,
       })
     }
 
@@ -515,7 +512,6 @@ const BookingList = ({
             paginationMode="server"
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
-            localeText={(user.language === 'fr' ? frFR : enUS).components.MuiDataGrid.defaultProps.localeText}
             onRowSelectionModelChange={(_selectedIds) => {
               setSelectedIds(Array.from(new Set(_selectedIds)).map((id) => id.toString()))
             }}

@@ -15,10 +15,12 @@ div.bs-list .empty-list {
 }
 
 div.bs-list div.cell-agency {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   width: 60px;
   height: 30px;
+  position: relative;
+  vertical-align: middle;
 }
 
 div.bs-list div.cell-agency img {
@@ -31,6 +33,10 @@ div.bs-list span.bs {
   width: 80px;
   text-align: center;
   color: #fff;
+  display: inline-flex;
+  height: 26px;
+  justify-content: center;
+  align-items: center;
 }
 
 div.bs-list span.bs-void {
@@ -206,7 +212,7 @@ div.bs-list div.bs-buttons button {
   margin-bottom: 5px;
 }
 
-@media only screen and (width <= 960px) {
+@media only screen and (width <=960px) {
   div.bs-list {
     max-width: 480px;
   }
@@ -216,7 +222,7 @@ div.bs-list div.bs-buttons button {
   }
 }
 
-@media only screen and (width >= 960px) {
+@media only screen and (width >=960px) {
   div.bs-list {
     position: absolute;
     inset: 0;
