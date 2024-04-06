@@ -195,7 +195,7 @@ const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
 
   return (
     <View style={styles.master}>
-      <Header title={i18n.t('SIGN_IN_TITLE')} hideTitle={false} loggedIn={false} notificationCount={0} />
+      <Header title={i18n.t('SIGN_IN_TITLE')} hideTitle={false} loggedIn={false} />
 
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
         <View style={styles.contentContainer}>

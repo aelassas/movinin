@@ -8,12 +8,12 @@ interface ImageViewerProps {
   src: string[],
   closeOnClickOutside?: boolean,
   disableScroll?: boolean,
-  backgroundStyle?: React.CSSProperties
-  closeComponent?: React.ReactNode
-  leftArrowComponent?: React.ReactNode
-  rightArrowComponent?: React.ReactNode
-  imageStyle?: React.CSSProperties
-  onClose: () => void
+  backgroundStyle?: React.CSSProperties,
+  closeComponent?: React.ReactNode,
+  leftArrowComponent?: React.ReactNode,
+  rightArrowComponent?: React.ReactNode,
+  imageStyle?: React.CSSProperties,
+  onClose: () => void,
 }
 
 const ImageViewer = ({

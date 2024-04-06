@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { GlobalProvider } from './context/GlobalContext'
 
 const SignIn = lazy(() => import('./pages/SignIn'))
 const Activate = lazy(() => import('./pages/Activate'))
@@ -34,8 +35,9 @@ const Contact = lazy(() => import('./pages/Contact'))
 const NoMatch = lazy(() => import('./pages/NoMatch'))
 
 const App = () => (
+  <GlobalProvider>
     <Router>
-      <div className="app">
+      <main className="app">
         <Suspense fallback={<></>}>
           <Routes>
             <Route path="/sign-in" element={<SignIn />} />
@@ -72,8 +74,9 @@ const App = () => (
             <Route path="*" element={<NoMatch />} />
           </Routes>
         </Suspense>
-      </div>
+      </main>
     </Router>
-  )
+  </GlobalProvider>
+)
 
 export default App
