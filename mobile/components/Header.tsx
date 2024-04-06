@@ -12,11 +12,11 @@ import { useGlobalContext, GlobalContextType } from '../context/GlobalContext'
 import * as NotificationService from '../services/NotificationService'
 
 interface HeaderProps {
-  title?: string
-  hideTitle?: boolean
-  loggedIn?: boolean
-  reload?: boolean
-  _avatar?: string | null
+  title?: string,
+  hideTitle?: boolean,
+  loggedIn?: boolean,
+  reload?: boolean,
+  _avatar?: string | null,
 }
 
 const Header = ({ title,
@@ -26,8 +26,9 @@ const Header = ({ title,
   _avatar
 }: HeaderProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParams, keyof StackParams>>()
-  const [avatar, setAvatar] = useState<string | null | undefined>(null)
   const { notificationCount, setNotificationCount } = useGlobalContext() as GlobalContextType
+
+  const [avatar, setAvatar] = useState<string | null | undefined>(null)
 
   useEffect(() => {
     const init = async () => {
