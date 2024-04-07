@@ -17,12 +17,12 @@ import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 
 interface PropertyProps {
-  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
-  fr: boolean,
-  property: movininTypes.Property,
-  from: Date,
-  to: Date,
-  location: string,
+  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
+  fr: boolean
+  property: movininTypes.Property
+  from: Date
+  to: Date
+  location: string
 }
 
 const iconSize = 24

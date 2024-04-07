@@ -9,8 +9,8 @@ import * as movininTypes from 'movinin-types'
 import { strings } from '../lang/properties'
 
 interface PropertyTypeListProps {
-  value?: string,
-  required?: boolean,
+  value?: string
+  required?: boolean
   label?: string
   variant?: 'filled' | 'standard' | 'outlined'
   onChange?: (value: string) => void

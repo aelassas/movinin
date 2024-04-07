@@ -32,7 +32,7 @@ import '../assets/css/property-info.css'
 
 interface PropertyInfoProps {
   property: movininTypes.Property
-  user?: movininTypes.User,
+  user?: movininTypes.User
   booking?: movininTypes.Booking
   description?: boolean
   className?: string

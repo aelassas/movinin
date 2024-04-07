@@ -3,11 +3,11 @@ import React, { KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState
 import '../assets/css/image-viewer.css'
 
 interface ImageViewerProps {
-  title?: string,
-  currentIndex?: number,
-  src: string[],
-  closeOnClickOutside?: boolean,
-  disableScroll?: boolean,
+  title?: string
+  currentIndex?: number
+  src: string[]
+  closeOnClickOutside?: boolean
+  disableScroll?: boolean
   backgroundStyle?: React.CSSProperties
   closeComponent?: React.ReactNode
   leftArrowComponent?: React.ReactNode

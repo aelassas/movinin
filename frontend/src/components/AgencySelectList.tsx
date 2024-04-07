@@ -9,11 +9,11 @@ import MultipleSelect from './MultipleSelect'
 
 interface AgencySelectListProps {
   value?: movininTypes.Option | movininTypes.Option[]
-  multiple?: boolean,
-  label?: string,
-  required?: boolean,
-  readOnly?: boolean,
-  variant?: TextFieldVariants,
+  multiple?: boolean
+  label?: string
+  required?: boolean
+  readOnly?: boolean
+  variant?: TextFieldVariants
   onChange?: (values: movininTypes.Option[]) => void
 }
 

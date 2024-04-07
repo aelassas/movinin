@@ -46,8 +46,8 @@ import { useGlobalContext, GlobalContextType } from '../context/GlobalContext'
 import '../assets/css/header.css'
 
 interface HeaderProps {
-  user?: movininTypes.User,
-  hidden?: boolean,
+  user?: movininTypes.User
+  hidden?: boolean
 }
 
 const ListItemLink = (props: any) => <ListItemButton component="a" {...props} />

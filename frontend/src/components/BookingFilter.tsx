@@ -20,9 +20,9 @@ import Accordion from '../components/Accordion'
 import '../assets/css/booking-filter.css'
 
 interface BookingFilterProps {
-  collapse?: boolean,
-  className?: string,
-  language?: string,
+  collapse?: boolean
+  className?: string
+  language?: string
   onSubmit?: (filter: movininTypes.Filter | null) => void
 }
 

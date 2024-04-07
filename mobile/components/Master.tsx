@@ -13,7 +13,7 @@ import * as movininTypes from '../miscellaneous/movininTypes'
 interface MasterProps {
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
   strict?: boolean
-  route?: RouteProp<StackParams, keyof StackParams>,
+  route?: RouteProp<StackParams, keyof StackParams>
   reload?: boolean
   style?: object
   title?: string
