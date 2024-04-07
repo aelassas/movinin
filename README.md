@@ -57,6 +57,20 @@ Movin' In is user-friendly, straightforward, secure against XSS, XST, CSRF and M
 10. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)
 11. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
 
+## Continuous Integration
+
+| **CI**            | Status      |
+| ----------------- | ----------- |
+| **API**           | [![API CI](https://github.com/aelassas/movinin/actions/workflows/api.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/api.yml) |
+| **Backend**       | [![Backend CI](https://github.com/aelassas/movinin/actions/workflows/backend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/backend.yml) |
+| **Frontend**      | [![Frontend CI](https://github.com/aelassas/movinin/actions/workflows/frontend.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/frontend.yml) |
+| **Mobile App**    | [![Mobile CI](https://github.com/aelassas/movinin/actions/workflows/mobile.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/mobile.yml) |
+| **All**           | [![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) |
+| **Unit tests**    |  [![test](https://github.com/aelassas/movinin/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/test.yml) |
+| **Coverage**      | [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin) |
+| **Lines of Code** | [![loc](https://raw.githubusercontent.com/aelassas/movinin/loc/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml) |
+| **CodeFactor**    | [![CodeFactor](https://www.codefactor.io/repository/github/aelassas/movinin/badge)](https://www.codefactor.io/repository/github/aelassas/movinin) |
+
 ## License
 
 Movin' In is [MIT licensed](https://github.com/aelassas/movinin/blob/main/LICENSE).
