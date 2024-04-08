@@ -13,6 +13,8 @@ npm-debug.log*
 .DS_Store?
 .env
 .env.docker
+.env.development
+.env.oraclecloud
 
 # eslint
 .eslintcache
