@@ -10,7 +10,7 @@
 * Password: M00vinin
 
 ### Mobile App
-* Android: [Download APK from expo.dev](https://expo.dev/artifacts/eas/g2B732wsky9ZCYnvBr9dG1.apk)
+* Android: [Download APK](https://expo.dev/artifacts/eas/g2B732wsky9ZCYnvBr9dG1.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
