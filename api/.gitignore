@@ -21,3 +21,6 @@ npm-debug.log*
 
 # jest
 /coverage
+
+# logs
+/logs
