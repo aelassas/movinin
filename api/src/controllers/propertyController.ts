@@ -10,6 +10,7 @@ import Property from '../models/Property'
 import i18n from '../lang/i18n'
 import * as env from '../config/env.config'
 import * as helper from '../common/helper'
+import * as logger from '../common/logger'
 
 /**
  * Create a Property.
@@ -84,7 +85,7 @@ export const create = async (req: Request, res: Response) => {
     } else {
       await Property.deleteOne({ _id: property._id })
       const err = 'Image file not found'
-      console.error(i18n.t('ERROR'), err)
+      logger.error(i18n.t('ERROR'), err)
       return res.status(400).send(i18n.t('ERROR') + err)
     }
 
@@ -104,7 +105,7 @@ export const create = async (req: Request, res: Response) => {
         } else {
           await Property.deleteOne({ _id: property._id })
           const err = 'Image file not found'
-          console.error(i18n.t('ERROR'), err)
+          logger.error(i18n.t('ERROR'), err)
           return res.status(400).send(i18n.t('ERROR') + err)
         }
         i += 1
@@ -115,7 +116,7 @@ export const create = async (req: Request, res: Response) => {
 
     return res.json(property)
   } catch (err) {
-    console.error(`[property.create] ${i18n.t('DB_ERROR')} ${body}`, err)
+    logger.error(`[property.create] ${i18n.t('DB_ERROR')} ${body}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -248,10 +249,10 @@ export const update = async (req: Request, res: Response) => {
       return res.json(property)
     }
 
-    console.error('[property.update] Property not found:', _id)
+    logger.error('[property.update] Property not found:', _id)
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[property.update] ${i18n.t('DB_ERROR')} ${_id}`, err)
+    logger.error(`[property.update] ${i18n.t('DB_ERROR')} ${_id}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -281,7 +282,7 @@ export const checkProperty = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[property.check] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[property.check] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -325,7 +326,7 @@ export const deleteProperty = async (req: Request, res: Response) => {
     }
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[property.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[property.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -351,7 +352,7 @@ export const uploadImage = async (req: Request, res: Response) => {
     await fs.writeFile(filepath, req.file.buffer)
     return res.json(filename)
   } catch (err) {
-    console.error(i18n.t('ERROR'), err)
+    logger.error(i18n.t('ERROR'), err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -376,7 +377,7 @@ export const deleteTempImage = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(i18n.t('ERROR'), err)
+    logger.error(i18n.t('ERROR'), err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -414,7 +415,7 @@ export const deleteImage = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    console.error(i18n.t('ERROR'), err)
+    logger.error(i18n.t('ERROR'), err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -462,10 +463,10 @@ export const getProperty = async (req: Request, res: Response) => {
       return res.json(property)
     }
 
-    console.error('[property.getProperty] Property not found:', id)
+    logger.error('[property.getProperty] Property not found:', id)
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[property.getProperty] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[property.getProperty] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -594,7 +595,7 @@ export const getProperties = async (req: Request, res: Response) => {
 
     return res.json(data)
   } catch (err) {
-    console.error(`[property.getProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
+    logger.error(`[property.getProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -637,7 +638,7 @@ export const getBookingProperties = async (req: Request, res: Response) => {
 
     return res.json(properties)
   } catch (err) {
-    console.error(`[property.getBookingProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
+    logger.error(`[property.getBookingProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -725,7 +726,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
 
     return res.json(data)
   } catch (err) {
-    console.error(`[property.getFrontendProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
+    logger.error(`[property.getFrontendProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

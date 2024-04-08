@@ -15,6 +15,7 @@ import Location from '../models/Location'
 import * as env from '../config/env.config'
 import * as mailHelper from '../common/mailHelper'
 import * as helper from '../common/helper'
+import * as logger from '../common/logger'
 
 /**
  * Create a Booking.
@@ -33,7 +34,7 @@ export const create = async (req: Request, res: Response) => {
     await booking.save()
     return res.json(booking)
   } catch (err) {
-    console.error(`[booking.create] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[booking.create] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -128,7 +129,7 @@ export const checkout = async (req: Request, res: Response) => {
     }
 
     if (!user) {
-      console.log('Renter not found', body)
+      logger.info('Renter not found', body)
       return res.sendStatus(204)
     }
 
@@ -153,13 +154,13 @@ export const checkout = async (req: Request, res: Response) => {
     const property = await Property.findById(booking.property).populate<{ agency: env.User }>('agency')
 
     if (!property) {
-      console.log(`Property ${booking.property} not found`)
+      logger.info(`Property ${booking.property} not found`)
       return res.sendStatus(204)
     }
 
     const location = await Location.findById(booking.location).populate<{ values: env.LocationValue[] }>('values')
     if (!location) {
-      console.log(`Location ${booking.location} not found`)
+      logger.info(`Location ${booking.location} not found`)
       return res.sendStatus(204)
     }
 
@@ -185,7 +186,7 @@ export const checkout = async (req: Request, res: Response) => {
     // Notify agency
     const agency = await User.findById(booking.agency)
     if (!agency) {
-      console.log(`Agency ${booking.agency} not found`)
+      logger.info(`Agency ${booking.agency} not found`)
       return res.sendStatus(204)
     }
     i18n.locale = agency.language
@@ -193,7 +194,7 @@ export const checkout = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[booking.book] ${i18n.t('ERROR')}`, err)
+    logger.error(`[booking.book] ${i18n.t('ERROR')}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -209,7 +210,7 @@ const notifyRenter = async (booking: env.Booking) => {
   const renter = await User.findById(booking.renter)
 
   if (!renter) {
-    console.log(`Renter ${booking.renter} not found`)
+    logger.info(`Renter ${booking.renter} not found`)
     return
   }
 
@@ -251,7 +252,7 @@ const notifyRenter = async (booking: env.Booking) => {
     const expo = new Expo({ accessToken: env.EXPO_ACCESS_TOKEN })
 
     if (!Expo.isExpoPushToken(token)) {
-      console.log(`Push token ${token} is not a valid Expo push token.`)
+      logger.info(`Push token ${token} is not a valid Expo push token.`)
       return
     }
 
@@ -292,13 +293,13 @@ const notifyRenter = async (booking: env.Booking) => {
           // https://docs.expo.io/push-notifications/sending-notifications/#individual-errors
           for (const ticketChunk of ticketChunks) {
             if (ticketChunk.status === 'ok') {
-              console.log(`Push notification sent: ${ticketChunk.id}`)
+              logger.info(`Push notification sent: ${ticketChunk.id}`)
             } else {
               throw new Error(ticketChunk.message)
             }
           }
         } catch (error) {
-          console.error(error)
+          logger.error('Error while sending push notification', error)
         }
       }
     })()
@@ -357,10 +358,10 @@ export const update = async (req: Request, res: Response) => {
       return res.json(booking)
     }
 
-    console.error('[booking.update] Booking not found:', body._id)
+    logger.error('[booking.update] Booking not found:', body._id)
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[booking.update] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[booking.update] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -392,7 +393,7 @@ export const updateStatus = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[booking.updateStatus] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[booking.updateStatus] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -415,7 +416,7 @@ export const deleteBookings = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[booking.deleteBookings] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[booking.deleteBookings] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -473,10 +474,10 @@ export const getBooking = async (req: Request, res: Response) => {
       return res.json(booking)
     }
 
-    console.error('[booking.getBooking] Booking not found:', id)
+    logger.error('[booking.getBooking] Booking not found:', id)
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[booking.getBooking] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[booking.getBooking] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -657,7 +658,7 @@ export const getBookings = async (req: Request, res: Response) => {
 
     return res.json(data)
   } catch (err) {
-    console.error(`[booking.getBookings] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[booking.getBookings] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -688,7 +689,7 @@ export const hasBookings = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[booking.hasBookings] ${i18n.t('DB_ERROR')} ${renter}`, err)
+    logger.error(`[booking.hasBookings] ${i18n.t('DB_ERROR')} ${renter}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -725,7 +726,7 @@ export const cancelBooking = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[booking.cancelBooking] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[booking.cancelBooking] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

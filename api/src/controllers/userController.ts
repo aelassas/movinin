@@ -19,6 +19,7 @@ import * as mailHelper from '../common/mailHelper'
 import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Property from '../models/Property'
+import * as logger from '../common/logger'
 
 /**
  * Get status message as HTML.
@@ -88,7 +89,7 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
     await mailHelper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[user.signup] ${i18n.t('DB_ERROR')} ${body}`, err)
+    logger.error(`[user.signup] ${i18n.t('DB_ERROR')} ${body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -186,7 +187,7 @@ export const create = async (req: Request, res: Response) => {
     await mailHelper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[user.create] ${i18n.t('DB_ERROR')} ${body}`, err)
+    logger.error(`[user.create] ${i18n.t('DB_ERROR')} ${body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -235,7 +236,7 @@ export const checkToken = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[user.checkToken] ${i18n.t('DB_ERROR')} ${req.params}`, err)
+    logger.error(`[user.checkToken] ${i18n.t('DB_ERROR')} ${req.params}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -263,7 +264,7 @@ export const deleteTokens = async (req: Request, res: Response) => {
 
     return res.sendStatus(400)
   } catch (err) {
-    console.error(`[user.deleteTokens] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.deleteTokens] ${i18n.t('DB_ERROR')} ${userId}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -330,7 +331,7 @@ export const resend = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[user.resend] ${i18n.t('DB_ERROR')} ${email}`, err)
+    logger.error(`[user.resend] ${i18n.t('DB_ERROR')} ${email}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -374,7 +375,7 @@ export const activate = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[user.activate] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.activate] ${i18n.t('DB_ERROR')} ${userId}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -484,7 +485,7 @@ export const signin = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[user.signin] ${i18n.t('DB_ERROR')} ${email}`, err)
+    logger.error(`[user.signin] ${i18n.t('DB_ERROR')} ${email}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -530,7 +531,7 @@ export const getPushToken = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[user.pushToken] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.pushToken] ${i18n.t('DB_ERROR')} ${userId}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -565,7 +566,7 @@ export const createPushToken = async (req: Request, res: Response) => {
 
     return res.status(400).send('Push Token already exists.')
   } catch (err) {
-    console.error(`[user.createPushToken] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.createPushToken] ${i18n.t('DB_ERROR')} ${userId}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -590,7 +591,7 @@ export const deletePushToken = async (req: Request, res: Response) => {
     await PushToken.deleteMany({ user: userId })
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[user.deletePushToken] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.deletePushToken] ${i18n.t('DB_ERROR')} ${userId}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -622,7 +623,7 @@ export const validateEmail = async (req: Request, res: Response) => {
     // email does not exist in db (can be added)
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[user.validateEmail] ${i18n.t('DB_ERROR')} ${email}`, err)
+    logger.error(`[user.validateEmail] ${i18n.t('DB_ERROR')} ${email}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -656,7 +657,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
     const user = await User.findOne({ email: _email })
 
     if (!user) {
-      console.error('[user.confirmEmail] User not found', req.params)
+      logger.error('[user.confirmEmail] User not found', req.params)
       return res.status(204).send(i18n.t('ACCOUNT_ACTIVATION_LINK_ERROR'))
     }
 
@@ -665,7 +666,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
 
     // token is not found into database i.e. token may have expired
     if (!token) {
-      console.error(i18n.t('ACCOUNT_ACTIVATION_LINK_EXPIRED'), req.params)
+      logger.error(i18n.t('ACCOUNT_ACTIVATION_LINK_EXPIRED'), req.params)
       return res.status(400).send(getStatusMessage(user.language, i18n.t('ACCOUNT_ACTIVATION_LINK_EXPIRED')))
     }
 
@@ -683,7 +684,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
     await user.save()
     return res.status(200).send(getStatusMessage(user.language, i18n.t('ACCOUNT_ACTIVATION_SUCCESS')))
   } catch (err) {
-    console.error(`[user.confirmEmail] ${i18n.t('DB_ERROR')} ${req.params}`, err)
+    logger.error(`[user.confirmEmail] ${i18n.t('DB_ERROR')} ${req.params}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -710,7 +711,7 @@ export const resendLink = async (req: Request, res: Response) => {
 
     // user is not found into database
     if (!user) {
-      console.error('[user.resendLink] User not found:', body)
+      logger.error('[user.resendLink] User not found:', body)
       return res.status(400).send(getStatusMessage(env.DEFAULT_LANGUAGE, i18n.t('ACCOUNT_ACTIVATION_RESEND_ERROR')))
     }
 
@@ -742,7 +743,7 @@ export const resendLink = async (req: Request, res: Response) => {
       .status(200)
       .send(getStatusMessage(user.language, i18n.t('ACCOUNT_ACTIVATION_EMAIL_SENT_PART_1') + user.email + i18n.t('ACCOUNT_ACTIVATION_EMAIL_SENT_PART_2')))
   } catch (err) {
-    console.error(`[user.resendLink] ${i18n.t('DB_ERROR')} ${email}`, err)
+    logger.error(`[user.resendLink] ${i18n.t('DB_ERROR')} ${email}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -768,7 +769,7 @@ export const update = async (req: Request, res: Response) => {
     const user = await User.findById(_id)
 
     if (!user) {
-      console.error('[user.update] User not found:', body.email)
+      logger.error('[user.update] User not found:', body.email)
       return res.sendStatus(204)
     }
 
@@ -803,7 +804,7 @@ export const update = async (req: Request, res: Response) => {
     await user.save()
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[user.update] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[user.update] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -830,7 +831,7 @@ export const updateEmailNotifications = async (req: Request, res: Response) => {
     const user = await User.findById(_id)
 
     if (!user) {
-      console.error('[user.updateEmailNotifications] User not found:', body)
+      logger.error('[user.updateEmailNotifications] User not found:', body)
       return res.sendStatus(204)
     }
 
@@ -840,7 +841,7 @@ export const updateEmailNotifications = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[user.updateEmailNotifications] ${i18n.t('DB_ERROR')} ${body}`, err)
+    logger.error(`[user.updateEmailNotifications] ${i18n.t('DB_ERROR')} ${body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -866,7 +867,7 @@ export const updateLanguage = async (req: Request, res: Response) => {
     const user = await User.findById(id)
 
     if (!user) {
-      console.error('[user.updateLanguage] User not found:', id)
+      logger.error('[user.updateLanguage] User not found:', id)
       return res.sendStatus(204)
     }
 
@@ -874,7 +875,7 @@ export const updateLanguage = async (req: Request, res: Response) => {
     await user.save()
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[user.updateLanguage] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[user.updateLanguage] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -913,13 +914,13 @@ export const getUser = async (req: Request, res: Response) => {
     }).lean()
 
     if (!user) {
-      console.error('[user.getUser] User not found:', req.params)
+      logger.error('[user.getUser] User not found:', req.params)
       return res.sendStatus(204)
     }
 
     return res.json(user)
   } catch (err) {
-    console.error(`[user.getUser] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[user.getUser] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -945,7 +946,7 @@ export const createAvatar = async (req: Request, res: Response) => {
     await fs.writeFile(filepath, req.file.buffer)
     return res.json(filename)
   } catch (err) {
-    console.error(`[user.createAvatar] ${i18n.t('DB_ERROR')}`, err)
+    logger.error(`[user.createAvatar] ${i18n.t('DB_ERROR')}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -965,7 +966,7 @@ export const updateAvatar = async (req: Request, res: Response) => {
   try {
     if (!req.file) {
       const msg = 'req.file not found'
-      console.error(`[user.createAvatar] ${msg}`)
+      logger.error(`[user.createAvatar] ${msg}`)
       return res.status(400).send(msg)
     }
 
@@ -989,10 +990,10 @@ export const updateAvatar = async (req: Request, res: Response) => {
       return res.json(filename)
     }
 
-    console.error('[user.updateAvatar] User not found:', userId)
+    logger.error('[user.updateAvatar] User not found:', userId)
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[user.updateAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.updateAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1025,10 +1026,10 @@ export const deleteAvatar = async (req: Request, res: Response) => {
       return res.sendStatus(200)
     }
 
-    console.error('[user.deleteAvatar] User not found:', userId)
+    logger.error('[user.deleteAvatar] User not found:', userId)
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[user.deleteAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.deleteAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1055,7 +1056,7 @@ export const deleteTempAvatar = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[user.deleteTempAvatar] ${i18n.t('DB_ERROR')} ${avatar}`, err)
+    logger.error(`[user.deleteTempAvatar] ${i18n.t('DB_ERROR')} ${avatar}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1085,12 +1086,12 @@ export const changePassword = async (req: Request, res: Response) => {
 
     const user = await User.findOne({ _id })
     if (!user) {
-      console.error('[user.changePassword] User not found:', _id)
+      logger.error('[user.changePassword] User not found:', _id)
       return res.sendStatus(204)
     }
 
     if (!user.password) {
-      console.error('[user.changePassword] User.password not found:', _id)
+      logger.error('[user.changePassword] User.password not found:', _id)
       return res.sendStatus(204)
     }
 
@@ -1114,7 +1115,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
     return _changePassword()
   } catch (err) {
-    console.error(`[user.changePassword] ${i18n.t('DB_ERROR')} ${_id}`, err)
+    logger.error(`[user.changePassword] ${i18n.t('DB_ERROR')} ${_id}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1140,7 +1141,7 @@ export const checkPassword = async (req: Request, res: Response) => {
 
     if (user) {
       if (!user.password) {
-        console.error('[user.changePassword] User.password not found')
+        logger.error('[user.changePassword] User.password not found')
         return res.sendStatus(204)
       }
 
@@ -1152,10 +1153,10 @@ export const checkPassword = async (req: Request, res: Response) => {
       return res.sendStatus(204)
     }
 
-    console.error('[user.checkPassword] User not found:', id)
+    logger.error('[user.checkPassword] User not found:', id)
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[user.checkPassword] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[user.checkPassword] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1231,7 +1232,7 @@ export const getUsers = async (req: Request, res: Response) => {
 
     return res.json(users)
   } catch (err) {
-    console.error(`[user.getUsers] ${i18n.t('DB_ERROR')}`, err)
+    logger.error(`[user.getUsers] ${i18n.t('DB_ERROR')}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -1292,13 +1293,13 @@ export const deleteUsers = async (req: Request, res: Response) => {
         await NotificationCounter.deleteMany({ user: id })
         await Notification.deleteMany({ user: id })
       } else {
-        console.error('User not found:', id)
+        logger.error('User not found:', id)
       }
     }
 
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[user.delete] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[user.delete] ${i18n.t('DB_ERROR')} ${req.body}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

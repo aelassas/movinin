@@ -11,6 +11,7 @@ import Notification from '../models/Notification'
 import Booking from '../models/Booking'
 import Property from '../models/Property'
 import * as helper from '../common/helper'
+import * as logger from '../common/logger'
 
 /**
  * Validate Agency fullname.
@@ -34,7 +35,7 @@ export const validate = async (req: Request, res: Response) => {
     })
     return user ? res.sendStatus(204) : res.sendStatus(200)
   } catch (err) {
-    console.error(`[agency.validate] ${i18n.t('DB_ERROR')} ${fullName}`, err)
+    logger.error(`[agency.validate] ${i18n.t('DB_ERROR')} ${fullName}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -83,10 +84,10 @@ export const update = async (req: Request, res: Response) => {
       })
     }
 
-    console.error('[agency.update] Agency not found:', _id)
+    logger.error('[agency.update] Agency not found:', _id)
     return res.sendStatus(204)
   } catch (err) {
-    console.error(`[agency.update] ${i18n.t('DB_ERROR')} ${_id}`, err)
+    logger.error(`[agency.update] ${i18n.t('DB_ERROR')} ${_id}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -142,7 +143,7 @@ export const deleteAgency = async (req: Request, res: Response) => {
     }
     return res.sendStatus(200)
   } catch (err) {
-    console.error(`[agency.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[agency.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -163,7 +164,7 @@ export const getAgency = async (req: Request, res: Response) => {
     const user = await User.findById(id).lean()
 
     if (!user) {
-      console.error('[agency.getAgency] Agency not found:', id)
+      logger.error('[agency.getAgency] Agency not found:', id)
       return res.sendStatus(204)
     }
 
@@ -189,7 +190,7 @@ export const getAgency = async (req: Request, res: Response) => {
       payLater,
     })
   } catch (err) {
-    console.error(`[agency.getAgency] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[agency.getAgency] ${i18n.t('DB_ERROR')} ${id}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -239,7 +240,7 @@ export const getAgencies = async (req: Request, res: Response) => {
 
     return res.json(data)
   } catch (err) {
-    console.error(`[agency.getAgencies] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
+    logger.error(`[agency.getAgencies] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -270,7 +271,7 @@ export const getAllAgencies = async (req: Request, res: Response) => {
 
     return res.json(data)
   } catch (err) {
-    console.error(`[agency.getAllAgencies] ${i18n.t('DB_ERROR')}`, err)
+    logger.error(`[agency.getAllAgencies] ${i18n.t('DB_ERROR')}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
