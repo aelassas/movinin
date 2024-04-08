@@ -2,6 +2,25 @@
 
 [![Cover](https://movin-in.github.io/content/cover.jpg)](https://movin-in.github.io)
 
+## Live Demo
+
+### Frontend
+* URL: http://movinin.ddns.net:3003/
+* Login: jdoe@movinin.io
+* Password: M00vinin
+
+### Mobile App
+* Android: [Download APK from expo.dev](https://expo.dev/artifacts/eas/g2B732wsky9ZCYnvBr9dG1.apk)
+* Login: jdoe@movinin.io
+* Password: M00vinin
+
+### Backend
+* URL: http://movinin.ddns.net:3004/
+* Login: admin@movinin.io
+* Password: M00vinin
+
+## Movin' In
+
 Movin' In is an open-source and cross-platform Rental Property Management Platform with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency as well.
