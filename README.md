@@ -9,14 +9,33 @@
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
-### Mobile App
-* Android: [Download APK](https://expo.dev/artifacts/eas/g2B732wsky9ZCYnvBr9dG1.apk)
-* Login: jdoe@movinin.io
-* Password: M00vinin
-
 ### Backend
 * URL: http://movinin.ddns.net:3003/
 * Login: admin@movinin.io
+* Password: M00vinin
+
+### Mobile App
+
+You can install the Android app on any Android device.
+
+#### Scan this code with a device
+
+Open the Camera app and point it at this code. Then tap the notification that appears.
+
+![Mobile App Demo QR Code](https://movin-in.github.io/content/mobile-app-demo-qr-code.png)
+
+#### How to install the Mobile App on Android
+
+* On devices running Android 8.0 (API level 26) and higher, you must navigate to the Install unknown apps system settings screen to enable app installations from a particular location (i.e. the web browser you are downloading the app from).
+
+* On devices running Android 7.1.1 (API level 25) and lower, you should enable the Unknown sources system setting, found in Settings > Security on your device.
+
+#### Alternative Way
+
+You can also install the Android App by directly downloading the APK and installing it on your Android device.
+
+* [Download APK](https://expo.dev/artifacts/eas/g2B732wsky9ZCYnvBr9dG1.apk)
+* Login: jdoe@movinin.io
 * Password: M00vinin
 
 ## Movin' In
