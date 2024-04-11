@@ -1,4 +1,4 @@
-import express, { Express } from 'express'
+import express from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
 import nocache from 'nocache'
@@ -15,7 +15,7 @@ import propertyRoutes from './routes/propertyRoutes'
 import userRoutes from './routes/userRoutes'
 import * as helper from './common/helper'
 
-const app: Express = express()
+const app = express()
 
 app.use(helmet.contentSecurityPolicy())
 app.use(helmet.dnsPrefetchControl())
