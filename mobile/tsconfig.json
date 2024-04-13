@@ -4,6 +4,16 @@
     "strict": true,
     "typeRoots": [
       "./types"
-    ]
-  }
+    ],
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      ":movinin-types": ["../packages/movinin-types"],
+      ":movinin-helper": ["../packages/movinin-helper"]
+    }
+  },
+  "references": [
+    { "path": "../packages/movinin-types" },
+    { "path": "../packages/movinin-helper" }
+  ]  
 }

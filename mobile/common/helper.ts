@@ -8,8 +8,8 @@ import { RouteProp } from '@react-navigation/native'
 import mime from 'mime'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
-import * as movininTypes from '../miscellaneous/movininTypes'
-import * as movininHelper from '../miscellaneous/movininHelper'
+import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import * as toastHelper from './toastHelper'
 
 /**

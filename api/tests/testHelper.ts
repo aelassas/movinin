@@ -1,7 +1,7 @@
 import request from 'supertest'
 import cookieParser from 'cookie-parser'
 import bcrypt from 'bcrypt'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import { v1 as uuid } from 'uuid'
 import mongoose from 'mongoose'
 import app from '../src/app'

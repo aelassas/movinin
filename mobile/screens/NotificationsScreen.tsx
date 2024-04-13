@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { enUS, fr } from 'date-fns/locale'
-import * as movininTypes from '../miscellaneous/movininTypes'
+import * as movininTypes from ':movinin-types'
 
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'

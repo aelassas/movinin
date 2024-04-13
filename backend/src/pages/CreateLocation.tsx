@@ -7,8 +7,8 @@ import {
   Button,
   Paper
 } from '@mui/material'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
+import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import Master from '../components/Master'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/create-location'

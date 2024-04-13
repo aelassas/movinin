@@ -5,8 +5,8 @@ import {
   Switch,
 } from '@mui/material'
 import { Info as InfoIcon } from '@mui/icons-material'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
+import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings as blStrings } from '../lang/booking-list'
 import { strings as bfStrings } from '../lang/booking-filter'

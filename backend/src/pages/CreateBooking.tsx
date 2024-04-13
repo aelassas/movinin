@@ -10,7 +10,7 @@ import {
   Info as InfoIcon
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import Master from '../components/Master'
 import { strings as commonStrings } from '../lang/common'
 import { strings as blStrings } from '../lang/booking-list'

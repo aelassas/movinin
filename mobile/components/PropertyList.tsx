@@ -7,7 +7,7 @@ import {
   ActivityIndicator
 } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import * as movininTypes from '../miscellaneous/movininTypes'
+import * as movininTypes from ':movinin-types'
 
 import * as helper from '../common/helper'
 import * as env from '../config/env.config'

@@ -14,6 +14,16 @@ module.exports = function (api) {
           allowUndefined: false,
         },
       ],
+      [
+        "module-resolver",
+        {
+          "root": ['./'],
+          "alias": {
+            ":movinin-types": "../packages/movinin-types",
+            ":movinin-helper": "../packages/movinin-helper"
+          }
+        }
+      ],
       'react-native-reanimated/plugin',
     ],
   }

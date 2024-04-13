@@ -32,7 +32,7 @@ import {
   ExitToApp as SignoutIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import env from '../config/env.config'
 import { strings } from '../lang/header'
 import { strings as commonStrings } from '../lang/common'

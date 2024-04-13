@@ -18,8 +18,8 @@ import {
 import * as ImagePicker from 'expo-image-picker'
 import validator from 'validator'
 import { intervalToDuration } from 'date-fns'
-import * as movininTypes from '../miscellaneous/movininTypes'
-import * as movininHelper from '../miscellaneous/movininHelper'
+import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 
 import Master from '../components/Master'
 import i18n from '../lang/i18n'

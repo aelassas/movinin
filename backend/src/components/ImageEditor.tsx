@@ -3,7 +3,7 @@ import {
     Delete as DeleteIcon,
     PhotoCamera as ImageIcon
 } from '@mui/icons-material'
-import * as movininHelper from 'movinin-helper'
+import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/image-editor'
 import ImageViewer from './ImageViewer'

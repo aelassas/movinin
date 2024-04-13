@@ -4,8 +4,8 @@ import {
   Button,
   FormControl,
 } from '@mui/material'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
+import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import Backdrop from '../components/SimpleBackdrop'
 import Master from '../components/Master'
 import env from '../config/env.config'

@@ -6,7 +6,7 @@ import {
   SelectChangeEvent,
   TextFieldVariants
 } from '@mui/material'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import { strings as commonStrings } from '../lang/common'
 import * as helper from '../common/helper'
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, TextInput as ReactTextInput } from 'react-native'
-import * as movininTypes from '../miscellaneous/movininTypes'
+import * as movininTypes from ':movinin-types'
 
 import i18n from '../lang/i18n'
 import Accordion from './Accordion'

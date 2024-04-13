@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FormControl, Button } from '@mui/material'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import { strings as commonStrings } from '../lang/common'
 import * as UserService from '../services/UserService'
 import LocationSelectList from './LocationSelectList'

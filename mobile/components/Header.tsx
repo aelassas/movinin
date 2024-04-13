@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useNavigation, DrawerActions } from '@react-navigation/native'
 import { Avatar, Badge } from 'react-native-paper'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import * as movininHelper from '../miscellaneous/movininHelper'
+import * as movininHelper from ':movinin-helper'
 
 import * as UserService from '../services/UserService'
 import * as env from '../config/env.config'

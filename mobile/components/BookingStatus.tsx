@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import * as movininTypes from '../miscellaneous/movininTypes'
+import * as movininTypes from ':movinin-types'
 
 import * as helper from '../common/helper'
 

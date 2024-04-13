@@ -1,7 +1,7 @@
 import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import Location from '../models/Location'

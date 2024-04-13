@@ -9,7 +9,7 @@ import ReactDateTimePicker from '@react-native-community/datetimepicker'
 import { format } from 'date-fns'
 import { enUS, fr } from 'date-fns/locale'
 import { MaterialIcons } from '@expo/vector-icons'
-import * as movininHelper from '../miscellaneous/movininHelper'
+import * as movininHelper from ':movinin-helper'
 import * as helper from '../common/helper'
 
 interface DateTimePickerProps {

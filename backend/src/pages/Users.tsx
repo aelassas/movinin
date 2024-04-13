@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from '@mui/material'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import Master from '../components/Master'
 import env from '../config/env.config'
 import { strings } from '../lang/users'

@@ -6,7 +6,7 @@ import * as env from '../config/env.config'
 import * as AsyncStorage from '../common/AsyncStorage'
 import * as axiosHelper from '../common/axiosHelper'
 import * as toastHelper from '../common/toastHelper'
-import * as movininTypes from '../miscellaneous/movininTypes'
+import * as movininTypes from ':movinin-types'
 
 axiosHelper.init(axiosInstance)
 
@@ -28,10 +28,10 @@ export const authHeader = async () => {
 /**
  * Sign up.
  *
- * @param {movininTypes.FrontendSignUpPayload} data
+ * @param {movininTypes.SignUpPayload} data
  * @returns {Promise<number>}
  */
-export const signup = (data: movininTypes.FrontendSignUpPayload): Promise<number> =>
+export const signup = (data: movininTypes.SignUpPayload): Promise<number> =>
   axiosInstance
     .post(
       '/api/sign-up',

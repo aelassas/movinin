@@ -8,7 +8,7 @@ import Button from '../components/Button'
 import i18n from '../lang/i18n'
 import * as helper from '../common/helper'
 import Header from '../components/Header'
-import * as movininTypes from '../miscellaneous/movininTypes'
+import * as movininTypes from ':movinin-types'
 
 interface MasterProps {
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>

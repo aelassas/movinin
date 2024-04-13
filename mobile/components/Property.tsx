@@ -9,8 +9,8 @@ import {
   useWindowDimensions
 } from 'react-native'
 import HTML from 'react-native-render-html'
-import * as movininTypes from '../miscellaneous/movininTypes'
-import * as movininHelper from '../miscellaneous/movininHelper'
+import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import Button from './Button'
 import * as helper from '../common/helper'
 import * as env from '../config/env.config'

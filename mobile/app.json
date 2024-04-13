@@ -43,6 +43,9 @@
     },
     "updates": {
       "url": "https://exp.host/@aelassas/movinin"
-    }
+    },
+    "experiments": {
+      "tsconfigPaths": true
+     }
   }
 }

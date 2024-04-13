@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import request from 'supertest'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import * as databaseHelper from '../src/common/databaseHelper'
 import app from '../src/app'
 import * as env from '../src/config/env.config'

@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import * as env from '../src/config/env.config'
 import * as databaseHelper from '../src/common/databaseHelper'
 import * as mailHelper from '../src/common/mailHelper'

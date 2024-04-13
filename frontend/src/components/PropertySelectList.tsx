@@ -7,7 +7,7 @@ import {
   Button,
   TextFieldVariants
 } from '@mui/material'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as bfStrings } from '../lang/booking-filter'

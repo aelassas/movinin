@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import request from 'supertest'
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import url from 'url'
 import path from 'path'
 import fs from 'node:fs/promises'

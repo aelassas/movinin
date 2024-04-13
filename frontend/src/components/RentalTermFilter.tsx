@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import * as movininTypes from 'movinin-types'
-import * as movininHelper from 'movinin-helper'
+import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import { strings as propertyStrings } from '../lang/property'
 import { strings } from '../lang/rental-term'

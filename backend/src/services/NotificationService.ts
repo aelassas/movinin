@@ -1,4 +1,4 @@
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 import axiosInstance from './axiosInstance'
 import env from '../config/env.config'
 

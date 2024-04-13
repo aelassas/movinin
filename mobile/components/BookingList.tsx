@@ -13,7 +13,7 @@ import {
   Button as NativeButton
 } from 'react-native-paper'
 import { enUS, fr } from 'date-fns/locale'
-import * as movininTypes from '../miscellaneous/movininTypes'
+import * as movininTypes from ':movinin-types'
 import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import * as helper from '../common/helper'

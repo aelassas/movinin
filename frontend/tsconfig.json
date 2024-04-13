@@ -18,9 +18,21 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      ":movinin-types": ["../packages/movinin-types"],
+      ":movinin-helper": ["../packages/movinin-helper"],
+      ":disable-react-devtools": ["../packages/disable-react-devtools"]
+    }
   },
   "include": [
     "src"
+  ],
+  "references": [
+    { "path": "../packages/movinin-types" },
+    { "path": "../packages/movinin-helper" },
+    { "path": "../packages/disable-react-devtools" }
   ]
 }

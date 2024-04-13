@@ -8,7 +8,7 @@ import {
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import validator from 'validator'
-import * as movininTypes from '../miscellaneous/movininTypes'
+import * as movininTypes from ':movinin-types'
 
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
