@@ -72,7 +72,7 @@ You can also install the Android App by directly downloading the APK and install
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
-## Contents
+## Resources
 
 1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)
 2. [Architecture](https://github.com/aelassas/movinin/wiki/Architecture)
