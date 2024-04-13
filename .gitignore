@@ -1,0 +1,5 @@
+**/*.key
+**/*.crt
+**/*.pem
+**/*.pem-chain
+**/*.ca.pem
