@@ -66,7 +66,7 @@ Open the Camera app and point it at this code. Then tap the notification that ap
 
 #### Alternative Way
 
-You can also install the Android App by directly downloading the APK and installing it on your Android device.
+You can also install the Android App by directly downloading the APK and installing it on an Android device.
 
 * [Download APK](https://expo.dev/artifacts/eas/pfh4RJBuTWBXNqFNLGCbz8.apk)
 * Login: jdoe@movinin.io
