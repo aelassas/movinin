@@ -1,4 +1,4 @@
-import * as movininTypes from 'movinin-types'
+import * as movininTypes from ':movinin-types'
 
 /**
  * Format a number.
