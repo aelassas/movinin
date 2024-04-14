@@ -39,6 +39,7 @@ const Property = () => {
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [minDate, setMinDate] = useState<Date>()
+  const [maxDate, setMaxDate] = useState<Date>()
   const [hideAction, setHideAction] = useState(true)
 
   useEffect(() => {
@@ -76,6 +77,11 @@ const Property = () => {
     setFrom(_from || undefined)
     setTo(_to || undefined)
     setMinDate(_from || undefined)
+    if (_to) {
+      const _maxDate = new Date(_to)
+      _maxDate.setDate(_maxDate.getDate() - 1)
+      setMaxDate(_maxDate)
+    }
 
     try {
       const _property = await PropertyService.getProperty(propertyId)
@@ -176,6 +182,7 @@ const Property = () => {
                           label={commonStrings.FROM}
                           value={from}
                           minDate={new Date()}
+                          maxDate={maxDate}
                           variant="outlined"
                           required
                           onChange={(date) => {
@@ -204,7 +211,15 @@ const Property = () => {
                           variant="outlined"
                           required
                           onChange={(date) => {
-                            setTo(date || undefined)
+                            if (date) {
+                              setTo(date)
+                              const _maxDate = new Date(date)
+                              _maxDate.setDate(_maxDate.getDate() - 1)
+                              setMaxDate(_maxDate)
+                            } else {
+                              setTo(undefined)
+                              setMaxDate(undefined)
+                            }
                           }}
                           language={UserService.getLanguage()}
                         />
