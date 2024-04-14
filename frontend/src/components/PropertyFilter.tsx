@@ -29,6 +29,7 @@ const PropertyFilter = ({
   const [from, setFrom] = useState<Date | undefined>(filterFrom)
   const [to, setTo] = useState<Date | undefined>(filterTo)
   const [minDate, setMinDate] = useState<Date>()
+  const [maxDate, setMaxDate] = useState<Date>()
   const [location, setLocation] = useState<movininTypes.Location | null | undefined>(filterLocation)
 
   useEffect(() => {
@@ -38,6 +39,14 @@ const PropertyFilter = ({
       setMinDate(__minDate)
     }
   }, [filterFrom])
+
+  useEffect(() => {
+    if (filterTo) {
+      const __maxDate = new Date(filterTo)
+      __maxDate.setDate(__maxDate.getDate() - 1)
+      setMaxDate(__maxDate)
+    }
+  }, [filterTo])
 
   const handleLocationChange = (values: movininTypes.Option[]) => {
     const _location = (values.length > 0 && values[0]) || null
@@ -78,6 +87,7 @@ const PropertyFilter = ({
             label={commonStrings.FROM}
             value={from}
             minDate={new Date()}
+            maxDate={maxDate}
             variant="standard"
             required
             onChange={(date) => {
@@ -106,7 +116,15 @@ const PropertyFilter = ({
             variant="standard"
             required
             onChange={(date) => {
-              setTo(date || undefined)
+              if (date) {
+                setTo(date)
+                const _maxDate = new Date(date)
+                _maxDate.setDate(_maxDate.getDate() - 1)
+                setMaxDate(_maxDate)
+              } else {
+                setTo(undefined)
+                setMaxDate(undefined)
+              }
             }}
             language={UserService.getLanguage()}
           />
