@@ -9,6 +9,7 @@ interface DateTimePickerProps {
   value?: Date
   label?: string
   minDate?: Date
+  maxDate?: Date
   required?: boolean
   language?: string
   variant?: TextFieldVariants
@@ -19,6 +20,7 @@ const DateTimePicker = ({
   value: dateTimeValue,
   label,
   minDate,
+  maxDate,
   required,
   variant,
   language,
@@ -44,6 +46,8 @@ const DateTimePicker = ({
           }
         }}
         minDate={minDate}
+        maxDate={maxDate}
+        timeSteps={{ hours: 1, minutes: 5 }}
         slotProps={{
           textField: {
             variant: variant || 'standard',

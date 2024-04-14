@@ -56,10 +56,11 @@ const UpdateBooking = () => {
   const [location, setLocation] = useState<movininTypes.Option>()
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
+  const [minDate, setMinDate] = useState<Date>()
+  const [maxDate, setMaxDate] = useState<Date>()
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [cancellation, setCancellation] = useState(false)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
-  const [minDate, setMinDate] = useState<Date>()
 
   const handleAgencyChange = (values: movininTypes.Option[]) => {
     setAgency(values.length > 0 ? values[0] : undefined)
@@ -253,6 +254,9 @@ const UpdateBooking = () => {
               _minDate.setDate(_minDate.getDate() + 1)
               setMinDate(_minDate)
               setTo(new Date(_booking.to))
+              const _maxDate = new Date(_booking.to)
+              _maxDate.setDate(_maxDate.getDate() - 1)
+              setMaxDate(_maxDate)
               setStatus(_booking.status)
               setCancellation(_booking.cancellation || false)
             } else {
@@ -327,6 +331,7 @@ const UpdateBooking = () => {
                 <DatePicker
                   label={commonStrings.FROM}
                   value={from}
+                  maxDate={maxDate}
                   required
                   onChange={(date) => {
                     if (date) {
@@ -366,9 +371,9 @@ const UpdateBooking = () => {
                   value={to}
                   minDate={minDate}
                   required
-                  onChange={(_to) => {
-                    if (_to) {
-                      booking.to = _to
+                  onChange={(date) => {
+                    if (date) {
+                      booking.to = date
 
                       helper.price(
                         booking,
@@ -376,12 +381,19 @@ const UpdateBooking = () => {
                         (_price) => {
                           setBooking(booking)
                           setPrice(_price)
-                          setTo(_to)
+                          setTo(date)
+
+                          const _maxDate = new Date(date)
+                          _maxDate.setDate(_maxDate.getDate() - 1)
+                          setMaxDate(_maxDate)
                         },
                         (err) => {
                           toastErr(err)
                         },
                       )
+                    } else {
+                      setTo(undefined)
+                      setMaxDate(undefined)
                     }
                   }}
                   language={UserService.getLanguage()}
