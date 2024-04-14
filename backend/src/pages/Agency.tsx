@@ -187,13 +187,13 @@ const Agency = () => {
                   </IconButton>
                 </Tooltip>
               )}
-              {edit && (
+              {/* {edit && (
                 <Tooltip title={commonStrings.DELETE}>
                   <IconButton data-id={agency._id} onClick={handleDelete}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
-              )}
+              )} */}
             </div>
             {rowCount > 0 && <InfoBox value={`${rowCount} ${commonStrings.PROPERTY}${rowCount > 1 ? 's' : ''}`} className="property-count" />}
           </div>

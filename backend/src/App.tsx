@@ -44,7 +44,7 @@ const App = () => (
             <Route path="/activate" element={<Activate />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/sign-up" element={<SignUp />} />
+            {/* <Route path="/sign-up" element={<SignUp />} /> */}
             <Route path="/" element={<Bookings />} />
             <Route path="/agencies" element={<Agencies />} />
             <Route path="/agency" element={<Agency />} />
@@ -66,7 +66,7 @@ const App = () => (
             <Route path="/update-user" element={<UpdateUser />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/notifications" element={<Notifications />} />
-            <Route path="/change-password" element={<ChangePassword />} />
+            {/* <Route path="/change-password" element={<ChangePassword />} /> */}
             <Route path="/about" element={<About />} />
             <Route path="/tos" element={<ToS />} />
             <Route path="/contact" element={<Contact />} />

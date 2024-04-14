@@ -202,13 +202,13 @@ const AgencyList = ({
                   <span className="agency-item-title">{agency.fullName}</span>
                 </div>
                 <div className="agency-actions">
-                  {canDelete && (
+                  {/* {canDelete && (
                     <Tooltip title={commonStrings.DELETE}>
                       <IconButton data-id={agency._id} data-index={index} onClick={handleDelete}>
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
-                  )}
+                  )} */}
                   {edit && (
                     <Tooltip title={commonStrings.UPDATE}>
                       <IconButton href={`/update-agency?c=${agency._id}`}>
