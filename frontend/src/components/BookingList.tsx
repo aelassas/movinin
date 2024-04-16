@@ -97,11 +97,14 @@ const BookingList = ({
   const [cancelRequestProcessing, setCancelRequestProcessing] = useState(false)
 
   useEffect(() => {
-    setPage(paginationModel.page)
-    setPageSize(paginationModel.pageSize)
+    if (!env.isMobile()) {
+      setPage(paginationModel.page)
+      setPageSize(paginationModel.pageSize)
+    }
   }, [paginationModel])
 
   const fetchData = async (_page: number, _user?: movininTypes.User) => {
+    console.log('fetch')
     try {
       const _pageSize = env.isMobile() ? env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
 
@@ -184,13 +187,13 @@ const BookingList = ({
   }, [bookingUser])
 
   useEffect(() => {
-    if (agencies && statuses) {
+    if (agencies && statuses && user) {
       fetchData(page, user)
     }
   }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (agencies && statuses) {
+    if (agencies && statuses && user) {
       if (page === 0) {
         fetchData(0, user)
       } else {
@@ -315,7 +318,7 @@ const BookingList = ({
   }
 
   useEffect(() => {
-    if (agencies && statuses) {
+    if (agencies && statuses && user) {
       const _columns = getColumns()
       setColumns(_columns)
 

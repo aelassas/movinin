@@ -262,7 +262,7 @@ const MultipleSelect = ({
         renderOption={(props, option) => {
           if (type === movininTypes.RecordType.User) {
             return (
-              <li {...props} className={`${props.className} ms-option`}>
+              <li {...props} key={option._id} className={`${props.className} ms-option`}>
                 <span className="option-image">
                   {option.image ? <Avatar src={movininHelper.joinURL(env.CDN_USERS, option.image)} className="avatar-medium" /> : <AccountCircle className="avatar-medium" color="disabled" />}
                 </span>
@@ -271,7 +271,7 @@ const MultipleSelect = ({
             )
           } if (type === movininTypes.RecordType.Agency) {
             return (
-              <li {...props} className={`${props.className} ms-option`}>
+              <li {...props} key={option._id} className={`${props.className} ms-option`}>
                 <span className="option-image agency-ia">
                   <img src={movininHelper.joinURL(env.CDN_USERS, option.image)} alt={option.name} />
                 </span>
@@ -280,7 +280,7 @@ const MultipleSelect = ({
             )
           } if (type === movininTypes.RecordType.Location) {
             return (
-              <li {...props} className={`${props.className} ms-option`}>
+              <li {...props} key={option._id} className={`${props.className} ms-option`}>
                 <span className="option-image">
                   <LocationIcon />
                 </span>
@@ -289,7 +289,7 @@ const MultipleSelect = ({
             )
           } if (type === movininTypes.RecordType.Property) {
             return (
-              <li {...props} className={`${props.className} ms-option`}>
+              <li {...props} key={option._id} className={`${props.className} ms-option`}>
                 <span className="option-image property-ia">
                   <img
                     src={movininHelper.joinURL(env.CDN_PROPERTIES, option.image)}
@@ -305,7 +305,7 @@ const MultipleSelect = ({
           }
 
           return (
-            <li {...props} className={`${props.className} ms-option`}>
+            <li {...props} key={option._id} className={`${props.className} ms-option`}>
               <span>{option.name}</span>
             </li>
           )
