@@ -4,16 +4,18 @@ import * as movininTypes from ':movinin-types'
  * Format a number.
  *
  * @export
- * @param {?number} [x]
+ * @param {number} x
+ * @param {string} language ISO 639-1 language code
  * @returns {string}
  */
-export const formatNumber = (x?: number): string => {
-    if (typeof x === 'number') {
-        const parts: string[] = String(x % 1 !== 0 ? x.toFixed(2) : x).split('.')
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-        return parts.join('.')
-    }
-    return ''
+export const formatNumber = (x: number, language: string): string => {
+  if (typeof x === 'number') {
+    const parts: string[] = String(x % 1 !== 0 ? x.toFixed(2) : x).split('.')
+    const separator = language === 'en' ? ',' : ' '
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+    return parts.join('.')
+  }
+  return ''
 }
 
 /**
@@ -298,3 +300,29 @@ export const getAllRentalTerms = () =>
         movininTypes.RentalTerm.Daily,
         movininTypes.RentalTerm.Yearly,
     ]
+
+/**
+ * Format price
+ *
+ * @param {number} price
+ * @param {string} currency
+ * @param {string} language ISO 639-1 language code
+ * @returns {boolean}
+ */
+export const formatPrice = (price: number, currency: string, language: string) => {
+  const formatedPrice = formatNumber(price, language)
+
+  if (currency === '$') {
+    return `$${formatedPrice}`
+  }
+
+  return `${formatedPrice} ${currency}`
+}
+
+/**
+ * Check whether language is french
+ *
+ * @param {string} language
+ * @returns {boolean}
+ */
+export const isFrench = (language?: string) => language === 'fr'

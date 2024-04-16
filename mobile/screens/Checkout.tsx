@@ -645,7 +645,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                       value={cancellation}
                       onValueChange={onCancellationChange}
                     />
-                    <Text style={styles.extraText}>{helper.getCancellationOption(property.cancellation, _fr)}</Text>
+                    <Text style={styles.extraText}>{helper.getCancellationOption(property.cancellation, language)}</Text>
                   </View>
                 </View>
 
@@ -666,7 +666,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   <Text style={styles.detailText}>{location.name}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('PROPERTY')}</Text>
-                  <Text style={styles.detailText}>{`${property.name} (${helper.priceLabel(property)})`}</Text>
+                  <Text style={styles.detailText}>{`${property.name} (${helper.priceLabel(property, language)})`}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('AGENCY')}</Text>
                   <View style={styles.agency}>
@@ -680,7 +680,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   </View>
 
                   <Text style={styles.detailTitle}>{i18n.t('COST')}</Text>
-                  <Text style={styles.detailTextBold}>{`${movininHelper.formatNumber(price)} ${i18n.t('CURRENCY')}`}</Text>
+                  <Text style={styles.detailTextBold}>{movininHelper.formatPrice(price, i18n.t('CURRENCY'), language)}</Text>
                 </View>
 
                 {!authenticated && (
@@ -782,7 +782,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
                       <View style={styles.securePaymentInfo}>
                         <Text style={styles.totalText}>{i18n.t('COST')}</Text>
-                        <Text style={styles.costText}>{`${movininHelper.formatNumber(price)} ${i18n.t('CURRENCY')}`}</Text>
+                        <Text style={styles.costText}>{`${movininHelper.formatPrice(price, i18n.t('CURRENCY'), language)}`}</Text>
                       </View>
                     </View>
 

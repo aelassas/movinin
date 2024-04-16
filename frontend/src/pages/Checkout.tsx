@@ -529,7 +529,7 @@ const Checkout = () => {
                         label={(
                           <span>
                             <span className="booking-option-label">{csStrings.CANCELLATION}</span>
-                            <span className="booking-option-value">{helper.getCancellationOption(property.cancellation, _fr)}</span>
+                            <span className="booking-option-value">{helper.getCancellationOption(property.cancellation, language)}</span>
                           </span>
                         )}
                       />
@@ -559,7 +559,7 @@ const Checkout = () => {
 
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                       <span className="booking-detail-title">{strings.PROPERTY}</span>
-                      <div className="booking-detail-value">{`${property.name} (${helper.priceLabel(property)})`}</div>
+                      <div className="booking-detail-value">{`${property.name} (${helper.priceLabel(property, language)})`}</div>
                     </div>
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                       <span className="booking-detail-title">{commonStrings.AGENCY}</span>
@@ -572,7 +572,7 @@ const Checkout = () => {
                     </div>
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                       <span className="booking-detail-title">{strings.COST}</span>
-                      <div className="booking-detail-value booking-price">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</div>
+                      <div className="booking-detail-value booking-price">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</div>
                     </div>
                   </div>
                 </div>
@@ -705,7 +705,7 @@ const Checkout = () => {
                       </div>
                       <div className="secure-payment-cost">
                         <span className="cost-title">{strings.COST}</span>
-                        <span className="cost-value">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</span>
+                        <span className="cost-value">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</span>
                       </div>
                     </div>
 

@@ -229,7 +229,7 @@ const BookingList = ({
         headerName: strings.PRICE,
         flex: 1,
         renderCell: ({ value }: GridRenderCellParams<movininTypes.Booking, string>) => <span className="bp">{value}</span>,
-        valueGetter: (value: number) => `${movininHelper.formatNumber(value)} ${commonStrings.CURRENCY}`,
+        valueGetter: (value: number) => movininHelper.formatPrice(value, commonStrings.CURRENCY, language as string),
       },
       {
         field: 'status',
@@ -459,7 +459,7 @@ const BookingList = ({
                           <div className="extra">
                             <CheckIcon className="extra-icon" />
                             <span className="extra-title">{csStrings.CANCELLATION}</span>
-                            <span className="extra-text">{helper.getCancellationOption((booking.property as movininTypes.Property).cancellation, _fr, true)}</span>
+                            <span className="extra-text">{helper.getCancellationOption((booking.property as movininTypes.Property).cancellation, language as string, true)}</span>
                           </div>
                         )}
 
@@ -469,7 +469,7 @@ const BookingList = ({
 
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                     <span className="booking-detail-title">{strings.COST}</span>
-                    <div className="booking-detail-value booking-price">{`${movininHelper.formatNumber(booking.price)} ${commonStrings.CURRENCY}`}</div>
+                    <div className="booking-detail-value booking-price">{movininHelper.formatPrice(booking.price as number, commonStrings.CURRENCY, language as string)}</div>
                   </div>
 
                   <div className="bs-buttons">

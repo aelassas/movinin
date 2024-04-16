@@ -18,6 +18,7 @@ import {
   PhotoSizeSelectSmall as SizeIcon
 } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import { strings as cpStrings } from '../lang/property'
 import { strings } from '../lang/properties'
 import * as helper from '../common/helper'
@@ -30,12 +31,14 @@ interface PropertyInfoProps {
   property: movininTypes.Property
   description?: boolean
   className?: string
+  language: string
 }
 
 const PropertyInfo = ({
   property,
   description,
   className,
+  language
 }: PropertyInfoProps) => {
   const fr = langHelper.fr()
 
@@ -45,7 +48,7 @@ const PropertyInfo = ({
       ? <CheckIcon className="available" />
       : <InfoIcon className="extra-info" />)
 
-  const size = `${property.size} ${env.SIZE_UNIT}`
+  const size = `${movininHelper.formatNumber(property.size as number, language)} ${env.SIZE_UNIT}`
 
   return (
     (
@@ -142,10 +145,10 @@ const PropertyInfo = ({
               )
             }
             <li>
-              <Tooltip title={property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : helper.getCancellation(property.cancellation, fr)} placement="left">
+              <Tooltip title={property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : helper.getCancellation(property.cancellation, language)} placement="left">
                 <div className="property-info-list-item">
                   {getExtraIcon('cancellation', property.cancellation)}
-                  <span className="property-info-list-text">{helper.getCancellation(property.cancellation, fr)}</span>
+                  <span className="property-info-list-text">{helper.getCancellation(property.cancellation, language)}</span>
                 </div>
               </Tooltip>
             </li>

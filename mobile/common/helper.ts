@@ -140,16 +140,18 @@ export const dateTime = (date: Date, time: Date) => {
  * Get cancellation label.
  *
  * @param {number} cancellation
- * @param {boolean} fr
+ * @param {string} language
  * @returns {string}
  */
-export const getCancellation = (cancellation: number, fr: boolean) => {
+export const getCancellation = (cancellation: number, language: string) => {
+  const fr = movininHelper.isFrench(language)
+
   if (cancellation === -1) {
     return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${i18n.t('UNAVAILABLE')}`
   } if (cancellation === 0) {
     return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${i18n.t('INCLUDED')}${fr ? 'e' : ''}`
   }
-  return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${movininHelper.formatNumber(cancellation)} ${i18n.t('CURRENCY')}`
+  return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${movininHelper.formatPrice(cancellation, i18n.t('CURRENCY'), language)}`
 }
 
 /**
@@ -206,17 +208,19 @@ export const price = (property: movininTypes.Property, from: Date, to: Date, opt
  * Get cancellation option label.
  *
  * @param {number} cancellation
- * @param {boolean} fr
+ * @param {string} language
  * @param {?boolean} [hidePlus]
  * @returns {string}
  */
-export const getCancellationOption = (cancellation: number, fr: boolean, hidePlus?: boolean) => {
+export const getCancellationOption = (cancellation: number, language: string, hidePlus?: boolean) => {
+  const fr = movininHelper.isFrench(language)
+
   if (cancellation === -1) {
     return i18n.t('UNAVAILABLE')
   } if (cancellation === 0) {
     return `${i18n.t('INCLUDED')}${fr ? 'e' : ''}`
   }
-  return `${hidePlus ? '' : '+ '}${movininHelper.formatNumber(cancellation)} ${i18n.t('CURRENCY')}`
+  return `${hidePlus ? '' : '+ '}${movininHelper.formatPrice(cancellation, i18n.t('CURRENCY'), language)}`
 }
 
 /**
@@ -337,10 +341,11 @@ export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
  * Get price label.
  *
  * @param {movininTypes.Property} property
+ * @param {string} language
  * @returns {string}
  */
-export const priceLabel = (property: movininTypes.Property): string =>
-  `${movininHelper.formatNumber(property.price)} ${i18n.t('CURRENCY')}/${rentalTermUnit(property.rentalTerm)}`
+export const priceLabel = (property: movininTypes.Property, language: string): string =>
+  `${movininHelper.formatPrice(property.price, i18n.t('CURRENCY'), language)}/${rentalTermUnit(property.rentalTerm)}`
 
 /**
  * Check whether property option is available or not.

@@ -145,7 +145,6 @@ const BookingList = ({
     }
   }, [bookingId])
 
-  const _fr = language === 'fr'
   const numToRender = Math.floor(env.BOOKINGS_PAGE_SIZE / 2)
 
   return (
@@ -163,7 +162,7 @@ const BookingList = ({
           <Booking
             booking={booking}
             locale={locale}
-            fr={_fr}
+            language={language as string}
             onCancel={() => {
               setSelectedId(booking._id as string)
               setOpenCancelDialog(true)
