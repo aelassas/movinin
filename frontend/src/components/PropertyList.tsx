@@ -35,6 +35,7 @@ interface PropertyListProps {
   hideAgency?: boolean
   hidePrice?: boolean
   hideActions?: boolean
+  language: string
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
 }
 
@@ -52,6 +53,7 @@ const PropertyList = ({
   hideAgency,
   hidePrice,
   hideActions,
+  language,
   onLoad,
 }: PropertyListProps) => {
   const navigate = useNavigate()
@@ -222,6 +224,7 @@ const PropertyList = ({
                   <PropertyInfo
                     property={property}
                     className="property-info"
+                    language={language}
                     description
                   />
                 </div>
@@ -230,8 +233,8 @@ const PropertyList = ({
                   {!hidePrice && from && to && (
                     <div className="price">
                       <span className="price-days">{helper.getDays(days)}</span>
-                      <span className="price-main">{`${movininHelper.formatNumber(price)} ${commonStrings.CURRENCY}`}</span>
-                      <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatNumber((price || 0) / days)} ${commonStrings.CURRENCY}`}</span>
+                      <span className="price-main">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</span>
+                      <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatPrice((price as number) / days, commonStrings.CURRENCY, language)}`}</span>
                     </div>
                   )}
                   {hidePrice && !hideActions && <span />}

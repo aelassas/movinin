@@ -4,6 +4,7 @@ import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '../config/env.config'
 import * as helper from '../common/helper'
+import * as UserService from '../services/UserService'
 import * as LocationService from '../services/LocationService'
 import * as AgencyService from '../services/AgencyService'
 import Master from '../components/Master'
@@ -29,6 +30,7 @@ const Properties = () => {
   const [loading, setLoading] = useState(true)
   const [propertyTypes, setPropertyTypes] = useState(movininHelper.getAllPropertyTypes())
   const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())
+  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
 
   const handleAgencyFilterChange = (newAgencies: string[]) => {
     setAgencies(newAgencies)
@@ -63,6 +65,8 @@ const Properties = () => {
       setNoMatch(true)
       return
     }
+
+    setLanguage(UserService.getLanguage())
 
     let _location: movininTypes.Location | null = null
     try {
@@ -131,6 +135,7 @@ const Properties = () => {
               loading={loading}
               from={from}
               to={to}
+              language={language}
             />
           </div>
         </div>

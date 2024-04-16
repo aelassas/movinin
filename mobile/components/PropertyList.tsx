@@ -122,7 +122,6 @@ const PropertyList = ({
     setPage(1)
   }, [location, agencies, types, rentalTerms])
 
-  const fr = language === 'fr'
   const numToRender = Math.floor(env.PROPERTIES_PAGE_SIZE / 2)
 
   return (
@@ -140,7 +139,7 @@ const PropertyList = ({
           renderItem={({ item: property }) => (
             <Property
               property={property}
-              fr={fr}
+              language={language}
               from={from}
               to={to}
               location={location}

@@ -315,6 +315,7 @@ const PropertyList = ({
                       user={user}
                       booking={booking}
                       className="property-info"
+                      language={language}
                       description
                     />
                   </div>
@@ -322,7 +323,7 @@ const PropertyList = ({
                   <div className="right-panel">
                     {!hidePrice && (
                       <div className="price">
-                        {helper.priceLabel(property)}
+                        {helper.priceLabel(property, language)}
                       </div>
                     )}
 

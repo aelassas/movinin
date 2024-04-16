@@ -36,6 +36,7 @@ interface PropertyInfoProps {
   booking?: movininTypes.Booking
   description?: boolean
   className?: string
+  language: string
 }
 
 const PropertyInfo = ({
@@ -44,6 +45,7 @@ const PropertyInfo = ({
   booking,
   description,
   className,
+  language,
 }: PropertyInfoProps) => {
   const fr = movininHelper.fr(user)
   const edit = helper.admin(user) || (user?._id === property.agency._id)
@@ -63,7 +65,7 @@ const PropertyInfo = ({
         : <InfoIcon className="extra-info" />
   }
 
-  const size = `${property.size} ${env.SIZE_UNIT}`
+  const size = `${movininHelper.formatNumber(property.size as number, language)} ${env.SIZE_UNIT}`
 
   return (
     (property && user
@@ -159,10 +161,10 @@ const PropertyInfo = ({
               )
             }
             <li>
-              <Tooltip title={booking ? '' : property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : helper.getCancellation(property.cancellation, fr)} placement="left">
+              <Tooltip title={booking ? '' : property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : helper.getCancellation(property.cancellation, language)} placement="left">
                 <div className="property-info-list-item">
                   {getExtraIcon('cancellation', property.cancellation)}
-                  <span className="property-info-list-text">{helper.getCancellation(property.cancellation, fr)}</span>
+                  <span className="property-info-list-text">{helper.getCancellation(property.cancellation, language)}</span>
                 </div>
               </Tooltip>
             </li>

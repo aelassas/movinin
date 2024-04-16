@@ -19,7 +19,7 @@ import i18n from '../lang/i18n'
 interface BookingProps {
   booking: movininTypes.Booking
   locale: Locale
-  fr: boolean
+  language: string
   onCancel: () => void
 }
 
@@ -32,7 +32,7 @@ const extraIconSize = 16
 const Booking = ({
   booking,
   locale,
-  fr,
+  language,
   onCancel
 }: BookingProps) => {
   const from = new Date(booking.from)
@@ -67,7 +67,7 @@ const Booking = ({
         <Text style={styles.detailText}>{(booking.location as movininTypes.Location).name}</Text>
 
         <Text style={styles.detailTitle}>{i18n.t('PROPERTY')}</Text>
-        <Text style={styles.detailText}>{`${property.name} (${helper.priceLabel(property)})`}</Text>
+        <Text style={styles.detailText}>{`${property.name} (${helper.priceLabel(property, language)})`}</Text>
 
         <Text style={styles.detailTitle}>{i18n.t('AGENCY')}</Text>
         <View style={styles.agency}>
@@ -88,7 +88,7 @@ const Booking = ({
                 <View style={styles.extra}>
                   <MaterialIcons style={styles.extraIcon} name="check" size={extraIconSize} color={extraIconColor} />
                   <Text style={styles.extraTitle}>{i18n.t('CANCELLATION')}</Text>
-                  <Text style={styles.extraText}>{helper.getCancellationOption(property.cancellation, fr, true)}</Text>
+                  <Text style={styles.extraText}>{helper.getCancellationOption(property.cancellation, language, true)}</Text>
                 </View>
               )}
             </View>
@@ -96,7 +96,7 @@ const Booking = ({
         )}
 
         <Text style={styles.detailTitle}>{i18n.t('COST')}</Text>
-        <Text style={styles.detailTextBold}>{`${movininHelper.formatNumber(booking.price)} ${i18n.t('CURRENCY')}`}</Text>
+        <Text style={styles.detailTextBold}>{movininHelper.formatPrice(booking.price as number, i18n.t('CURRENCY'), language)}</Text>
 
         {booking.cancellation
           && !booking.cancelRequest

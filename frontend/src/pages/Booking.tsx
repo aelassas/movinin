@@ -11,6 +11,7 @@ import { strings as commonStrings } from '../lang/common'
 import { strings as blStrings } from '../lang/booking-list'
 import { strings as bfStrings } from '../lang/booking-filter'
 import { strings as csStrings } from '../lang/properties'
+import env from '../config/env.config'
 import * as helper from '../common/helper'
 import Master from '../components/Master'
 import * as UserService from '../services/UserService'
@@ -42,10 +43,12 @@ const Booking = () => {
   const [to, setTo] = useState<Date>()
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [cancellation, setCancellation] = useState(false)
+  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
 
   const onLoad = async (user?: movininTypes.User) => {
     if (user) {
       setLoading(true)
+      setLanguage(user.language as string)
 
       const params = new URLSearchParams(window.location.search)
       if (params.has('b')) {
@@ -183,13 +186,14 @@ const Booking = () => {
             <div className="col-2-header">
               <div className="price">
                 <span className="price-days">{helper.getDays(days)}</span>
-                <span className="price-main">{`${movininHelper.formatNumber(price ?? 0)} ${commonStrings.CURRENCY}`}</span>
-                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${Math.floor((price ?? 0) / days)} ${commonStrings.CURRENCY}`}</span>
+                <span className="price-main">{`${movininHelper.formatPrice(price as number, commonStrings.CURRENCY, language)}`}</span>
+                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatPrice(Math.floor((price as number) / days), commonStrings.CURRENCY, language)}`}</span>
               </div>
             </div>
             <PropertyList
               className="property"
               properties={((property && [booking.property]) as movininTypes.Property[]) || []}
+              language={language}
               hidePrice
             />
           </div>

@@ -40,9 +40,10 @@ const Property = () => {
   const [images, setImages] = useState<string[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [openImageDialog, setOpenImageDialog] = useState(false)
-
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
   const [openInfoDialog, setOpenInfoDialog] = useState(false)
+  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
+
   const edit = helper.admin(user) || (user?._id === property?.agency._id)
 
   useEffect(() => {
@@ -61,6 +62,7 @@ const Property = () => {
     if (_user && _user.verified) {
       setLoading(true)
       setUser(_user)
+      setLanguage(_user.language as string)
 
       const params = new URLSearchParams(window.location.search)
       if (params.has('p')) {
@@ -136,11 +138,12 @@ const Property = () => {
                 <div className="right-panel">
                   <div className="right-panel-header">
                     <div className="name"><h2>{property.name}</h2></div>
-                    <div className="price">{helper.priceLabel(property)}</div>
+                    <div className="price">{helper.priceLabel(property, language)}</div>
                   </div>
                   <PropertyInfo
                     property={property}
                     user={user}
+                    language={language}
                   />
                 </div>
               </div>

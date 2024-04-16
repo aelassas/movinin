@@ -44,6 +44,7 @@ const PropertyBookings = () => {
   const [agencies, setAgencies] = useState<string[]>([])
   const [offset, setOffset] = useState(0)
   const [openInfoDialog, setOpenInfoDialog] = useState(false)
+  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
 
   const statuses = helper.getBookingStatuses().map((status) => status.value)
 
@@ -76,10 +77,12 @@ const PropertyBookings = () => {
 
   const onLoad = async (_user?: movininTypes.User) => {
     setLoading(true)
-    setUser(_user)
 
     const params = new URLSearchParams(window.location.search)
     if (_user && _user.verified && params.has('p')) {
+      setUser(_user)
+      setLanguage(_user?.language as string)
+
       const id = params.get('p')
       if (id && id !== '') {
         try {
@@ -139,11 +142,12 @@ const PropertyBookings = () => {
               </div>
               <div className="name"><h2>{property.name}</h2></div>
               <div className="price">
-                {helper.priceLabel(property)}
+                {helper.priceLabel(property, language)}
               </div>
               <PropertyInfo
                 property={property}
                 user={user}
+                language={language}
                 description
               />
             </section>
@@ -201,20 +205,20 @@ const PropertyBookings = () => {
               </Button>
               <Button
                 onClick={async () => {
-                try {
-                  setOpenDeleteDialog(false)
+                  try {
+                    setOpenDeleteDialog(false)
 
-                  const status = await PropertyService.deleteProperty(property._id)
+                    const status = await PropertyService.deleteProperty(property._id)
 
-                  if (status === 200) {
-                    navigate('/properties')
-                  } else {
-                    helper.error()
+                    if (status === 200) {
+                      navigate('/properties')
+                    } else {
+                      helper.error()
+                    }
+                  } catch (err) {
+                    helper.error(err)
                   }
-                } catch (err) {
-                  helper.error(err)
-                }
-              }}
+                }}
                 variant="contained"
                 color="error"
               >

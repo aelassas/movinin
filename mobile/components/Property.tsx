@@ -18,7 +18,7 @@ import i18n from '../lang/i18n'
 
 interface PropertyProps {
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
-  fr: boolean
+  language: string
   property: movininTypes.Property
   from: Date
   to: Date
@@ -33,7 +33,7 @@ const getExtraIcon = (extra: number) =>
 
 const Property = ({
   property,
-  fr,
+  language,
   from,
   to,
   location,
@@ -106,13 +106,13 @@ const Property = ({
             && (
               <View style={styles.extra}>
                 <MaterialIcons name="photo-size-select-small" size={iconSize} style={styles.infoIcon} />
-                <Text style={styles.text}>{`${property.size} ${env.SIZE_UNIT}`}</Text>
+                <Text style={styles.text}>{`${movininHelper.formatNumber(property.size, language)} ${env.SIZE_UNIT}`}</Text>
               </View>
             )
           }
           <View style={styles.extra}>
             <MaterialIcons name={getExtraIcon(property.cancellation)} size={iconSize} style={styles.infoIcon} />
-            <Text style={styles.text}>{helper.getCancellation(property.cancellation, fr)}</Text>
+            <Text style={styles.text}>{helper.getCancellation(property.cancellation, language)}</Text>
           </View>
         </View>
 
@@ -136,8 +136,8 @@ const Property = ({
 
           <View style={styles.price}>
             <Text style={styles.priceSecondary}>{helper.getDays(days)}</Text>
-            <Text style={styles.pricePrimary}>{`${movininHelper.formatNumber(price)} ${i18n.t('CURRENCY')}`}</Text>
-            <Text style={styles.priceSecondary}>{`${i18n.t('PRICE_PER_DAY')} ${movininHelper.formatNumber(pricePerDay)} ${i18n.t('CURRENCY')}`}</Text>
+            <Text style={styles.pricePrimary}>{`${movininHelper.formatPrice(price, i18n.t('CURRENCY'), language)}`}</Text>
+            <Text style={styles.priceSecondary}>{`${i18n.t('PRICE_PER_DAY')} ${movininHelper.formatPrice(pricePerDay, i18n.t('CURRENCY'), language)}`}</Text>
           </View>
         </View>
 

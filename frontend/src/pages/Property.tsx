@@ -41,6 +41,7 @@ const Property = () => {
   const [minDate, setMinDate] = useState<Date>()
   const [maxDate, setMaxDate] = useState<Date>()
   const [hideAction, setHideAction] = useState(true)
+  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
 
   useEffect(() => {
     const src = (_image: string) => movininHelper.joinURL(env.CDN_PROPERTIES, _image)
@@ -74,6 +75,7 @@ const Property = () => {
     }
 
     setLoading(true)
+    setLanguage(UserService.getLanguage())
     setFrom(_from || undefined)
     setTo(_to || undefined)
     setMinDate(_from || undefined)
@@ -143,10 +145,11 @@ const Property = () => {
                 <div className="right-panel">
                   <div className="right-panel-header">
                     <div className="name"><h2>{property.name}</h2></div>
-                    <div className="price">{helper.priceLabel(property)}</div>
+                    <div className="price">{helper.priceLabel(property, language)}</div>
                   </div>
                   <PropertyInfo
                     property={property}
+                    language={language}
                   />
                 </div>
               </div>
