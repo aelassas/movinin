@@ -107,7 +107,6 @@ const BookingList = ({
   }, [paginationModel])
 
   const fetchData = async (_page: number, _user?: movininTypes.User) => {
-    console.log('fetch')
     try {
       const _pageSize = env.isMobile() ? env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
 
