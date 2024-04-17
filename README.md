@@ -41,12 +41,12 @@ Movin' In is user-friendly, straightforward, secure against XSS, XST, CSRF and M
 ## Live Demo
 
 ### Frontend
-* URL: http://movinin.ddns.net:3004/
+* URL: http://movinin.v6.rocks:3004/
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
 ### Backend
-* URL: http://movinin.ddns.net:3003/
+* URL: http://movinin.v6.rocks:3003/
 * Login: admin@movinin.io
 * Password: M00vinin
 
