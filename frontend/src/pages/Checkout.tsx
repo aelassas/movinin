@@ -501,7 +501,7 @@ const Checkout = () => {
 
   const _fr = language === 'fr'
   const _locale = _fr ? fr : enUS
-  const _format = _fr ? 'eee d LLL kk:mm' : 'eee, d LLL, kk:mm'
+  const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
   const bookingDetailHeight = env.AGENCY_IMAGE_HEIGHT + 10
 
   return (
