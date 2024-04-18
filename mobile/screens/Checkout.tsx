@@ -621,8 +621,8 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const iconSize = 18
   const iconColor = '#000'
-  const _fr = language === 'fr'
-  const _format = `eee d LLLL yyyy ${_fr ? 'kk:mm' : 'p'}`
+  const _fr = movininHelper.isFrench(language)
+  const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
 
   return (
     <Master style={styles.master} navigation={navigation} onLoad={onLoad} reload={reload} route={route}>

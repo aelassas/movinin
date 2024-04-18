@@ -23,7 +23,6 @@ interface BookingProps {
   onCancel: () => void
 }
 
-const _format = 'eee d LLLL yyyy kk:mm'
 const iconSize = 24
 const iconColor = '#000'
 const extraIconColor = '#1f9201'
@@ -45,6 +44,9 @@ const Booking = ({
   today.setMinutes(0)
   today.setSeconds(0)
   today.setMilliseconds(0)
+
+  const _fr = movininHelper.isFrench(language)
+  const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
 
   return (
     <View key={booking._id} style={styles.bookingContainer}>
