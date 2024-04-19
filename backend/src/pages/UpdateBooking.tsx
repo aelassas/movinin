@@ -12,6 +12,7 @@ import {
 import {
   Info as InfoIcon,
 } from '@mui/icons-material'
+import { DateTimeValidationError } from '@mui/x-date-pickers'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
@@ -62,6 +63,8 @@ const UpdateBooking = () => {
   const [cancellation, setCancellation] = useState(false)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
+  const [fromError, setFromError] = useState(false)
+  const [toError, setToError] = useState(false)
 
   const handleAgencyChange = (values: movininTypes.Option[]) => {
     setAgency(values.length > 0 ? values[0] : undefined)
@@ -180,6 +183,10 @@ const UpdateBooking = () => {
 
       if (!booking || !agency || !property || !renter || !location || !from || !to || !status) {
         helper.error()
+        return
+      }
+
+      if (fromError || toError) {
         return
       }
 
@@ -350,10 +357,7 @@ const UpdateBooking = () => {
                           const _minDate = new Date(date)
                           _minDate.setDate(_minDate.getDate() + 1)
                           setMinDate(_minDate)
-
-                          if (to && to.getTime() <= date.getTime()) {
-                            setTo(undefined)
-                          }
+                          setFromError(false)
                         },
                         (err) => {
                           toastErr(err)
@@ -362,6 +366,13 @@ const UpdateBooking = () => {
                     } else {
                       setMinDate(undefined)
                       setFrom(undefined)
+                    }
+                  }}
+                  onError={(err: DateTimeValidationError) => {
+                    if (err) {
+                      setFromError(true)
+                    } else {
+                      setFromError(false)
                     }
                   }}
                   language={UserService.getLanguage()}
@@ -388,6 +399,7 @@ const UpdateBooking = () => {
                           const _maxDate = new Date(date)
                           _maxDate.setDate(_maxDate.getDate() - 1)
                           setMaxDate(_maxDate)
+                          setToError(false)
                         },
                         (err) => {
                           toastErr(err)
@@ -396,6 +408,13 @@ const UpdateBooking = () => {
                     } else {
                       setTo(undefined)
                       setMaxDate(undefined)
+                    }
+                  }}
+                  onError={(err: DateTimeValidationError) => {
+                    if (err) {
+                      setToError(true)
+                    } else {
+                      setToError(false)
                     }
                   }}
                   language={UserService.getLanguage()}

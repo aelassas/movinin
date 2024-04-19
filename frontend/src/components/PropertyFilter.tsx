@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FormControl, Button } from '@mui/material'
+import { DateTimeValidationError } from '@mui/x-date-pickers'
 import * as movininTypes from ':movinin-types'
 import { strings as commonStrings } from '../lang/common'
 import * as UserService from '../services/UserService'
@@ -31,6 +32,8 @@ const PropertyFilter = ({
   const [minDate, setMinDate] = useState<Date>()
   const [maxDate, setMaxDate] = useState<Date>()
   const [location, setLocation] = useState<movininTypes.Location | null | undefined>(filterLocation)
+  const [fromError, setFromError] = useState(false)
+  const [toError, setToError] = useState(false)
 
   useEffect(() => {
     if (filterFrom) {
@@ -57,7 +60,7 @@ const PropertyFilter = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!location || !from || !to) {
+    if (!location || !from || !to || fromError || toError) {
       return
     }
 
@@ -86,24 +89,28 @@ const PropertyFilter = ({
           <DatePicker
             label={commonStrings.FROM}
             value={from}
-            minDate={new Date()}
+            minDate={_minDate}
             maxDate={maxDate}
             variant="standard"
             required
             onChange={(date) => {
               if (date) {
-                if (to && to.getTime() <= date.getTime()) {
-                  setTo(undefined)
-                }
-
                 const __minDate = new Date(date)
                 __minDate.setDate(date.getDate() + 1)
+                setFrom(date)
                 setMinDate(__minDate)
+                setFromError(false)
               } else {
+                setFrom(undefined)
                 setMinDate(_minDate)
               }
-
-              setFrom(date || undefined)
+            }}
+            onError={(err: DateTimeValidationError) => {
+              if (err) {
+                setFromError(true)
+              } else {
+                setFromError(false)
+              }
             }}
             language={UserService.getLanguage()}
           />
@@ -117,13 +124,21 @@ const PropertyFilter = ({
             required
             onChange={(date) => {
               if (date) {
-                setTo(date)
                 const _maxDate = new Date(date)
                 _maxDate.setDate(_maxDate.getDate() - 1)
+                setTo(date)
                 setMaxDate(_maxDate)
+                setToError(false)
               } else {
                 setTo(undefined)
                 setMaxDate(undefined)
+              }
+            }}
+            onError={(err: DateTimeValidationError) => {
+              if (err) {
+                setToError(true)
+              } else {
+                setToError(false)
               }
             }}
             language={UserService.getLanguage()}
