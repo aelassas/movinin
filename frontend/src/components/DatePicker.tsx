@@ -63,7 +63,7 @@ const DatePicker = ({
             }
           },
           actionBar: {
-            actions: ['accept', 'cancel', 'today', 'clear'],
+            actions: ['accept', 'cancel', 'clear'],
           },
         }}
       />
