@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker as MuiDateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { fr, enUS } from 'date-fns/locale'
 import { TextFieldVariants } from '@mui/material'
+import { DateTimeValidationError } from '@mui/x-date-pickers'
 
 interface DateTimePickerProps {
   value?: Date
@@ -13,7 +14,9 @@ interface DateTimePickerProps {
   required?: boolean
   language?: string
   variant?: TextFieldVariants
+  readOnly?: boolean
   onChange?: (value: Date | null) => void
+  onError?: (error: DateTimeValidationError, value: Date | null) => void
 }
 
 const DateTimePicker = ({
@@ -24,7 +27,9 @@ const DateTimePicker = ({
   required,
   variant,
   language,
-  onChange
+  readOnly,
+  onChange,
+  onError
 }: DateTimePickerProps) => {
   const [value, setValue] = useState<Date | null>(null)
 
@@ -36,15 +41,20 @@ const DateTimePicker = ({
     <LocalizationProvider adapterLocale={language === 'fr' ? fr : enUS} dateAdapter={AdapterDateFns}>
       <MuiDateTimePicker
         label={label}
-        // showToolbar
         value={value}
-        onAccept={(_value) => {
+        readOnly={readOnly}
+        onChange={(_value) => {
           setValue(_value)
 
           if (onChange) {
             onChange(_value)
           }
+
+          if (_value && minDate && _value < minDate && onError) {
+            onError('minDate', _value)
+          }
         }}
+        onError={onError}
         minDate={minDate}
         maxDate={maxDate}
         timeSteps={{ hours: 1, minutes: 5 }}

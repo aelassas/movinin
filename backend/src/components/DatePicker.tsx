@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker'
 import { fr, enUS } from 'date-fns/locale'
 import { TextFieldVariants } from '@mui/material'
+import { DateValidationError } from '@mui/x-date-pickers'
 
 interface DatePickerProps {
   value?: Date
@@ -13,7 +14,9 @@ interface DatePickerProps {
   required?: boolean
   language?: string
   variant?: TextFieldVariants
+  readOnly?: boolean
   onChange?: (value: Date | null) => void
+  onError?: (error: DateValidationError, value: Date | null) => void
 }
 
 const DatePicker = ({
@@ -24,7 +27,9 @@ const DatePicker = ({
   required,
   language,
   variant,
-  onChange
+  readOnly,
+  onChange,
+  onError
 }: DatePickerProps) => {
   const [value, setValue] = useState<Date | null>(null)
 
@@ -38,17 +43,23 @@ const DatePicker = ({
         label={label}
         views={['year', 'month', 'day']}
         value={value}
-        onAccept={(_value) => {
+        readOnly={readOnly}
+        onChange={(_value) => {
           if (_value) {
             const date = _value as Date
-            date.setHours(12, 0, 0, 0)
+            date.setHours(10, 0, 0, 0)
           }
           setValue(_value)
 
           if (onChange) {
             onChange(_value)
           }
+
+          if (_value && minDate && _value < minDate && onError) {
+            onError('minDate', _value)
+          }
         }}
+        onError={onError}
         minDate={minDate}
         maxDate={maxDate}
         slotProps={{

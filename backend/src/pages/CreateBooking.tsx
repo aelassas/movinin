@@ -9,6 +9,7 @@ import {
 import {
   Info as InfoIcon
 } from '@mui/icons-material'
+import { DateTimeValidationError } from '@mui/x-date-pickers'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import Master from '../components/Master'
@@ -45,6 +46,8 @@ const CreateBooking = () => {
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [cancellation, setCancellation] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [fromError, setFromError] = useState(false)
+  const [toError, setToError] = useState(false)
 
   const handleAgencyChange = (values: movininTypes.Option[]) => {
     setAgency(values.length > 0 ? values[0]._id : '')
@@ -82,6 +85,10 @@ const CreateBooking = () => {
 
     if (!property || !from || !to || !status) {
       helper.error()
+      return
+    }
+
+    if (fromError || toError) {
       return
     }
 
@@ -188,18 +195,22 @@ const CreateBooking = () => {
                 required
                 onChange={(date) => {
                   if (date) {
-                    if (to && to.getTime() <= date.getTime()) {
-                      setTo(undefined)
-                    }
-
                     const _minDate = new Date(date)
                     _minDate.setDate(_minDate.getDate() + 1)
+                    setFrom(date)
                     setMinDate(_minDate)
+                    setFromError(false)
                   } else {
+                    setFrom(undefined)
                     setMinDate(undefined)
                   }
-
-                  setFrom(date || undefined)
+                }}
+                onError={(err: DateTimeValidationError) => {
+                  if (err) {
+                    setFromError(true)
+                  } else {
+                    setFromError(false)
+                  }
                 }}
                 language={UserService.getLanguage()}
               />
@@ -215,11 +226,19 @@ const CreateBooking = () => {
                   if (date) {
                     const _maxDate = new Date(date)
                     _maxDate.setDate(_maxDate.getDate() - 1)
-                    setMaxDate(_maxDate)
                     setTo(date)
+                    setMaxDate(_maxDate)
+                    setToError(false)
                   } else {
-                    setMaxDate(undefined)
                     setTo(undefined)
+                    setMaxDate(undefined)
+                  }
+                }}
+                onError={(err: DateTimeValidationError) => {
+                  if (err) {
+                    setToError(true)
+                  } else {
+                    setToError(false)
                   }
                 }}
                 language={UserService.getLanguage()}
