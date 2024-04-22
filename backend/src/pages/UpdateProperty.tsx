@@ -351,20 +351,20 @@ const UpdateProperty = () => {
             <form onSubmit={handleSubmit}>
               <ImageEditor
                 title={strings.IMAGES}
-                onMainImageUpsert={(img) => {
-                  setImage(img.filename)
-                  setImageUpdated(true)
-                }}
-                onAdd={(img) => {
-                  images.push(img.filename)
-                  tempImages.push(img.filename)
-                  setImages(images)
-                }}
-                onDelete={(img) => {
-                  images.splice(images.indexOf(img.filename), 1)
-                  tempImages.splice(tempImages.indexOf(img.filename), 1)
-                  setImages(images)
-                }}
+                // onMainImageUpsert={(img) => {
+                //   setImage(img.filename)
+                //   setImageUpdated(true)
+                // }}
+                // onAdd={(img) => {
+                //   images.push(img.filename)
+                //   tempImages.push(img.filename)
+                //   setImages(images)
+                // }}
+                // onDelete={(img) => {
+                //   images.splice(images.indexOf(img.filename), 1)
+                //   tempImages.splice(tempImages.indexOf(img.filename), 1)
+                //   setImages(images)
+                // }}
                 onImageViewerOpen={() => setImageViewerOpen(true)}
                 onImageViewerClose={() => setImageViewerOpen(false)}
                 image={{ filename: property?.image || '', temp: false }}
