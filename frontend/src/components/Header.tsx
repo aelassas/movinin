@@ -349,7 +349,7 @@ const Header = ({
               )}
               {isSignedIn && (
                 <IconButton color="inherit" onClick={handleNotificationsClick}>
-                  <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="secondary">
+                  <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
