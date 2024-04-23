@@ -192,7 +192,7 @@ const BookingList = ({
     if (agencies && statuses && loggedUser) {
       fetchData(page, user)
     }
-  }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, loggedUser]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (agencies && statuses && loggedUser) {
