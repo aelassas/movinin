@@ -54,7 +54,7 @@ const Bookings = () => {
       setLeftPanel(!_admin)
       setLoadingAgencies(_admin)
 
-      const _allAgencies = _admin ? await AgencyService.getAllAgencies() : []
+      const _allAgencies = await AgencyService.getAllAgencies()
       const _agencies = _admin ? movininHelper.flattenAgencies(_allAgencies) : [_user._id ?? '']
       setAllAgencies(_allAgencies)
       setAgencies(_agencies)

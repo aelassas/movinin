@@ -140,6 +140,19 @@ const User = () => {
   const edit = loggedUser && user && (loggedUser.type === movininTypes.RecordType.Admin || loggedUser._id === user._id || (loggedUser.type === movininTypes.RecordType.Agency && loggedUser._id === user.agency))
   const agency = user && user.type === movininTypes.RecordType.Agency
 
+  const _agencies: string[] = []
+  if (loggedUser && user) {
+    if ((agency && loggedUser._id === user._id)
+      || (loggedUser.type === movininTypes.RecordType.Admin && user.type === movininTypes.RecordType.Agency)
+    ) {
+      _agencies.push(user._id as string)
+    } else if (loggedUser.type === movininTypes.RecordType.Agency && user.type === movininTypes.RecordType.User) {
+      _agencies.push(loggedUser._id as string)
+    } else if (loggedUser.type === movininTypes.RecordType.Admin) {
+      _agencies.push(...agencies)
+    }
+  }
+
   return (
     <Master onLoad={onLoad} strict>
       {loggedUser && user && visible && (
@@ -196,13 +209,13 @@ const User = () => {
             </div>
           </div>
           <div className="col-2">
-            {(edit || !agency) && (
+            {_agencies.length > 0 && (
               <BookingList
                 containerClassName="user"
                 offset={offset}
                 loggedUser={loggedUser}
                 user={agency ? undefined : user}
-                agencies={agency ? [user._id as string] : agencies}
+                agencies={_agencies}
                 statuses={statuses}
                 hideDates={env.isMobile()}
                 checkboxSelection={!env.isMobile()}
