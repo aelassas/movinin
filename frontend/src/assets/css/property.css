@@ -1,173 +1,201 @@
-@media only screen and (width <= 960px) {
-    div.main div.property {
-        display: flex;
-        flex-direction: column;
-    }
+@media only screen and (width <=960px) {
+  div.main div.property {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-@media only screen and (width >= 960px) {
-    div.main {
-        max-width: 872px;
-        margin-right: auto;
-        margin-left: auto;
-        margin-top: 15px;
-        padding-bottom: 30px;
-    }
+@media only screen and (width >=960px) {
+  div.main {
+    max-width: 872px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15px;
+    padding-bottom: 30px;
+  }
 
-    div.main div.property {
-        display: flex;
-        flex-direction: row;
-    }
+  div.main div.property {
+    display: flex;
+    flex-direction: row;
+  }
 }
 
 div.main {
-    background-color: #fff;
-    border: 1px solid #ededed;
-    border-radius: 4px;
-    padding: 15px;
-    margin-bottom: 15px;
+  background-color: #fff;
+  border: 1px solid #ededed;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 15px;
 }
 
 div.main div.property div.images-container {
-    width: 350px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-right: 15px;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-right: 15px;
 }
 
 div.main div.property div.main-image {
-    width: 100%;
-    height: 350px;
-    padding: 5px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  height: 350px;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 div.main div.property img.main-image {
-    max-width: 100%;
-    max-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 div.main div.property div.images {
-    display: flex;
-    flex-flow: row wrap;
-    overflow-x: auto;
+  display: flex;
+  flex-flow: row wrap;
+  overflow-x: auto;
 }
 
 div.main div.property div.images div.image {
-    width: 60px;
-    height: 60px;
-    border: 2px solid #D5DBDB;
-    padding: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    margin: 5px;
+  width: 60px;
+  height: 60px;
+  border: 2px solid #D5DBDB;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 5px;
 }
 
 div.main div.property div.images div.image:hover {
-    border: 2px solid #004b91;
+  border: 2px solid #004b91;
 }
 
 div.main div.property div.images div.selected,
 div.main div.property div.images div.selected:hover {
-    border: 2px solid #FF8F00;
+  border: 2px solid #FF8F00;
 }
 
 div.main div.property div.images img.image {
-    max-width: 100%;
-    max-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 div.main div.property div.right-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 div.main div.property div.right-panel div.right-panel-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 div.main div.property div.right-panel div.name h2 {
-    font-size: 1.8em;
-    font-weight: 700;
-    text-size-adjust: none;
-    line-height: 1.3em;
-    margin: 0;
+  font-size: 1.8em;
+  font-weight: 700;
+  text-size-adjust: none;
+  line-height: 1.3em;
+  margin: 0;
 }
 
 div.main div.property div.right-panel div.price {
-    color: #383838;
-    font-size: 1.5em;
-    font-weight: 700;
-    white-space: nowrap;
+  color: #383838;
+  font-size: 1.5em;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 div.main div.footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 div.main div.footer form.action {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
 div.main div.footer form.action .from {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 div.main div.footer form.action .to {
-    margin-right: 7px;
+  margin-right: 7px;
 }
 
 div.main div.footer form.action .btn-book {
-    margin: 1px;
+  margin: 1px;
 }
 
 div.main div.footer form.action .button {
-    width: 100%;
-    height: 38px;
+  width: 100%;
+  height: 38px;
 }
 
 div.main div.footer div.agency {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+}
+
+@media only screen and (width <=960px) {
+  div.main div.footer {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  div.main div.footer form.action {
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  div.main div.footer form.action .from {
+    margin-right: 0;
+  }
+
+  div.main div.footer form.action .to {
+    margin-top: 10px;
+    margin-right: 0;
+  }
+
+  div.main div.footer form.action .btn-book {
+    margin-top: 10px;
+    min-height: 56px !important;
+    font-size: 1.1em;
+  }
 }
 
 div.main div.agency span.agency-logo {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 62px;
-    height: 32px;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 32px;
 }
 
 div.main div.agency span.agency-logo img {
-    max-width: 100%;
-    max-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 div.main div.agency a.agency-info {
-    color: #0064c8;
-    text-decoration: underline;
-    font-size: 0.9em;
-    line-height: 1em;
-    white-space: nowrap;
-    margin-left: 5px;
+  color: #0064c8;
+  text-decoration: underline;
+  font-size: 0.9em;
+  line-height: 1em;
+  white-space: nowrap;
+  margin-left: 5px;
 }
