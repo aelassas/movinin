@@ -140,16 +140,16 @@ const User = () => {
   const edit = loggedUser && user && (loggedUser.type === movininTypes.RecordType.Admin || loggedUser._id === user._id || (loggedUser.type === movininTypes.RecordType.Agency && loggedUser._id === user.agency))
   const agency = user && user.type === movininTypes.RecordType.Agency
 
-  const _agencies: string[] = []
+  let _agencies: string[] = []
   if (loggedUser && user) {
     if ((agency && loggedUser._id === user._id)
       || (loggedUser.type === movininTypes.RecordType.Admin && user.type === movininTypes.RecordType.Agency)
     ) {
-      _agencies.push(user._id as string)
+      _agencies = [user._id as string]
     } else if (loggedUser.type === movininTypes.RecordType.Agency && user.type === movininTypes.RecordType.User) {
-      _agencies.push(loggedUser._id as string)
+      _agencies = [loggedUser._id as string]
     } else if (loggedUser.type === movininTypes.RecordType.Admin) {
-      _agencies.push(...agencies)
+      _agencies = agencies
     }
   }
 
