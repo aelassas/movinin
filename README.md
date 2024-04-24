@@ -1,9 +1,5 @@
 [![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) [![test](https://github.com/aelassas/movinin/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/test.yml) [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin) [![](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/movinin/wiki) [![](https://img.shields.io/badge/live-demo-brightgreen)](https://github.com/aelassas/movinin?tab=readme-ov-file#live-demo)
 
-<!--
-[![Cover](https://movin-in.github.io/content/cover.jpg)](https://movin-in.github.io)
--->
-
 Movin' In is a Rental Property Management Platform with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency as well.
@@ -15,13 +11,9 @@ When new agencies are created, they receive an email prompting them to create th
 Customers can sign up from the frontend or the mobile app, search for available properties based on location point and time, choose a property and complete the checkout process.
 
 A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
-<!--
-![Docker](https://movin-in.github.io/content/docker-small.png)
--->
+
 Movin' In can run in a Docker container. Follow this step by step [guide](https://github.com/aelassas/movinin/wiki/Docker) to walk you through on how to build Movin' In Docker image and run it in a Docker container.
-<!--
-Movin' In is user-friendly, straightforward, secure against XSS, XST, CSRF and MITM, and subtly crafted.
--->
+
 ## Features
 
 * Agency management
