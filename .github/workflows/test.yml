@@ -82,10 +82,3 @@ jobs:
         MI_FRONTEND_HOST: ${{ vars.MI_FRONTEND_HOST }}
         MI_MINIMUM_AGE: ${{ vars.MI_MINIMUM_AGE }}
         MI_EXPO_ACCESS_TOKEN: ${{ secrets.MI_EXPO_ACCESS_TOKEN }}
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: cobertura-coverage.xml
-          directory: ./api/coverage
-          fail_ci_if_error: true
