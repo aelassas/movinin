@@ -36,7 +36,7 @@ const getStatusMessage = (lang: string, msg: string): string => `<!DOCTYPE html>
  * @async
  * @param {Request} req
  * @param {Response} res
- * @param {bookcarsTypes.UserType} userType
+ * @param {movininTypes.UserType} userType
  * @returns {unknown}
  */
 const _signup = async (req: Request, res: Response, userType: movininTypes.UserType) => {

@@ -72,10 +72,10 @@ dist/
 !google-services.json
 !/**/google-services.json
 
-!/bookcars-types/index.js
-!/bookcars-types/index.d.ts
-!/bookcars-helper/index.js
-!/bookcars-helper/index.d.ts
+!/movinin-types/index.js
+!/movinin-types/index.d.ts
+!/movinin-helper/index.js
+!/movinin-helper/index.d.ts
 
 # @end expo-cli
 
