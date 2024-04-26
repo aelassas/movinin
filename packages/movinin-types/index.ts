@@ -133,8 +133,10 @@ export interface Booking {
 
 export interface CheckoutPayload {
   renter?: User
-  booking: Booking
+  booking?: Booking
   payLater?: boolean
+  paymentIntentId?: string
+  customerId?: string
 }
 
 export interface Filter {
@@ -219,6 +221,7 @@ export interface User {
   payLater?: boolean
   accessToken?: string
   checked?: boolean
+  customerId?: string
 }
 
 export interface Option {
@@ -358,6 +361,25 @@ export interface PropertyOptions {
   cancellation?: boolean
 }
 
+export interface CreatePaymentIntentPayload {
+  amount: number
+  /**
+   * Three-letter ISO currency code, in lowercase.
+   * Must be a supported currency: https://docs.stripe.com/currencies
+   *
+   * @type {string}
+   */
+  currency: string
+  receiptEmail: string
+  description?: string
+  customerName: string
+}
+
+export interface PaymentIntentResult {
+  paymentIntentId: string
+  customerId: string | null
+  clientSecret: string | null
+}
 
 // 
 // React types

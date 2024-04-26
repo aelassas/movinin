@@ -50,6 +50,7 @@ const env = {
       ? Const.PAGINATION_MODE.INFINITE_SCROLL
       : Const.PAGINATION_MODE.CLASSIC,
   SIZE_UNIT: 'm²',
+  STRIPE_PUBLISHABLE_KEY: process.env.REACT_APP_MI_STRIPE_PUBLISHABLE_KEY,
 }
 
 export default env

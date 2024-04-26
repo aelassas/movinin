@@ -16,6 +16,7 @@ import * as env from '../config/env.config'
 import * as mailHelper from '../common/mailHelper'
 import * as helper from '../common/helper'
 import * as logger from '../common/logger'
+import stripeAPI from '../stripe'
 
 /**
  * Create a Booking.
@@ -100,6 +101,28 @@ export const checkout = async (req: Request, res: Response) => {
     const { body }: { body: movininTypes.CheckoutPayload } = req
     const { renter } = body
 
+    if (!body.booking) {
+      throw new Error('Booking missing')
+    }
+
+    if (!body.payLater) {
+      const { paymentIntentId } = body
+      if (!paymentIntentId) {
+        const message = 'Payment intent missing'
+        logger.error(message, body)
+        return res.status(400).send(message)
+      }
+
+      const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
+      if (paymentIntent.status !== 'succeeded') {
+        const message = `Payment failed: ${paymentIntent.status}`
+        logger.error(message, body)
+        return res.status(400).send(message)
+      }
+
+      body.booking.status = movininTypes.BookingStatus.Paid
+    }
+
     if (renter) {
       renter.verified = false
       renter.blacklisted = false
@@ -131,6 +154,12 @@ export const checkout = async (req: Request, res: Response) => {
     if (!user) {
       logger.info('Renter not found', body)
       return res.sendStatus(204)
+    }
+
+    const { customerId } = body
+    if (customerId) {
+      user.customerId = customerId
+      await user?.save()
     }
 
     const { language } = user
@@ -194,7 +223,7 @@ export const checkout = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    logger.error(`[booking.book] ${i18n.t('ERROR')}`, err)
+    logger.error(`[booking.checkout] ${i18n.t('ERROR')}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
