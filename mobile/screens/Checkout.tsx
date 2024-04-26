@@ -13,6 +13,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import validator from 'validator'
 import { format, intervalToDuration } from 'date-fns'
 import { enUS, fr } from 'date-fns/locale'
+import { PaymentSheetError, initPaymentSheet, useStripe } from '@stripe/stripe-react-native'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 
@@ -30,6 +31,7 @@ import RadioButton from '../components/RadioButton'
 import * as PropertyService from '../services/PropertyService'
 import * as LocationService from '../services/LocationService'
 import * as BookingService from '../services/BookingService'
+import * as StripeService from '../services/StripeService'
 import * as env from '../config/env.config'
 import Backdrop from '../components/Backdrop'
 
@@ -47,11 +49,6 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   const [phone, setPhone] = useState('')
   const [birthDate, setBirthDate] = useState<Date>()
   const [tosChecked, setTosChecked] = useState(false)
-  const [cardName, setCardName] = useState('')
-  const [cardNumber, setCardNumber] = useState('')
-  const [cardMonth, setCardMonth] = useState('')
-  const [cardYear, setCardYear] = useState('')
-  const [cvv, setCardCvv] = useState('')
   const [property, setProperty] = useState<movininTypes.Property | null>(null)
   const [location, setLocation] = useState<movininTypes.Location | null>(null)
   const [from, setFrom] = useState<Date>()
@@ -72,16 +69,6 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   const [birthDateRequired, setBirthDateRequired] = useState(false)
   const [birthDateValid, setBirthDateValid] = useState(true)
   const [tosError, setTosError] = useState(false)
-  const [cardNameRequired, setCardNameRequired] = useState(false)
-  const [cardNumberRequired, setCardNumberRequired] = useState(false)
-  const [cardNumberValid, setCardNumberValid] = useState(true)
-  const [cardMonthRequired, setCardMonthRequired] = useState(false)
-  const [cardMonthValid, setCardMonthValid] = useState(true)
-  const [cardYearRequired, setCardYearRequired] = useState(false)
-  const [cardYearValid, setCardYearValid] = useState(true)
-  const [cvvRequired, setCardCvvRequired] = useState(false)
-  const [cvvValid, setCardCvvValid] = useState(true)
-  const [cardDateError, setCardDateError] = useState(false)
   const [error, setError] = useState(false)
   const [success, setSuccess] = useState(true)
   const [locale, setLoacle] = useState(fr)
@@ -94,6 +81,8 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   const cardMonthRef = useRef<ReactTextInput>(null)
   const cardYearRef = useRef<ReactTextInput>(null)
   const cvvRef = useRef<ReactTextInput>(null)
+
+  const { presentPaymentSheet } = useStripe()
 
   const _init = async () => {
     try {
@@ -151,12 +140,6 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         }
       }
 
-      setCardName('')
-      setCardNumber('')
-      setCardMonth('')
-      setCardYear('')
-      setCardCvv('')
-
       setFullNameRequired(false)
       setEmailRequired(false)
       setEmailValid(true)
@@ -168,15 +151,6 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       setBirthDateRequired(false)
       setTosError(false)
       setError(false)
-      setCardNameRequired(false)
-      setCardNumberRequired(false)
-      setCardNumberValid(true)
-      setCardYearRequired(false)
-      setCardYearValid(true)
-      setCardMonthRequired(false)
-      setCardMonthValid(true)
-      setCardCvvRequired(false)
-      setCardCvvValid(true)
       setPayLater(false)
       setSuccess(false)
 
@@ -370,124 +344,6 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     }
   }
 
-  const validateCardName = () => {
-    if (cardName) {
-      setCardNameRequired(false)
-      return true
-    }
-    setCardNameRequired(true)
-    return false
-  }
-
-  const onCardNameChange = (text: string) => {
-    setCardName(text)
-    setCardNameRequired(false)
-  }
-
-  const validateCardNumber = () => {
-    if (cardNumber) {
-      const _cardNumberValid = validator.isCreditCard(cardNumber)
-      setCardNumberRequired(false)
-      setCardNumberValid(_cardNumberValid)
-
-      return _cardNumberValid
-    }
-    setCardNumberRequired(true)
-    setCardNumberValid(true)
-
-    return false
-  }
-
-  const onCardNumberChange = (text: string) => {
-    setCardNumber(text)
-    setCardNumberRequired(false)
-    setCardNumberValid(true)
-  }
-
-  const validateCardMonth = () => {
-    if (cardMonth) {
-      const month = Number.parseInt(cardMonth, 10)
-      const _cardMonthValid = month >= 1 && month <= 12
-
-      setCardMonthRequired(false)
-      setCardMonthValid(_cardMonthValid)
-      setCardDateError(false)
-
-      return _cardMonthValid
-    }
-    setCardMonthRequired(true)
-    setCardMonthValid(true)
-    setCardDateError(false)
-
-    return false
-  }
-
-  const onCardMonthChange = (text: string) => {
-    setCardMonth(text)
-    setCardMonthRequired(false)
-    setCardMonthValid(true)
-  }
-
-  const validateCardYear = () => {
-    if (cardYear) {
-      const year = Number.parseInt(cardYear, 10)
-      const currentYear = Number.parseInt(String(new Date().getFullYear()).slice(2), 10)
-      const _cardYearValid = year >= currentYear
-
-      setCardYearRequired(false)
-      setCardYearValid(_cardYearValid)
-      setCardDateError(false)
-
-      return _cardYearValid
-    }
-    setCardYearRequired(true)
-    setCardYearValid(true)
-    setCardDateError(false)
-
-    return false
-  }
-
-  const onCardYearChange = (text: string) => {
-    setCardYear(text)
-    setCardYearRequired(false)
-    setCardYearValid(true)
-  }
-
-  const validateCvv = () => {
-    if (cvv) {
-      const _cvvValid = movininHelper.isCvv(cvv)
-      setCardCvvRequired(false)
-      setCardCvvValid(_cvvValid)
-
-      return _cvvValid
-    }
-    setCardCvvRequired(true)
-    setCardCvvValid(true)
-
-    return false
-  }
-
-  const onCardCvvChange = (text: string) => {
-    setCardCvv(text)
-    setCardCvvRequired(false)
-    setCardCvvValid(true)
-  }
-
-  const validateCardDate = (_cardMonth: string, _cardYear: string) => {
-    const today = new Date()
-    const cardDate = new Date()
-    const y = Number.parseInt(String(today.getFullYear()).slice(0, 2), 10) * 100
-    const year = y + Number.parseInt(_cardYear, 10)
-    const month = Number.parseInt(_cardMonth, 10)
-    cardDate.setFullYear(year, month - 1, 1)
-
-    if (cardDate < today) {
-      return false
-    }
-
-    return true
-  }
-
   const onCancellationChange = (checked: boolean) => {
     const options = {
       cancellation: checked
@@ -502,7 +358,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     setLoading(false)
   }
 
-  const onPressBook = async () => {
+  const handleCheckout = async () => {
     try {
       if (!property || !location || !from || !to) {
         helper.error()
@@ -540,39 +396,6 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         }
       }
 
-      if (!payLater) {
-        const cardNameValid = validateCardName()
-        if (!cardNameValid) {
-          return
-        }
-
-        const _cardNumberValid = validateCardNumber()
-        if (!_cardNumberValid) {
-          return
-        }
-
-        const _cardMonthValid = validateCardMonth()
-        if (!_cardMonthValid) {
-          return
-        }
-
-        const _cardYearValid = validateCardYear()
-        if (!_cardYearValid) {
-          return
-        }
-
-        const _cvvValid = validateCvv()
-        if (!_cvvValid) {
-          return
-        }
-
-        const cardDateValid = validateCardDate(cardMonth, cardYear)
-        if (!cardDateValid) {
-          setCardDateError(true)
-          return
-        }
-      }
-
       setLoading(true)
 
       let renter: movininTypes.User | undefined
@@ -585,6 +408,71 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
           birthDate,
           language: await UserService.getLanguage(),
         }
+      }
+
+      let paid = payLater
+      let canceled = false
+      let paymentIntentId: string | undefined
+      let customerId: string | undefined
+      try {
+        if (!payLater) {
+          const currency = i18n.t('CURRENCY')
+          const createPaymentIntentPayload: movininTypes.CreatePaymentIntentPayload = {
+            amount: price,
+            // Supported currencies for the moment: usd, eur
+            // Must be a supported currency: https://docs.stripe.com/currencies
+            currency: currency === '$' ? 'usd' : currency === '€' ? 'eur' : '',
+            receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
+            description: 'BookCars Mobile Service',
+            customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
+          }
+
+          // Create payment intent
+          const {
+            paymentIntentId: stripePaymentIntentId,
+            clientSecret,
+            customerId: stripeCustomerId,
+          } = await StripeService.createPaymentIntent(createPaymentIntentPayload)
+          paymentIntentId = stripePaymentIntentId || undefined
+          customerId = stripeCustomerId || undefined
+
+          if (clientSecret) {
+            const { error: initPaymentSheetError } = await initPaymentSheet({
+              customerId,
+              paymentIntentClientSecret: clientSecret,
+              merchantDisplayName: 'BookCars',
+            })
+            if (initPaymentSheetError) {
+              console.log(initPaymentSheetError)
+              paid = false
+            } else {
+              const { error: presentPaymentSheetError } = await presentPaymentSheet()
+              if (presentPaymentSheetError) {
+                canceled = presentPaymentSheetError.code === PaymentSheetError.Canceled
+                if (!canceled) {
+                  console.log(`${presentPaymentSheetError.code} - ${presentPaymentSheetError.message}`)
+                  paid = false
+                }
+              } else {
+                paid = true
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err)
+        paid = false
+      }
+
+      if (canceled) {
+        setLoading(false)
+        return
+      }
+
+      if (!paid) {
+        setLoading(false)
+        alert(i18n.t('PAYMENT_FAILED'))
+        return
       }
 
       const booking: movininTypes.Booking = {
@@ -603,6 +491,8 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         renter,
         booking,
         payLater,
+        paymentIntentId,
+        customerId
       }
 
       const status = await BookingService.checkout(payload)
@@ -772,98 +662,11 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   </View>
                 )}
 
-                {(!property.agency.payLater || !payLater) && (
-                  <View style={styles.payment}>
-                    <View style={styles.paymentHeader}>
-                      <View style={styles.securePaymentInfo}>
-                        <MaterialIcons name="lock" size={iconSize} color="#1c8901" />
-                        <Text style={styles.securePaymentInfoText}>{i18n.t('PAYMENT')}</Text>
-                      </View>
-
-                      <View style={styles.securePaymentInfo}>
-                        <Text style={styles.totalText}>{i18n.t('COST')}</Text>
-                        <Text style={styles.costText}>{`${movininHelper.formatPrice(price, i18n.t('CURRENCY'), language)}`}</Text>
-                      </View>
-                    </View>
-
-                    <Image source={require('../assets/secure-payment.png')} style={styles.paymentImage} />
-
-                    <TextInput
-                      ref={cardNameRef}
-                      style={styles.component}
-                      label={i18n.t('CARD_NAME')}
-                      value={cardName}
-                      error={cardNameRequired}
-                      helperText={(cardNameRequired && i18n.t('REQUIRED')) || ''}
-                      backgroundColor="#e5efe5"
-                      onChangeText={onCardNameChange}
-                    />
-
-                    <TextInput
-                      ref={cardNumberRef}
-                      style={styles.component}
-                      label={i18n.t('CARD_NUMBER')}
-                      keyboardType="numeric"
-                      maxLength={16}
-                      value={cardNumber}
-                      error={cardNumberRequired || !cardNumberValid}
-                      helperText={(cardNumberRequired && i18n.t('REQUIRED')) || (!cardNumberValid && i18n.t('CARD_NUMBER_NOT_VALID')) || ''}
-                      backgroundColor="#e5efe5"
-                      onChangeText={onCardNumberChange}
-                    />
-
-                    <TextInput
-                      ref={cardMonthRef}
-                      style={styles.component}
-                      label={i18n.t('CARD_MONTH')}
-                      keyboardType="numeric"
-                      maxLength={2}
-                      value={cardMonth}
-                      error={cardMonthRequired || !cardMonthValid}
-                      helperText={(cardMonthRequired && i18n.t('REQUIRED')) || (!cardMonthValid && i18n.t('CARD_MONTH_NOT_VALID')) || ''}
-                      backgroundColor="#e5efe5"
-                      onChangeText={onCardMonthChange}
-                    />
-
-                    <TextInput
-                      ref={cardYearRef}
-                      style={styles.component}
-                      label={i18n.t('CARD_YEAR')}
-                      keyboardType="numeric"
-                      maxLength={2}
-                      value={cardYear}
-                      error={cardYearRequired || !cardYearValid}
-                      helperText={(cardYearRequired && i18n.t('REQUIRED')) || (!cardYearValid && i18n.t('CARD_YEAR_NOT_VALID')) || ''}
-                      backgroundColor="#e5efe5"
-                      onChangeText={onCardYearChange}
-                    />
-
-                    <TextInput
-                      ref={cvvRef}
-                      style={styles.component}
-                      keyboardType="numeric"
-                      maxLength={4}
-                      label={i18n.t('CVV')}
-                      value={cvv}
-                      error={cvvRequired || !cvvValid}
-                      helperText={(cvvRequired && i18n.t('REQUIRED')) || (!cvvValid && i18n.t('CVV_NOT_VALID')) || ''}
-                      backgroundColor="#e5efe5"
-                      onChangeText={onCardCvvChange}
-                    />
-
-                    <View style={styles.securePaymentInfo}>
-                      <MaterialIcons name="lock" size={iconSize} color="#1c8901" />
-                      <Text style={styles.securePaymentInfoText}>{i18n.t('SECURE_PAYMENT_INFO')}</Text>
-                    </View>
-                  </View>
-                )}
-
                 <View style={styles.footer}>
-                  <Button style={styles.component} label={i18n.t('BOOK_NOW')} onPress={onPressBook} />
+                  <Button style={styles.component} label={i18n.t('BOOK_NOW')} onPress={handleCheckout} />
 
                   <View style={styles.error}>
                     {error && <Error message={i18n.t('FIX_ERRORS')} />}
-                    {cardDateError && <Error message={i18n.t('CARD_DATE_ERROR')} />}
                     {tosError && <Error message={i18n.t('TOS_ERROR')} />}
                   </View>
                 </View>

@@ -308,7 +308,7 @@ const Checkout = () => {
           // Must be a supported currency: https://docs.stripe.com/currencies
           currency: commonStrings.CURRENCY === '$' ? 'usd' : commonStrings.CURRENCY === '€' ? 'eur' : '',
           receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
-          description: "Movin' In Booking Service",
+          description: "Movin' In Web Service",
           customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
         }
 

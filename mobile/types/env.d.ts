@@ -11,4 +11,5 @@ declare module '@env' {
     export const MI_PROPERTY_IMAGE_WIDTH: string
     export const MI_PROPERTY_IMAGE_HEIGHT: string
     export const MI_MINIMUM_AGE: string
+    export const MI_STRIPE_PUBLISHABLE_KEY: string
 }
