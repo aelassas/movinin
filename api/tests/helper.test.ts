@@ -23,3 +23,9 @@ describe('Test clone', () => {
         expect(helper.clone([1, 2, 3])).toStrictEqual([1, 2, 3])
     })
 })
+
+describe('Test trim', () => {
+  it('should test trim', () => {
+    expect(helper.trim('   xxxxxxxx   ', ' ')).toBe('xxxxxxxx')
+  })
+})

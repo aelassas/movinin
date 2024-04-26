@@ -255,6 +255,13 @@ export const MINIMUM_AGE = Number.parseInt(__env__('MI_MINIMUM_AGE', false, '21'
 export const EXPO_ACCESS_TOKEN = __env__('MI_EXPO_ACCESS_TOKEN', false)
 
 /**
+ * Stripe secret key.
+ *
+ * @type {string}
+ */
+export const STRIPE_SECRET_KEY = __env__('MI_STRIPE_SECRET_KEY', false, 'STRIPE_SECRET_KEY')
+
+/**
  * User Document.
  *
  * @export
@@ -280,6 +287,7 @@ export interface User extends Document {
     type?: movininTypes.UserType
     blacklisted?: boolean
     payLater?: boolean
+    customerId?: string
 }
 
 /**
