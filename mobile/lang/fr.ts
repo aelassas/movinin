@@ -178,6 +178,5 @@ export const fr = {
   PETS_ALLOWED: 'Animaux autorisés',
   PROPERTY_TYPE: 'Type de propriété',
   SELECT_FROM_DATE: 'Veuillez saisir la date de début de location',
+  PAYMENT_FAILED: 'Paiement échoué.',
 }
-
-export default fr

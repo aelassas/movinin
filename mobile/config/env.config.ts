@@ -11,6 +11,7 @@ import {
   MI_PROPERTY_IMAGE_WIDTH,
   MI_PROPERTY_IMAGE_HEIGHT,
   MI_MINIMUM_AGE,
+  MI_STRIPE_PUBLISHABLE_KEY
 } from '@env'
 
 /**
@@ -154,3 +155,10 @@ export const MINIMUM_AGE: number = Number.parseInt(MI_MINIMUM_AGE, 10) || 21
  * @type {'m²'}
  */
 export const SIZE_UNIT = 'm²'
+
+/**
+ * Stripe Publishable Key.
+ *
+ * @type {string}
+ */
+export const STRIPE_PUBLISHABLE_KEY: string = MI_STRIPE_PUBLISHABLE_KEY

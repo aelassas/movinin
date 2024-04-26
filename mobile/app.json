@@ -5,7 +5,9 @@
     "version": "2.8.0",
     "slug": "movinin",
     "icon": "./assets/icon.png",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "splash": {
       "backgroundColor": "#0D63C9",
       "image": "./assets/splash.png"
@@ -34,7 +36,17 @@
       },
       "bundleIdentifier": "com.movinin"
     },
-    "plugins": ["expo-localization", "./plugins/usesCleartextTraffic"],
+    "plugins": [
+      "expo-localization",
+      "./plugins/usesCleartextTraffic",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "MERCHANT_IDENTIFIER",
+          "enableGooglePay": false
+        }
+      ]
+    ],
     "owner": "aelassas",
     "extra": {
       "eas": {
@@ -46,6 +58,6 @@
     },
     "experiments": {
       "tsconfigPaths": true
-     }
+    }
   }
 }
