@@ -12,8 +12,8 @@ module.exports = {
   ],
   webpack: {
     alias: {
-      ':bookcars-types': path.resolve(__dirname, '../packages/bookcars-types'),
-      ':bookcars-helper': path.resolve(__dirname, '../packages/bookcars-helper'),
+      ':movinin-types': path.resolve(__dirname, '../packages/movinin-types'),
+      ':movinin-helper': path.resolve(__dirname, '../packages/movinin-helper'),
       ':disable-react-devtools': path.resolve(__dirname, '../packages/disable-react-devtools'),
     },
   },
