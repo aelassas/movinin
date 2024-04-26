@@ -423,7 +423,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
             // Must be a supported currency: https://docs.stripe.com/currencies
             currency: currency === '$' ? 'usd' : currency === '€' ? 'eur' : '',
             receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
-            description: 'BookCars Mobile Service',
+            description: "Movin' In Mobile Service",
             customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
           }
 
@@ -440,7 +440,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
             const { error: initPaymentSheetError } = await initPaymentSheet({
               customerId,
               paymentIntentClientSecret: clientSecret,
-              merchantDisplayName: 'BookCars',
+              merchantDisplayName: "Movin' In",
             })
             if (initPaymentSheetError) {
               console.log(initPaymentSheetError)
