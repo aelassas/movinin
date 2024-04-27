@@ -6,7 +6,7 @@ const babel = (api) => {
       'module-resolver',
       {
         alias: {
-          ':bookcars-types': '../packages/bookcars-types',
+          ':movinin-types': '../packages/movinin-types',
         },
       },
     ],
