@@ -2,7 +2,7 @@
   "expo": {
     "jsEngine": "hermes",
     "name": "Movin' In",
-    "version": "2.8.0",
+    "version": "2.9.0",
     "slug": "movinin",
     "icon": "./assets/icon.png",
     "assetBundlePatterns": [
@@ -26,7 +26,7 @@
       "package": "com.movinin"
     },
     "ios": {
-      "buildNumber": "2.8.0",
+      "buildNumber": "2.9.0",
       "supportsTablet": true,
       "icon": "./assets/icon.png",
       "splash": {
