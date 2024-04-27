@@ -10,7 +10,7 @@ describe('POST /api/create-payment-intent', () => {
     // Test create payment intent whith non existant user
     const receiptEmail = testHelper.GetRandomEmail()
     const payload: movininTypes.CreatePaymentIntentPayload = {
-      amount: 2534,
+      amount: 534,
       currency: 'usd',
       receiptEmail,
       customerName: 'John Doe',
