@@ -162,7 +162,7 @@ describe('POST /api/checkout', () => {
     payload.payLater = false
     const receiptEmail = testHelper.GetRandomEmail()
     const paymentIntentPayload: movininTypes.CreatePaymentIntentPayload = {
-      amount: 234,
+      amount: 534,
       currency: 'usd',
       receiptEmail,
       customerName: 'John Doe',

@@ -10,7 +10,7 @@ describe('POST /api/create-payment-intent', () => {
     // Test create payment intent whith non existant user
     const receiptEmail = testHelper.GetRandomEmail()
     const payload: movininTypes.CreatePaymentIntentPayload = {
-      amount: 234,
+      amount: 534,
       currency: 'usd',
       receiptEmail,
       customerName: 'John Doe',
@@ -24,7 +24,7 @@ describe('POST /api/create-payment-intent', () => {
 
     // Test create payment intent whith existant user
     const paymentIntent = await stripeAPI.paymentIntents.create({
-      amount: payload.amount,
+      amount: Math.floor(payload.amount * 100),
       currency: payload.currency,
       receipt_email: receiptEmail,
     })
