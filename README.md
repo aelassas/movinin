@@ -20,6 +20,7 @@ Movin' In can run in a Docker container. Follow this step by step [guide](https:
 * Ready for one or multiple agencies
 * Property management
 * Booking management
+* Payment management
 * Customer management
 * Multiple payment methods (Credit Card, Pay Later)
 * Operational stripe payment gateway
