@@ -417,12 +417,14 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       try {
         if (!payLater) {
           const currency = i18n.t('CURRENCY')
-          const createPaymentIntentPayload: movininTypes.CreatePaymentIntentPayload = {
+          const createPaymentIntentPayload: movininTypes.CreatePaymentPayload = {
             amount: price,
             // Supported currencies for the moment: usd, eur
             // Must be a supported currency: https://docs.stripe.com/currencies
             currency: currency === '$' ? 'usd' : currency === '€' ? 'eur' : '',
+            locale: language,
             receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
+            name: '',
             description: "Movin' In Mobile Service",
             customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
           }

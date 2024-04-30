@@ -106,8 +106,6 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
     navigation.navigate('Properties', params)
   }
 
-  const now = new Date()
-
   return (
     <Master style={styles.master} navigation={navigation} onLoad={onLoad} reload={reload} route={route}>
       {init && visible && (
@@ -152,7 +150,7 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
               style={styles.component}
               label={i18n.t('FROM_DATE')}
               value={from}
-              minDate={now}
+              minDate={_minDate}
               maxDate={maxDate}
               onChange={(date: Date | undefined) => {
                 if (date) {

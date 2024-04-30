@@ -106,21 +106,38 @@ export const checkout = async (req: Request, res: Response) => {
     }
 
     if (!body.payLater) {
-      const { paymentIntentId } = body
-      if (!paymentIntentId) {
+      const { paymentIntentId, sessionId } = body
+
+      if (!paymentIntentId && !sessionId) {
         const message = 'Payment intent missing'
         logger.error(message, body)
         return res.status(400).send(message)
       }
 
-      const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
-      if (paymentIntent.status !== 'succeeded') {
-        const message = `Payment failed: ${paymentIntent.status}`
-        logger.error(message, body)
-        return res.status(400).send(message)
-      }
+      body.booking.customerId = body.customerId
 
-      body.booking.status = movininTypes.BookingStatus.Paid
+      if (paymentIntentId) {
+        const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
+        if (paymentIntent.status !== 'succeeded') {
+          const message = `Payment failed: ${paymentIntent.status}`
+          logger.error(message, body)
+          return res.status(400).send(message)
+        }
+
+        body.booking.paymentIntentId = paymentIntentId
+        body.booking.status = movininTypes.BookingStatus.Paid
+      } else {
+        //
+        // Bookings created from checkout with Stripe are temporary
+        // and are automatically deleted if the payment checkout session expires.
+        //
+        const expireAt = new Date()
+        expireAt.setSeconds(expireAt.getSeconds() + env.BOOKING_EXPIRE_AT)
+
+        body.booking.sessionId = body.sessionId
+        body.booking.status = movininTypes.BookingStatus.Void
+        body.booking.expireAt = expireAt
+      }
     }
 
     if (renter) {
@@ -221,7 +238,7 @@ export const checkout = async (req: Request, res: Response) => {
     i18n.locale = agency.language
     await notifyAgency(user, booking._id.toString(), agency, i18n.t('BOOKING_NOTIFICATION'))
 
-    return res.sendStatus(200)
+    return res.status(200).send({ bookingId: booking._id })
   } catch (err) {
     logger.error(`[booking.checkout] ${i18n.t('ERROR')}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
@@ -538,7 +555,7 @@ export const getBookings = async (req: Request, res: Response) => {
     const options = 'i'
 
     const $match: mongoose.FilterQuery<any> = {
-      $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }],
+      $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }, { expireAt: null }],
     }
 
     if (user) {
