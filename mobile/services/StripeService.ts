@@ -4,10 +4,10 @@ import axiosInstance from './axiosInstance'
 /**
  * Create Payment Intent
  *
- * @param {movininTypes.CreatePaymentIntentPayload} payload
- * @returns {Promise<movininTypes.CreatePaymentIntentResult>}
+ * @param {movininTypes.CreatePaymentPayload} payload
+ * @returns {Promise<movininTypes.CreatePaymentResult>}
  */
-export const createPaymentIntent = (payload: movininTypes.CreatePaymentIntentPayload): Promise<movininTypes.PaymentIntentResult> =>
+export const createPaymentIntent = (payload: movininTypes.CreatePaymentPayload): Promise<movininTypes.PaymentResult> =>
   axiosInstance
     .post(
       '/api/create-payment-intent',

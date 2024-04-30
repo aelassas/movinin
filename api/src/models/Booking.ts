@@ -2,12 +2,15 @@ import { Schema, model } from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import * as env from '../config/env.config'
 
+export const BOOKING_EXPIRE_AT_INDEX_NAME = 'expireAt'
+
 const bookingSchema = new Schema<env.Booking>(
   {
     agency: {
       type: Schema.Types.ObjectId,
       required: [true, "can't be blank"],
       ref: 'User',
+      index: true,
     },
     location: {
       type: Schema.Types.ObjectId,
@@ -23,6 +26,7 @@ const bookingSchema = new Schema<env.Booking>(
       type: Schema.Types.ObjectId,
       required: [true, "can't be blank"],
       ref: 'User',
+      index: true,
     },
     from: {
       type: Date,
@@ -48,13 +52,31 @@ const bookingSchema = new Schema<env.Booking>(
       type: Boolean,
       default: false,
     },
+    price: {
+      type: Number,
+      required: [true, "can't be blank"],
+    },
     cancelRequest: {
       type: Boolean,
       default: false,
     },
-    price: {
-      type: Number,
-      required: [true, "can't be blank"],
+    sessionId: {
+      type: String,
+      index: true,
+    },
+    paymentIntentId: {
+      type: String,
+    },
+    customerId: {
+      type: String,
+    },
+    expireAt: {
+      //
+      // Bookings created from checkout with Stripe are temporary and
+      // are automatically deleted if the payment checkout session expires.
+      //
+      type: Date,
+      index: { name: BOOKING_EXPIRE_AT_INDEX_NAME, expireAfterSeconds: env.BOOKING_EXPIRE_AT, background: true },
     },
   },
   {

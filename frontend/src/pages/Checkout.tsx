@@ -16,7 +16,6 @@ import {
 } from '@mui/material'
 import {
   Home as PropertyIcon,
-  Lock as LockIcon,
   Person as RenterIcon,
   EventSeat as BookingIcon,
   Settings as PaymentOptionsIcon
@@ -25,16 +24,10 @@ import validator from 'validator'
 import { format, intervalToDuration } from 'date-fns'
 import { fr, enUS } from 'date-fns/locale'
 import {
-  CardNumberElement,
-  CardExpiryElement,
-  CardCvcElement,
-  useStripe,
-  useElements,
+  EmbeddedCheckoutProvider,
+  EmbeddedCheckout,
 } from '@stripe/react-stripe-js'
-import {
-  StripeCardNumberElement,
-  StripeCardNumberElementOptions
-} from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '../config/env.config'
@@ -55,6 +48,10 @@ import Info from './Info'
 
 import SecurePayment from '../assets/img/secure-payment.png'
 import '../assets/css/checkout.css'
+
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(env.STRIPE_PUBLISHABLE_KEY as string)
 
 const Checkout = () => {
   const reactLocation = useLocation()
@@ -79,9 +76,6 @@ const Checkout = () => {
   const [tosChecked, setTosChecked] = useState(false)
   const [tosError, setTosError] = useState(false)
   const [error, setError] = useState(false)
-  const [cardNumberValid, setCardNumberValid] = useState(true)
-  const [cardExpiryValid, setCardExpiryValid] = useState(true)
-  const [cvvValid, setCvvValid] = useState(true)
   const [price, setPrice] = useState(0)
   const [emailInfo, setEmailInfo] = useState(true)
   const [phoneInfo, setPhoneInfo] = useState(true)
@@ -90,9 +84,19 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false)
   const [payLater, setPayLater] = useState(false)
 
-  const stripe = useStripe()
-  const elements = useElements()
   const [paymentFailed, setPaymentFailed] = useState(false)
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
+
+  const _fr = language === 'fr'
+  const _locale = _fr ? fr : enUS
+  const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
+  const bookingDetailHeight = env.AGENCY_IMAGE_HEIGHT + 10
+  const days = movininHelper.days(from, to)
+  const daysLabel = from && to && `
+  ${helper.getDaysShort(days)} (${movininHelper.capitalize(
+    format(from, _format, { locale: _locale }),
+  )} 
+  - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`
 
   const handleCancellationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (property && from && to) {
@@ -239,33 +243,6 @@ const Checkout = () => {
         }
       }
 
-      let card: StripeCardNumberElement | null = null
-      if (!payLater) {
-        if (!cardNumberValid) {
-          return
-        }
-
-        if (!cardExpiryValid) {
-          return
-        }
-
-        if (!cvvValid) {
-          return
-        }
-
-        if (!stripe || !elements) {
-          // Stripe.js hasn't yet loaded.
-          return
-        }
-
-        card = elements.getElement(CardNumberElement)
-
-        if (!card) {
-          // CardNumberElement hasn't yet loaded.
-          return
-        }
-      }
-
       setLoading(true)
       setPaymentFailed(false)
 
@@ -296,78 +273,51 @@ const Checkout = () => {
       //
       // Stripe Payment Gateway
       //
-      let paid = payLater
-      let validationError = false
-      let paymentIntentId: string | undefined
       let customerId: string | undefined
-
+      let sessionId: string | undefined
       if (!payLater) {
-        const createPaymentIntentPayload: movininTypes.CreatePaymentIntentPayload = {
+        const payload: movininTypes.CreatePaymentPayload = {
           amount: price,
           // Supported currencies for the moment: usd, eur
           // Must be a supported currency: https://docs.stripe.com/currencies
           currency: commonStrings.CURRENCY === '$' ? 'usd' : commonStrings.CURRENCY === '€' ? 'eur' : '',
+          locale: language,
           receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
-          description: "Movin' In Web Service",
+          name: `${property.name} 
+          - ${daysLabel} 
+          - ${location.name}`,
+          description: 'BookCars Web Service',
           customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
         }
-
-        // Create payment intent
-        const {
-          paymentIntentId: stripePaymentIntentId,
-          clientSecret,
-          customerId: stripeCustomerId,
-        } = await StripeService.createPaymentIntent(createPaymentIntentPayload)
-        paymentIntentId = stripePaymentIntentId || undefined
-        customerId = stripeCustomerId || undefined
-
-        if (clientSecret) {
-          const paymentPayload = await stripe?.confirmCardPayment(clientSecret, {
-            payment_method: {
-              card: card as StripeCardNumberElement,
-            }
-          })
-
-          validationError = paymentPayload?.error?.type === 'validation_error'
-          paid = !paymentPayload?.error
-        } else {
-          paid = false
-        }
-      }
-
-      if (validationError) {
-        // Card Validation Error
-        setLoading(false)
-        return
-      }
-
-      if (!paid) {
-        // Payment failed
-        setLoading(false)
-        setPaymentFailed(true)
-        return
+        const res = await StripeService.createCheckoutSession(payload)
+        setClientSecret(res.clientSecret)
+        sessionId = res.sessionId
+        customerId = res.customerId
       }
 
       const payload: movininTypes.CheckoutPayload = {
         renter,
         booking,
         payLater,
-        paymentIntentId,
+        sessionId,
         customerId
       }
 
       const status = await BookingService.checkout(payload)
+      setLoading(false)
 
       if (status === 200) {
-        setLoading(false)
-        setVisible(false)
-        setSuccess(true)
+        if (payLater) {
+          setVisible(false)
+          setSuccess(true)
+        }
       } else {
-        setLoading(false)
         helper.error()
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -424,29 +374,6 @@ const Checkout = () => {
     }
   }
 
-  const _fr = language === 'fr'
-  const _locale = _fr ? fr : enUS
-  const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
-  const bookingDetailHeight = env.AGENCY_IMAGE_HEIGHT + 10
-
-  const cardStyle: StripeCardNumberElementOptions = {
-    style: {
-      base: {
-        color: 'rgba(0, 0, 0, 0.87)',
-        fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol'",
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#606060',
-        },
-      },
-      invalid: {
-        color: '#d32f2f',
-        iconColor: '#d32f2f'
-      }
-    }
-  }
-
   return (
     <Master onLoad={onLoad} strict={false}>
       {visible && property && from && to && location && (
@@ -490,9 +417,7 @@ const Checkout = () => {
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                       <span className="booking-detail-title">{strings.DAYS}</span>
                       <div className="booking-detail-value">
-                        {`${helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
-                          format(from, _format, { locale: _locale }),
-                        )} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`}
+                        {daysLabel}
                       </div>
                     </div>
                     <div className="booking-detail" style={{ height: bookingDetailHeight }}>
@@ -640,76 +565,28 @@ const Checkout = () => {
                 )}
 
                 {(!property.agency.payLater || !payLater) && (
-                  <div className="payment">
-                    <div className="cost">
-                      <div className="secure-payment-label">
-                        <LockIcon className="secure-payment-lock" />
-                        <span>{strings.PAYMENT}</span>
-                      </div>
-                      <div className="secure-payment-cost">
-                        <span className="cost-title">{strings.COST}</span>
-                        <span className="cost-value">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</span>
-                      </div>
-                    </div>
+                  clientSecret && (
+                    <div className="payment-options-container">
 
-                    <div className="card">
-                      <FormControl margin="dense" className="card-number" fullWidth>
-                        <div className="stripe-card">
-                          <CardNumberElement
-                            className="card-element"
-                            options={{ ...cardStyle, placeholder: strings.CARD_NUMBER }}
-                            onChange={(e) => {
-                              setCardNumberValid(!e.error)
-                            }}
-                          />
-                        </div>
-                        <FormHelperText error={!cardNumberValid}>{(!cardNumberValid && strings.CARD_NUMBER_NOT_VALID) || ''}</FormHelperText>
-                      </FormControl>
-                      <FormControl margin="dense" className="card-month" fullWidth>
-                        <div className="stripe-card">
-                          <CardExpiryElement
-                            className="card-element"
-                            options={{ ...cardStyle, placeholder: movininHelper.isFrench(language) ? 'MM / AA' : 'MM / YY' }}
-                            onChange={(e) => {
-                              setCardExpiryValid(!e.error)
-                            }}
-                          />
-                        </div>
-                        <FormHelperText error={!cardExpiryValid}>{(!cardExpiryValid && strings.CARD_EXPIRY_NOT_VALID) || ''}</FormHelperText>
-                      </FormControl>
-                      <FormControl margin="dense" className="cvv" fullWidth>
-                        <div className="stripe-card">
-                          <CardCvcElement
-                            className="card-element"
-                            options={cardStyle}
-                            onChange={(e) => {
-                              setCvvValid(!e.error)
-                            }}
-                          />
-                        </div>
-                        <FormHelperText error={!cvvValid}>{(!cvvValid && strings.CVV_NOT_VALID) || ''}</FormHelperText>
-                      </FormControl>
+                      <EmbeddedCheckoutProvider
+                        stripe={stripePromise}
+                        options={{ clientSecret }}
+                      >
+                        <EmbeddedCheckout />
+                      </EmbeddedCheckoutProvider>
                     </div>
-
-                    <div className="secure-payment-info">
-                      <LockIcon className="secure-payment-lock" />
-                      <span>{strings.SECURE_PAYMENT_INFO}</span>
-                    </div>
-
-                    <div className="secure-payment-logo">
-                      <img src={SecurePayment} alt="" />
-                    </div>
-
-                  </div>
+                  )
                 )}
                 <div className="booking-buttons">
-                  <Button type="submit" variant="contained" className="btn-checkout btn-margin-bottom" size="small" disabled={loading}>
-                    {
-                      loading
-                        ? <CircularProgress color="inherit" size={24} />
-                        : strings.BOOK
-                    }
-                  </Button>
+                  {(!clientSecret || payLater) && (
+                    <Button type="submit" variant="contained" className="btn-checkout btn-margin-bottom" size="small" disabled={loading}>
+                      {
+                        loading
+                          ? <CircularProgress color="inherit" size={24} />
+                          : strings.BOOK
+                      }
+                    </Button>
+                  )}
                   <Button variant="contained" className="btn-cancel btn-margin-bottom" size="small" href="/">
                     {commonStrings.CANCEL}
                   </Button>

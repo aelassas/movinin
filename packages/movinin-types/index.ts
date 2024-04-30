@@ -129,12 +129,17 @@ export interface Booking {
   price?: number
   location: string | Location
   cancelRequest?: boolean
+  sessionId?: string
+  paymentIntentId?: string
+  customerId?: string
+  expireAt?: Date
 }
 
 export interface CheckoutPayload {
   renter?: User
   booking?: Booking
   payLater?: boolean
+  sessionId?: string
   paymentIntentId?: string
   customerId?: string
 }
@@ -361,7 +366,7 @@ export interface PropertyOptions {
   cancellation?: boolean
 }
 
-export interface CreatePaymentIntentPayload {
+export interface CreatePaymentPayload {
   amount: number
   /**
    * Three-letter ISO currency code, in lowercase.
@@ -370,14 +375,23 @@ export interface CreatePaymentIntentPayload {
    * @type {string}
    */
   currency: string
+  /**
+   * Three-letter ISO currency code, in lowercase.
+   * Must be a supported currency: https://docs.stripe.com/currencies
+   *
+   * @type {string}
+   */
+  locale: string
   receiptEmail: string
-  description?: string
   customerName: string
+  name: string
+  description?: string
 }
 
-export interface PaymentIntentResult {
-  paymentIntentId: string
-  customerId: string | null
+export interface PaymentResult {
+  sessionId?: string
+  paymentIntentId?: string
+  customerId: string
   clientSecret: string | null
 }
 

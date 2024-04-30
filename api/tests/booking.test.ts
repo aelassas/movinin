@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import request from 'supertest'
 import { v1 as uuid } from 'uuid'
+import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import app from '../src/app'
 import * as databaseHelper from '../src/common/databaseHelper'
@@ -25,76 +26,81 @@ let BOOKING_ID: string
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
-  if (await databaseHelper.Connect(env.DB_URI, false, false)) {
-    await testHelper.initialize()
+  testHelper.initializeLogger()
 
-    // create a supplier
-    const supplierName = testHelper.getAgencyName()
-    AGENCY_ID = await testHelper.createAgency(`${supplierName}@test.movinin.io`, supplierName)
+  const res = await databaseHelper.Connect(env.DB_URI, false, false) && await databaseHelper.initialize()
+  expect(res).toBeTruthy()
 
-    // get user id
-    RENTER1_ID = testHelper.getUserId()
+  await testHelper.initialize()
 
-    // create a location
-    LOCATION_ID = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
+  // create a supplier
+  const supplierName = testHelper.getAgencyName()
+  AGENCY_ID = await testHelper.createAgency(`${supplierName}@test.movinin.io`, supplierName)
 
-    // create property
-    const payload: movininTypes.CreatePropertyPayload = {
-      name: 'Beautiful House in Detroit',
-      agency: AGENCY_ID,
-      type: movininTypes.PropertyType.House,
-      description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
-      image: 'house.jpg',
-      images: [],
-      bedrooms: 3,
-      bathrooms: 2,
-      kitchens: 1,
-      parkingSpaces: 1,
-      size: 200,
-      petsAllowed: false,
-      furnished: true,
-      aircon: true,
-      minimumAge: 21,
-      location: LOCATION_ID,
-      address: '',
-      price: 1000,
-      hidden: true,
-      cancellation: 0,
-      available: false,
-      rentalTerm: movininTypes.RentalTerm.Daily,
-    }
+  // get user id
+  RENTER1_ID = testHelper.getUserId()
 
-    // property 1
-    let property = new Property(payload)
-    await property.save()
-    PROPERTY1_ID = property.id
+  // create a location
+  LOCATION_ID = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
 
-    // property 2
-    property = new Property({ ...payload, name: 'Beautiful Townhouse in Detroit', price: 1200 })
-    await property.save()
-    PROPERTY2_ID = property.id
+  // create property
+  const payload: movininTypes.CreatePropertyPayload = {
+    name: 'Beautiful House in Detroit',
+    agency: AGENCY_ID,
+    type: movininTypes.PropertyType.House,
+    description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
+    image: 'house.jpg',
+    images: [],
+    bedrooms: 3,
+    bathrooms: 2,
+    kitchens: 1,
+    parkingSpaces: 1,
+    size: 200,
+    petsAllowed: false,
+    furnished: true,
+    aircon: true,
+    minimumAge: 21,
+    location: LOCATION_ID,
+    address: '',
+    price: 1000,
+    hidden: true,
+    cancellation: 0,
+    available: false,
+    rentalTerm: movininTypes.RentalTerm.Daily,
   }
+
+  // property 1
+  let property = new Property(payload)
+  await property.save()
+  PROPERTY1_ID = property.id
+
+  // property 2
+  property = new Property({ ...payload, name: 'Beautiful Townhouse in Detroit', price: 1200 })
+  await property.save()
+  PROPERTY2_ID = property.id
 })
 
 //
 // Closing and cleaning the database connection after running the test suite
 //
 afterAll(async () => {
-  await testHelper.close()
+  if (mongoose.connection.readyState) {
+    await testHelper.close()
 
-  // delete the supplier
-  await testHelper.deleteAgency(AGENCY_ID)
+    // delete the supplier
+    await testHelper.deleteAgency(AGENCY_ID)
 
-  // delete the location
-  await testHelper.deleteLocation(LOCATION_ID)
+    // delete the location
+    await testHelper.deleteLocation(LOCATION_ID)
 
-  // delete the property
-  await Property.deleteMany({ _id: { $in: [PROPERTY1_ID, PROPERTY2_ID] } })
+    // delete the property
+    await Property.deleteMany({ _id: { $in: [PROPERTY1_ID, PROPERTY2_ID] } })
 
-  // delete renters
-  await User.deleteOne({ _id: { $in: [RENTER1_ID, RENTER2_ID] } })
+    // delete renters
+    await User.deleteOne({ _id: { $in: [RENTER1_ID, RENTER2_ID] } })
 
-  await databaseHelper.Close()
+    await databaseHelper.Close()
+  }
 })
 
 //
@@ -161,12 +167,14 @@ describe('POST /api/checkout', () => {
     // Test failed stripe payment
     payload.payLater = false
     const receiptEmail = testHelper.GetRandomEmail()
-    const paymentIntentPayload: movininTypes.CreatePaymentIntentPayload = {
+    const paymentIntentPayload: movininTypes.CreatePaymentPayload = {
       amount: 534,
       currency: 'usd',
       receiptEmail,
       customerName: 'John Doe',
-      description: "Movin' In Web Service",
+      description: "Movin' In Testing Service",
+      locale: 'en',
+      name: 'Test',
     }
     res = await request(app)
       .post('/api/create-payment-intent')
@@ -203,6 +211,19 @@ describe('POST /api/checkout', () => {
         await stripeAPI.customers.del(customerId)
       }
     }
+
+    // Test checkout session
+    payload.paymentIntentId = undefined
+    payload.sessionId = 'xxxxxxxxxxxxxx'
+    res = await request(app)
+      .post('/api/checkout')
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    const { bookingId } = res.body
+    expect(bookingId).toBeTruthy()
+    const booking = await Booking.findById(bookingId)
+    expect(booking?.status).toBe(movininTypes.BookingStatus.Void)
+    expect(booking?.sessionId).toBe(payload.sessionId)
     payload.payLater = true
 
     payload.booking!.agency = testHelper.GetRandromObjectIdAsString()
