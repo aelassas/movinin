@@ -1,5 +1,11 @@
 [![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) [![test](https://github.com/aelassas/movinin/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/test.yml) [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin) [![](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/movinin/wiki) [![](https://img.shields.io/badge/live-demo-brightgreen)](https://github.com/aelassas/movinin?tab=readme-ov-file#live-demo)
 
+## Preface
+
+As of 30<sup>th</sup> April 2024, Stripe Payment Gateway integration was successfully implemented in the frontend, the backend and the mobile app, and is fully operational. You can download the demo mobile app, and find the frontend and backend demo links [here](https://github.com/aelassas/movinin?tab=readme-ov-file#live-demo).
+
+## Movin' In
+
 Movin' In is a fully functional Rental Property Management Platform with operational Stripe Payment Gateway, agency-oriented with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency as well.
