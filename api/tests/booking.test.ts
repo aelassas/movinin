@@ -28,7 +28,7 @@ let BOOKING_ID: string
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.Connect(env.DB_URI, false, false) && await databaseHelper.initialize()
+  const res = await databaseHelper.Connect(env.DB_URI, false, false)
   expect(res).toBeTruthy()
 
   await testHelper.initialize()
