@@ -46,7 +46,6 @@ import DatePicker from '../components/DatePicker'
 import NoMatch from './NoMatch'
 import Info from './Info'
 
-import SecurePayment from '../assets/img/secure-payment.png'
 import '../assets/css/checkout.css'
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
