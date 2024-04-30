@@ -41,7 +41,7 @@ describe('POST /api/create-checkout-session', () => {
       customerName: 'John Doe',
       locale: 'en',
       name: 'BMW X1',
-      description: 'BookCars Testing Service',
+      description: "Movin' In Testing Service",
     }
     let res = await request(app)
       .post('/api/create-checkout-session')
@@ -101,7 +101,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       customerName: 'John Doe',
       locale: 'en',
       name: 'BMW X1',
-      description: 'BookCars Testing Service',
+      description: "Movin' In Testing Service",
     }
     res = await request(app)
       .post('/api/create-checkout-session')
@@ -174,7 +174,7 @@ describe('POST /api/create-payment-intent', () => {
       receiptEmail,
       customerName: 'John Doe',
       locale: 'en',
-      name: 'BookCars Testing Service',
+      name: "Movin' In Testing Service",
       description: '',
     }
     let res = await request(app)
