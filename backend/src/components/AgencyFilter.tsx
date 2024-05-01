@@ -103,7 +103,7 @@ const AgencyFilter = ({
   }
 
   return (
-    (agencies.length > 1
+    ((agencies.length > 1 && agencies.length < 17)
       && (
         <Accordion
           title={commonStrings.AGENCY}
