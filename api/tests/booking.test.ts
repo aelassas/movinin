@@ -28,7 +28,7 @@ let BOOKING_ID: string
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.Connect(env.DB_URI, false, false)
+  const res = await databaseHelper.connect(env.DB_URI, false, false)
   expect(res).toBeTruthy()
 
   await testHelper.initialize()
@@ -99,7 +99,7 @@ afterAll(async () => {
     // delete renters
     await User.deleteOne({ _id: { $in: [RENTER1_ID, RENTER2_ID] } })
 
-    await databaseHelper.Close()
+    await databaseHelper.close()
   }
 })
 
@@ -609,14 +609,14 @@ describe('DELETE /api/delete-temp-booking', () => {
     // Test failure
     //
     try {
-      await databaseHelper.Close()
+      await databaseHelper.close()
       res = await request(app)
         .delete(`/api/delete-temp-booking/${booking._id.toString()}/${sessionId}`)
       expect(res.statusCode).toBe(400)
     } catch (err) {
       console.error(err)
     } finally {
-      const connRes = await databaseHelper.Connect(env.DB_URI, false, false)
+      const connRes = await databaseHelper.connect(env.DB_URI, false, false)
       expect(connRes).toBeTruthy()
     }
   })
