@@ -13,7 +13,7 @@ import User from '../src/models/User'
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.Connect(env.DB_URI, false, false)
+  const res = await databaseHelper.connect(env.DB_URI, false, false)
   expect(res).toBeTruthy()
   testHelper.initializeLogger()
 })
@@ -23,13 +23,13 @@ beforeAll(async () => {
 //
 afterAll(async () => {
   if (mongoose.connection.readyState) {
-    await databaseHelper.Close()
+    await databaseHelper.close()
   }
 })
 
 describe('Test User phone validation', () => {
   it('should test User phone validation', async () => {
-    await databaseHelper.Connect(env.DB_URI, false, false)
+    await databaseHelper.connect(env.DB_URI, false, false)
     let res = true
     const USER: movininTypes.User = {
       email: testHelper.GetRandomEmail(),
@@ -52,14 +52,14 @@ describe('Test User phone validation', () => {
         await User.deleteOne({ _id: userId })
       }
     }
-    await databaseHelper.Close()
+    await databaseHelper.close()
     expect(res).toBeFalsy()
   })
 })
 
 describe('Test email sending error', () => {
   it('should test email sending error', async () => {
-    await databaseHelper.Connect(env.DB_URI, false, false)
+    await databaseHelper.connect(env.DB_URI, false, false)
     let res = true
     try {
       await mailHelper.sendMail({
@@ -71,7 +71,7 @@ describe('Test email sending error', () => {
     } catch (err) {
       res = false
     }
-    await databaseHelper.Close()
+    await databaseHelper.close()
     expect(res).toBeFalsy()
   })
 })

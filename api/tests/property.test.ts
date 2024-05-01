@@ -42,7 +42,7 @@ let PROPERTY_ID: string
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.Connect(env.DB_URI, false, false)
+  const res = await databaseHelper.connect(env.DB_URI, false, false)
   expect(res).toBeTruthy()
   await testHelper.initialize()
 
@@ -72,7 +72,7 @@ afterAll(async () => {
     await testHelper.deleteLocation(LOCATION1_ID)
     await testHelper.deleteLocation(LOCATION2_ID)
 
-    await databaseHelper.Close()
+    await databaseHelper.close()
   }
 })
 

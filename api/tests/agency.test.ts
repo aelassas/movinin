@@ -27,7 +27,7 @@ let AGENCY1_NAME: string
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.Connect(env.DB_URI, false, false)
+  const res = await databaseHelper.connect(env.DB_URI, false, false)
   expect(res).toBeTruthy()
 
   await testHelper.initialize()
@@ -50,7 +50,7 @@ afterAll(async () => {
     await testHelper.deleteAgency(AGENCY1_ID)
     await testHelper.deleteAgency(AGENCY2_ID)
 
-    await databaseHelper.Close()
+    await databaseHelper.close()
   }
 })
 
@@ -187,11 +187,11 @@ describe('GET /api/all-agencies', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.length).toBeGreaterThan(1)
 
-    await databaseHelper.Close()
+    await databaseHelper.close()
     res = await request(app)
       .get('/api/all-agencies')
     expect(res.statusCode).toBe(400)
-    expect(await databaseHelper.Connect(env.DB_URI, false, false)).toBeTruthy()
+    expect(await databaseHelper.connect(env.DB_URI, false, false)).toBeTruthy()
   })
 })
 
