@@ -295,7 +295,7 @@ const notifyRenter = async (booking: env.Booking) => {
   const pushToken = await PushToken.findOne({ user: renter._id })
   if (pushToken) {
     const { token } = pushToken
-    const expo = new Expo({ accessToken: env.EXPO_ACCESS_TOKEN })
+    const expo = new Expo({ accessToken: env.EXPO_ACCESS_TOKEN, useFcmV1: true })
 
     if (!Expo.isExpoPushToken(token)) {
       logger.info(`Push token ${token} is not a valid Expo push token.`)
