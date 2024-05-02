@@ -6,7 +6,7 @@ As of 30<sup>th</sup> April 2024, Stripe Payment Gateway integration was success
 
 ## Movin' In
 
-Movin' In is a fully functional Rental Property Management Platform with operational Stripe Payment Gateway, agency-oriented with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
+Movin' In is a Rental Property Management Platform with operational Stripe Payment Gateway, agency-oriented with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency as well.
 
