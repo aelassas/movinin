@@ -128,7 +128,11 @@ const AgencyFilter = ({
                   role="button"
                   tabIndex={0}
                 >
-                  <img src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)} alt={agency.fullName} />
+                  <img
+                    src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)}
+                    alt={agency.fullName}
+                    title={agency.fullName}
+                  />
                 </span>
               </li>
             ))}
