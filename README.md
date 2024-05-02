@@ -52,7 +52,7 @@ Movin' In can run in a Docker container. Follow this step by step [guide](https:
 
 ### Mobile App
 
-* [Download APK]()
+* [Download APK](https://github.com/aelassas/movinin/releases/download/v3.0/movinin-3.0.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
