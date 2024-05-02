@@ -103,7 +103,7 @@ const AgencyFilter = ({
   }
 
   return (
-    ((agencies.length > 1 && agencies.length < 17)
+    (agencies.length > 1
       && (
         <Accordion
           title={commonStrings.AGENCY}
@@ -124,7 +124,11 @@ const AgencyFilter = ({
                   onChange={handleCheckAgencyChange}
                 />
                 <span role="button" tabIndex={0} onClick={handleAgencyClick}>
-                  <img src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)} alt={agency.fullName} />
+                  <img
+                    src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)}
+                    alt={agency.fullName}
+                    title={agency.fullName}
+                  />
                 </span>
               </li>
             ))}
