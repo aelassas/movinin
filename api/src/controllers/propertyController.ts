@@ -116,7 +116,7 @@ export const create = async (req: Request, res: Response) => {
 
     return res.json(property)
   } catch (err) {
-    logger.error(`[property.create] ${i18n.t('DB_ERROR')} ${body}`, err)
+    logger.error(`[property.create] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, err)
     return res.status(400).send(i18n.t('ERROR') + err)
   }
 }
