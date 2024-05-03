@@ -42,6 +42,10 @@ const getStatusMessage = (lang: string, msg: string): string => `<!DOCTYPE html>
 const _signup = async (req: Request, res: Response, userType: movininTypes.UserType) => {
   const { body }: { body: movininTypes.SignUpPayload } = req
 
+  //
+  // Create user
+  //
+  let user: env.User
   try {
     body.email = helper.trim(body.email, ' ')
     body.active = true
@@ -54,7 +58,7 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
     const passwordHash = await bcrypt.hash(password, salt)
     body.password = passwordHash
 
-    const user = new User(body)
+    user = new User(body)
     await user.save()
 
     if (body.avatar) {
@@ -68,7 +72,15 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
         await user.save()
       }
     }
+  } catch (err) {
+    logger.error(`[user.signup] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, err)
+    return res.status(400).send(i18n.t('DB_ERROR') + err)
+  }
 
+  //
+  // Send confirmation email
+  //
+  try {
     // generate token and save
     const token = new Token({ user: user._id, token: helper.generateToken() })
 
@@ -82,16 +94,26 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
       to: user.email,
       subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
       html:
-        `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
-        ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
-        http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
-        ${i18n.t('REGARDS')}<br></p>`,
+        `<p>
+    ${i18n.t('HELLO')}${user.fullName},<br><br>
+    ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
+    http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
+    ${i18n.t('REGARDS')}<br>
+    </p>`,
     }
     await mailHelper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.signup] ${i18n.t('DB_ERROR')} ${body}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    try {
+      //
+      // Delete user in case of smtp failure
+      //
+      await user.deleteOne()
+    } catch (deleteErr) {
+      logger.error(`[user.signup] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, deleteErr)
+    }
+    logger.error(`[user.signup] ${i18n.t('SMTP_ERROR')}`, err)
+    return res.status(400).send(i18n.t('SMTP_ERROR') + err)
   }
 }
 
@@ -188,7 +210,7 @@ export const create = async (req: Request, res: Response) => {
     await mailHelper.sendMail(mailOptions)
     return res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.create] ${i18n.t('DB_ERROR')} ${body}`, err)
+    logger.error(`[user.create] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -237,7 +259,7 @@ export const checkToken = async (req: Request, res: Response) => {
 
     return res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.checkToken] ${i18n.t('DB_ERROR')} ${req.params}`, err)
+    logger.error(`[user.checkToken] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.params)}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -686,7 +708,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
     await user.save()
     return res.status(200).send(getStatusMessage(user.language, i18n.t('ACCOUNT_ACTIVATION_SUCCESS')))
   } catch (err) {
-    logger.error(`[user.confirmEmail] ${i18n.t('DB_ERROR')} ${req.params}`, err)
+    logger.error(`[user.confirmEmail] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.params)}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -806,7 +828,7 @@ export const update = async (req: Request, res: Response) => {
     await user.save()
     return res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.update] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[user.update] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -843,7 +865,7 @@ export const updateEmailNotifications = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.updateEmailNotifications] ${i18n.t('DB_ERROR')} ${body}`, err)
+    logger.error(`[user.updateEmailNotifications] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -877,7 +899,7 @@ export const updateLanguage = async (req: Request, res: Response) => {
     await user.save()
     return res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.updateLanguage] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[user.updateLanguage] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
@@ -1303,7 +1325,7 @@ export const deleteUsers = async (req: Request, res: Response) => {
 
     return res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.delete] ${i18n.t('DB_ERROR')} ${req.body}`, err)
+    logger.error(`[user.delete] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
     return res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
