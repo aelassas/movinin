@@ -282,9 +282,7 @@ const Checkout = () => {
       if (!payLater) {
         const payload: movininTypes.CreatePaymentPayload = {
           amount: price,
-          // Supported currencies for the moment: usd, eur
-          // Must be a supported currency: https://docs.stripe.com/currencies
-          currency: commonStrings.CURRENCY === '$' ? 'usd' : commonStrings.CURRENCY === '€' ? 'eur' : '',
+          currency: env.STRIPE_CURRENCY_CODE,
           locale: language,
           receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
           name: `${property.name} 

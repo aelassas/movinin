@@ -11,7 +11,10 @@ import {
   MI_PROPERTY_IMAGE_WIDTH,
   MI_PROPERTY_IMAGE_HEIGHT,
   MI_MINIMUM_AGE,
-  MI_STRIPE_PUBLISHABLE_KEY
+  MI_STRIPE_PUBLISHABLE_KEY,
+  MI_STRIPE_MERCHANT_IDENTIFIER,
+  MI_STRIPE_COUNTRY_CODE,
+  MI_STRIPE_CURRENCY_CODE
 } from '@env'
 
 /**
@@ -162,3 +165,25 @@ export const SIZE_UNIT = 'm²'
  * @type {string}
  */
 export const STRIPE_PUBLISHABLE_KEY: string = MI_STRIPE_PUBLISHABLE_KEY
+
+/**
+ * The merchant identifier you registered with Apple for use with Apple Pay.
+ *
+ * @type {string}
+ */
+export const STRIPE_MERCHANT_IDENTIFIER: string = MI_STRIPE_MERCHANT_IDENTIFIER
+
+/**
+ * The two-letter ISO 3166 code of the country of your business, e.g. "US". Required for Stripe payments.
+ *
+ * @type {string}
+ */
+export const STRIPE_COUNTRY_CODE: string = MI_STRIPE_COUNTRY_CODE.toUpperCase()
+
+/**
+ * The three-letter ISO 4217 alphabetic currency code, e.g. "USD" or "EUR". Required for Stripe payments.
+ * Must be a supported currency: https://docs.stripe.com/currencies
+ *
+ * @type {string}
+ */
+export const STRIPE_CURRENCY_CODE: string = MI_STRIPE_CURRENCY_CODE.toUpperCase()

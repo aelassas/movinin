@@ -12,4 +12,7 @@ declare module '@env' {
     export const MI_PROPERTY_IMAGE_HEIGHT: string
     export const MI_MINIMUM_AGE: string
     export const MI_STRIPE_PUBLISHABLE_KEY: string
+    export const MI_STRIPE_MERCHANT_IDENTIFIER: string
+    export const MI_STRIPE_COUNTRY_CODE: string
+    export const MI_STRIPE_CURRENCY_CODE: string
 }
