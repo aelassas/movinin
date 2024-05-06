@@ -440,6 +440,14 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
               customerId,
               paymentIntentClientSecret: clientSecret,
               merchantDisplayName: "Movin' In",
+              googlePay: {
+                merchantCountryCode: env.STRIPE_COUNTRY_CODE,
+                testEnv: env.STRIPE_PUBLISHABLE_KEY.includes('_test_'),
+                currencyCode: env.STRIPE_CURRENCY_CODE,
+              },
+              applePay: {
+                merchantCountryCode: env.STRIPE_COUNTRY_CODE,
+              },
             })
             if (initPaymentSheetError) {
               console.log(initPaymentSheetError)
