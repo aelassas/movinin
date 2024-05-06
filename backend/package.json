@@ -12,7 +12,7 @@
     "@mui/x-date-pickers": "^7.3.2",
     "@types/draftjs-to-html": "^0.8.4",
     "@types/html-to-draftjs": "^1.4.3",
-    "@types/node": "^20.12.8",
+    "@types/node": "^20.12.10",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
     "@types/react-draft-wysiwyg": "^1.13.8",
