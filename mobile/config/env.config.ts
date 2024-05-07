@@ -178,7 +178,7 @@ export const STRIPE_MERCHANT_IDENTIFIER: string = MI_STRIPE_MERCHANT_IDENTIFIER
  *
  * @type {string}
  */
-export const STRIPE_COUNTRY_CODE: string = MI_STRIPE_COUNTRY_CODE.toUpperCase()
+export const STRIPE_COUNTRY_CODE: string = MI_STRIPE_COUNTRY_CODE
 
 /**
  * The three-letter ISO 4217 alphabetic currency code, e.g. "USD" or "EUR". Required for Stripe payments.
@@ -186,4 +186,4 @@ export const STRIPE_COUNTRY_CODE: string = MI_STRIPE_COUNTRY_CODE.toUpperCase()
  *
  * @type {string}
  */
-export const STRIPE_CURRENCY_CODE: string = MI_STRIPE_CURRENCY_CODE.toUpperCase()
+export const STRIPE_CURRENCY_CODE: string = MI_STRIPE_CURRENCY_CODE
