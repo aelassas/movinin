@@ -5,7 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
 import PropertyList from '../components/PropertyList'
@@ -59,7 +59,7 @@ const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackPar
   }
 
   return (
-    <Master style={styles.master} onLoad={onLoad} reload={reload} navigation={navigation} route={route}>
+    <Layout style={styles.master} onLoad={onLoad} reload={reload} navigation={navigation} route={route}>
       {visible && (
         <PropertyList
           navigation={navigation}
@@ -78,7 +78,7 @@ const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackPar
           )}
         />
       )}
-    </Master>
+    </Layout>
   )
 }
 
