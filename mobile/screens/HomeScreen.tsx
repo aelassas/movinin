@@ -14,7 +14,7 @@ import * as env from '../config/env.config'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
 import * as helper from '../common/helper'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import Button from '../components/Button'
 import LocationSelectList from '../components/LocationSelectList'
 import DateTimePicker from '../components/DateTimePicker'
@@ -107,7 +107,7 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
   }
 
   return (
-    <Master style={styles.master} navigation={navigation} onLoad={onLoad} reload={reload} route={route}>
+    <Layout style={styles.master} navigation={navigation} onLoad={onLoad} reload={reload} route={route}>
       {init && visible && (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
           <View style={styles.contentContainer}>
@@ -199,7 +199,7 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
           </View>
         </ScrollView>
       )}
-    </Master>
+    </Layout>
   )
 }
 

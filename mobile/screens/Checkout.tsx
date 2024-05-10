@@ -17,7 +17,7 @@ import { PaymentSheetError, initPaymentSheet, useStripe } from '@stripe/stripe-r
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
 import TextInput from '../components/TextInput'
@@ -522,7 +522,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
 
   return (
-    <Master style={styles.master} navigation={navigation} onLoad={onLoad} reload={reload} route={route}>
+    <Layout style={styles.master} navigation={navigation} onLoad={onLoad} reload={reload} route={route}>
       {visible && property && from && to && location && (
         <>
           {formVisible && (
@@ -695,7 +695,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
           {loading && <Backdrop message={i18n.t('PLEASE_WAIT')} />}
         </>
       )}
-    </Master>
+    </Layout>
   )
 }
 
