@@ -21,7 +21,7 @@ import { strings as commonStrings } from '../lang/common'
 import { strings as ulStrings } from '../lang/user-list'
 import * as UserService from '../services/UserService'
 import * as helper from '../common/helper'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import Backdrop from '../components/SimpleBackdrop'
 import Avatar from '../components/Avatar'
 import BookingList from '../components/BookingList'
@@ -154,7 +154,7 @@ const User = () => {
   }
 
   return (
-    <Master onLoad={onLoad} strict>
+    <Layout onLoad={onLoad} strict>
       {loggedUser && user && visible && (
         <div className="user">
           <div className="col-1">
@@ -240,7 +240,7 @@ const User = () => {
       </Dialog>
       {loading && <Backdrop text={commonStrings.LOADING} />}
       {noMatch && <NoMatch hideHeader />}
-    </Master>
+    </Layout>
   )
 }
 

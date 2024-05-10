@@ -18,7 +18,7 @@ import validator from 'validator'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as ccStrings } from '../lang/create-agency'
@@ -331,7 +331,7 @@ const UpdateUser = () => {
     || (loggedUser && user && loggedUser.type === movininTypes.RecordType.Agency && user.type === movininTypes.RecordType.User && user.agency as string === loggedUser._id)
 
   return (
-    <Master onLoad={onLoad} user={loggedUser} strict>
+    <Layout onLoad={onLoad} user={loggedUser} strict>
       {loggedUser && user && visible && (
         <div className="update-user">
           <Paper className="user-form user-form-wrapper" elevation={10}>
@@ -476,7 +476,7 @@ const UpdateUser = () => {
       )}
       {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
       {noMatch && <NoMatch hideHeader />}
-    </Master>
+    </Layout>
   )
 }
 

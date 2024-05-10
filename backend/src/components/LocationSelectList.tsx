@@ -34,6 +34,7 @@ const LocationSelectList = ({
 
   useEffect(() => {
     const _value = multiple ? value as movininTypes.Location[] : [value as movininTypes.Location]
+
     if (value && !movininHelper.arrayEqual(selectedOptions, _value)) {
       setSelectedOptions(_value)
     }

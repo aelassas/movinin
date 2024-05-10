@@ -5,7 +5,7 @@ import * as movininHelper from ':movinin-helper'
 import * as helper from '../common/helper'
 import { strings } from '../lang/properties'
 import { strings as commonStrings } from '../lang/common'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import AgencyFilter from '../components/AgencyFilter'
 import Search from '../components/Search'
 import InfoBox from '../components/InfoBox'
@@ -76,7 +76,7 @@ const Properties = () => {
   }
 
   return (
-    <Master onLoad={onLoad} strict>
+    <Layout onLoad={onLoad} strict>
       {user && (
         <div className="properties">
           <div className="col-1">
@@ -134,7 +134,7 @@ const Properties = () => {
           </div>
         </div>
       )}
-    </Master>
+    </Layout>
   )
 }
 

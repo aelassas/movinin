@@ -17,7 +17,7 @@ import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings as csStrings } from '../lang/properties'
@@ -344,9 +344,9 @@ const UpdateProperty = () => {
   const admin = helper.admin(user)
 
   return (
-    <Master onLoad={onLoad} strict>
+    <Layout onLoad={onLoad} strict>
       {!error && !noMatch && property && (
-        <div className="update-property">
+        <div className="create-property">
           <Paper className="property-form property-form-wrapper" elevation={10} style={visible ? {} : { display: 'none' }}>
             <form onSubmit={handleSubmit}>
               <ImageEditor
@@ -654,7 +654,7 @@ const UpdateProperty = () => {
         </div>
       )}
       {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
-    </Master>
+    </Layout>
   )
 }
 

@@ -103,7 +103,7 @@ const PropertyList = ({
       }
       const _totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
-      let _rows = []
+      let _rows: movininTypes.Property[] = []
       if (env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || env.isMobile()) {
         _rows = _page === 1 ? _data.resultData : [...rows, ..._data.resultData]
       } else {
@@ -244,7 +244,7 @@ const PropertyList = ({
                       <div className="action">
                         <Button
                           variant="contained"
-                          className="btn-action btn-margin-bottom"
+                          className="btn-action btn-margin-bottom btn"
                           onClick={() => {
                             navigate('/property', {
                               state: {
@@ -261,7 +261,7 @@ const PropertyList = ({
                           !hidePrice && (
                             <Button
                               variant="contained"
-                              className="btn-action btn-margin-bottom"
+                              className="btn-action btn-margin-bottom btn"
                               onClick={() => {
                                 navigate('/checkout', {
                                   state: {

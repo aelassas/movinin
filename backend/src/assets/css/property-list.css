@@ -1,8 +1,14 @@
+section.property-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 0 auto;
+}
+
 section.property-list .empty-list {
   margin-top: 15px;
   text-align: center;
   width: 250px;
-  margin-left: calc(50% - 125px);
 }
 
 section.property-list {
@@ -19,7 +25,6 @@ section.property-list article {
   margin-bottom: 10px;
   min-height: 430px;
   width: 800px;
-  margin-left: calc(50% - 400px);
   padding: 5px;
   display: flex;
   flex-direction: row;
@@ -91,7 +96,7 @@ section.property-list article div.right-panel div.action {
 
 /* Device width is between 500px and 960px */
 
-@media only screen and (width >= 500px) and (width <= 960px) {
+@media only screen and (width >=500px) and (width <=960px) {
   section.property-list {
     max-width: 480px;
   }
@@ -99,7 +104,11 @@ section.property-list article div.right-panel div.action {
 
 /* Device width is less than or equal to 960px */
 
-@media only screen and (width <= 960px) {
+@media only screen and (width <=960px) {
+  section.property-list {
+    flex: 0 1 auto;
+  }
+
   section.property-list article {
     position: relative;
     background: #fff;

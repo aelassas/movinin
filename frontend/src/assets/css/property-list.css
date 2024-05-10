@@ -2,11 +2,13 @@ section.property-list .empty-list {
   margin-top: 15px;
   text-align: center;
   width: 250px;
-  margin-left: calc(50% - 125px);
 }
 
 section.property-list {
   padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 section.property-list article {
@@ -19,7 +21,6 @@ section.property-list article {
   margin-bottom: 10px;
   min-height: 430px;
   width: 800px;
-  margin-left: calc(50% - 400px);
   padding: 5px;
   display: flex;
   flex-direction: row;
@@ -110,9 +111,21 @@ section.property-list article div.right-panel div.action {
   flex-direction: column;
 }
 
+section.property-list article .btn {
+  border: 0;
+  border-radius: 5px;
+  color: #fff;
+  height: 42px;
+  margin: 0;
+  white-space: nowrap;
+  background: #1976d2;
+  font-size: 1.5em;
+  padding: 0 2em;
+}
+
 /* Device width is between 500px and 960px */
 
-@media only screen and (width >= 500px) and (width <= 960px) {
+@media only screen and (width >=500px) and (width <=960px) {
   section.property-list {
     max-width: 480px;
   }
@@ -120,7 +133,7 @@ section.property-list article div.right-panel div.action {
 
 /* Device width is less than or equal to 960px */
 
-@media only screen and (width <= 960px) {
+@media only screen and (width <=960px) {
   section.property-list article {
     position: relative;
     background: #fff;

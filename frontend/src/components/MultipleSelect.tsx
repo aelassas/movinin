@@ -7,7 +7,8 @@ import {
   SxProps,
   Theme,
   TextFieldVariants,
-  AutocompleteInputChangeReason
+  AutocompleteInputChangeReason,
+  Chip
 } from '@mui/material'
 import { LocationOn as LocationIcon, AccountCircle } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
@@ -295,7 +296,11 @@ const MultipleSelect = ({
         onClose={() => {
           setOpen(false)
         }}
+        renderTags={(tagValue, getTagProps) => tagValue.map((option, index) => (
+          <Chip {...getTagProps({ index })} key={option._id} label={option.name} />
+        ))}
         renderOption={(props, option) => {
+          if ('key' in props) delete props.key
           if (type === movininTypes.RecordType.User) {
             return (
               <li {...props} key={option._id} className={`${props.className} ms-option`}>

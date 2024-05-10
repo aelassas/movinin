@@ -1,5 +1,7 @@
 div.properties {
   display: flex;
+  flex: 1 0 auto;
+  transform: translate3d(0, 0, 0);
 }
 
 div.properties div.search {
@@ -15,8 +17,9 @@ div.properties div.col-1 div.info-box {
 
 /* Device width is less than or equal to 960px */
 
-@media only screen and (width <= 960px) {
+@media only screen and (width <=960px) {
   div.properties {
+    flex: 0 1 auto;
     flex-direction: column;
   }
 
@@ -61,7 +64,7 @@ div.properties div.col-1 div.info-box {
 
 /* Device width is greater than or equal to 960px */
 
-@media only screen and (width >= 960px) {
+@media only screen and (width >=960px) {
   div.properties {
     flex-direction: row;
   }
@@ -75,7 +78,7 @@ div.properties div.col-1 div.info-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
+    flex: 1 0 auto;
   }
 
   div.properties div.search {

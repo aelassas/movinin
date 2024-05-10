@@ -18,7 +18,7 @@ import { strings as commonStrings } from '../lang/common'
 import { strings as clStrings } from '../lang/agency-list'
 import * as AgencyService from '../services/AgencyService'
 import * as helper from '../common/helper'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import Backdrop from '../components/SimpleBackdrop'
 import Avatar from '../components/Avatar'
 import PropertyList from '../components/PropertyList'
@@ -132,7 +132,7 @@ const Agency = () => {
   const edit = user && agency && (user.type === movininTypes.RecordType.Admin || user._id === agency._id)
 
   return (
-    <Master onLoad={onLoad} user={user} strict>
+    <Layout onLoad={onLoad} user={user} strict>
       {visible && agency && agencies && (
         <div className="agency">
           <div className="col-1">
@@ -229,7 +229,7 @@ const Agency = () => {
       {loading && <Backdrop text={commonStrings.LOADING} />}
       {error && <Error />}
       {noMatch && <NoMatch hideHeader />}
-    </Master>
+    </Layout>
   )
 }
 

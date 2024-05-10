@@ -7,7 +7,7 @@ import * as helper from '../common/helper'
 import * as UserService from '../services/UserService'
 import * as LocationService from '../services/LocationService'
 import * as AgencyService from '../services/AgencyService'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import NoMatch from './NoMatch'
 import PropertyFilter from '../components/PropertyFilter'
 import AgencyFilter from '../components/AgencyFilter'
@@ -96,7 +96,7 @@ const Properties = () => {
   }
 
   return (
-    <Master onLoad={onLoad} strict={false}>
+    <Layout onLoad={onLoad} strict={false}>
       {visible && agencies && location && from && to && (
         <div className="properties">
           <div className="col-1">
@@ -141,7 +141,7 @@ const Properties = () => {
         </div>
       )}
       {noMatch && <NoMatch hideHeader />}
-    </Master>
+    </Layout>
   )
 }
 
