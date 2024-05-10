@@ -26,6 +26,7 @@ div.main {
   border-radius: 4px;
   padding: 15px;
   margin-bottom: 15px;
+  transform: translate3d(0, 0, 0);
 }
 
 div.main div.property div.images-container {

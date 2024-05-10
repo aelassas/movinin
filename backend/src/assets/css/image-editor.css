@@ -1,109 +1,110 @@
 .image-editor {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .image-editor .main-image {
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    margin: 15px;
+  width: 240px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  margin: 15px;
 }
 
 .image-editor img.main-image {
-    max-width: 100%;
-    max-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .image-editor a {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .image-editor .image-control {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .image-editor .action {
-    cursor: pointer;
-    width: fit-content;
-    text-decoration: none;
-    color: #3498db;
-    margin-top: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 5px;
-    border: 0;
-    background: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  cursor: pointer;
+  width: fit-content;
+  text-decoration: none;
+  color: #3498db;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 5px;
+  border: 0;
+  background: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .image-editor .action:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .image-editor .icon {
-    margin-right: 5px;
-    font-size: 26px;
-    color: #030303;
+  margin-right: 5px;
+  font-size: 26px;
+  color: #030303;
 }
 
 div.images {
-    display: flex;
-    flex-flow: row wrap;
-    overflow-x: auto;
+  display: flex;
+  flex-flow: row wrap;
+  overflow-x: auto;
 }
 
 div.images div.container {
-    display: flex;
-    flex-direction: column;
-    margin-right: 10px;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
 div.images div.container div.image {
-    width: 60px;
-    height: 60px;
-    border: 2px solid #D5DBDB;
-    padding: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  width: 60px;
+  height: 60px;
+  border: 2px solid #D5DBDB;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 div.images div.container div.image:hover {
-    border: 2px solid #FF8F00;
+  border: 2px solid #FF8F00;
 }
 
 div.images div.container img.image {
-    max-width: 100%;
-    max-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 div.images div.container div.ai-action {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    background-color: #D5DBDB;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  background-color: #D5DBDB;
 }
 
 div.images div.container div.ai-action span.button {
-    cursor: pointer;
-    padding: 0 2px;
-    display: flex;
+  cursor: pointer;
+  padding: 0 2px;
+  display: flex;
 }
 
 div.images div.container div.ai-action svg.button {
-    font-size: 18px;
-    color: #030303;
+  font-size: 18px;
+  color: #030303;
 }

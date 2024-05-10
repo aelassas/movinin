@@ -37,7 +37,7 @@ const NoMatch = lazy(() => import('./pages/NoMatch'))
 const App = () => (
   <GlobalProvider>
     <Router>
-      <main className="app">
+      <div className="app">
         <Suspense fallback={<></>}>
           <Routes>
             <Route path="/sign-in" element={<SignIn />} />
@@ -74,7 +74,7 @@ const App = () => (
             <Route path="*" element={<NoMatch />} />
           </Routes>
         </Suspense>
-      </main>
+      </div>
     </Router>
   </GlobalProvider>
 )

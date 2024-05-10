@@ -611,6 +611,7 @@ const BookingList = ({
               setSelectedIds(Array.from(new Set(_selectedIds)).map((id) => id.toString()))
             }}
             disableRowSelectionOnClick
+            className="booking-grid"
           />
         ))}
       <Dialog disableEscapeKeyDown maxWidth="xs" open={openUpdateDialog}>

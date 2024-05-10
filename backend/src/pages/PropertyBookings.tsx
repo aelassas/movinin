@@ -16,7 +16,7 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/properties'
@@ -129,7 +129,7 @@ const PropertyBookings = () => {
   }
 
   return (
-    <Master onLoad={onLoad} strict>
+    <Layout onLoad={onLoad} strict>
       {visible && property && property.agency && (
         <div className="property">
           <div className="col-1">
@@ -232,7 +232,7 @@ const PropertyBookings = () => {
       {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
       {error && <Error />}
       {noMatch && <NoMatch hideHeader />}
-    </Master>
+    </Layout>
   )
 }
 

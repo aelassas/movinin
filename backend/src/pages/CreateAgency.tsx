@@ -13,7 +13,7 @@ import { Info as InfoIcon } from '@mui/icons-material'
 import validator from 'validator'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/create-agency'
 import * as UserService from '../services/UserService'
@@ -239,7 +239,7 @@ const CreateAgency = () => {
   }
 
   return (
-    <Master onLoad={onLoad} strict admin>
+    <Layout onLoad={onLoad} strict admin>
       <div className="create-agency">
         <Paper className="agency-form agency-form-wrapper" elevation={10} style={visible ? {} : { display: 'none' }}>
           <h1 className="agency-form-title">
@@ -349,7 +349,7 @@ const CreateAgency = () => {
         </Paper>
       </div>
       {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
-    </Master>
+    </Layout>
   )
 }
 

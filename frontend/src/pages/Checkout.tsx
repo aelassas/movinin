@@ -40,7 +40,7 @@ import * as UserService from '../services/UserService'
 import * as PropertyService from '../services/PropertyService'
 import * as LocationService from '../services/LocationService'
 import * as StripeService from '../services/StripeService'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import Error from '../components/Error'
 import DatePicker from '../components/DatePicker'
 import NoMatch from './NoMatch'
@@ -379,7 +379,7 @@ const Checkout = () => {
   }
 
   return (
-    <Master onLoad={onLoad} strict={false}>
+    <Layout onLoad={onLoad} strict={false}>
       {visible && property && from && to && location && (
         <div className="booking">
           <Paper className="booking-form" elevation={10}>
@@ -627,7 +627,7 @@ const Checkout = () => {
       )}
       {noMatch && <NoMatch hideHeader />}
       {success && <Info message={payLater ? strings.PAY_LATER_SUCCESS : strings.SUCCESS} />}
-    </Master>
+    </Layout>
   )
 }
 

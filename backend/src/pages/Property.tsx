@@ -17,7 +17,7 @@ import {
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import Backdrop from '../components/SimpleBackdrop'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/properties'
@@ -94,7 +94,7 @@ const Property = () => {
   }
 
   return (
-    <Master onLoad={onLoad} strict>
+    <Layout onLoad={onLoad} strict>
       {
         property
         && (
@@ -254,7 +254,7 @@ const Property = () => {
 
       {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
       {noMatch && <NoMatch hideHeader />}
-    </Master>
+    </Layout>
   )
 }
 

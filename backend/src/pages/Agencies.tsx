@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from '@mui/material'
 import * as movininTypes from ':movinin-types'
-import Master from '../components/Master'
+import Layout from '../components/Layout'
 import { strings } from '../lang/agencies'
 import Search from '../components/Search'
 import AgencyList from '../components/AgencyList'
@@ -36,7 +36,7 @@ const Agencies = () => {
   const admin = helper.admin(user)
 
   return (
-    <Master onLoad={onLoad} strict>
+    <Layout onLoad={onLoad} strict>
       {user && (
         <div className="agencies">
           <div className="col-1">
@@ -73,7 +73,7 @@ const Agencies = () => {
           </div>
         </div>
       )}
-    </Master>
+    </Layout>
   )
 }
 
