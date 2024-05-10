@@ -398,7 +398,7 @@ const Checkout = () => {
                   <div className="booking-options">
                     <FormControl fullWidth margin="dense">
                       <FormControlLabel
-                        disabled={property.cancellation === -1 || property.cancellation === 0}
+                        disabled={property.cancellation === -1 || property.cancellation === 0 || !!clientSecret}
                         control={<Switch checked={cancellation} onChange={handleCancellationChange} color="primary" />}
                         label={(
                           <span>
