@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import escapeStringRegexp from 'escape-string-regexp'
 import { Expo, ExpoPushMessage, ExpoPushTicket } from 'expo-server-sdk'
 import { Request, Response } from 'express'
+import nodemailer from 'nodemailer'
 import * as movininTypes from ':movinin-types'
 import i18n from '../lang/i18n'
 import Booking from '../models/Booking'
@@ -72,13 +73,19 @@ const notifyAgency = async (user: env.User, bookingId: string, agency: env.User,
   // mail
   i18n.locale = agency.language
 
+  const to = [agency.email]
+  const admin = !!env.ADMIN_EMAIL && await User.exists({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin, active: true, verified: true, enableEmailNotifications: true })
+  if (admin) {
+    to.push(env.ADMIN_EMAIL)
+  }
+
   const mailOptions = {
     from: env.SMTP_FROM,
-    to: agency.email,
+    to,
     subject: message,
     html: `<p>${i18n.t('HELLO')}${agency.fullName},
     <br><br>${message}
-    <br><br>${helper.joinURL(env.BACKEND_HOST, `booking?b=${bookingId}`)}
+    <br><br>${helper.joinURL(env.BACKEND_HOST, `update-booking?b=${bookingId}`)}
     <br><br>${i18n.t('REGARDS')}
     <br></p>`,
   }
@@ -210,7 +217,7 @@ export const checkout = async (req: Request, res: Response) => {
       return res.sendStatus(204)
     }
 
-    const mailOptions = {
+    const mailOptions: nodemailer.SendMailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
       subject: `${i18n.t('BOOKING_CONFIRMED_SUBJECT_PART1')} ${booking._id} ${i18n.t('BOOKING_CONFIRMED_SUBJECT_PART2')}`,
@@ -236,7 +243,8 @@ export const checkout = async (req: Request, res: Response) => {
       return res.sendStatus(204)
     }
     i18n.locale = agency.language
-    await notifyAgency(user, booking._id.toString(), agency, i18n.t('BOOKING_NOTIFICATION'))
+    const message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
+    await notifyAgency(user, booking._id.toString(), agency, message)
 
     return res.status(200).send({ bookingId: booking._id })
   } catch (err) {

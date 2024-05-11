@@ -282,6 +282,13 @@ export const STRIPE_SESSION_EXPIRE_AT = stripeSessionExpireAt
 export const BOOKING_EXPIRE_AT = STRIPE_SESSION_EXPIRE_AT + (10 * 60)
 
 /**
+ * Private SSL key filepath.
+ *
+ * @type {string}
+ */
+export const ADMIN_EMAIL = __env__('MI_ADMIN_EMAIL', false)
+
+/**
  * User Document.
  *
  * @export
