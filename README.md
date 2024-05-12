@@ -8,7 +8,7 @@ You can download the demo mobile app, and find the frontend and backend demo lin
 
 Movin' In is a Rental Property Management Platform with operational Stripe Payment Gateway, agency-oriented with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
-Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency and can be used as a property rental aggregator as well.
+Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency and can be used as a property rental aggregator.
 
 From the backend, administrators can create and manage agencies, properties, locations, users and bookings.
 
