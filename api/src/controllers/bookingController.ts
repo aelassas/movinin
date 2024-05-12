@@ -297,16 +297,18 @@ const notifyRenter = async (booking: env.Booking) => {
   }
 
   // mail
-  const mailOptions: nodemailer.SendMailOptions = {
-    from: env.SMTP_FROM,
-    to: renter.email,
-    subject: message,
-    html: `<p>${i18n.t('HELLO')}${renter.fullName},<br><br>
+  if (renter.enableEmailNotifications) {
+    const mailOptions: nodemailer.SendMailOptions = {
+      from: env.SMTP_FROM,
+      to: renter.email,
+      subject: message,
+      html: `<p>${i18n.t('HELLO')}${renter.fullName},<br><br>
     ${message}<br><br>
     ${helper.joinURL(env.FRONTEND_HOST, `booking?b=${booking._id}`)}<br><br>
     ${i18n.t('REGARDS')}<br></p>`,
+    }
+    await mailHelper.sendMail(mailOptions)
   }
-  await mailHelper.sendMail(mailOptions)
 
   // push notification
   const pushToken = await PushToken.findOne({ user: renter._id })
