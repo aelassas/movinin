@@ -52,10 +52,6 @@ export const create = async (req: Request, res: Response) => {
  * @returns {void}
  */
 const notify = async (driver: env.User, bookingId: string, user: env.User, notificationMessage: string) => {
-  if (user.type !== movininTypes.UserType.Agency && user.type !== movininTypes.UserType.Admin) {
-    return
-  }
-
   i18n.locale = user.language
 
   // notification
