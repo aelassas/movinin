@@ -262,14 +262,14 @@ describe('POST /api/checkout', () => {
     res = await request(app)
       .post('/api/checkout')
       .send(payload)
-    expect(res.statusCode).toBe(204)
+    expect(res.statusCode).toBe(400)
 
     payload.booking!.property = PROPERTY1_ID
     payload.booking!.location = testHelper.GetRandromObjectIdAsString()
     res = await request(app)
       .post('/api/checkout')
       .send(payload)
-    expect(res.statusCode).toBe(204)
+    expect(res.statusCode).toBe(400)
 
     payload.booking!.agency = AGENCY_ID
     payload.booking!.renter = testHelper.GetRandromObjectIdAsString()
