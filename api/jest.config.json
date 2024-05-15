@@ -10,7 +10,7 @@
         "./tests/"
     ],
     "testMatch": [
-        "**/booking.test.ts"
+        "**/*.test.ts"
     ],
     "collectCoverage": true,
     "coverageReporters": [
