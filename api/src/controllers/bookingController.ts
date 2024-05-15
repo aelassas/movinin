@@ -42,7 +42,7 @@ export const create = async (req: Request, res: Response) => {
 }
 
 /**
- * Notify a supplier or admin.
+ * Notify a agency or admin.
  *
  * @async
  * @param {env.User} driver
@@ -51,7 +51,7 @@ export const create = async (req: Request, res: Response) => {
  * @param {boolean} notificationMessage
  * @returns {void}
  */
-const notify = async (driver: env.User, bookingId: string, user: env.User, notificationMessage: string) => {
+export const notify = async (driver: env.User, bookingId: string, user: env.User, notificationMessage: string) => {
   i18n.locale = user.language
 
   // notification
@@ -88,6 +88,63 @@ const notify = async (driver: env.User, bookingId: string, user: env.User, notif
 
     await mailHelper.sendMail(mailOptions)
   }
+}
+
+/**
+ * Send checkout confirmation email to renter.
+ *
+ * @async
+ * @param {env.User} user
+ * @param {env.Booking} booking
+ * @param {boolean} payLater
+ * @returns {unknown}
+ */
+export const confirm = async (user: env.User, booking: env.Booking, payLater: boolean) => {
+  const { language } = user
+  const locale = language === 'fr' ? 'fr-FR' : 'en-US'
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    month: 'long',
+    year: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  }
+  const from = booking.from.toLocaleString(locale, options)
+  const to = booking.to.toLocaleString(locale, options)
+  const property = await Property.findById(booking.property).populate<{ agency: env.User }>('agency')
+
+  if (!property) {
+    logger.info(`Property ${booking.property} not found`)
+    return false
+  }
+
+  const location = await Location.findById(booking.location).populate<{ values: env.LocationValue[] }>('values')
+  if (!location) {
+    logger.info(`Location ${booking.location} not found`)
+    return false
+  }
+
+  const mailOptions: nodemailer.SendMailOptions = {
+    from: env.SMTP_FROM,
+    to: user.email,
+    subject: `${i18n.t('BOOKING_CONFIRMED_SUBJECT_PART1')} ${booking._id} ${i18n.t('BOOKING_CONFIRMED_SUBJECT_PART2')}`,
+    html:
+      `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
+        ${!payLater ? `${i18n.t('BOOKING_CONFIRMED_PART1')} ${booking._id} ${i18n.t('BOOKING_CONFIRMED_PART2')}`
+        + '<br><br>' : ''}
+        ${i18n.t('BOOKING_CONFIRMED_PART3')}${property.agency.fullName}${i18n.t('BOOKING_CONFIRMED_PART4')}${i18n.t('BOOKING_CONFIRMED_PART5')}`
+      + `${from} ${i18n.t('BOOKING_CONFIRMED_PART6')}`
+      + `${property.name}${i18n.t('BOOKING_CONFIRMED_PART7')}`
+      + `<br><br>${i18n.t('BOOKING_CONFIRMED_PART8')}<br><br>`
+      + `${i18n.t('BOOKING_CONFIRMED_PART9')}${property.agency.fullName}${i18n.t('BOOKING_CONFIRMED_PART10')}${i18n.t('BOOKING_CONFIRMED_PART11')}`
+      + `${to} ${i18n.t('BOOKING_CONFIRMED_PART12')}`
+      + `<br><br>${i18n.t('BOOKING_CONFIRMED_PART13')}<br><br>${i18n.t('BOOKING_CONFIRMED_PART14')}${env.FRONTEND_HOST}<br><br>
+        ${i18n.t('REGARDS')}<br></p>`,
+  }
+  await mailHelper.sendMail(mailOptions)
+
+  return true
 }
 
 /**
@@ -190,65 +247,29 @@ export const checkout = async (req: Request, res: Response) => {
 
     await booking.save()
 
-    const locale = language === 'fr' ? 'fr-FR' : 'en-US'
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      month: 'long',
-      year: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-    }
-    const from = booking.from.toLocaleString(locale, options)
-    const to = booking.to.toLocaleString(locale, options)
-    const property = await Property.findById(booking.property).populate<{ agency: env.User }>('agency')
+    if (body.payLater) {
+      // Send confirmation email
+      if (!await confirm(user, booking, body.payLater)) {
+        return res.sendStatus(400)
+      }
 
-    if (!property) {
-      logger.info(`Property ${booking.property} not found`)
-      return res.sendStatus(204)
-    }
+      // Notify agency
+      const agency = await User.findById(booking.agency)
+      if (!agency) {
+        logger.info(`Agency ${booking.agency} not found`)
+        return res.sendStatus(204)
+      }
+      i18n.locale = agency.language
+      let message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
+      await notify(user, booking._id.toString(), agency, message)
 
-    const location = await Location.findById(booking.location).populate<{ values: env.LocationValue[] }>('values')
-    if (!location) {
-      logger.info(`Location ${booking.location} not found`)
-      return res.sendStatus(204)
-    }
-
-    const mailOptions: nodemailer.SendMailOptions = {
-      from: env.SMTP_FROM,
-      to: user.email,
-      subject: `${i18n.t('BOOKING_CONFIRMED_SUBJECT_PART1')} ${booking._id} ${i18n.t('BOOKING_CONFIRMED_SUBJECT_PART2')}`,
-      html:
-        `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
-        ${!body.payLater ? `${i18n.t('BOOKING_CONFIRMED_PART1')} ${booking._id} ${i18n.t('BOOKING_CONFIRMED_PART2')}`
-          + '<br><br>' : ''}
-        ${i18n.t('BOOKING_CONFIRMED_PART3')}${property.agency.fullName}${i18n.t('BOOKING_CONFIRMED_PART4')}${i18n.t('BOOKING_CONFIRMED_PART5')}`
-        + `${from} ${i18n.t('BOOKING_CONFIRMED_PART6')}`
-        + `${property.name}${i18n.t('BOOKING_CONFIRMED_PART7')}`
-        + `<br><br>${i18n.t('BOOKING_CONFIRMED_PART8')}<br><br>`
-        + `${i18n.t('BOOKING_CONFIRMED_PART9')}${property.agency.fullName}${i18n.t('BOOKING_CONFIRMED_PART10')}${i18n.t('BOOKING_CONFIRMED_PART11')}`
-        + `${to} ${i18n.t('BOOKING_CONFIRMED_PART12')}`
-        + `<br><br>${i18n.t('BOOKING_CONFIRMED_PART13')}<br><br>${i18n.t('BOOKING_CONFIRMED_PART14')}${env.FRONTEND_HOST}<br><br>
-        ${i18n.t('REGARDS')}<br></p>`,
-    }
-    await mailHelper.sendMail(mailOptions)
-
-    // Notify agency
-    const agency = await User.findById(booking.agency)
-    if (!agency) {
-      logger.info(`Agency ${booking.agency} not found`)
-      return res.sendStatus(204)
-    }
-    i18n.locale = agency.language
-    let message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
-    await notify(user, booking._id.toString(), agency, message)
-
-    // Notify admin
-    const admin = !!env.ADMIN_EMAIL && await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin })
-    if (admin) {
-      i18n.locale = admin.language
-      message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
-      await notify(user, booking._id.toString(), admin, message)
+      // Notify admin
+      const admin = !!env.ADMIN_EMAIL && await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin })
+      if (admin) {
+        i18n.locale = admin.language
+        message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
+        await notify(user, booking._id.toString(), admin, message)
+      }
     }
 
     return res.status(200).send({ bookingId: booking._id })
