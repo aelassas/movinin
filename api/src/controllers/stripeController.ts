@@ -7,6 +7,8 @@ import * as movininTypes from ':movinin-types'
 import * as env from '../config/env.config'
 import * as helper from '../common/helper'
 import Booking from '../models/Booking'
+import User from '../models/User'
+import * as bookingController from './bookingController'
 
 /**
  * Create Checkout Session.
@@ -127,6 +129,36 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
       booking.expireAt = undefined
       booking.status = movininTypes.BookingStatus.Paid
       await booking.save()
+
+      // Send confirmation email
+      const user = await User.findById(booking.renter)
+      if (!user) {
+        logger.info(`Renter ${booking.renter} not found`)
+        return res.sendStatus(204)
+      }
+
+      if (!await bookingController.confirm(user, booking, false)) {
+        return res.sendStatus(400)
+      }
+
+      // Notify agency
+      const agency = await User.findById(booking.agency)
+      if (!agency) {
+        logger.info(`Agency ${booking.agency} not found`)
+        return res.sendStatus(204)
+      }
+      i18n.locale = agency.language
+      let message = i18n.t('BOOKING_PAID_NOTIFICATION')
+      await bookingController.notify(user, booking._id.toString(), agency, message)
+
+      // Notify admin
+      const admin = !!env.ADMIN_EMAIL && await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin })
+      if (admin) {
+        i18n.locale = admin.language
+        message = i18n.t('BOOKING_PAID_NOTIFICATION')
+        await bookingController.notify(user, booking._id.toString(), admin, message)
+      }
+
       return res.sendStatus(200)
     }
 
