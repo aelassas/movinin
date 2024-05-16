@@ -4,6 +4,8 @@ import mongoose from 'mongoose'
 import validator from 'validator'
 import Stripe from 'stripe'
 import { v1 as uuid } from 'uuid'
+import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 
 /**
  * Convert string to boolean.
@@ -210,4 +212,20 @@ export const getStripeLocale = (locale: string): Stripe.Checkout.SessionCreatePa
   }
 
   return 'auto'
+}
+
+export const getDailyPrice = (price: number, rentalTerm: movininTypes.RentalTerm) => {
+  let res = 0
+  const now = new Date()
+  if (rentalTerm === movininTypes.RentalTerm.Monthly) {
+    res = price / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
+  } else if (rentalTerm === movininTypes.RentalTerm.Weekly) {
+    res = price / 7
+  } else if (rentalTerm === movininTypes.RentalTerm.Daily) {
+    res = price
+  } else if (rentalTerm === movininTypes.RentalTerm.Yearly) {
+    res = price / movininHelper.daysInYear(now.getFullYear())
+  }
+
+  return res
 }
