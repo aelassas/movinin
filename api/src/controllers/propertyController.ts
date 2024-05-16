@@ -719,6 +719,21 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
+    data[0].resultData = data[0].resultData.sort((p1: env.Property, p2: env.Property) => {
+      const p1DailyPrice = helper.getDailyPrice(p1.price, p1.rentalTerm)
+      const p2DailyPrice = helper.getDailyPrice(p2.price, p2.rentalTerm)
+
+      if (p1DailyPrice > p2DailyPrice) {
+        return 1
+      }
+
+      if (p1DailyPrice < p2DailyPrice) {
+        return -1
+      }
+
+      return 0
+    })
+
     for (const property of data[0].resultData) {
       const { _id, fullName, avatar } = property.agency
       property.agency = { _id, fullName, avatar }
