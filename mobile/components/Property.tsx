@@ -8,9 +8,9 @@ import {
   Image,
   useWindowDimensions
 } from 'react-native'
-import HTML from 'react-native-render-html'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
+import AutoHeightWebView from './AutoHeightWebView'
 import Button from './Button'
 import * as helper from '../common/helper'
 import * as env from '../config/env.config'
@@ -117,9 +117,17 @@ const Property = ({
         </View>
 
         <View style={styles.description}>
-          <HTML
-            contentWidth={width}
-            source={{ html: property.description }}
+          <AutoHeightWebView
+            originWhitelist={['*']}
+            source={{ html: `<meta id="Viewport" name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"> ${property.description}` }}
+
+            automaticallyAdjustContentInsets={true}
+            scalesPageToFit={true}
+            startInLoadingState={true}
+
+            width={width}
+            defaultHeight={200}
+            autoHeight={true}
           />
         </View>
 
@@ -195,6 +203,8 @@ const styles = StyleSheet.create({
   img: {
     width: env.PROPERTY_IMAGE_WIDTH,
     height: env.PROPERTY_IMAGE_HEIGHT,
+    flex: 1,
+    resizeMode: 'contain',
   },
   infos: {
     flexDirection: 'row',
@@ -248,6 +258,8 @@ const styles = StyleSheet.create({
   agencyImg: {
     width: env.AGENCY_IMAGE_WIDTH,
     height: env.AGENCY_IMAGE_HEIGHT,
+    flex: 1,
+    resizeMode: 'contain',
   },
   agencyText: {
     color: '#a1a1a1',
@@ -255,7 +267,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   description: {
-    padding: 2
+    padding: 2,
   },
   price: {
     flex: 2,
