@@ -158,6 +158,8 @@ const styles = StyleSheet.create({
   image: {
     width: env.AGENCY_IMAGE_WIDTH,
     height: env.AGENCY_IMAGE_HEIGHT,
+    flex: 1,
+    resizeMode: 'contain',
   },
   link: {
     marginTop: 10,
