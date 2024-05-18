@@ -7,7 +7,6 @@ const babel = (api) => {
       {
         alias: {
           ':movinin-types': '../packages/movinin-types',
-          ':movinin-helper': '../packages/movinin-helper',
         },
       },
     ],
