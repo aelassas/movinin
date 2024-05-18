@@ -600,7 +600,7 @@ describe('DELETE /api/delete-temp-booking', () => {
     await booking.save()
 
     let res = await request(app)
-      .delete(`/api/delete-temp-booking/${booking._id.toString()}/${sessionId}`)
+      .delete(`/api/delete-temp-booking/${booking.id}/${sessionId}`)
     expect(res.statusCode).toBe(200)
     const _booking = await Booking.findById(booking._id)
     expect(_booking).toBeNull()
@@ -611,7 +611,7 @@ describe('DELETE /api/delete-temp-booking', () => {
     try {
       await databaseHelper.close()
       res = await request(app)
-        .delete(`/api/delete-temp-booking/${booking._id.toString()}/${sessionId}`)
+        .delete(`/api/delete-temp-booking/${booking.id}/${sessionId}`)
       expect(res.statusCode).toBe(400)
     } catch (err) {
       console.error(err)

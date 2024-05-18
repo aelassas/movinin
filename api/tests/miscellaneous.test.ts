@@ -42,7 +42,7 @@ describe('Test User phone validation', () => {
     try {
       const user = new User(USER)
       await user.save()
-      userId = user._id
+      userId = user.id
       user.phone = 'unknown'
       await user.save()
     } catch (err) {

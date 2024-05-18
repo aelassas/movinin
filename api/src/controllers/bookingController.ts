@@ -219,12 +219,12 @@ export const checkout = async (req: Request, res: Response) => {
         subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
         html: `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
         ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
-        ${helper.joinURL(env.FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+        ${helper.joinURL(env.FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user.id)}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${i18n.t('REGARDS')}<br></p>`,
       }
       await mailHelper.sendMail(mailOptions)
 
-      body.booking.renter = user._id.toString()
+      body.booking.renter = user.id
     } else {
       user = await User.findById(body.booking.renter)
     }
@@ -261,14 +261,14 @@ export const checkout = async (req: Request, res: Response) => {
       }
       i18n.locale = agency.language
       let message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
-      await notify(user, booking._id.toString(), agency, message)
+      await notify(user, booking.id, agency, message)
 
       // Notify admin
       const admin = !!env.ADMIN_EMAIL && await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin })
       if (admin) {
         i18n.locale = admin.language
         message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
-        await notify(user, booking._id.toString(), admin, message)
+        await notify(user, booking.id, admin, message)
       }
     }
 
