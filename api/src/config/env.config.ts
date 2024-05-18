@@ -13,14 +13,14 @@ import * as helper from '../common/helper'
  * @returns {string}
  */
 export const __env__ = (name: string, required?: boolean, defaultValue?: string): string => {
-    const value = process.env[name]
-    if (required && !value) {
-        throw new Error(`'${name} not found`)
-    }
-    if (!value) {
-        return defaultValue || ''
-    }
-    return String(value)
+  const value = process.env[name]
+  if (required && !value) {
+    throw new Error(`'${name} not found`)
+  }
+  if (!value) {
+    return defaultValue || ''
+  }
+  return String(value)
 }
 
 /**
@@ -85,6 +85,13 @@ export const DB_SSL_CA = __env__('MI_DB_SSL_CA', DB_SSL)
  * @type {boolean}
  */
 export const DB_DEBUG = helper.StringToBoolean(__env__('MI_DB_DEBUG', false, 'false'))
+
+/**
+ * Indicate whether server-side JavaScript, such as $where, $function, $accumulator and map-reduce are supported.
+ *
+ * @type {boolean}
+ */
+export const DB_SERVER_SIDE_JAVASCRIPT = helper.StringToBoolean(__env__('MI_DB_SERVER_SIDE_JAVASCRIPT', false, 'false'))
 
 /**
  * Cookie secret. It should at least be 32 characters long, but the longer the better.
@@ -297,24 +304,24 @@ export const ADMIN_EMAIL = __env__('MI_ADMIN_EMAIL', false)
  * @extends {Document}
  */
 export interface User extends Document {
-    agency?: Types.ObjectId
-    fullName: string
-    email: string
-    phone?: string
-    password?: string
-    birthDate?: Date
-    verified?: boolean
-    verifiedAt?: Date
-    active?: boolean
-    language: string
-    enableEmailNotifications?: boolean
-    avatar?: string
-    bio?: string
-    location?: string
-    type?: movininTypes.UserType
-    blacklisted?: boolean
-    payLater?: boolean
-    customerId?: string
+  agency?: Types.ObjectId
+  fullName: string
+  email: string
+  phone?: string
+  password?: string
+  birthDate?: Date
+  verified?: boolean
+  verifiedAt?: Date
+  active?: boolean
+  language: string
+  enableEmailNotifications?: boolean
+  avatar?: string
+  bio?: string
+  location?: string
+  type?: movininTypes.UserType
+  blacklisted?: boolean
+  payLater?: boolean
+  customerId?: string
 }
 
 /**
@@ -325,24 +332,24 @@ export interface User extends Document {
  * @typedef {UserInfo}
  */
 export interface UserInfo {
-    _id?: Types.ObjectId
-    agency?: Types.ObjectId
-    fullName: string
-    email?: string
-    phone?: string
-    password?: string
-    birthDate?: Date
-    verified?: boolean
-    verifiedAt?: Date
-    active?: boolean
-    language?: string
-    enableEmailNotifications?: boolean
-    avatar?: string
-    bio?: string
-    location?: string
-    type?: string
-    blacklisted?: boolean
-    payLater?: boolean
+  _id?: Types.ObjectId
+  agency?: Types.ObjectId
+  fullName: string
+  email?: string
+  phone?: string
+  password?: string
+  birthDate?: Date
+  verified?: boolean
+  verifiedAt?: Date
+  active?: boolean
+  language?: string
+  enableEmailNotifications?: boolean
+  avatar?: string
+  bio?: string
+  location?: string
+  type?: string
+  blacklisted?: boolean
+  payLater?: boolean
 }
 
 /**
@@ -354,20 +361,20 @@ export interface UserInfo {
  * @extends {Document}
  */
 export interface Booking extends Document {
-    agency: Types.ObjectId
-    location: Types.ObjectId
-    property: Types.ObjectId
-    renter: Types.ObjectId
-    from: Date
-    to: Date
-    status: movininTypes.BookingStatus
-    cancellation?: boolean
-    cancelRequest?: boolean
-    price: number
-    sessionId?: string
-    paymentIntentId?: string
-    customerId?: string
-    expireAt?: Date
+  agency: Types.ObjectId
+  location: Types.ObjectId
+  property: Types.ObjectId
+  renter: Types.ObjectId
+  from: Date
+  to: Date
+  status: movininTypes.BookingStatus
+  cancellation?: boolean
+  cancelRequest?: boolean
+  price: number
+  sessionId?: string
+  paymentIntentId?: string
+  customerId?: string
+  expireAt?: Date
 }
 
 /**
@@ -378,16 +385,16 @@ export interface Booking extends Document {
  * @typedef {BookingInfo}
  */
 export interface BookingInfo {
-    _id?: Types.ObjectId
-    agency: UserInfo
-    property: Types.ObjectId
-    renter: UserInfo
-    from: Date
-    to: Date
-    status: movininTypes.BookingStatus
-    cancellation?: boolean
-    cancelRequest?: boolean
-    price: number
+  _id?: Types.ObjectId
+  agency: UserInfo
+  property: Types.ObjectId
+  renter: UserInfo
+  from: Date
+  to: Date
+  status: movininTypes.BookingStatus
+  cancellation?: boolean
+  cancelRequest?: boolean
+  price: number
 }
 
 /**
@@ -399,7 +406,7 @@ export interface BookingInfo {
  * @extends {Document}
  */
 export interface Location extends Document {
-    values: Types.ObjectId[]
+  values: Types.ObjectId[]
 }
 
 /**
@@ -411,8 +418,8 @@ export interface Location extends Document {
  * @extends {Document}
  */
 export interface LocationValue extends Document {
-    language: string
-    value: string
+  language: string
+  value: string
 }
 
 /**
@@ -424,9 +431,9 @@ export interface LocationValue extends Document {
  * @extends {Document}
  */
 export interface LocationInfo extends Document {
-    _id?: Types.ObjectId
-    name?: string
-    values: LocationValue[]
+  _id?: Types.ObjectId
+  name?: string
+  values: LocationValue[]
 }
 
 /**
@@ -438,10 +445,10 @@ export interface LocationInfo extends Document {
  * @extends {Document}
  */
 export interface Notification extends Document {
-    user: Types.ObjectId
-    message: string
-    booking: Types.ObjectId
-    isRead?: boolean
+  user: Types.ObjectId
+  message: string
+  booking: Types.ObjectId
+  isRead?: boolean
 }
 
 /**
@@ -453,8 +460,8 @@ export interface Notification extends Document {
  * @extends {Document}
  */
 export interface NotificationCounter extends Document {
-    user: Types.ObjectId
-    count?: number
+  user: Types.ObjectId
+  count?: number
 }
 
 /**
@@ -466,28 +473,28 @@ export interface NotificationCounter extends Document {
  * @extends {Document}
  */
 export interface Property extends Document {
-    name: string
-    type: movininTypes.PropertyType
-    agency: Types.ObjectId
-    description: string
-    image: string
-    images?: string[]
-    bedrooms: number
-    bathrooms: number
-    kitchens?: number
-    parkingSpaces?: number,
-    size?: number
-    petsAllowed: boolean
-    furnished: boolean
-    minimumAge: number
-    location: Types.ObjectId
-    address?: string
-    price: number
-    hidden?: boolean
-    cancellation?: number
-    aircon?: boolean
-    available?: boolean
-    rentalTerm: movininTypes.RentalTerm
+  name: string
+  type: movininTypes.PropertyType
+  agency: Types.ObjectId
+  description: string
+  image: string
+  images?: string[]
+  bedrooms: number
+  bathrooms: number
+  kitchens?: number
+  parkingSpaces?: number,
+  size?: number
+  petsAllowed: boolean
+  furnished: boolean
+  minimumAge: number
+  location: Types.ObjectId
+  address?: string
+  price: number
+  hidden?: boolean
+  cancellation?: number
+  aircon?: boolean
+  available?: boolean
+  rentalTerm: movininTypes.RentalTerm
 }
 
 /**
@@ -499,26 +506,26 @@ export interface Property extends Document {
  * @extends {Document}
  */
 export interface PropertyInfo extends Document {
-    name: string
-    type: movininTypes.PropertyType
-    agency: UserInfo
-    description: string
-    image: string
-    images?: string[]
-    bedrooms: number
-    bathrooms: number
-    kitchens?: number
-    parkingSpaces?: number,
-    size: number
-    petsAllowed: boolean
-    furnished: boolean
-    minimumAge: number
-    location: Types.ObjectId
-    address?: string
-    price: number
-    hidden?: boolean
-    cancellation?: boolean
-    rentalTerm: movininTypes.RentalTerm
+  name: string
+  type: movininTypes.PropertyType
+  agency: UserInfo
+  description: string
+  image: string
+  images?: string[]
+  bedrooms: number
+  bathrooms: number
+  kitchens?: number
+  parkingSpaces?: number,
+  size: number
+  petsAllowed: boolean
+  furnished: boolean
+  minimumAge: number
+  location: Types.ObjectId
+  address?: string
+  price: number
+  hidden?: boolean
+  cancellation?: boolean
+  rentalTerm: movininTypes.RentalTerm
 }
 
 /**
@@ -530,8 +537,8 @@ export interface PropertyInfo extends Document {
  * @extends {Document}
  */
 export interface PushToken extends Document {
-    user: Types.ObjectId
-    token: string
+  user: Types.ObjectId
+  token: string
 }
 
 /**
@@ -543,7 +550,7 @@ export interface PushToken extends Document {
  * @extends {Document}
  */
 export interface Token extends Document {
-    user: Types.ObjectId
-    token: string
-    expireAt?: Date
+  user: Types.ObjectId
+  token: string
+  expireAt?: Date
 }
