@@ -706,8 +706,42 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
           },
         },
         {
+          $addFields:
+          {
+            dailyPrice:
+            {
+              $function:
+              {
+                // eslint-disable-next-line func-names, object-shorthand
+                body: function (price, rentalTerm) {
+                  let dailyPrice = 0
+                  const now = new Date()
+                  if (rentalTerm === 'MONTHLY') {
+                    dailyPrice = price / new Date(now.getFullYear(), now.getMonth(), 0).getDate()
+                  } else if (rentalTerm === 'WEEKLY') {
+                    dailyPrice = price / 7
+                  } else if (rentalTerm === 'DAILY') {
+                    dailyPrice = price
+                  } else if (rentalTerm === 'YEARLY') {
+                    const year = now.getFullYear()
+                    dailyPrice = price / (((year % 4 === 0 && year % 100 > 0) || year % 400 === 0) ? 366 : 365)
+                  }
+
+                  dailyPrice = Number((Math.trunc(dailyPrice * 100) / 100).toFixed(2))
+                  if (dailyPrice % 1 === 0) {
+                    return Math.round(dailyPrice)
+                  }
+                  return dailyPrice
+                },
+                args: ['$price', '$rentalTerm'],
+                lang: 'js',
+              },
+            },
+          },
+        },
+        {
           $facet: {
-            resultData: [{ $sort: { name: 1 } }, { $skip: (page - 1) * size }, { $limit: size }],
+            resultData: [{ $sort: { dailyPrice: 1 } }, { $skip: (page - 1) * size }, { $limit: size }],
             pageInfo: [
               {
                 $count: 'totalRecords',
