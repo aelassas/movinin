@@ -5,7 +5,6 @@ import validator from 'validator'
 import Stripe from 'stripe'
 import { v1 as uuid } from 'uuid'
 import * as movininTypes from ':movinin-types'
-import * as movininHelper from ':movinin-helper'
 
 /**
  * Convert string to boolean.
@@ -214,17 +213,41 @@ export const getStripeLocale = (locale: string): Stripe.Checkout.SessionCreatePa
   return 'auto'
 }
 
+/**
+ * Get number of days in a month.
+ *
+ * @param {number} month
+ * @param {number} year
+ * @returns {number}
+ */
+export const daysInMonth = (month: number, year: number) => new Date(year, month, 0).getDate()
+
+/**
+* Get number of days in a year.
+*
+* @param {number} year
+* @returns {(366 | 365)}
+*/
+export const daysInYear = (year: number) => (((year % 4 === 0 && year % 100 > 0) || year % 400 === 0) ? 366 : 365)
+
+/**
+ * Return daily price.
+ *
+ * @param price
+ * @param rentalTerm
+ * @returns {number}
+ */
 export const getDailyPrice = (price: number, rentalTerm: movininTypes.RentalTerm) => {
   let res = 0
   const now = new Date()
   if (rentalTerm === movininTypes.RentalTerm.Monthly) {
-    res = price / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
+    res = price / daysInMonth(now.getMonth(), now.getFullYear())
   } else if (rentalTerm === movininTypes.RentalTerm.Weekly) {
     res = price / 7
   } else if (rentalTerm === movininTypes.RentalTerm.Daily) {
     res = price
   } else if (rentalTerm === movininTypes.RentalTerm.Yearly) {
-    res = price / movininHelper.daysInYear(now.getFullYear())
+    res = price / daysInYear(now.getFullYear())
   }
 
   return res

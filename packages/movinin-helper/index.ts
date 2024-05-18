@@ -270,7 +270,7 @@ export const daysInMonth = (month: number, year: number) =>
  * @returns {(366 | 365)}
  */
 export const daysInYear = (year: number) =>
-    ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365
+    (((year % 4 === 0 && year % 100 > 0) || year % 400 === 0) ? 366 : 365)
 
 /**
  * Get all PropertyTypes.
