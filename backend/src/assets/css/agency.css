@@ -44,7 +44,7 @@ div.agency {
 
 /* Device width is less than or equal to 960px */
 
-@media only screen and (width <= 960px) {
+@media only screen and (width <=960px) {
   div.agency {
     flex-direction: column;
   }
@@ -66,13 +66,13 @@ div.agency {
 
   .agency div.col-2 {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
   }
 }
 
 /* Device width is greater than or equal to 960px */
 
-@media only screen and (width >= 960px) {
+@media only screen and (width >=960px) {
   div.agency {
     flex-direction: row;
   }
