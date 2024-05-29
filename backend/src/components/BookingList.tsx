@@ -387,7 +387,7 @@ const BookingList = ({
         }
       }
     }
-  }, [containerClassName, page, fetch, loading, offset]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [containerClassName, page, fetch, loading, offset])
 
   const handleCancelUpdate = () => {
     setOpenUpdateDialog(false)

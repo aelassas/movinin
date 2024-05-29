@@ -437,7 +437,6 @@ const UpdateProperty = () => {
               <FormControl fullWidth margin="dense">
                 <TextField
                   label={`${strings.PRICE} ${`(${commonStrings.CURRENCY}/${helper.rentalTermUnit(rentalTerm as movininTypes.RentalTerm)})`}`}
-                  // eslint-disable-next-line
                   inputProps={{ inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }}
                   onChange={handlePriceChange}
                   required
@@ -552,7 +551,6 @@ const UpdateProperty = () => {
               <FormControl fullWidth margin="dense">
                 <TextField
                   label={`${csStrings.CANCELLATION} (${commonStrings.CURRENCY})`}
-                  // eslint-disable-next-line
                   inputProps={{ inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }}
                   onChange={handleCancellationChange}
                   variant="standard"
