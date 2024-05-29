@@ -13,9 +13,10 @@ interface LocationSelectListProps {
   label?: string
   required?: boolean
   variant?: TextFieldVariants
-  readOnly?: boolean
   hidePopupIcon?: boolean
   customOpen?: boolean
+  readOnly?: boolean
+  init?: boolean
   onChange?: (values: movininTypes.Option[]) => void
 }
 
@@ -25,9 +26,10 @@ const LocationSelectList = ({
   label,
   required,
   variant,
-  readOnly,
   hidePopupIcon,
   customOpen,
+  readOnly,
+  init: listInit,
   onChange
 }: LocationSelectListProps) => {
   const [init, setInit] = useState(false)
@@ -49,7 +51,6 @@ const LocationSelectList = ({
     try {
       if (fetch || _page === 1) {
         setLoading(true)
-
         const data = await LocationService.getLocations(_keyword, _page, env.PAGE_SIZE)
         const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
         if (!_data) {
@@ -103,7 +104,8 @@ const LocationSelectList = ({
         },
       }}
       onFocus={() => {
-        if (!init) {
+        if (!init && listInit) {
+          // if (!init) {
           const p = 1
           setRows([])
           setPage(p)
@@ -112,8 +114,8 @@ const LocationSelectList = ({
           })
         }
       }}
-      onInputChange={(event) => {
-        const _value = (event && event.target && 'value' in event.target && event.target.value as string) || ''
+      onInputChange={(event, val) => {
+        const _value = (event && event.target && 'value' in event.target && event.target.value as string) || val || ''
 
         // if (event.target.type === 'text' && value !== keyword) {
         if (_value !== keyword) {
