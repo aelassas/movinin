@@ -31,3 +31,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+*.tsbuildinfo
+vite.config.d.ts
+vite.config.js

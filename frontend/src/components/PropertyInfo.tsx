@@ -42,7 +42,7 @@ const PropertyInfo = ({
 }: PropertyInfoProps) => {
   const fr = langHelper.fr()
 
-  const getExtraIcon = (option: string, extra: number) => (extra === -1
+  const getExtraIcon = (extra: number) => (extra === -1
     ? <UncheckIcon className="unavailable" />
     : extra === 0
       ? <CheckIcon className="available" />
@@ -147,7 +147,7 @@ const PropertyInfo = ({
             <li>
               <Tooltip title={property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : helper.getCancellation(property.cancellation, language)} placement="left">
                 <div className="property-info-list-item">
-                  {getExtraIcon('cancellation', property.cancellation)}
+                  {getExtraIcon(property.cancellation)}
                   <span className="property-info-list-text">{helper.getCancellation(property.cancellation, language)}</span>
                 </div>
               </Tooltip>
