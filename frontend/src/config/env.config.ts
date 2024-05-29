@@ -57,7 +57,9 @@ const env = {
    * The three-letter ISO 4217 alphabetic currency code, e.g. "USD" or "EUR". Required for Stripe payments. Default is "USD".
    * Must be a supported currency: https://docs.stripe.com/currencies
    * */
-  STRIPE_CURRENCY_CODE: String(import.meta.env.VITE_BC_STRIPE_CURRENCY_CODE || 'USD')
+  STRIPE_CURRENCY_CODE: String(import.meta.env.VITE_MI_STRIPE_CURRENCY_CODE || 'USD'),
+  CURRENCY: import.meta.env.VITE_BC_CURRENCY || '$',
+  SET_LANGUAGE_FROM_IP: (import.meta.env.VITE_BC_SET_LANGUAGE_FROM_IP && import.meta.env.VITE_BC_SET_LANGUAGE_FROM_IP.toLowerCase()) === 'true',
 }
 
 export default env

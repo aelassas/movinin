@@ -36,6 +36,7 @@ interface PropertyListProps {
   hidePrice?: boolean
   hideActions?: boolean
   language: string
+  sizeAuto?: boolean
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
 }
 
@@ -54,6 +55,7 @@ const PropertyList = ({
   hidePrice,
   hideActions,
   language,
+  sizeAuto,
   onLoad,
 }: PropertyListProps) => {
   const navigate = useNavigate()
@@ -205,7 +207,7 @@ const PropertyList = ({
             const price = (from && to && helper.price(property, from, to)) || 0
 
             return (
-              <article key={property._id}>
+              <article key={property._id} style={sizeAuto ? { width: 'auto' } : {}}>
 
                 <div className="left-panel">
                   <img
@@ -213,7 +215,7 @@ const PropertyList = ({
                     alt={property.name}
                     className="property-img"
                   />
-                  {!hideAgency && <AgencyBadge agency={property.agency} />}
+                  {!hideAgency && <AgencyBadge agency={property.agency} style={sizeAuto ? { bottom: 10 } : {}} />}
                 </div>
 
                 <div className="middle-panel">

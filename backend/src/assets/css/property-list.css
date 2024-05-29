@@ -75,6 +75,7 @@ section.property-list article div.middle-panel div.name h2 {
   text-size-adjust: none;
   line-height: 1.3em;
   margin: 0;
+  word-break: break-all;
 }
 
 section.property-list article div.middle-panel .property-info div.property-info-description {

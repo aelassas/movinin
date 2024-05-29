@@ -14,7 +14,8 @@ import {
   MI_STRIPE_PUBLISHABLE_KEY,
   MI_STRIPE_MERCHANT_IDENTIFIER,
   MI_STRIPE_COUNTRY_CODE,
-  MI_STRIPE_CURRENCY_CODE
+  MI_STRIPE_CURRENCY_CODE,
+  MI_CURRENCY
 } from '@env'
 
 /**
@@ -187,3 +188,10 @@ export const STRIPE_COUNTRY_CODE: string = MI_STRIPE_COUNTRY_CODE
  * @type {string}
  */
 export const STRIPE_CURRENCY_CODE: string = MI_STRIPE_CURRENCY_CODE
+
+/**
+ * Currency. Default is $.
+ *
+ * @type {string}
+ */
+export const CURRENCY: string = MI_CURRENCY

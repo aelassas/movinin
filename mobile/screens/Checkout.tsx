@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -20,6 +19,7 @@ import * as movininHelper from ':movinin-helper'
 import Layout from '../components/Layout'
 import i18n from '../lang/i18n'
 import * as UserService from '../services/UserService'
+import PropertyList from '../components/PropertyList'
 import TextInput from '../components/TextInput'
 import DateTimePicker from '../components/DateTimePicker'
 import Switch from '../components/Switch'
@@ -526,8 +526,12 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       {visible && property && from && to && location && (
         <>
           {formVisible && (
-            <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
-              <View style={styles.contentContainer}>
+            <PropertyList
+              navigation={navigation}
+              properties={[property]}
+              hidePrice
+              header={<Text style={styles.header}>{i18n.t('CREATE_BOOKING')}</Text>}
+              footerComponent={<View style={styles.contentContainer}>
                 <View style={styles.section}>
                   <View style={styles.sectionHeader}>
                     <MaterialIcons name="event-seat" size={iconSize} color={iconColor} />
@@ -573,7 +577,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                         uri: movininHelper.joinURL(env.CDN_USERS, property.agency.avatar),
                       }}
                     />
-                    <Text style={styles.agencyText}>{property.agency.fullName}</Text>
+                    <Text style={styles.agencyText} numberOfLines={2} ellipsizeMode="tail">{property.agency.fullName}</Text>
                   </View>
 
                   <Text style={styles.detailTitle}>{i18n.t('COST')}</Text>
@@ -678,7 +682,8 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   </View>
                 </View>
               </View>
-            </ScrollView>
+              }
+            />
           )}
           {success && (
             <View style={styles.sucess}>
@@ -703,6 +708,23 @@ const styles = StyleSheet.create({
   master: {
     flex: 1,
     backgroundColor: '#fafafa',
+  },
+  header: {
+    flex: 1,
+    textAlign: 'center',
+    textTransform: 'capitalize',
+    fontSize: 27,
+    fontWeight: '600',
+    color: '#333', // '#f37022',
+    marginTop: 20,
+    marginBottom: 30,
+    marginRight: 7,
+    marginLeft: 7,
+    padding: 5,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#d9d8d9',
+    borderRadius: 5,
   },
   container: {
     justifyContent: 'center',
@@ -772,16 +794,19 @@ const styles = StyleSheet.create({
   agency: {
     flexDirection: 'row',
     marginBottom: 10,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    flex: 1,
   },
   agencyImg: {
     width: env.AGENCY_IMAGE_WIDTH,
     height: env.AGENCY_IMAGE_HEIGHT,
+    resizeMode: 'contain',
   },
   agencyText: {
     color: '#a1a1a1',
     fontSize: 10,
     marginLeft: 5,
+    width: 200,
   },
   component: {
     alignSelf: 'stretch',

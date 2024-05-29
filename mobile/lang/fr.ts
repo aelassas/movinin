@@ -31,7 +31,7 @@ export const fr = {
   CANCEL: 'Annuler',
   CHANGE_PASSWORD: 'Changer le mot de passe',
   CHANGE_PASSWORD_TITLE: 'Modification du mot de passe',
-  CURRENCY: '$',
+  CURRENCY: env.CURRENCY,
   DELETE_AVATAR_CONFIRM: 'Êtes-vous sûr de vouloir supprimer la photo ?',
   DELETE_IMAGE: "Supprimer l'image",
   UPLOAD_IMAGE: 'Charger une image',
