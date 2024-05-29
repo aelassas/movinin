@@ -576,7 +576,7 @@ export const getProperties = async (req: Request, res: Response) => {
         },
         {
           $facet: {
-            resultData: [{ $sort: { name: 1 } }, { $skip: (page - 1) * size }, { $limit: size }],
+            resultData: [{ $sort: { name: 1, _id: 1 } }, { $skip: (page - 1) * size }, { $limit: size }],
             pageInfo: [
               {
                 $count: 'totalRecords',
@@ -629,7 +629,7 @@ export const getBookingProperties = async (req: Request, res: Response) => {
               { name: { $regex: keyword, $options: options } }],
           },
         },
-        { $sort: { name: 1 } },
+        { $sort: { name: 1, _id: 1 } },
         { $skip: (page - 1) * size },
         { $limit: size },
       ],
@@ -674,7 +674,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
     }
 
     let $addFields = {}
-    let $sort: Record<string, 1 | -1> = { name: 1 }
+    let $sort: Record<string, 1 | -1> = { name: 1, _id: 1 }
     if (env.DB_SERVER_SIDE_JAVASCRIPT) {
       $addFields = {
         dailyPrice:
@@ -708,7 +708,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
         },
       }
 
-      $sort = { dailyPrice: 1 }
+      $sort = { dailyPrice: 1, name: 1, _id: 1 }
     }
 
     const data = await Property.aggregate(

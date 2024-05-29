@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { ToastContainer } from 'react-toastify'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { ToastContainer } from 'react-toastify'
 
 import { frFR as corefrFR, enUS as coreenUS } from '@mui/material/locale'
 import { frFR, enUS } from '@mui/x-date-pickers/locales'
@@ -15,15 +15,10 @@ import env from './config/env.config'
 import App from './App'
 
 import 'react-toastify/dist/ReactToastify.min.css'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import './assets/css/common.css'
 import './assets/css/index.css'
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-)
-
-if (process.env.REACT_APP_NODE_ENV === 'production') {
+if (import.meta.env.VITE_NODE_ENV === 'production') {
   disableDevTools()
 }
 
@@ -79,14 +74,14 @@ const theme = createTheme(
       fontFamily: [
         '-apple-system',
         'BlinkMacSystemFont',
-        '"Segoe UI"',
+        "'Segoe UI'",
         'Roboto',
-        '"Helvetica Neue"',
+        "'Helvetica Neue'",
         'Arial',
         'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
+        "'Apple Color Emoji'",
+        "'Segoe UI Emoji'",
+        "'Segoe UI Symbol'",
       ].join(','),
     },
     components: {
@@ -97,6 +92,53 @@ const theme = createTheme(
           },
         },
       },
+      MuiFormControl: {
+        styleOverrides: {
+          root: {
+            '& .Mui-disabled': {
+              color: '#333 !important',
+            },
+          },
+        },
+      },
+      MuiSwitch: {
+        styleOverrides: {
+          root: {
+            '& .Mui-checked': {
+              color: '#0D63C9 !important',
+            },
+            '& .Mui-checked+.MuiSwitch-track': {
+              opacity: 0.7,
+              backgroundColor: '#0D63C9 !important',
+            },
+          },
+        },
+      },
+      MuiAutocomplete: {
+        styleOverrides: {
+          root: {
+            '& .MuiAutocomplete-inputRoot': {
+              paddingRight: '20px !important',
+            },
+          },
+          listbox: {
+            '& .Mui-focused': {
+              backgroundColor: '#eee !important',
+            },
+          },
+          option: {
+            // Hover
+            // '&[data-focus="true"]': {
+            //     backgroundColor: '#eee !important',
+            //     borderColor: 'transparent',
+            // },
+            // Selected
+            '&[aria-selected="true"]': {
+              backgroundColor: '#faad43 !important',
+            },
+          },
+        },
+      },
     },
   },
   isFr ? frFR : enUS,
@@ -104,7 +146,7 @@ const theme = createTheme(
   isFr ? corefrFR : coreenUS,
 )
 
-root.render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <ThemeProvider theme={theme}>
     <CssBaseline>
       <App />

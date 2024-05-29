@@ -24,6 +24,17 @@ export const __env__ = (name: string, required?: boolean, defaultValue?: string)
 }
 
 /**
+ * ISO 639-1 language codes supported
+ * https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+ *
+ * @type {string[]}
+ */
+export const LANGUAGES = [
+  'en',
+  'fr',
+]
+
+/**
  * Server Port. Default is 4004.
  *
  * @type {number}
