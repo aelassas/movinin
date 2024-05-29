@@ -172,7 +172,7 @@ const UpdateLocation = () => {
             <form onSubmit={handleSubmit}>
               {location.values.map((value, index) => (
                 <FormControl
-                  key={value.value}
+                  key={value.language}
                   fullWidth
                   margin="dense"
                 >

@@ -9,6 +9,7 @@ import * as UserService from '../services/UserService'
 import Layout from '../components/Layout'
 import LocationSelectList from '../components/LocationSelectList'
 import DatePicker from '../components/DatePicker'
+import env from '../config/env.config'
 
 import SecurePayment from '../assets/img/secure-payment.png'
 import '../assets/css/home.css'
@@ -73,7 +74,8 @@ const Home = () => {
                   label={commonStrings.LOCATION}
                   variant="outlined"
                   hidePopupIcon
-                  customOpen
+                  customOpen={env.isMobile()}
+                  init={!env.isMobile()}
                   required
                   onChange={handleLocationChange}
                 />
