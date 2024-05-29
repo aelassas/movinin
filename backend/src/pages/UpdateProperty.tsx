@@ -351,20 +351,20 @@ const UpdateProperty = () => {
             <form onSubmit={handleSubmit}>
               <ImageEditor
                 title={strings.IMAGES}
-                // onMainImageUpsert={(img) => {
-                //   setImage(img.filename)
-                //   setImageUpdated(true)
-                // }}
-                // onAdd={(img) => {
-                //   images.push(img.filename)
-                //   tempImages.push(img.filename)
-                //   setImages(images)
-                // }}
-                // onDelete={(img) => {
-                //   images.splice(images.indexOf(img.filename), 1)
-                //   tempImages.splice(tempImages.indexOf(img.filename), 1)
-                //   setImages(images)
-                // }}
+                onMainImageUpsert={(img) => {
+                  setImage(img.filename)
+                  setImageUpdated(true)
+                }}
+                onAdd={(img) => {
+                  images.push(img.filename)
+                  tempImages.push(img.filename)
+                  setImages(images)
+                }}
+                onDelete={(img) => {
+                  images.splice(images.indexOf(img.filename), 1)
+                  tempImages.splice(tempImages.indexOf(img.filename), 1)
+                  setImages(images)
+                }}
                 onImageViewerOpen={() => setImageViewerOpen(true)}
                 onImageViewerClose={() => setImageViewerOpen(false)}
                 image={{ filename: property?.image || '', temp: false }}
@@ -437,7 +437,6 @@ const UpdateProperty = () => {
               <FormControl fullWidth margin="dense">
                 <TextField
                   label={`${strings.PRICE} ${`(${commonStrings.CURRENCY}/${helper.rentalTermUnit(rentalTerm as movininTypes.RentalTerm)})`}`}
-                  // eslint-disable-next-line
                   inputProps={{ inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }}
                   onChange={handlePriceChange}
                   required
@@ -552,7 +551,6 @@ const UpdateProperty = () => {
               <FormControl fullWidth margin="dense">
                 <TextField
                   label={`${csStrings.CANCELLATION} (${commonStrings.CURRENCY})`}
-                  // eslint-disable-next-line
                   inputProps={{ inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }}
                   onChange={handleCancellationChange}
                   variant="standard"

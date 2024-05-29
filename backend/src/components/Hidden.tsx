@@ -9,14 +9,14 @@ interface HiddenProps {
 }
 
 const Hidden = ({ className }: HiddenProps) => (
-    <div className={`label hidden${className ? ` ${className}` : ''}`} title={strings.HIDDEN_INFO}>
-      <HiddenIcon className="label-icon" />
-      <span>
-        {' '}
-        {strings.HIDDEN}
-        {' '}
-      </span>
-    </div>
-  )
+  <div className={`label hidden${className ? ` ${className}` : ''}`} title={strings.HIDDEN_INFO}>
+    <HiddenIcon className="label-icon" />
+    <span>
+      {' '}
+      {strings.HIDDEN}
+      {' '}
+    </span>
+  </div>
+)
 
 export default Hidden
