@@ -28,6 +28,7 @@ import {
   EmbeddedCheckout,
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
+import PropertyList from '../components/PropertyList'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '../config/env.config'
@@ -390,6 +391,15 @@ const Checkout = () => {
             </h1>
             <form onSubmit={handleSubmit}>
               <div>
+
+                <PropertyList
+                  properties={[property]}
+                  hideActions
+                  hidePrice
+                  sizeAuto
+                  language={language}
+                />
+
                 <div className="booking-options-container">
                   <div className="booking-info">
                     <BookingIcon />

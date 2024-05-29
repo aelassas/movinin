@@ -104,6 +104,12 @@ div.main div.property div.right-panel div.name h2 {
   text-size-adjust: none;
   line-height: 1.3em;
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 div.main div.property div.right-panel div.price {

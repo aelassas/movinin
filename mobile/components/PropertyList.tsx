@@ -20,11 +20,14 @@ interface PropertyListProps {
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
   from?: Date
   to?: Date
-  location: string
-  agencies: string[]
-  types: movininTypes.PropertyType[]
-  rentalTerms: movininTypes.RentalTerm[]
+  location?: string
+  agencies?: string[]
+  types?: movininTypes.PropertyType[]
+  rentalTerms?: movininTypes.RentalTerm[]
   header?: React.ReactElement
+  properties?: movininTypes.Property[]
+  hidePrice?: boolean
+  footerComponent?: React.ReactElement
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
 }
 
@@ -37,6 +40,9 @@ const PropertyList = ({
   types,
   rentalTerms,
   header,
+  properties,
+  hidePrice,
+  footerComponent,
   onLoad
 }: PropertyListProps) => {
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
@@ -106,7 +112,7 @@ const PropertyList = ({
 
   useEffect(() => {
     if (agencies) {
-      if (agencies.length > 0) {
+      if (agencies.length > 0 && location && types && rentalTerms) {
         fetchData(page, location, agencies, types, rentalTerms)
       } else {
         setRows([])
@@ -122,11 +128,22 @@ const PropertyList = ({
     setPage(1)
   }, [location, agencies, types, rentalTerms])
 
+  useEffect(() => {
+    if (properties) {
+      setRows(properties)
+      setFetch(false)
+      if (onLoad) {
+        onLoad({ rows: properties, rowCount: properties.length })
+      }
+      setLoading(false)
+    }
+  }, [properties]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const numToRender = Math.floor(env.PROPERTIES_PAGE_SIZE / 2)
 
   return (
     <View style={styles.container}>
-      {from && to && location && (
+      {((from && to && location) || hidePrice) && (
         <FlatList
           keyboardShouldPersistTaps="handled"
           initialNumToRender={numToRender}
@@ -144,6 +161,7 @@ const PropertyList = ({
               to={to}
               location={location}
               navigation={navigation}
+              hidePrice={hidePrice}
             />
           )}
           keyExtractor={(item) => item._id}
@@ -156,9 +174,9 @@ const PropertyList = ({
           }}
           ListHeaderComponent={header}
           ListFooterComponent={
-            fetch
-              ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
-              : <></>
+            footerComponent || (fetch
+              ? <ActivityIndicator size="large" color="#f37022" style={styles.indicator} />
+              : <></>)
           }
           ListEmptyComponent={
             !loading ? (

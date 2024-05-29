@@ -20,9 +20,10 @@ interface PropertyProps {
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
   language: string
   property: movininTypes.Property
-  from: Date
-  to: Date
-  location: string
+  from?: Date
+  to?: Date
+  location?: string
+  hidePrice?: boolean
 }
 
 const iconSize = 24
@@ -37,12 +38,139 @@ const Property = ({
   from,
   to,
   location,
-  navigation
+  navigation,
+  hidePrice
 }: PropertyProps) => {
   const { width } = useWindowDimensions()
   const days = movininHelper.days(from, to)
-  const price = helper.price(property, from, to)
+  const price = !hidePrice && from && to ? helper.price(property, from, to) : 0
   const pricePerDay = price / days
+
+  const styles = StyleSheet.create({
+    propertyContainer: {
+      marginRight: 7,
+      marginLeft: 7,
+      marginBottom: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'stretch',
+    },
+    property: {
+      width: '100%',
+      maxWidth: 480,
+      backgroundColor: '#fff',
+      paddingTop: 20,
+      paddingRight: 10,
+      paddingBottom: 20,
+      paddingLeft: 10,
+      borderWidth: 1,
+      borderColor: '#d9d8d9',
+      borderRadius: 5,
+    },
+    name: {
+      fontSize: 20,
+      fontWeight: '700',
+      textAlign: 'center',
+    },
+    imgView: {
+      width: '100%',
+      height: env.PROPERTY_IMAGE_HEIGHT,
+      alignItems: 'center',
+    },
+    img: {
+      width: env.PROPERTY_IMAGE_WIDTH,
+      height: env.PROPERTY_IMAGE_HEIGHT,
+      flex: 1,
+      resizeMode: 'contain',
+    },
+    infos: {
+      flexDirection: 'row',
+      // alignItems: 'center',
+      alignItems: 'flex-start',
+      flexWrap: 'wrap',
+      marginTop: 10,
+      marginBottom: 10,
+    },
+    info: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: '#ddd',
+      borderRadius: 4,
+      minWidth: 60,
+      padding: 2,
+      marginTop: 5,
+      marginLeft: 5,
+    },
+    infoIcon: {
+      marginRight: 4,
+    },
+    text: {
+      color: '#333',
+      fontSize: 12,
+    },
+    extras: {
+      alignSelf: 'stretch',
+      marginTop: 10,
+    },
+    extra: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    footer: {
+      flexDirection: 'row',
+      alignSelf: 'stretch',
+      alignItems: 'flex-end',
+      marginBottom: 10,
+      paddingLeft: 5,
+    },
+    agency: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      flex: hidePrice ? 1 : 0.5,
+    },
+    agencyImg: {
+      width: env.AGENCY_IMAGE_WIDTH,
+      height: env.AGENCY_IMAGE_HEIGHT,
+      resizeMode: 'contain',
+    },
+    agencyText: {
+      color: '#a1a1a1',
+      fontSize: 12,
+      marginLeft: 5,
+      width: hidePrice ? 200 : 120,
+    },
+    description: {
+      padding: 2,
+    },
+    price: {
+      flex: 2,
+      alignSelf: 'stretch',
+      alignItems: 'flex-end',
+      marginTop: 20,
+    },
+    pricePrimary: {
+      fontSize: 22,
+      fontWeight: '700',
+      color: '#383838',
+      lineHeight: 28,
+    },
+    priceSecondary: {
+      fontSize: 13,
+      color: '#a1a1a1',
+    },
+    buttonContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    button: {
+      width: '100%',
+      marginTop: 10,
+    },
+  })
 
   return (
     <View key={property._id} style={styles.propertyContainer}>
@@ -139,160 +267,40 @@ const Property = ({
                 uri: movininHelper.joinURL(env.CDN_USERS, property.agency.avatar),
               }}
             />
-            <Text style={styles.agencyText}>{property.agency.fullName}</Text>
+            <Text style={styles.agencyText} numberOfLines={2} ellipsizeMode="tail">{property.agency.fullName}</Text>
           </View>
 
-          <View style={styles.price}>
-            <Text style={styles.priceSecondary}>{helper.getDays(days)}</Text>
-            <Text style={styles.pricePrimary}>{`${movininHelper.formatPrice(price, i18n.t('CURRENCY'), language)}`}</Text>
-            <Text style={styles.priceSecondary}>{`${i18n.t('PRICE_PER_DAY')} ${movininHelper.formatPrice(pricePerDay, i18n.t('CURRENCY'), language)}`}</Text>
-          </View>
+          {!hidePrice && (
+            <View style={styles.price}>
+              <Text style={styles.priceSecondary}>{helper.getDays(days)}</Text>
+              <Text style={styles.pricePrimary}>{`${movininHelper.formatPrice(price, i18n.t('CURRENCY'), language)}`}</Text>
+              <Text style={styles.priceSecondary}>{`${i18n.t('PRICE_PER_DAY')} ${movininHelper.formatPrice(pricePerDay, i18n.t('CURRENCY'), language)}`}</Text>
+            </View>
+          )}
         </View>
 
-        <View style={styles.buttonContainer}>
-          <Button
-            style={styles.button}
-            label={i18n.t('BOOK')}
-            onPress={() => {
-              const params = {
-                property: property._id,
-                location,
-                from: from.getTime(),
-                to: to.getTime(),
-              }
-              navigation.navigate('Checkout', params)
-            }}
-          />
-        </View>
+        {
+          !hidePrice && location && from && to && (
+            <View style={styles.buttonContainer}>
+              <Button
+                style={styles.button}
+                label={i18n.t('BOOK')}
+                onPress={() => {
+                  const params = {
+                    property: property._id,
+                    location,
+                    from: from.getTime(),
+                    to: to.getTime(),
+                  }
+                  navigation.navigate('Checkout', params)
+                }}
+              />
+            </View>
+          )
+        }
       </View>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  propertyContainer: {
-    marginRight: 7,
-    marginLeft: 7,
-    marginBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-  },
-  property: {
-    width: '100%',
-    maxWidth: 480,
-    backgroundColor: '#fff',
-    paddingTop: 20,
-    paddingRight: 10,
-    paddingBottom: 20,
-    paddingLeft: 10,
-    borderWidth: 1,
-    borderColor: '#d9d8d9',
-    borderRadius: 5,
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center',
-  },
-  imgView: {
-    width: '100%',
-    height: env.PROPERTY_IMAGE_HEIGHT,
-    alignItems: 'center',
-  },
-  img: {
-    width: env.PROPERTY_IMAGE_WIDTH,
-    height: env.PROPERTY_IMAGE_HEIGHT,
-    flex: 1,
-    resizeMode: 'contain',
-  },
-  infos: {
-    flexDirection: 'row',
-    // alignItems: 'center',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  info: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 4,
-    minWidth: 60,
-    padding: 2,
-    marginTop: 5,
-    marginLeft: 5,
-  },
-  infoIcon: {
-    marginRight: 4,
-  },
-  text: {
-    color: '#333',
-    fontSize: 12,
-  },
-  extras: {
-    alignSelf: 'stretch',
-    marginTop: 10,
-  },
-  extra: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  footer: {
-    flexDirection: 'row',
-    alignSelf: 'stretch',
-    alignItems: 'flex-end',
-    marginBottom: 10,
-    paddingLeft: 5,
-  },
-  agency: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  agencyImg: {
-    width: env.AGENCY_IMAGE_WIDTH,
-    height: env.AGENCY_IMAGE_HEIGHT,
-    flex: 1,
-    resizeMode: 'contain',
-  },
-  agencyText: {
-    color: '#a1a1a1',
-    fontSize: 12,
-    marginLeft: 5,
-  },
-  description: {
-    padding: 2,
-  },
-  price: {
-    flex: 2,
-    alignSelf: 'stretch',
-    alignItems: 'flex-end',
-    marginTop: 20,
-  },
-  pricePrimary: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#383838',
-    lineHeight: 28,
-  },
-  priceSecondary: {
-    fontSize: 13,
-    color: '#a1a1a1',
-  },
-  buttonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    width: '100%',
-    marginTop: 10,
-  },
-})
 
 export default memo(Property)

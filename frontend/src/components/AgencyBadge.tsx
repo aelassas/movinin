@@ -7,20 +7,21 @@ import '../assets/css/agency-badge.css'
 
 interface AgencyBadgeProps {
   agency: movininTypes.User
+  style?: React.CSSProperties
 }
 
-const AgencyBadge = ({ agency }: AgencyBadgeProps) => (agency
-    ? (
-      <div className="agency-badge">
-        <span className="agency-badge-logo">
-          <img
-            src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)}
-            alt={agency.fullName}
-          />
-        </span>
-        {agency.fullName}
-      </div>
-    )
-    : <></>)
+const AgencyBadge = ({ agency, style }: AgencyBadgeProps) => (agency
+  ? (
+    <div className="agency-badge" style={style || {}}>
+      <span className="agency-badge-logo">
+        <img
+          src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)}
+          alt={agency.fullName}
+        />
+      </span>
+      <span className="agency-badge-text">{agency.fullName}</span>
+    </div>
+  )
+  : <></>)
 
 export default AgencyBadge

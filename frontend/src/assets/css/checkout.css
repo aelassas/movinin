@@ -98,6 +98,7 @@ div.booking div.booking-details div.booking-detail div.booking-detail-value {
 
 div.booking div.booking-details div.booking-detail div.booking-detail-value {
   color: rgb(0 0 0 / 55%);
+  word-break: break-word;
 }
 
 div.booking div.booking-details div.booking-detail span.booking-detail-title {
@@ -116,6 +117,10 @@ div.booking div.booking-details div.booking-detail div.booking-detail-value span
   line-height: 1em;
   white-space: nowrap;
   margin-left: 5px;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 200px;
 }
 
 div.booking div.booking-details div.booking-detail div.booking-price {
