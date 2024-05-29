@@ -112,6 +112,7 @@ const BookingFilter = ({
           <LocationSelectList
             label={strings.LOCATION}
             variant="standard"
+            init
             onChange={handleLocationChange}
           />
         </FormControl>
