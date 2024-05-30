@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify'
+import validator from 'validator'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '../lang/common'
@@ -442,3 +443,11 @@ export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
  */
 export const priceLabel = (property: movininTypes.Property, language: string): string =>
   `${movininHelper.formatPrice(property.price, commonStrings.CURRENCY, language)}/${rentalTermUnit(property.rentalTerm)}`
+
+/**
+ * Validate URL string.
+ *
+ * @param {string} url
+ * @returns {boolean}
+ */
+export const isValidURL = (url: string) => validator.isURL(url, { protocols: ['http', 'https'] })

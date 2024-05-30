@@ -7,7 +7,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Tooltip
+  Tooltip,
+  Link
 } from '@mui/material'
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
@@ -146,8 +147,7 @@ const Agency = () => {
                   hideDelete
                   onBeforeUpload={onBeforeUpload}
                   onChange={onAvatarChange}
-                  // readonly={!edit}
-                  readonly
+                  readonly={!edit}
                   color="disabled"
                   className="agency-avatar"
                 />
@@ -165,10 +165,13 @@ const Agency = () => {
                 {agency.fullName}
               </Typography>
             )}
-            {agency.bio && agency.bio !== '' && (
-              <Typography variant="h6" className="agency-info">
-                {agency.bio}
-              </Typography>
+            {agency.bio && (
+              helper.isValidURL(agency.bio)
+                ? (<Link href={agency.bio} className="agency-bio-link">{agency.bio}</Link>) : (
+                  <Typography variant="h6" className="agency-info">
+                    {agency.bio}
+                  </Typography>
+                )
             )}
             {agency.location && agency.location !== '' && (
               <Typography variant="h6" className="agency-info">
@@ -188,13 +191,13 @@ const Agency = () => {
                   </IconButton>
                 </Tooltip>
               )}
-              {/* {edit && (
+              {edit && (
                 <Tooltip title={commonStrings.DELETE}>
                   <IconButton data-id={agency._id} onClick={handleDelete}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
-              )} */}
+              )}
             </div>
             {rowCount > 0 && <InfoBox value={`${rowCount} ${commonStrings.PROPERTY}${rowCount > 1 ? 's' : ''}`} className="property-count" />}
           </div>

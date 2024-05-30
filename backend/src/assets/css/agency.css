@@ -8,6 +8,7 @@ div.agency {
   text-align: center;
   font-weight: 600;
   margin-top: 15px;
+  word-wrap: break-word;
 }
 
 .agency div.col-1 .agency-info {
@@ -15,6 +16,13 @@ div.agency {
   font-weight: 400;
   margin-top: 10px;
   color: #676767;
+}
+
+.agency div.col-1 .agency-bio-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
 }
 
 .agency div.col-1 .agency-actions {
