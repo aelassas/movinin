@@ -16,13 +16,17 @@ div.agency {
   font-weight: 400;
   margin-top: 10px;
   color: #676767;
+  word-wrap: break-word;
 }
 
 .agency div.col-1 .agency-bio-link {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
+  overflow: hidden;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-align: center;
+  padding: 0 10px;
 }
 
 .agency div.col-1 .agency-actions {
@@ -66,10 +70,6 @@ div.agency {
   .agency div.col-1 section.agency-avatar-sec {
     display: flex;
     justify-content: center;
-  }
-
-  .agency div.col-1 .property-count {
-    display: none;
   }
 
   .agency div.col-2 {

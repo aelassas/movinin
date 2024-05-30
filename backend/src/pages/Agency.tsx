@@ -199,7 +199,7 @@ const Agency = () => {
                 </Tooltip>
               )}
             </div>
-            {rowCount > 0 && <InfoBox value={`${rowCount} ${commonStrings.PROPERTY}${rowCount > 1 ? 's' : ''}`} className="property-count" />}
+            {rowCount > 0 && <InfoBox value={`${rowCount} ${rowCount > 1 ? commonStrings.PROPERTIES : commonStrings.PROPERTY}`} className="property-count" />}
           </div>
           <div className="col-2">
             <PropertyList

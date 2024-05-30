@@ -32,10 +32,12 @@ section.property-list article {
 }
 
 section.property-list article div.left-panel {
-  width: 200px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex-basis: 200px;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 section.property-list article div.left-panel .property-img {
@@ -69,13 +71,22 @@ section.property-list article div.middle-panel div.name {
 }
 
 section.property-list article div.middle-panel div.name h2 {
-  display: inline;
-  font-size: 1.8em;
+  font-size: 2em;
   font-weight: 700;
   text-size-adjust: none;
   line-height: 1.3em;
-  margin: 0;
-  word-break: break-all;
+  word-break: break-word;
+  display: inline;
+  font-size: 2em;
+  font-weight: 700;
+  text-size-adjust: none;
+  line-height: 1.3em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 section.property-list article div.middle-panel .property-info div.property-info-description {
