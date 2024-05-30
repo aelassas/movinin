@@ -41,11 +41,7 @@ div.agencies .info-box {
     margin: 20px 5px 5px 0;
     width: 100%;
   }
-
-  div.agencies div.col-1 .agency-count {
-    display: none;
-  }
-
+  
   div.agencies div.col-2 {
     margin-top: 3px;
     padding: 1px;

@@ -55,10 +55,6 @@ div.properties div.col-1 div.info-box {
     display: flex;
     justify-content: center;
   }
-
-  div.properties div.col-1 .property-count {
-    display: none;
-  }
 }
 
 /* Device width is greater than or equal to 960px */
