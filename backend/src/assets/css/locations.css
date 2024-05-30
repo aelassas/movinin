@@ -41,11 +41,7 @@ div.locations .info-box {
     margin: 20px 5px 5px 0;
     width: 100%;
   }
-
-  div.locations div.col-1 .location-count {
-    display: none;
-  }
-
+  
   div.locations div.col-2 {
     display: flex;
     flex-direction: column;
