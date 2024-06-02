@@ -79,12 +79,10 @@ div.home div.home-content div.home-search .btn-search {
   border-radius: 5px;
   color: #fff;
   height: 52px;
-  min-width: 100%;
   margin: 0;
   white-space: nowrap;
   background: #0D63C9;
   padding: 5px 32px;
-  margin-left: 2px;
 }
 
 div.home div.home-content div.home-search .btn-search:hover {
@@ -130,6 +128,12 @@ div.home div.home-content {
     line-height: 125px;
   }
 
+  div.home div.home-content div.home-search form.home-search-form {
+    display: grid;
+    width: 100%;
+    max-width: 480px;
+  }
+
   div.home div.home-content div.home-search .pickup-location,
   div.home div.home-content div.home-search .drop-off-location,
   div.home div.home-content div.home-search .from,
@@ -147,6 +151,10 @@ div.home div.home-content {
     padding: 20px;
     border-radius: 20px;
     margin: 10px 0;
+  }
+
+  div.home div.home-content div.home-search .btn-search {
+    margin: 10px;
   }
 
   div.home footer div.secure-payment {
@@ -191,6 +199,11 @@ div.home div.home-content {
     padding: 20px;
     border-radius: 20px;
     margin: 6% 5%;
+  }
+
+  div.home div.home-content div.home-search .btn-search {
+    width: 190px;
+    margin-left: 7px;
   }
 
   div.home footer div.secure-payment {
