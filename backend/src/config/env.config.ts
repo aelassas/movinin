@@ -50,7 +50,7 @@ const env = {
       ? Const.PAGINATION_MODE.INFINITE_SCROLL
       : Const.PAGINATION_MODE.CLASSIC,
   SIZE_UNIT: 'm²',
-  CURRENCY: import.meta.env.VITE_BC_CURRENCY || '$',
+  CURRENCY: import.meta.env.VITE_MI_CURRENCY || '$',
 }
 
 export default env

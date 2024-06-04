@@ -58,8 +58,8 @@ const env = {
    * Must be a supported currency: https://docs.stripe.com/currencies
    * */
   STRIPE_CURRENCY_CODE: String(import.meta.env.VITE_MI_STRIPE_CURRENCY_CODE || 'USD'),
-  CURRENCY: import.meta.env.VITE_BC_CURRENCY || '$',
-  SET_LANGUAGE_FROM_IP: (import.meta.env.VITE_BC_SET_LANGUAGE_FROM_IP && import.meta.env.VITE_BC_SET_LANGUAGE_FROM_IP.toLowerCase()) === 'true',
+  CURRENCY: import.meta.env.VITE_MI_CURRENCY || '$',
+  SET_LANGUAGE_FROM_IP: (import.meta.env.VITE_MI_SET_LANGUAGE_FROM_IP && import.meta.env.VITE_MI_SET_LANGUAGE_FROM_IP.toLowerCase()) === 'true',
 }
 
 export default env
