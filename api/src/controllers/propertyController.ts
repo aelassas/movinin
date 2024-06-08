@@ -491,7 +491,7 @@ export const getProperties = async (req: Request, res: Response) => {
     const rentalTerms = body.rentalTerms || []
     const { availability } = body
     const options = 'i'
-    const language = body.language || env.DEFAULT_LANGUAGE
+    // const language = body.language || env.DEFAULT_LANGUAGE
 
     const $match: mongoose.FilterQuery<any> = {
       $and: [
@@ -529,54 +529,58 @@ export const getProperties = async (req: Request, res: Response) => {
           },
         },
         { $unwind: { path: '$agency', preserveNullAndEmptyArrays: false } },
-        {
-          $lookup: {
-            from: 'Location',
-            let: { locationId: '$location' },
-            pipeline: [
-              {
-                $match: {
-                  $expr: { $eq: ['$_id', '$$locationId'] },
-                },
-              },
-              {
-                $lookup: {
-                  from: 'LocationValue',
-                  let: { values: '$values' },
-                  pipeline: [
-                    {
-                      $match: {
-                        $and: [
-                          { $expr: { $in: ['$_id', '$$values'] } },
-                          { $expr: { $eq: ['$language', language] } },
-                        ],
-                      },
-                    },
-                  ],
-                  as: 'value',
-                },
-
-              },
-              { $unwind: { path: '$value', preserveNullAndEmptyArrays: false } },
-              {
-                $addFields: { name: '$value.value' },
-              },
-            ],
-            as: 'location',
-          },
-        },
-        { $unwind: { path: '$location', preserveNullAndEmptyArrays: false } },
+        // {
+        //   $lookup: {
+        //     from: 'Location',
+        //     let: { locationId: '$location' },
+        //     pipeline: [
+        //       {
+        //         $match: {
+        //           $expr: { $eq: ['$_id', '$$locationId'] },
+        //         },
+        //       },
+        //       {
+        //         $lookup: {
+        //           from: 'LocationValue',
+        //           let: { values: '$values' },
+        //           pipeline: [
+        //             {
+        //               $match: {
+        //                 $and: [
+        //                   { $expr: { $in: ['$_id', '$$values'] } },
+        //                   { $expr: { $eq: ['$language', language] } },
+        //                 ],
+        //               },
+        //             },
+        //           ],
+        //           as: 'value',
+        //         },
+        //       },
+        //       { $unwind: { path: '$value', preserveNullAndEmptyArrays: false } },
+        //       {
+        //         $addFields: { name: '$value.value' },
+        //       },
+        //     ],
+        //     as: 'location',
+        //   },
+        // },
+        // { $unwind: { path: '$location', preserveNullAndEmptyArrays: false } },
+        // {
+        //   $match: {
+        //     $or: [
+        //       { name: { $regex: keyword, $options: options } },
+        //       { 'location.name': { $regex: keyword, $options: options } },
+        //     ],
+        //   },
+        // },
         {
           $match: {
-            $or: [
-              { name: { $regex: keyword, $options: options } },
-              { 'location.name': { $regex: keyword, $options: options } },
-            ],
+            name: { $regex: keyword, $options: options },
           },
         },
         {
           $facet: {
-            resultData: [{ $sort: { name: 1, _id: 1 } }, { $skip: (page - 1) * size }, { $limit: size }],
+            resultData: [{ $sort: { updatedAt: -1, _id: 1 } }, { $skip: (page - 1) * size }, { $limit: size }],
             pageInfo: [
               {
                 $count: 'totalRecords',
@@ -729,20 +733,20 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
           },
         },
         { $unwind: { path: '$agency', preserveNullAndEmptyArrays: false } },
-        {
-          $lookup: {
-            from: 'Location',
-            let: { location: '$location' },
-            pipeline: [
-              {
-                $match: {
-                  $expr: { $eq: ['$_id', '$$location'] },
-                },
-              },
-            ],
-            as: 'location',
-          },
-        },
+        // {
+        //   $lookup: {
+        //     from: 'Location',
+        //     let: { location: '$location' },
+        //     pipeline: [
+        //       {
+        //         $match: {
+        //           $expr: { $eq: ['$_id', '$$location'] },
+        //         },
+        //       },
+        //     ],
+        //     as: 'location',
+        //   },
+        // },
         {
           $addFields,
         },
