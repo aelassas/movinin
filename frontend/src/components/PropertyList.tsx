@@ -207,7 +207,7 @@ const PropertyList = ({
             const price = (from && to && helper.price(property, from, to)) || 0
 
             return (
-              <article key={property._id} style={sizeAuto ? { width: 'auto' } : {}}>
+              <article key={property._id}>
 
                 <div className="left-panel">
                   <img

@@ -28,6 +28,7 @@ import * as PropertyService from '../services/PropertyService'
 import Pager from './Pager'
 import PropertyInfo from './PropertyInfo'
 import AgencyBadge from './AgencyBadge'
+import SimpleBackdrop from './SimpleBackdrop'
 
 import '../assets/css/property-list.css'
 
@@ -391,6 +392,7 @@ const PropertyList = ({
             onPrevious={() => setPage(page - 1)}
           />
         )}
+        {loading && <SimpleBackdrop text={commonStrings.LOADING} />}
       </>
     )) || <></>
   )
