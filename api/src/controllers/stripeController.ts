@@ -8,6 +8,7 @@ import * as env from '../config/env.config'
 import * as helper from '../common/helper'
 import Booking from '../models/Booking'
 import User from '../models/User'
+import Property from '../models/Property'
 import * as bookingController from './bookingController'
 
 /**
@@ -129,6 +130,9 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
       booking.expireAt = undefined
       booking.status = movininTypes.BookingStatus.Paid
       await booking.save()
+
+      // Mark property as unavailable
+      await Property.updateOne({ _id: booking.property }, { available: false })
 
       // Send confirmation email
       const user = await User.findById(booking.renter)
