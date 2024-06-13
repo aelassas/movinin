@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   OutlinedInput, InputLabel,
@@ -28,7 +28,7 @@ import {
   EmbeddedCheckout,
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import PropertyList from '../components/PropertyList'
+import { GoogleReCaptcha } from 'react-google-recaptcha-v3'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '../config/env.config'
@@ -41,9 +41,11 @@ import * as UserService from '../services/UserService'
 import * as PropertyService from '../services/PropertyService'
 import * as LocationService from '../services/LocationService'
 import * as StripeService from '../services/StripeService'
+import PropertyList from '../components/PropertyList'
 import Layout from '../components/Layout'
 import Error from '../components/Error'
 import DatePicker from '../components/DatePicker'
+import ReCaptchaProvider from '../components/ReCaptchaProvider'
 import NoMatch from './NoMatch'
 import Info from './Info'
 
@@ -86,6 +88,7 @@ const Checkout = () => {
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
   const [payLater, setPayLater] = useState(false)
+  const [recaptchaError, setRecaptchaError] = useState(false)
 
   const [paymentFailed, setPaymentFailed] = useState(false)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
@@ -217,6 +220,13 @@ const Checkout = () => {
     }
   }
 
+  const handleRecaptchaVerify = useCallback(async (token: string) => {
+    const ip = await UserService.getIP()
+    const status = await UserService.verifyRecaptcha(token, ip)
+    const valid = status === 200
+    setRecaptchaError(!valid)
+  }, [])
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault()
@@ -239,6 +249,10 @@ const Checkout = () => {
 
         const _birthDateValid = validateBirthDate(birthDate)
         if (!_birthDateValid) {
+          return
+        }
+
+        if (env.RECAPTCHA_ENABLED && recaptchaError) {
           return
         }
 
@@ -380,264 +394,274 @@ const Checkout = () => {
   }
 
   return (
-    <Layout onLoad={onLoad} strict={false}>
-      {visible && property && from && to && location && (
-        <div className="booking">
-          <Paper className="booking-form" elevation={10}>
-            <h1 className="booking-form-title">
-              {' '}
-              {strings.BOOKING_HEADING}
-              {' '}
-            </h1>
-            <form onSubmit={handleSubmit}>
-              <div>
+    <ReCaptchaProvider>
+      <Layout onLoad={onLoad} strict={false}>
+        {visible && property && from && to && location && (
+          <div className="booking">
+            <Paper className="booking-form" elevation={10}>
+              <h1 className="booking-form-title">
+                {' '}
+                {strings.BOOKING_HEADING}
+                {' '}
+              </h1>
+              <form onSubmit={handleSubmit}>
+                <div>
 
-                <PropertyList
-                  properties={[property]}
-                  hideActions
-                  hidePrice
-                  sizeAuto
-                  language={language}
-                />
+                  <PropertyList
+                    properties={[property]}
+                    hideActions
+                    hidePrice
+                    sizeAuto
+                    language={language}
+                  />
 
-                <div className="booking-options-container">
-                  <div className="booking-info">
-                    <BookingIcon />
-                    <span>{strings.BOOKING_OPTIONS}</span>
+                  <div className="booking-options-container">
+                    <div className="booking-info">
+                      <BookingIcon />
+                      <span>{strings.BOOKING_OPTIONS}</span>
+                    </div>
+                    <div className="booking-options">
+                      <FormControl fullWidth margin="dense">
+                        <FormControlLabel
+                          disabled={property.cancellation === -1 || property.cancellation === 0 || !!clientSecret}
+                          control={<Switch checked={cancellation} onChange={handleCancellationChange} color="primary" />}
+                          label={(
+                            <span>
+                              <span className="booking-option-label">{csStrings.CANCELLATION}</span>
+                              <span className="booking-option-value">{helper.getCancellationOption(property.cancellation, language)}</span>
+                            </span>
+                          )}
+                        />
+                      </FormControl>
+
+                    </div>
                   </div>
-                  <div className="booking-options">
-                    <FormControl fullWidth margin="dense">
-                      <FormControlLabel
-                        disabled={property.cancellation === -1 || property.cancellation === 0 || !!clientSecret}
-                        control={<Switch checked={cancellation} onChange={handleCancellationChange} color="primary" />}
-                        label={(
-                          <span>
-                            <span className="booking-option-label">{csStrings.CANCELLATION}</span>
-                            <span className="booking-option-value">{helper.getCancellationOption(property.cancellation, language)}</span>
-                          </span>
-                        )}
-                      />
-                    </FormControl>
 
-                  </div>
-                </div>
+                  <div className="booking-details-container">
+                    <div className="booking-info">
+                      <PropertyIcon />
+                      <span>{strings.BOOKING_DETAILS}</span>
+                    </div>
+                    <div className="booking-details">
+                      <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="booking-detail-title">{strings.DAYS}</span>
+                        <div className="booking-detail-value">
+                          {daysLabel}
+                        </div>
+                      </div>
+                      <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="booking-detail-title">{commonStrings.LOCATION}</span>
+                        <div className="booking-detail-value">{location.name}</div>
+                      </div>
 
-                <div className="booking-details-container">
-                  <div className="booking-info">
-                    <PropertyIcon />
-                    <span>{strings.BOOKING_DETAILS}</span>
-                  </div>
-                  <div className="booking-details">
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{strings.DAYS}</span>
-                      <div className="booking-detail-value">
-                        {daysLabel}
+                      <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="booking-detail-title">{strings.PROPERTY}</span>
+                        <div className="booking-detail-value">{`${property.name} (${helper.priceLabel(property, language)})`}</div>
+                      </div>
+                      <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="booking-detail-title">{commonStrings.AGENCY}</span>
+                        <div className="booking-detail-value">
+                          <div className="property-agency">
+                            <img src={movininHelper.joinURL(env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: env.AGENCY_IMAGE_HEIGHT }} />
+                            <span className="property-agency-name">{property.agency.fullName}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="booking-detail-title">{strings.COST}</span>
+                        <div className="booking-detail-value booking-price">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</div>
                       </div>
                     </div>
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{commonStrings.LOCATION}</span>
-                      <div className="booking-detail-value">{location.name}</div>
-                    </div>
+                  </div>
+                  {!authenticated && (
+                    <div className="renter-details">
+                      <div className="booking-info">
+                        <RenterIcon />
+                        <span>{strings.RENTER_DETAILS}</span>
+                      </div>
+                      <div className="renter-details-form">
+                        <FormControl fullWidth margin="dense">
+                          <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
+                          <OutlinedInput type="text" label={commonStrings.FULL_NAME} required onChange={handleFullNameChange} autoComplete="off" />
+                        </FormControl>
+                        <FormControl fullWidth margin="dense">
+                          <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
+                          <OutlinedInput
+                            type="text"
+                            label={commonStrings.EMAIL}
+                            error={!emailValid || emailRegitered}
+                            onBlur={handleEmailBlur}
+                            onChange={handleEmailChange}
+                            required
+                            autoComplete="off"
+                          />
+                          <FormHelperText error={!emailValid || emailRegitered}>
+                            {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
+                            {(emailRegitered && (
+                              <span>
+                                <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
+                                <span> </span>
+                                <a href={`/sign-in?p=${property._id}&l=${location._id}&f=${from.getTime()}&t=${to.getTime()}&from=checkout`}>{strings.SIGN_IN}</a>
+                              </span>
+                            ))
+                              || ''}
+                            {(emailInfo && strings.EMAIL_INFO) || ''}
+                          </FormHelperText>
+                        </FormControl>
+                        <FormControl fullWidth margin="dense">
+                          <InputLabel className="required">{commonStrings.PHONE}</InputLabel>
+                          <OutlinedInput type="text" label={commonStrings.PHONE} error={!phoneValid} onBlur={handlePhoneBlur} onChange={handlePhoneChange} required autoComplete="off" />
+                          <FormHelperText error={!phoneValid}>
+                            {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
+                            {(phoneInfo && strings.PHONE_INFO) || ''}
+                          </FormHelperText>
+                        </FormControl>
+                        <FormControl fullWidth margin="dense">
+                          <DatePicker
+                            label={commonStrings.BIRTH_DATE}
+                            variant="outlined"
+                            required
+                            onChange={(_birthDate) => {
+                              if (_birthDate) {
+                                const _birthDateValid = validateBirthDate(_birthDate)
 
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{strings.PROPERTY}</span>
-                      <div className="booking-detail-value">{`${property.name} (${helper.priceLabel(property, language)})`}</div>
-                    </div>
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{commonStrings.AGENCY}</span>
-                      <div className="booking-detail-value">
-                        <div className="property-agency">
-                          <img src={movininHelper.joinURL(env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: env.AGENCY_IMAGE_HEIGHT }} />
-                          <span className="property-agency-name">{property.agency.fullName}</span>
+                                setBirthDate(_birthDate)
+                                setBirthDateValid(_birthDateValid)
+                              }
+                            }}
+                            language={language}
+                          />
+                          <FormHelperText error={!birthDateValid}>{(!birthDateValid && helper.getBirthDateError(property.minimumAge)) || ''}</FormHelperText>
+                        </FormControl>
+
+                        {env.RECAPTCHA_ENABLED && (
+                          <div className="recaptcha">
+                            <GoogleReCaptcha onVerify={handleRecaptchaVerify} />
+                          </div>
+                        )}
+
+                        <div className="booking-tos">
+                          <table>
+                            <tbody>
+                              <tr>
+                                <td aria-label="tos">
+                                  <Checkbox checked={tosChecked} onChange={handleTosChange} color="primary" />
+                                </td>
+                                <td>
+                                  <Link href="/tos" target="_blank" rel="noreferrer">
+                                    {commonStrings.TOS}
+                                  </Link>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     </div>
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{strings.COST}</span>
-                      <div className="booking-detail-value booking-price">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</div>
-                    </div>
-                  </div>
-                </div>
-                {!authenticated && (
-                  <div className="renter-details">
-                    <div className="booking-info">
-                      <RenterIcon />
-                      <span>{strings.RENTER_DETAILS}</span>
-                    </div>
-                    <div className="renter-details-form">
-                      <FormControl fullWidth margin="dense">
-                        <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
-                        <OutlinedInput type="text" label={commonStrings.FULL_NAME} required onChange={handleFullNameChange} autoComplete="off" />
-                      </FormControl>
-                      <FormControl fullWidth margin="dense">
-                        <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
-                        <OutlinedInput
-                          type="text"
-                          label={commonStrings.EMAIL}
-                          error={!emailValid || emailRegitered}
-                          onBlur={handleEmailBlur}
-                          onChange={handleEmailChange}
-                          required
-                          autoComplete="off"
-                        />
-                        <FormHelperText error={!emailValid || emailRegitered}>
-                          {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
-                          {(emailRegitered && (
-                            <span>
-                              <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
-                              <span> </span>
-                              <a href={`/sign-in?p=${property._id}&l=${location._id}&f=${from.getTime()}&t=${to.getTime()}&from=checkout`}>{strings.SIGN_IN}</a>
-                            </span>
-                          ))
-                            || ''}
-                          {(emailInfo && strings.EMAIL_INFO) || ''}
-                        </FormHelperText>
-                      </FormControl>
-                      <FormControl fullWidth margin="dense">
-                        <InputLabel className="required">{commonStrings.PHONE}</InputLabel>
-                        <OutlinedInput type="text" label={commonStrings.PHONE} error={!phoneValid} onBlur={handlePhoneBlur} onChange={handlePhoneChange} required autoComplete="off" />
-                        <FormHelperText error={!phoneValid}>
-                          {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
-                          {(phoneInfo && strings.PHONE_INFO) || ''}
-                        </FormHelperText>
-                      </FormControl>
-                      <FormControl fullWidth margin="dense">
-                        <DatePicker
-                          label={commonStrings.BIRTH_DATE}
-                          variant="outlined"
-                          required
-                          onChange={(_birthDate) => {
-                            if (_birthDate) {
-                              const _birthDateValid = validateBirthDate(_birthDate)
+                  )}
 
-                              setBirthDate(_birthDate)
-                              setBirthDateValid(_birthDateValid)
-                            }
-                          }}
-                          language={language}
-                        />
-                        <FormHelperText error={!birthDateValid}>{(!birthDateValid && helper.getBirthDateError(property.minimumAge)) || ''}</FormHelperText>
-                      </FormControl>
-                      <div className="booking-tos">
-                        <table>
-                          <tbody>
-                            <tr>
-                              <td aria-label="tos">
-                                <Checkbox checked={tosChecked} onChange={handleTosChange} color="primary" />
-                              </td>
-                              <td>
-                                <Link href="/tos" target="_blank" rel="noreferrer">
-                                  {commonStrings.TOS}
-                                </Link>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                  {property.agency.payLater && (
+                    <div className="payment-options-container">
+                      <div className="booking-info">
+                        <PaymentOptionsIcon />
+                        <span>{strings.PAYMENT_OPTIONS}</span>
+                      </div>
+                      <div className="payment-options">
+                        <FormControl>
+                          <RadioGroup
+                            defaultValue="payOnline"
+                            onChange={(event) => {
+                              setPayLater(event.target.value === 'payLater')
+                            }}
+                          >
+                            <FormControlLabel
+                              value="payLater"
+                              control={<Radio />}
+                              label={(
+                                <span className="payment-button">
+                                  <span>{strings.PAY_LATER}</span>
+                                  <span className="payment-info">{`(${strings.PAY_LATER_INFO})`}</span>
+                                </span>
+                              )}
+                            />
+                            <FormControlLabel
+                              value="payOnline"
+                              control={<Radio />}
+                              label={(
+                                <span className="payment-button">
+                                  <span>{strings.PAY_ONLINE}</span>
+                                  <span className="payment-info">{`(${strings.PAY_ONLINE_INFO})`}</span>
+                                </span>
+                              )}
+                            />
+                          </RadioGroup>
+                        </FormControl>
                       </div>
                     </div>
-                  </div>
-                )}
-
-                {property.agency.payLater && (
-                  <div className="payment-options-container">
-                    <div className="booking-info">
-                      <PaymentOptionsIcon />
-                      <span>{strings.PAYMENT_OPTIONS}</span>
-                    </div>
-                    <div className="payment-options">
-                      <FormControl>
-                        <RadioGroup
-                          defaultValue="payOnline"
-                          onChange={(event) => {
-                            setPayLater(event.target.value === 'payLater')
-                          }}
-                        >
-                          <FormControlLabel
-                            value="payLater"
-                            control={<Radio />}
-                            label={(
-                              <span className="payment-button">
-                                <span>{strings.PAY_LATER}</span>
-                                <span className="payment-info">{`(${strings.PAY_LATER_INFO})`}</span>
-                              </span>
-                            )}
-                          />
-                          <FormControlLabel
-                            value="payOnline"
-                            control={<Radio />}
-                            label={(
-                              <span className="payment-button">
-                                <span>{strings.PAY_ONLINE}</span>
-                                <span className="payment-info">{`(${strings.PAY_ONLINE_INFO})`}</span>
-                              </span>
-                            )}
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </div>
-                  </div>
-                )}
-
-                {(!property.agency.payLater || !payLater) && (
-                  clientSecret && (
-                    <div className="payment-options-container">
-
-                      <EmbeddedCheckoutProvider
-                        stripe={stripePromise}
-                        options={{ clientSecret }}
-                      >
-                        <EmbeddedCheckout />
-                      </EmbeddedCheckoutProvider>
-                    </div>
-                  )
-                )}
-                <div className="booking-buttons">
-                  {(!clientSecret || payLater) && (
-                    <Button type="submit" variant="contained" className="btn-checkout btn-margin-bottom" size="small" disabled={loading}>
-                      {
-                        loading
-                          ? <CircularProgress color="inherit" size={24} />
-                          : strings.BOOK
-                      }
-                    </Button>
                   )}
-                  <Button
-                    variant="contained"
-                    className="btn-cancel btn-margin-bottom"
-                    size="small"
-                    onClick={async () => {
-                      try {
-                        if (bookingId && sessionId) {
-                          //
-                          // Delete temporary booking on cancel.
-                          // Otherwise, temporary bookings are
-                          // automatically deleted through a TTL index.
-                          //
-                          await BookingService.deleteTempBooking(bookingId, sessionId)
+
+                  {(!property.agency.payLater || !payLater) && (
+                    clientSecret && (
+                      <div className="payment-options-container">
+
+                        <EmbeddedCheckoutProvider
+                          stripe={stripePromise}
+                          options={{ clientSecret }}
+                        >
+                          <EmbeddedCheckout />
+                        </EmbeddedCheckoutProvider>
+                      </div>
+                    )
+                  )}
+                  <div className="booking-buttons">
+                    {(!clientSecret || payLater) && (
+                      <Button type="submit" variant="contained" className="btn-checkout btn-margin-bottom" size="small" disabled={loading}>
+                        {
+                          loading
+                            ? <CircularProgress color="inherit" size={24} />
+                            : strings.BOOK
                         }
-                      } catch (err) {
-                        helper.error(err)
-                      } finally {
-                        navigate('/')
-                      }
-                    }}
-                  >
-                    {commonStrings.CANCEL}
-                  </Button>
+                      </Button>
+                    )}
+                    <Button
+                      variant="contained"
+                      className="btn-cancel btn-margin-bottom"
+                      size="small"
+                      onClick={async () => {
+                        try {
+                          if (bookingId && sessionId) {
+                            //
+                            // Delete temporary booking on cancel.
+                            // Otherwise, temporary bookings are
+                            // automatically deleted through a TTL index.
+                            //
+                            await BookingService.deleteTempBooking(bookingId, sessionId)
+                          }
+                        } catch (err) {
+                          helper.error(err)
+                        } finally {
+                          navigate('/')
+                        }
+                      }}
+                    >
+                      {commonStrings.CANCEL}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <div className="form-error">
-                {tosError && <Error message={commonStrings.TOS_ERROR} />}
-                {error && <Error message={commonStrings.GENERIC_ERROR} />}
-                {paymentFailed && <Error message={strings.PAYMENT_FAILED} />}
-              </div>
-            </form>
-          </Paper>
-        </div>
-      )}
-      {noMatch && <NoMatch hideHeader />}
-      {success && <Info message={payLater ? strings.PAY_LATER_SUCCESS : strings.SUCCESS} />}
-    </Layout>
+                <div className="form-error">
+                  {tosError && <Error message={commonStrings.TOS_ERROR} />}
+                  {error && <Error message={commonStrings.GENERIC_ERROR} />}
+                  {paymentFailed && <Error message={strings.PAYMENT_FAILED} />}
+                  {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
+                </div>
+              </form>
+            </Paper>
+          </div>
+        )}
+        {noMatch && <NoMatch hideHeader />}
+        {success && <Info message={payLater ? strings.PAY_LATER_SUCCESS : strings.SUCCESS} />}
+      </Layout>
+    </ReCaptchaProvider>
   )
 }
 
