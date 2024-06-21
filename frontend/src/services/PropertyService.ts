@@ -13,7 +13,7 @@ import * as UserService from './UserService'
 export const getProperties = (data: movininTypes.GetPropertiesPayload, page: number, size: number): Promise<movininTypes.Result<movininTypes.Property>> =>
   axiosInstance
     .post(
-      `/api/frontend-properties/${page}/${size}}`,
+      `/api/frontend-properties/${page}/${size}`,
       data
     ).then((res) => res.data)
 
