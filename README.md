@@ -37,12 +37,12 @@ Movin' In can run in a Docker container. Follow this step by step [guide](https:
 ## Live Demo
 
 ### Frontend
-* URL: https://movinin.v6.rocks:3004/
+* URL: https://movinin.dynv6.net:3004/
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
 ### Backend
-* URL: https://movinin.v6.rocks:3003/
+* URL: https://movinin.dynv6.net:3003/
 * Login: admin@movinin.io
 * Password: M00vinin
 
