@@ -55,6 +55,14 @@ const Property = () => {
     }
   }, [property])
 
+  useEffect(() => {
+    if (openImageDialog) {
+      document.body.classList.add('stop-scrolling')
+    } else {
+      document.body.classList.remove('stop-scrolling')
+    }
+  }, [openImageDialog])
+
   const onLoad = async () => {
     const { state } = location
     if (!state) {

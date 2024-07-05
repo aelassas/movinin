@@ -143,7 +143,7 @@ const ImageViewer = ({
       // tabIndex={0}
       onKeyDown={handleKeyDown}
       onClick={handleClick}
-      style={backgroundStyle}
+      style={{ ...backgroundStyle, height: window.innerHeight }}
       role="dialog"
     >
       <div className="popup">
