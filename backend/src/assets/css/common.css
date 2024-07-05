@@ -251,3 +251,8 @@ div.content {
     justify-content: flex-end;
   }
 }
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}

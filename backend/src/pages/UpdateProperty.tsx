@@ -365,8 +365,14 @@ const UpdateProperty = () => {
                   tempImages.splice(tempImages.indexOf(img.filename), 1)
                   setImages(images)
                 }}
-                onImageViewerOpen={() => setImageViewerOpen(true)}
-                onImageViewerClose={() => setImageViewerOpen(false)}
+                onImageViewerOpen={() => {
+                  setImageViewerOpen(true)
+                  document.body.classList.add('stop-scrolling')
+                }}
+                onImageViewerClose={() => {
+                  setImageViewerOpen(false)
+                  document.body.classList.remove('stop-scrolling')
+                }}
                 image={{ filename: property?.image || '', temp: false }}
                 images={property?.images?.map((_image) => ({ filename: _image || '', temp: false }))}
               />

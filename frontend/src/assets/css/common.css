@@ -237,3 +237,8 @@ div.content {
     margin-bottom: 5px;
   }
 }
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}

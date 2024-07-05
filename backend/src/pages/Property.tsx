@@ -58,6 +58,14 @@ const Property = () => {
     }
   }, [property])
 
+  useEffect(() => {
+    if (openImageDialog) {
+      document.body.classList.add('stop-scrolling')
+    } else {
+      document.body.classList.remove('stop-scrolling')
+    }
+  }, [openImageDialog])
+
   const onLoad = async (_user?: movininTypes.User) => {
     if (_user && _user.verified) {
       setLoading(true)
