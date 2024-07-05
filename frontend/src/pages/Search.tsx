@@ -113,7 +113,6 @@ const Properties = () => {
                   className="filter"
                   agencies={allAgencies}
                   onChange={handleAgencyFilterChange}
-                  collapse={!env.isMobile()}
                 />
                 <PropertyTypeFilter
                   className="filter"
