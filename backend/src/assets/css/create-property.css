@@ -5,7 +5,7 @@ div.create-property {
   flex-direction: column;
   flex: 1 0 auto;
   align-items: center;
-  transform: translate3d(0, 0, 0);
+  /* transform: translate3d(0, 0, 0); */
   margin: 45px 0;
 }
 
