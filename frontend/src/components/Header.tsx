@@ -280,7 +280,7 @@ const Header = ({
   return (
     (!hidden && (
       <div style={classes.grow} className="header">
-        <AppBar position="fixed" sx={{ bgcolor: '#fff', boxShadow: 'none', borderBottom: '1px solid #ddd' }}>
+        <AppBar position="relative" sx={{ bgcolor: '#fff', boxShadow: 'none', borderBottom: '1px solid #ddd' }}>
           <Toolbar className="toolbar">
             {isLoaded && !loading && (
               <>
