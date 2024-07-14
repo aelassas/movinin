@@ -44,9 +44,7 @@ interface BookingListProps {
   statuses?: string[]
   filter?: movininTypes.Filter | null
   property?: string
-  offset?: number
   user?: movininTypes.User
-  containerClassName?: string
   hideDates?: boolean
   hidePropertyColumn?: boolean
   hideAgencyColumn?: boolean
@@ -61,9 +59,7 @@ const BookingList = ({
   statuses: bookingStatuses,
   filter: bookingFilter,
   property: bookingProperty,
-  offset: bookingOffset,
   user: bookingUser,
-  containerClassName,
   hideDates,
   hidePropertyColumn,
   hideAgencyColumn,
@@ -83,7 +79,6 @@ const BookingList = ({
   const [statuses, setStatuses] = useState<string[] | undefined>(bookingStatuses)
   const [filter, setFilter] = useState<movininTypes.Filter | undefined | null>(bookingFilter)
   const [property, setProperty] = useState<string>(bookingProperty || '')
-  const [offset, setOffset] = useState(0)
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     pageSize: env.BOOKINGS_PAGE_SIZE,
     page: 0,
@@ -176,10 +171,6 @@ const BookingList = ({
   useEffect(() => {
     setProperty(bookingProperty || '')
   }, [bookingProperty])
-
-  useEffect(() => {
-    setOffset(bookingOffset || 0)
-  }, [bookingOffset])
 
   useEffect(() => {
     setUser(bookingUser)
@@ -338,25 +329,21 @@ const BookingList = ({
 
   useEffect(() => {
     if (env.isMobile()) {
-      const element: HTMLDivElement | null = containerClassName
-        ? document.querySelector(`.${containerClassName}`)
-        : document.querySelector('div.bookings')
+      const element = document.querySelector('body')
 
       if (element) {
-        element.onscroll = (event: Event) => {
-          if (fetch && !loading) {
-            const target = event.target as HTMLDivElement
-
-            if (target.scrollTop > 0
-              && target.offsetHeight + target.scrollTop + env.INFINITE_SCROLL_OFFSET >= target.scrollHeight) {
-              setLoading(true)
-              setPage(page + 1)
-            }
+        element.onscroll = () => {
+          if (fetch
+            && !loading
+            && window.scrollY > 0
+            && window.scrollY + window.innerHeight + env.INFINITE_SCROLL_OFFSET >= document.body.scrollHeight) {
+            setLoading(true)
+            setPage(page + 1)
           }
         }
       }
     }
-  }, [containerClassName, page, fetch, loading, offset])
+  }, [page, fetch, loading])
 
   const handleCloseCancelBooking = () => {
     setOpenCancelDialog(false)
