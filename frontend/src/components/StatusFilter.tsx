@@ -4,6 +4,7 @@ import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '../lang/common'
 import * as helper from '../common/helper'
 import Accordion from '../components/Accordion'
+import BookingStatus from './BookingStatus'
 
 import '../assets/css/status-filter.css'
 
@@ -112,14 +113,7 @@ const StatusFilter = ({
                 className="status-checkbox"
                 onChange={handleCheckStatusChange}
               />
-              <span
-                onClick={handleStatusClick}
-                className={`bs bs-${status.value.toLowerCase()}`}
-                role="button"
-                tabIndex={0}
-              >
-                {helper.getBookingStatus(status.value)}
-              </span>
+              <BookingStatus value={status.value} onClick={handleStatusClick} />
             </li>
           ))}
         </ul>
