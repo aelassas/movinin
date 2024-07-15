@@ -51,8 +51,8 @@ const App = () => (
             {/* <Route path="/create-agency" element={<CreateAgency />} /> */}
             {/* <Route path="/update-agency" element={<UpdateAgency />} /> */}
             <Route path="/locations" element={<Locations />} />
-            <Route path="/create-location" element={<CreateLocation />} />
-            <Route path="/update-location" element={<UpdateLocation />} />
+            {/* <Route path="/create-location" element={<CreateLocation />} /> */}
+            {/* <Route path="/update-location" element={<UpdateLocation />} /> */}
             <Route path="/properties" element={<Properties />} />
             <Route path="/property" element={<Property />} />
             <Route path="/property-bookings" element={<PropertyBookings />} />
