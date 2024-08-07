@@ -166,7 +166,13 @@ const UserList = ({
                   </Badge>
                 )
               } else {
-                userAvatar = avatar
+                userAvatar = (
+                  <Badge
+                    overlap="circular"
+                  >
+                    {avatar}
+                  </Badge>
+                )
               }
             }
           } else {
@@ -192,7 +198,13 @@ const UserList = ({
                 </Badge>
               )
             } else {
-              userAvatar = avatar
+              userAvatar = (
+                <Badge
+                  overlap="circular"
+                >
+                  {avatar}
+                </Badge>
+              )
             }
           }
 
