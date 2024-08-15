@@ -61,7 +61,7 @@ jobs:
       env:
         NODE_ENV: ${{ vars.NODE_ENV }}
         MI_HTTPS: ${{ vars.MI_HTTPS }}
-        MI_DB_URI: ${{ secrets.MI_DB_URI }}
+        MI_DB_URI: ${{ secrets.MI_DEMO_DB_URI }}
         MI_DB_SSL: ${{ vars.MI_DB_SSL }}
         MI_DB_DEBUG: ${{ vars.MI_DB_DEBUG }}
         MI_COOKIE_SECRET: ${{ secrets.MI_COOKIE_SECRET }}

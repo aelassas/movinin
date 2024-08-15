@@ -6,7 +6,8 @@ const locationSchema = new Schema<env.Location>(
     values: {
       type: [Schema.Types.ObjectId],
       ref: 'LocationValue',
-      validate: (value: any): boolean => Array.isArray(value) && value.length > 1,
+      required: [true, "can't be blank"],
+      validate: (value: any): boolean => Array.isArray(value),
     },
   },
   {
