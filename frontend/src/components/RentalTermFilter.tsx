@@ -13,14 +13,14 @@ interface RentalTermFilterProps {
   onChange?: (values: movininTypes.RentalTerm[]) => void
 }
 
+const allRentalTerms = movininHelper.getAllRentalTerms()
+
 const RentalTermFilter = ({
   className,
   onChange
 }: RentalTermFilterProps) => {
-  const allRentalTerms = movininHelper.getAllRentalTerms()
-
-  const [allChecked, setAllChecked] = useState(true)
-  const [values, setValues] = useState(allRentalTerms)
+  const [allChecked, setAllChecked] = useState(false)
+  const [values, setValues] = useState<movininTypes.RentalTerm[]>([])
 
   const monthlyRef = useRef<HTMLInputElement>(null)
   const weeklyRef = useRef<HTMLInputElement>(null)
@@ -40,6 +40,12 @@ const RentalTermFilter = ({
       yearlyRef.current.checked = true
     }
   }, [allChecked])
+
+  const handleChange = (_values: movininTypes.RentalTerm[]) => {
+    if (onChange) {
+      onChange(_values.length === 0 ? allRentalTerms : movininHelper.clone(_values))
+    }
+  }
 
   const handleCheckMonthlyChange = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
     if ('checked' in e.currentTarget && e.currentTarget.checked) {
@@ -61,9 +67,7 @@ const RentalTermFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleMonthlyClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -94,9 +98,7 @@ const RentalTermFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleWeeklyClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -127,9 +129,7 @@ const RentalTermFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleDailyClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -160,9 +160,7 @@ const RentalTermFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleYearlyClick = (e: React.MouseEvent<HTMLElement>) => {

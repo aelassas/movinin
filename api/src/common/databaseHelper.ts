@@ -80,7 +80,7 @@ const createBookingIndex = async (): Promise<void> => {
 const createCollection = async<T>(model: Model<T>) => {
   try {
     await model.collection.indexes()
-  } catch (err) {
+  } catch {
     await model.createCollection()
     await model.createIndexes()
   }
@@ -179,6 +179,19 @@ export const InitializeLocations = async () => {
         console.log('English value not found for location:', location.id)
       }
     }
+
+    // Delete LocationValue nin env.LANGUAGES
+    const values = await LocationValue.find({ language: { $nin: env.LANGUAGES } })
+    const valuesIds = values.map((v) => v.id)
+    for (const val of values) {
+      const _locations = await Location.find({ values: val._id })
+      for (const _loc of _locations) {
+        _loc.values.splice(_loc.values.findIndex((v) => v.equals(val.id)), 1)
+        await _loc.save()
+        await LocationValue.deleteMany({ $and: [{ _id: { $in: _loc.values } }, { _id: { $in: valuesIds } }] })
+      }
+    }
+
     logger.info('Locations initialized')
     return true
   } catch (err) {

@@ -105,7 +105,7 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       setBirthDateValid(true)
 
       setVisible(true)
-    } catch (err) {
+    } catch {
       await UserService.signout(navigation, false, true)
     }
   }

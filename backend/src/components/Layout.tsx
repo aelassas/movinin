@@ -87,7 +87,7 @@ const Layout = ({
         } else {
           await exit()
         }
-      } catch (err) {
+      } catch {
         await exit()
       }
     } else {

@@ -45,7 +45,7 @@ describe('Test User phone validation', () => {
       userId = user.id
       user.phone = 'unknown'
       await user.save()
-    } catch (err) {
+    } catch {
       res = false
     } finally {
       if (userId) {
@@ -68,7 +68,7 @@ describe('Test email sending error', () => {
         subject: 'dummy subject',
         html: 'dummy body',
       })
-    } catch (err) {
+    } catch {
       res = false
     }
     await databaseHelper.close()

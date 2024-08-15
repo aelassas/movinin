@@ -4,9 +4,11 @@ import {
   Text,
   View,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  RefreshControl,
 } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { CommonActions } from '@react-navigation/native'
 import * as movininTypes from ':movinin-types'
 
 import * as helper from '../common/helper'
@@ -28,6 +30,7 @@ interface PropertyListProps {
   properties?: movininTypes.Property[]
   hidePrice?: boolean
   footerComponent?: React.ReactElement
+  route?: 'Properties' | 'Checkout',
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
 }
 
@@ -43,6 +46,7 @@ const PropertyList = ({
   properties,
   hidePrice,
   footerComponent,
+  route,
   onLoad
 }: PropertyListProps) => {
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
@@ -51,6 +55,7 @@ const PropertyList = ({
   const [fetch, setFetch] = useState(false)
   const [rows, setRows] = useState<movininTypes.Property[]>([])
   const [page, setPage] = useState(1)
+  const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
     const init = async () => {
@@ -125,7 +130,9 @@ const PropertyList = ({
   }, [page, location, agencies, types, rentalTerms])
 
   useEffect(() => {
-    setPage(1)
+    if (location && agencies && types && rentalTerms) {
+      setPage(1)
+    }
   }, [location, agencies, types, rentalTerms])
 
   useEffect(() => {
@@ -165,7 +172,12 @@ const PropertyList = ({
             />
           )}
           keyExtractor={(item) => item._id}
-          onEndReached={() => setOnScrollEnd(true)}
+          onEndReachedThreshold={0.8}
+          onEndReached={() => {
+            if (fetch && !onScrollEnd) {
+              setOnScrollEnd(true)
+            }
+          }}
           onMomentumScrollEnd={() => {
             if (onScrollEnd && fetch) {
               setPage(page + 1)
@@ -187,6 +199,56 @@ const PropertyList = ({
               : <></>
           }
           refreshing={loading}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={() => {
+              setRefreshing(true)
+
+              if ((route && location && from && to) && ((route === 'Checkout' && properties && properties.length > 0) || route === 'Properties')) {
+                navigation.dispatch((state) => {
+                  const { routes } = state
+                  if (route === 'Properties') {
+                    const index = routes.findIndex((r) => r.name === 'Properties')
+                    routes.splice(index, 1)
+                    const now = Date.now()
+                    routes.push({
+                      name: 'Properties',
+                      key: `Properties-${now}`,
+                      params: {
+                        location: location!,
+                        from: from!.getTime(),
+                        to: to!.getTime(),
+                        d: now,
+                      },
+                    })
+                  } else {
+                    const index = routes.findIndex((r) => r.name === 'Checkout')
+                    routes.splice(index, 1)
+                    const now = Date.now()
+                    routes.push({
+                      name: 'Checkout',
+                      key: `Checkout-${now}`,
+                      params: {
+                        property: properties![0]._id,
+                        location: location!,
+                        from: from!.getTime(),
+                        to: to!.getTime(),
+                        d: now,
+                      },
+                    })
+                  }
+
+                  return CommonActions.reset({
+                    ...state,
+                    routes,
+                    index: routes.length - 1,
+                  })
+                })
+              } else {
+                setRefreshing(false)
+              }
+            }}
+            />
+          }
         />
       )}
     </View>

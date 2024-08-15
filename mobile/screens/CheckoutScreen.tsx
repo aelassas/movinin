@@ -105,7 +105,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         let status
         try {
           status = await UserService.validateAccessToken()
-        } catch (err) {
+        } catch {
           status = 403
         }
 
@@ -200,7 +200,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
       setVisible(true)
       setFormVisible(true)
-    } catch (err) {
+    } catch {
       await UserService.signout(navigation)
     }
   }
@@ -529,8 +529,12 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
             <PropertyList
               navigation={navigation}
               properties={[property]}
+              location={location._id}
+              from={from}
+              to={to}
               hidePrice
-              header={<Text style={styles.header}>{i18n.t('CREATE_BOOKING')}</Text>}
+              route="Checkout"
+              // header={<Text style={styles.header}>{i18n.t('CREATE_BOOKING')}</Text>}
               footerComponent={<View style={styles.contentContainer}>
                 <View style={styles.section}>
                   <View style={styles.sectionHeader}>

@@ -13,15 +13,17 @@ interface AvailabilityFilterProps {
   onChange?: (values: movininTypes.Availablity[]) => void
 }
 
+const allValues = [
+  movininTypes.Availablity.Available,
+  movininTypes.Availablity.Unavailable
+]
+
 const AvailabilityFilter = ({
   className,
   onChange
 }: AvailabilityFilterProps) => {
-  const [allChecked, setAllChecked] = useState(true)
-  const [values, setValues] = useState<movininTypes.Availablity[]>([
-    movininTypes.Availablity.Available,
-    movininTypes.Availablity.Unavailable
-  ])
+  const [allChecked, setAllChecked] = useState(false)
+  const [values, setValues] = useState<movininTypes.Availablity[]>([])
 
   const availableRef = useRef<HTMLInputElement>(null)
   const unavailableRef = useRef<HTMLInputElement>(null)
@@ -32,6 +34,12 @@ const AvailabilityFilter = ({
       unavailableRef.current.checked = true
     }
   }, [allChecked])
+
+  const handleChange = (_values: movininTypes.Availablity[]) => {
+    if (onChange) {
+      onChange(_values.length === 0 ? allValues : movininHelper.clone(_values))
+    }
+  }
 
   const handleAvailableChange = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
     if (e.currentTarget instanceof HTMLInputElement) {
@@ -54,9 +62,7 @@ const AvailabilityFilter = ({
 
       setValues(values)
 
-      if (onChange) {
-        onChange(movininHelper.clone(values))
-      }
+      handleChange(values)
     } else {
       helper.error()
     }
@@ -91,9 +97,7 @@ const AvailabilityFilter = ({
 
       setValues(values)
 
-      if (onChange) {
-        onChange(movininHelper.clone(values))
-      }
+      handleChange(values)
     } else {
       helper.error()
     }

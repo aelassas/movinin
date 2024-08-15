@@ -26,7 +26,7 @@ const AgencyFilter = ({
 }: AgencyFilterProps) => {
   const [agencies, setAgencies] = useState<movininTypes.User[]>([])
   const [checkedAgencies, setCheckedAgencies] = useState<string[]>([])
-  const [allChecked, setAllChecked] = useState(true)
+  const [allChecked, setAllChecked] = useState(false)
 
   const init = async () => {
     try {
@@ -34,13 +34,11 @@ const AgencyFilter = ({
       if (allAgencies) {
         const _agencies = allAgencies.map((agency: movininTypes.User) => ({
           ...agency,
-          checked: true,
+          checked: false,
         }))
-        const _checkedAgencies = movininHelper.flattenAgencies(_agencies)
         setAgencies(_agencies)
-        setCheckedAgencies(_checkedAgencies)
         if (onLoad) {
-          onLoad(_checkedAgencies)
+          onLoad(movininHelper.flattenAgencies(_agencies))
         }
       } else {
         helper.error()
@@ -86,7 +84,7 @@ const AgencyFilter = ({
                       }
 
                       if (onChange) {
-                        onChange(movininHelper.clone(checkedAgencies))
+                        onChange(checkedAgencies.length === 0 ? movininHelper.flattenAgencies(agencies) : movininHelper.clone(checkedAgencies))
                       }
                     }}
                   >
