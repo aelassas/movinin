@@ -95,7 +95,7 @@ const ImageEditor = ({
                 onAdd(imgItem)
               }
             }
-          } catch (err) {
+          } catch {
             helper.error()
           }
         }

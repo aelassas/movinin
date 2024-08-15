@@ -3,7 +3,7 @@ import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RouteProp } from '@react-navigation/native'
+import { CommonActions, DrawerActions, RouteProp } from '@react-navigation/native'
 
 import mime from 'mime'
 import i18n from '../lang/i18n'
@@ -398,7 +398,8 @@ export const getPropertyType = (type: movininTypes.PropertyType) => {
  */
 export const navigate = (
   route: RouteProp<StackParams, keyof StackParams>,
-  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
+  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
+  reload?: boolean,
 ): void => {
   switch (route.name) {
     case 'About':
@@ -411,41 +412,133 @@ export const navigate = (
     case 'Settings':
     case 'SignIn':
     case 'SignUp':
-    case 'ToS':
-      navigation.navigate(route.name, { d: new Date().getTime() })
+    case 'ToS': {
+      const params = { d: Date.now() }
+      if (reload) {
+        navigation.dispatch((state) => {
+          const { routes } = state
+          const index = routes.findIndex((r) => r.name === route.name)
+          routes.splice(index, 1)
+          const now = Date.now()
+          routes.push({
+            name: route.name,
+            key: `${route.name}-${now}`,
+            params,
+          })
+
+          return CommonActions.reset({
+            ...state,
+            routes,
+            index: routes.length - 1,
+          })
+        })
+        navigation.dispatch(DrawerActions.closeDrawer())
+      } else {
+        navigation.navigate(route.name, params)
+      }
       break
-    case 'Booking':
-      navigation.navigate(
-        route.name,
-        {
-          d: new Date().getTime(),
-          id: (route.params && 'id' in route.params && route.params.id as string) || '',
-        }
-      )
+    }
+    case 'Booking': {
+      const params = {
+        d: Date.now(),
+        id: (route.params && 'id' in route.params && route.params.id as string) || '',
+      }
+      if (reload) {
+        navigation.dispatch((state) => {
+          const { routes } = state
+          const index = routes.findIndex((r) => r.name === 'Booking')
+          routes.splice(index, 1)
+          const now = Date.now()
+          routes.push({
+            name: 'Booking',
+            key: `Booking-${now}`,
+            params,
+          })
+
+          return CommonActions.reset({
+            ...state,
+            routes,
+            index: routes.length - 1,
+          })
+        })
+        navigation.dispatch(DrawerActions.closeDrawer())
+      } else {
+        navigation.navigate(
+          route.name,
+          params
+        )
+      }
       break
-    case 'Properties':
-      navigation.navigate(
-        route.name,
-        {
-          d: new Date().getTime(),
-          location: (route.params && 'location' in route.params && route.params.location as string) || '',
-          from: (route.params && 'from' in route.params && route.params.from as number) || 0,
-          to: (route.params && 'to' in route.params && route.params.to as number) || 0,
-        }
-      )
+    }
+    case 'Properties': {
+      const params = {
+        d: Date.now(),
+        location: (route.params && 'location' in route.params && route.params.location as string) || '',
+        from: (route.params && 'from' in route.params && route.params.from as number) || 0,
+        to: (route.params && 'to' in route.params && route.params.to as number) || 0,
+      }
+      if (reload) {
+        navigation.dispatch((state) => {
+          const { routes } = state
+          const index = routes.findIndex((r) => r.name === 'Properties')
+          routes.splice(index, 1)
+          const now = Date.now()
+          routes.push({
+            name: 'Properties',
+            key: `Properties-${now}`,
+            params,
+          })
+
+          return CommonActions.reset({
+            ...state,
+            routes,
+            index: routes.length - 1,
+          })
+        })
+        navigation.dispatch(DrawerActions.closeDrawer())
+      } else {
+        navigation.navigate(
+          route.name,
+          params,
+        )
+      }
       break
-    case 'Checkout':
-      navigation.navigate(
-        route.name,
-        {
-          d: new Date().getTime(),
-          property: (route.params && 'property' in route.params && route.params.property as string) || '',
-          location: (route.params && 'location' in route.params && route.params.location as string) || '',
-          from: (route.params && 'from' in route.params && route.params.from as number) || 0,
-          to: (route.params && 'to' in route.params && route.params.to as number) || 0,
-        }
-      )
+    }
+    case 'Checkout': {
+      const params = {
+        d: Date.now(),
+        property: (route.params && 'property' in route.params && route.params.property as string) || '',
+        location: (route.params && 'location' in route.params && route.params.location as string) || '',
+        from: (route.params && 'from' in route.params && route.params.from as number) || 0,
+        to: (route.params && 'to' in route.params && route.params.to as number) || 0,
+      }
+      if (reload) {
+        navigation.dispatch((state) => {
+          const { routes } = state
+          const index = routes.findIndex((r) => r.name === 'Checkout')
+          routes.splice(index, 1)
+          const now = Date.now()
+          routes.push({
+            name: 'Checkout',
+            key: `Checkout-${now}`,
+            params,
+          })
+
+          return CommonActions.reset({
+            ...state,
+            routes,
+            index: routes.length - 1,
+          })
+        })
+        navigation.dispatch(DrawerActions.closeDrawer())
+      } else {
+        navigation.navigate(
+          route.name,
+          params
+        )
+      }
       break
+    }
     default:
       break
   }

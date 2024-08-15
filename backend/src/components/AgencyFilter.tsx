@@ -1,147 +1,163 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import env from '../config/env.config'
 import { strings as commonStrings } from '../lang/common'
+import { strings } from '../lang/properties'
 import Accordion from './Accordion'
+import * as helper from '../common/helper'
 
-import '../assets/css/agency-filter.css'
+import '../assets/css/availability-filter.css'
 
-interface AgencyFilterProps {
-  agencies: movininTypes.User[]
-  collapse?: boolean
+interface AvailabilityFilterProps {
   className?: string
-  onChange?: (value: string[]) => void
+  onChange?: (values: movininTypes.Availablity[]) => void
 }
 
-const AgencyFilter = ({
-  agencies: filterAgencies,
-  collapse,
+const allValues = [
+  movininTypes.Availablity.Available,
+  movininTypes.Availablity.Unavailable
+]
+
+const AvailabilityFilter = ({
   className,
   onChange
-}: AgencyFilterProps) => {
-  const [agencies, setAgencies] = useState<movininTypes.User[]>([])
-  const [checkedAgencies, setCheckedAgencies] = useState<string[]>([])
-  const [allChecked, setAllChecked] = useState(true)
-  const refs = useRef<(HTMLInputElement | null)[]>([])
+}: AvailabilityFilterProps) => {
+  const [allChecked, setAllChecked] = useState(false)
+  const [values, setValues] = useState<movininTypes.Availablity[]>([])
+
+  const availableRef = useRef<HTMLInputElement>(null)
+  const unavailableRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    setAgencies(filterAgencies)
-    setCheckedAgencies(movininHelper.flattenAgencies(filterAgencies))
-  }, [filterAgencies])
-
-  useEffect(() => {
-    if (agencies.length > 0) {
-      refs.current.forEach((checkbox) => {
-        if (checkbox) {
-          checkbox.checked = true
-        }
-      })
+    if (allChecked && availableRef.current && unavailableRef.current) {
+      availableRef.current.checked = true
+      unavailableRef.current.checked = true
     }
-  }, [agencies])
+  }, [allChecked])
 
-  const handleCheckAgencyChange = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
-    const agencyId = e.currentTarget.getAttribute('data-id') as string
-
-    if ('checked' in e.currentTarget && e.currentTarget.checked) {
-      checkedAgencies.push(agencyId)
-
-      if (checkedAgencies.length === agencies.length) {
-        setAllChecked(true)
-      }
-    } else {
-      const index = checkedAgencies.indexOf(agencyId)
-      checkedAgencies.splice(index, 1)
-
-      if (checkedAgencies.length === 0) {
-        setAllChecked(false)
-      }
-    }
-
-    setCheckedAgencies(checkedAgencies)
-
+  const handleChange = (_values: movininTypes.Availablity[]) => {
     if (onChange) {
-      onChange(movininHelper.clone(checkedAgencies))
+      onChange(_values.length === 0 ? allValues : movininHelper.clone(_values))
     }
   }
 
-  const handleAgencyClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handleAvailableChange = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
+    if (e.currentTarget instanceof HTMLInputElement) {
+      if (e.currentTarget.checked) {
+        values.push(movininTypes.Availablity.Available)
+
+        if (values.length === 2) {
+          setAllChecked(true)
+        }
+      } else {
+        values.splice(
+          values.findIndex((v) => v === movininTypes.Availablity.Available),
+          1,
+        )
+
+        if (values.length === 0) {
+          setAllChecked(false)
+        }
+      }
+
+      setValues(values)
+
+      handleChange(values)
+    } else {
+      helper.error()
+    }
+  }
+
+  const handleAvailableClick = (e: React.MouseEvent<HTMLElement>) => {
     const checkbox = e.currentTarget.previousSibling as HTMLInputElement
     checkbox.checked = !checkbox.checked
     const event = e
     event.currentTarget = checkbox
-    handleCheckAgencyChange(event)
+    handleAvailableChange(event)
+  }
+
+  const handleUnavailableChange = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
+    if (e.currentTarget instanceof HTMLInputElement) {
+      if (e.currentTarget.checked) {
+        values.push(movininTypes.Availablity.Unavailable)
+
+        if (values.length === 2) {
+          setAllChecked(true)
+        }
+      } else {
+        values.splice(
+          values.findIndex((v) => v === movininTypes.Availablity.Unavailable),
+          1,
+        )
+
+        if (values.length === 0) {
+          setAllChecked(false)
+        }
+      }
+
+      setValues(values)
+
+      handleChange(values)
+    } else {
+      helper.error()
+    }
+  }
+
+  const handleUnavailableClick = (e: React.MouseEvent<HTMLElement>) => {
+    const checkbox = e.currentTarget.previousSibling as HTMLInputElement
+    checkbox.checked = !checkbox.checked
+    const event = e
+    event.currentTarget = checkbox
+    handleUnavailableChange(event)
   }
 
   const handleUncheckAllChange = () => {
-    if (allChecked) {
-      // uncheck all
-      refs.current.forEach((checkbox) => {
-        if (checkbox) {
-          checkbox.checked = false
+    if (availableRef.current && unavailableRef.current) {
+      if (allChecked) {
+        // uncheck all
+        availableRef.current.checked = false
+        unavailableRef.current.checked = false
+
+        setAllChecked(false)
+        setValues([])
+      } else {
+        // check all
+        availableRef.current.checked = true
+        unavailableRef.current.checked = true
+
+        const _values = [movininTypes.Availablity.Available, movininTypes.Availablity.Unavailable]
+
+        setAllChecked(true)
+        setValues(_values)
+
+        if (onChange) {
+          onChange(movininHelper.clone(_values))
         }
-      })
-
-      setAllChecked(false)
-      setCheckedAgencies([])
-    } else {
-      // check all
-      refs.current.forEach((checkbox) => {
-        if (checkbox) {
-          checkbox.checked = true
-        }
-      })
-
-      const agencyIds = movininHelper.flattenAgencies(agencies)
-      setAllChecked(true)
-      setCheckedAgencies(agencyIds)
-
-      if (onChange) {
-        onChange(movininHelper.clone(agencyIds))
       }
+    } else {
+      helper.error()
     }
   }
 
   return (
-    (agencies.length > 1
-      && (
-        <Accordion
-          title={commonStrings.AGENCY}
-          collapse={collapse}
-          offsetHeight={Math.floor((agencies.length / 2) * env.AGENCY_IMAGE_HEIGHT)}
-          className={`${className ? `${className} ` : ''}agency-filter`}
-        >
-          <ul className="agency-list">
-            {agencies.map((agency, index) => (
-              <li key={agency._id}>
-                <input
-                  ref={(ref) => {
-                    refs.current[index] = ref
-                  }}
-                  type="checkbox"
-                  data-id={agency._id}
-                  className="agency-checkbox"
-                  onChange={handleCheckAgencyChange}
-                />
-                <span role="button" tabIndex={0} onClick={handleAgencyClick}>
-                  <img
-                    src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)}
-                    alt={agency.fullName}
-                    title={agency.fullName}
-                  />
-                </span>
-              </li>
-            ))}
-          </ul>
-          <div className="filter-actions">
-            <span role="button" tabIndex={0} onClick={handleUncheckAllChange} className="uncheckall">
-              {allChecked ? commonStrings.UNCHECK_ALL : commonStrings.CHECK_ALL}
-            </span>
-          </div>
-        </Accordion>
-      )
-    ) || <></>
+    <Accordion title={strings.AVAILABILITY} className={`${className ? `${className} ` : ''}availability-filter`}>
+      <div className="filter-elements">
+        <div className="filter-element">
+          <input ref={availableRef} type="checkbox" className="availability-checkbox" onChange={handleAvailableChange} />
+          <span role="button" tabIndex={0} onClick={handleAvailableClick}>{strings.AVAILABLE}</span>
+        </div>
+        <div className="filter-element">
+          <input ref={unavailableRef} type="checkbox" className="availability-checkbox" onChange={handleUnavailableChange} />
+          <span role="button" tabIndex={0} onClick={handleUnavailableClick}>{strings.UNAVAILABLE}</span>
+        </div>
+        <div className="filter-actions">
+          <span role="button" tabIndex={0} onClick={handleUncheckAllChange} className="uncheckall">
+            {allChecked ? commonStrings.UNCHECK_ALL : commonStrings.CHECK_ALL}
+          </span>
+        </div>
+      </div>
+    </Accordion>
   )
 }
 
-export default AgencyFilter
+export default AvailabilityFilter

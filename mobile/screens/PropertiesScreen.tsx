@@ -69,6 +69,7 @@ const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackPar
           location={route.params.location}
           from={new Date(route.params.from)}
           to={new Date(route.params.to)}
+          route="Properties"
           header={(
             <View>
               <AgencyFilter style={styles.filter} visible onLoad={onLoadCompanies} onChange={onChangeCompanies} />

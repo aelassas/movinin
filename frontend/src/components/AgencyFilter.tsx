@@ -22,23 +22,12 @@ const AgencyFilter = ({
 }: AgencyFilterProps) => {
   const [agencies, setAgencies] = useState<movininTypes.User[]>([])
   const [checkedAgencies, setCheckedAgencies] = useState<string[]>([])
-  const [allChecked, setAllChecked] = useState(true)
+  const [allChecked, setAllChecked] = useState(false)
   const refs = useRef<(HTMLInputElement | null)[]>([])
 
   useEffect(() => {
     setAgencies(filterAgencies)
-    setCheckedAgencies(movininHelper.flattenAgencies(filterAgencies))
   }, [filterAgencies])
-
-  useEffect(() => {
-    if (agencies.length > 0) {
-      refs.current.forEach((checkbox) => {
-        if (checkbox) {
-          checkbox.checked = true
-        }
-      })
-    }
-  }, [agencies])
 
   const handleCheckAgencyChange = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
     const agencyId = e.currentTarget.getAttribute('data-id') as string
@@ -61,7 +50,7 @@ const AgencyFilter = ({
     setCheckedAgencies(checkedAgencies)
 
     if (onChange) {
-      onChange(movininHelper.clone(checkedAgencies))
+      onChange(checkedAgencies.length === 0 ? movininHelper.flattenAgencies(agencies) : movininHelper.clone(checkedAgencies))
     }
   }
 

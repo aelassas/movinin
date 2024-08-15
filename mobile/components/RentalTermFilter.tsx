@@ -14,20 +14,26 @@ interface RentalTermFilterProps {
   onChange?: (values: movininTypes.RentalTerm[]) => void
 }
 
+const allRentalTerms = movininHelper.getAllRentalTerms()
+
 const RentalTermFilter = ({
   visible,
   style,
   onChange
 }: RentalTermFilterProps) => {
-  const allRentalTerms = movininHelper.getAllRentalTerms()
+  const [values, setValues] = useState<movininTypes.RentalTerm[]>([])
+  const [monthly, setMonthly] = useState(false)
+  const [weekly, setWeekly] = useState(false)
+  const [daily, setDaily] = useState(false)
+  const [yearly, setYearly] = useState(false)
 
-  const [values, setValues] = useState(allRentalTerms)
-  const [monthly, setMonthly] = useState(true)
-  const [weekly, setWeekly] = useState(true)
-  const [daily, setDaily] = useState(true)
-  const [yearly, setYearly] = useState(true)
+  const [allChecked, setAllChecked] = useState(false)
 
-  const [allChecked, setAllChecked] = useState(true)
+  const handleChange = (_values: movininTypes.RentalTerm[]) => {
+    if (onChange) {
+      onChange(_values.length === 0 ? allRentalTerms : movininHelper.clone(_values))
+    }
+  }
 
   const onValueChangeMonthly = (checked: boolean) => {
     if (checked) {
@@ -49,9 +55,7 @@ const RentalTermFilter = ({
 
     setMonthly(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const onValueChangeWeekly = (checked: boolean) => {
@@ -74,9 +78,7 @@ const RentalTermFilter = ({
 
     setWeekly(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const onValueChangeDaily = (checked: boolean) => {
@@ -99,9 +101,7 @@ const RentalTermFilter = ({
 
     setDaily(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const onValueChangeYearly = (checked: boolean) => {
@@ -124,9 +124,7 @@ const RentalTermFilter = ({
 
     setYearly(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   return (

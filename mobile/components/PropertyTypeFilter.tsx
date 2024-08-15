@@ -14,23 +14,29 @@ interface PropertyTypeFilterProps {
   onChange?: (values: movininTypes.PropertyType[]) => void
 }
 
+const allPropertyTypes = movininHelper.getAllPropertyTypes()
+
 const PropertyTypeFilter = ({
   visible,
   style,
   onChange
 }: PropertyTypeFilterProps) => {
-  const allPropertyTypes = movininHelper.getAllPropertyTypes()
+  const [values, setValues] = useState<movininTypes.PropertyType[]>([])
+  const [house, setHouse] = useState(false)
+  const [apartment, setApartment] = useState(false)
+  const [plot, setPlot] = useState(false)
+  const [farm, setFarm] = useState(false)
+  const [commercial, setCommercial] = useState(false)
+  const [industrial, setIndustrial] = useState(false)
+  const [townHouse, setTownHouse] = useState(false)
 
-  const [values, setValues] = useState(allPropertyTypes)
-  const [house, setHouse] = useState(true)
-  const [apartment, setApartment] = useState(true)
-  const [plot, setPlot] = useState(true)
-  const [farm, setFarm] = useState(true)
-  const [commercial, setCommercial] = useState(true)
-  const [industrial, setIndustrial] = useState(true)
-  const [townHouse, setTownHouse] = useState(true)
+  const [allChecked, setAllChecked] = useState(false)
 
-  const [allChecked, setAllChecked] = useState(true)
+  const handleOnChange = (_values: movininTypes.PropertyType[]) => {
+    if (onChange) {
+      onChange(_values.length === 0 ? allPropertyTypes : movininHelper.clone(_values))
+    }
+  }
 
   const onValueChangeHouse = (checked: boolean) => {
     if (checked) {
@@ -52,9 +58,7 @@ const PropertyTypeFilter = ({
 
     setHouse(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleOnChange(values)
   }
 
   const onValueChangeApartment = (checked: boolean) => {
@@ -77,9 +81,7 @@ const PropertyTypeFilter = ({
 
     setApartment(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleOnChange(values)
   }
 
   const onValueChangePlot = (checked: boolean) => {
@@ -102,9 +104,7 @@ const PropertyTypeFilter = ({
 
     setPlot(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleOnChange(values)
   }
 
   const onValueChangeFarm = (checked: boolean) => {
@@ -127,9 +127,7 @@ const PropertyTypeFilter = ({
 
     setFarm(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleOnChange(values)
   }
 
   const onValueChangeCommercial = (checked: boolean) => {
@@ -152,9 +150,7 @@ const PropertyTypeFilter = ({
 
     setCommercial(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleOnChange(values)
   }
 
   const onValueChangeIndustrial = (checked: boolean) => {
@@ -177,9 +173,7 @@ const PropertyTypeFilter = ({
 
     setIndustrial(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleOnChange(values)
   }
 
   const onValueChangeTownHouse = (checked: boolean) => {
@@ -202,9 +196,7 @@ const PropertyTypeFilter = ({
 
     setTownHouse(checked)
     setValues(values)
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleOnChange(values)
   }
 
   return (
