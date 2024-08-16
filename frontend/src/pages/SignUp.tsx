@@ -25,6 +25,7 @@ import Backdrop from '../components/SimpleBackdrop'
 import DatePicker from '../components/DatePicker'
 import ReCaptchaProvider from '../components/ReCaptchaProvider'
 import * as helper from '../common/helper'
+import SocialLogin from '../components/SocialLogin'
 
 import '../assets/css/signup.css'
 
@@ -391,6 +392,9 @@ const SignUp = () => {
                       </tbody>
                     </table>
                   </div>
+
+                  <SocialLogin />
+
                   <div className="buttons">
                     <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
                       {strings.SIGN_UP}

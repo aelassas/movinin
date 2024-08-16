@@ -63,6 +63,9 @@ const env = {
   SET_LANGUAGE_FROM_IP: (import.meta.env.VITE_MI_SET_LANGUAGE_FROM_IP && import.meta.env.VITE_MI_SET_LANGUAGE_FROM_IP.toLowerCase()) === 'true',
   GOOGLE_ANALYTICS_ENABLED: (import.meta.env.VITE_MI_GOOGLE_ANALYTICS_ENABLED && import.meta.env.VITE_MI_GOOGLE_ANALYTICS_ENABLED.toLowerCase()) === 'true',
   GOOGLE_ANALYTICS_ID: String(import.meta.env.VITE_MI_GOOGLE_ANALYTICS_ID),
+  FB_APP_ID: String(import.meta.env.VITE_BC_FB_APP_ID),
+  APPLE_ID: String(import.meta.env.VITE_BC_APPLE_ID),
+  GG_APP_ID: String(import.meta.env.VITE_BC_GG_APP_ID),
 }
 
 export default env

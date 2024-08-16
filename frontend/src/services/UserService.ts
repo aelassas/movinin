@@ -107,6 +107,24 @@ export const signin = (data: movininTypes.SignInPayload): Promise<{ status: numb
     })
 
 /**
+ * Social sign in.
+ *
+ * @param {movininTypes.SignInPayload} data
+ * @returns {Promise<{ status: number, data: movininTypes.User }>}
+ */
+export const socialSignin = (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> =>
+  axiosInstance
+    .post(
+      '/api/social-sign-in',
+      data,
+      { withCredentials: true }
+    )
+    .then((res) => {
+      localStorage.setItem('mi-user', JSON.stringify(res.data))
+      return { status: res.status, data: res.data }
+    })
+
+/**
  * Sign out.
  *
  * @param {boolean} [redirect=true]
@@ -3285,3 +3303,29 @@ export const verifyRecaptcha = (token: string, ip: string): Promise<number> =>
       { withCredentials: true }
     )
     .then((res) => res.status)
+
+/**
+* Parse JWT token.
+* @param {string} token
+* @returns {any}
+*/
+export const parseJwt = (token: string) => {
+  const base64Url = token.split('.')[1]
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  const jsonPayload = decodeURIComponent(window.atob(base64).split('').map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join(''))
+
+  return JSON.parse(jsonPayload)
+}
+
+/**
+ * Check if password exists.
+ *
+ * @param {string} id
+ * @returns {Promise<bookcarsTypes.User|null>}
+ */
+export const hasPassword = (id: string): Promise<number> => axiosInstance
+  .get(
+    `/api/has-password/${encodeURIComponent(id)}`,
+    { withCredentials: true }
+  )
+  .then((res) => res.status)

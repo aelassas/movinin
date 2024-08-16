@@ -48,6 +48,7 @@ import DatePicker from '../components/DatePicker'
 import ReCaptchaProvider from '../components/ReCaptchaProvider'
 import NoMatch from './NoMatch'
 import Info from './Info'
+import SocialLogin from '../components/SocialLogin'
 
 import '../assets/css/checkout.css'
 
@@ -561,6 +562,8 @@ const Checkout = () => {
                             </tbody>
                           </table>
                         </div>
+
+                        <SocialLogin />
                       </div>
                     </div>
                   )}
