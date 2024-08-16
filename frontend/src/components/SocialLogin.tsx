@@ -58,6 +58,8 @@ const SocialLogin = ({
   }
 
   const loginError = (err: any) => {
+    console.log(err)
+
     if (onError) {
       onError(err)
     }
@@ -100,7 +102,6 @@ const SocialLogin = ({
             scope="name email"
             redirect_uri={REDIRECT_URI}
             onResolve={({ data }: IResolveParams) => {
-              // console.log(data)
               const email = data?.user?.email || getEmail(String(data?.id_token))
               loginSuccess(movininTypes.SocialSignInType.Apple, data?.id_token, email, data?.user ? `${data?.user?.firstName} ${data?.user?.lastName}` : email)
             }}
@@ -120,11 +121,9 @@ const SocialLogin = ({
             scope="openid profile email"
             discoveryDocs="claims_supported"
             onResolve={({ data }: IResolveParams) => {
-              console.log(data)
               loginSuccess(movininTypes.SocialSignInType.Google, data?.access_token, data?.email, data?.name || data?.email, data?.picture)
             }}
             onReject={(err: any) => {
-              console.log(err)
               loginError(err)
             }}
             className="social"
