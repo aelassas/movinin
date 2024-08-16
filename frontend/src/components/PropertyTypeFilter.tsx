@@ -13,21 +13,14 @@ interface PropertyTypeFilterProps {
   onChange?: (values: movininTypes.PropertyType[]) => void
 }
 
+const allPropertyTypes = movininHelper.getAllPropertyTypes()
+
 const PropertyTypeFilter = ({
   className,
   onChange
 }: PropertyTypeFilterProps) => {
-  const allPropertyTypes = [
-    movininTypes.PropertyType.Apartment,
-    movininTypes.PropertyType.Commercial,
-    movininTypes.PropertyType.Farm,
-    movininTypes.PropertyType.House,
-    movininTypes.PropertyType.Industrial,
-    movininTypes.PropertyType.Plot,
-    movininTypes.PropertyType.Townhouse
-  ]
-  const [allChecked, setAllChecked] = useState(true)
-  const [values, setValues] = useState(allPropertyTypes)
+  const [allChecked, setAllChecked] = useState(false)
+  const [values, setValues] = useState<movininTypes.PropertyType[]>([])
 
   const apartmentRef = useRef<HTMLInputElement>(null)
   const commercialRef = useRef<HTMLInputElement>(null)
@@ -57,6 +50,12 @@ const PropertyTypeFilter = ({
     }
   }, [allChecked])
 
+  const handleChange = (_values: movininTypes.PropertyType[]) => {
+    if (onChange) {
+      onChange(_values.length === 0 ? allPropertyTypes : movininHelper.clone(_values))
+    }
+  }
+
   const handleCheckApartmentChange = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
     if ('checked' in e.currentTarget && e.currentTarget.checked) {
       values.push(movininTypes.PropertyType.Apartment)
@@ -77,9 +76,7 @@ const PropertyTypeFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleApartmentClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -110,9 +107,7 @@ const PropertyTypeFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleCommercialClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -143,9 +138,7 @@ const PropertyTypeFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleFarmClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -176,9 +169,7 @@ const PropertyTypeFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleHouseClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -209,9 +200,7 @@ const PropertyTypeFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleIndustrialClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -242,9 +231,7 @@ const PropertyTypeFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handlePlotClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -275,9 +262,7 @@ const PropertyTypeFilter = ({
 
     setValues(values)
 
-    if (onChange) {
-      onChange(movininHelper.clone(values))
-    }
+    handleChange(values)
   }
 
   const handleTownhouseClick = (e: React.MouseEvent<HTMLElement>) => {
