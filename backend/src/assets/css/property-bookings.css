@@ -24,6 +24,9 @@ div.property section.property-sec div.property-info ul.locations-list span.prope
 
 div.property section.property-sec div.property-img {
   height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 div.property section.property-sec div.property-img img {
