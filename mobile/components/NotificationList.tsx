@@ -181,7 +181,7 @@ const NotificationList = ({ user, locale, navigation }: NotificationListProps) =
             </View>
           </View>
           <ScrollView ref={notificationsListRef} contentContainerStyle={styles.list} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
-            {loading && <ActivityIndicator size="large" color="#f37022" />}
+            {loading && <ActivityIndicator size="large" color="#0D63C9" />}
             {rows.map((row) => (
               <View key={row._id} style={styles.notificationContainer}>
                 <View style={styles.notificationCheckbox}>

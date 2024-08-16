@@ -187,7 +187,7 @@ const PropertyList = ({
           ListHeaderComponent={header}
           ListFooterComponent={
             footerComponent || (fetch
-              ? <ActivityIndicator size="large" color="#f37022" style={styles.indicator} />
+              ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
               : <></>)
           }
           ListEmptyComponent={
