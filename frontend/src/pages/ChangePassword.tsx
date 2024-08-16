@@ -31,6 +31,7 @@ const ChangePassword = () => {
   const [visible, setVisible] = useState(false)
   const [currentPassword, setCurrentPassword] = useState('')
   const [currentPasswordError, setCurrentPasswordError] = useState(false)
+  const [hasPassword, setHasPassword] = useState(false)
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(e.target.value)
@@ -79,7 +80,7 @@ const ChangePassword = () => {
           _id: user._id as string,
           password: currentPassword,
           newPassword,
-          strict: true,
+          strict: hasPassword,
         }
 
         const status = await UserService.changePassword(data)
@@ -93,6 +94,7 @@ const ChangePassword = () => {
             setCurrentPassword('')
             setNewPassword('')
             setConfirmPassword('')
+            setHasPassword(true)
             helper.info(strings.PASSWORD_UPDATE)
           } else {
             error()
@@ -102,7 +104,10 @@ const ChangePassword = () => {
         }
       }
 
-      const status = await UserService.checkPassword(user._id as string, currentPassword)
+      let status = 200
+      if (hasPassword) {
+        status = await UserService.checkPassword(user._id as string, currentPassword)
+      }
 
       setCurrentPasswordError(status !== 200)
       setNewPasswordError(false)
@@ -123,8 +128,12 @@ const ChangePassword = () => {
     }
   }
 
-  const onLoad = (_user?: movininTypes.User) => {
+  const onLoad = async (_user?: movininTypes.User) => {
     setUser(_user)
+
+    const status = await UserService.hasPassword(_user!._id!)
+    setHasPassword(status === 200)
+
     setLoading(false)
     setVisible(true)
   }
@@ -139,18 +148,20 @@ const ChangePassword = () => {
             {' '}
           </h1>
           <form className="form" onSubmit={handleSubmit}>
-            <FormControl fullWidth margin="dense">
-              <InputLabel error={currentPasswordError} className="required">
-                {strings.CURRENT_PASSWORD}
-              </InputLabel>
-              <Input id="password-current" onChange={handleCurrentPasswordChange} value={currentPassword} error={currentPasswordError} type="password" required />
-              <FormHelperText error={currentPasswordError}>{(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}</FormHelperText>
-            </FormControl>
+            {hasPassword && (
+              <FormControl fullWidth margin="dense">
+                <InputLabel error={currentPasswordError} className="required">
+                  {strings.CURRENT_PASSWORD}
+                </InputLabel>
+                <Input onChange={handleCurrentPasswordChange} value={currentPassword} error={currentPasswordError} type="password" required />
+                <FormHelperText error={currentPasswordError}>{(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}</FormHelperText>
+              </FormControl>
+            )}
             <FormControl fullWidth margin="dense">
               <InputLabel className="required" error={newPasswordError}>
                 {strings.NEW_PASSWORD}
               </InputLabel>
-              <Input id="password-new" onChange={handleNewPasswordChange} type="password" value={newPassword} error={newPasswordError || passwordLengthError} required />
+              <Input onChange={handleNewPasswordChange} type="password" value={newPassword} error={newPasswordError || passwordLengthError} required />
               <FormHelperText error={newPasswordError || passwordLengthError}>
                 {(newPasswordError && strings.NEW_PASSWORD_ERROR) || (passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
               </FormHelperText>
@@ -160,7 +171,6 @@ const ChangePassword = () => {
                 {commonStrings.CONFIRM_PASSWORD}
               </InputLabel>
               <Input
-                id="password-confirm"
                 onChange={handleConfirmPasswordChange}
                 onKeyDown={handleConfirmPasswordKeyDown}
                 error={confirmPasswordError}
@@ -175,9 +185,10 @@ const ChangePassword = () => {
                 {commonStrings.RESET_PASSWORD}
               </Button>
               <Button
-                className="btn-secondary btn-margin-bottom"
+                className="btn-margin-bottom btn-cp"
                 size="small"
                 variant="contained"
+                color="inherit"
                 onClick={() => {
                   navigate('/')
                 }}
@@ -188,6 +199,7 @@ const ChangePassword = () => {
           </form>
         </Paper>
       </div>
+
       {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
     </Layout>
   )

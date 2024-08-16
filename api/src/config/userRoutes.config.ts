@@ -10,6 +10,7 @@ const routes = {
   resendLink: '/api/resend-link',
   validateEmail: '/api/validate-email',
   signin: '/api/sign-in/:type',
+  socialSignin: '/api/social-sign-in',
   getPushToken: '/api/push-token/:userId',
   createPushToken: '/api/create-push-token/:userId/:token',
   deletePushToken: '/api/delete-push-token/:userId',
@@ -28,6 +29,7 @@ const routes = {
   checkPassword: '/api/check-password/:id/:password',
   signout: '/api/sign-out',
   verifyRecaptcha: '/api/verify-recaptcha/:token/:ip',
+  hasPassword: '/api/has-password/:id',
 }
 
 export default routes

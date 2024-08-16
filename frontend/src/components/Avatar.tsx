@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {
-  Button, Avatar as MaterialAvatar,
+  Button,
+  Avatar as MaterialAvatar,
   Badge,
   Box,
   Dialog,
@@ -165,6 +166,10 @@ const Avatar = ({
     }
   }, [avatarUser])
 
+  const avatarUrl = user?.avatar
+    ? (user.avatar?.startsWith('http') ? user.avatar : movininHelper.joinURL(env.CDN_USERS, user.avatar))
+    : ''
+
   return !error && loggedUser && user ? (
     <div className={className}>
       {loggedUser._id === user._id && !readonly ? (
@@ -195,7 +200,7 @@ const Avatar = ({
                   </Box>
                 )}
               >
-                <MaterialAvatar src={movininHelper.joinURL(env.CDN_USERS, user.avatar)} className="avatar" />
+                <MaterialAvatar src={avatarUrl} className="avatar" />
               </Badge>
             </Badge>
           ) : (
@@ -219,8 +224,10 @@ const Avatar = ({
             </Badge>
           )}
         </div>
-      ) : user.avatar ? (
-        <MaterialAvatar src={movininHelper.joinURL(env.CDN_USERS, user.avatar)} className={size ? `avatar-${size}` : 'avatar'} />
+      ) : avatarUrl ? (
+        <>
+          <MaterialAvatar src={avatarUrl} className={size ? `avatar-${size}` : 'avatar'} />
+        </>
       ) : (
         <AccountCircle className={size ? `avatar-${size}` : 'avatar'} color={color || 'inherit'} />
       )}

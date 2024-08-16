@@ -16,6 +16,7 @@ import { strings as commonStrings } from '../lang/common'
 import { strings } from '../lang/reset-password'
 import NoMatch from './NoMatch'
 import * as helper from '../common/helper'
+import SocialLogin from '../components/SocialLogin'
 
 import '../assets/css/forgot-password.css'
 
@@ -140,6 +141,8 @@ const ForgotPassword = () => {
                     {(error && strings.EMAIL_ERROR) || ''}
                   </FormHelperText>
                 </FormControl>
+
+                <SocialLogin />
 
                 <div className="buttons">
                   <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">

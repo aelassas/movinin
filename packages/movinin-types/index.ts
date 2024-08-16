@@ -175,11 +175,21 @@ export interface ValidateEmailPayload {
   email: string
 }
 
+export enum SocialSignInType {
+  Facebook = 'facebook',
+  Apple = 'apple',
+  Google = 'google'
+}
+
 export interface SignInPayload {
-  email: string
+  email?: string
   password?: string
   stayConnected?: boolean
   mobile?: boolean
+  fullName?: string
+  avatar?: string
+  accessToken?: string
+  socialSignInType?: SocialSignInType
 }
 
 export interface ResendLinkPayload {
