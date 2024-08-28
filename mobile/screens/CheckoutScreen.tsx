@@ -34,6 +34,7 @@ import * as BookingService from '../services/BookingService'
 import * as StripeService from '../services/StripeService'
 import * as env from '../config/env.config'
 import Backdrop from '../components/Backdrop'
+import Indicator from '../components/Indicator'
 
 const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Checkout'>) => {
   const isFocused = useIsFocused()
@@ -523,6 +524,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   return (
     <Layout style={styles.master} navigation={navigation} onLoad={onLoad} reload={reload} route={route}>
+      {!visible && <Indicator style={{ marginVertical: 10 }} />}
       {visible && property && from && to && location && (
         <>
           {formVisible && (
