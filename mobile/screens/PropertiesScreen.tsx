@@ -12,6 +12,7 @@ import PropertyList from '../components/PropertyList'
 import AgencyFilter from '../components/AgencyFilter'
 import RentalTermFilter from '../components/RentalTermFilter'
 import PropertyTypeFilter from '../components/PropertyTypeFilter'
+import Indicator from '../components/Indicator'
 
 const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Properties'>) => {
   const isFocused = useIsFocused()
@@ -60,6 +61,7 @@ const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackPar
 
   return (
     <Layout style={styles.master} onLoad={onLoad} reload={reload} navigation={navigation} route={route}>
+      {!visible && <Indicator style={{ marginVertical: 10 }} />}
       {visible && (
         <PropertyList
           navigation={navigation}
