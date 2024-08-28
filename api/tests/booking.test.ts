@@ -33,9 +33,9 @@ beforeAll(async () => {
 
   await testHelper.initialize()
 
-  // create a supplier
-  const supplierName = testHelper.getAgencyName()
-  AGENCY_ID = await testHelper.createAgency(`${supplierName}@test.movinin.io`, supplierName)
+  // create a agency
+  const agencyName = testHelper.getAgencyName()
+  AGENCY_ID = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
 
   // get user id
   RENTER1_ID = testHelper.getUserId()
@@ -87,7 +87,7 @@ afterAll(async () => {
   if (mongoose.connection.readyState) {
     await testHelper.close()
 
-    // delete the supplier
+    // delete the agency
     await testHelper.deleteAgency(AGENCY_ID)
 
     // delete the location

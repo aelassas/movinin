@@ -9,7 +9,7 @@ import app from '../src/app'
 import * as env from '../src/config/env.config'
 
 let ADMIN_USER_ID: string
-let SUPPLIER_ID: string
+let AGENCY_ID: string
 let NOTIFICATION1_ID: string
 let NOTIFICATION2_ID: string
 
@@ -25,7 +25,7 @@ beforeAll(async () => {
   await testHelper.initialize()
   ADMIN_USER_ID = testHelper.getAdminUserId()
   const agencyName = testHelper.getAgencyName()
-  SUPPLIER_ID = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
+  AGENCY_ID = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
 
   // create admin user notifications and notification counter
   let notification = new Notification({ user: ADMIN_USER_ID, message: 'Message 1' })
@@ -45,7 +45,7 @@ afterAll(async () => {
   if (mongoose.connection.readyState) {
     await testHelper.close()
 
-    await testHelper.deleteAgency(SUPPLIER_ID)
+    await testHelper.deleteAgency(AGENCY_ID)
 
     // clear admin user notifications and notification counter
     await Notification.deleteMany({ user: ADMIN_USER_ID })
@@ -70,7 +70,7 @@ describe('GET /api/notification-counter/:userId', () => {
     expect(res.body.count).toBe(2)
 
     res = await request(app)
-      .get(`/api/notification-counter/${SUPPLIER_ID}`)
+      .get(`/api/notification-counter/${AGENCY_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
     expect(res.body.count).toBe(0)

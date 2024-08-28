@@ -4,7 +4,7 @@ div.bookings {
   align-items: center;
 
   position: absolute;
-  top: 67px;
+  top: 64px;
   right: 0;
   bottom: 0;
   left: 0;
@@ -21,10 +21,6 @@ div.bookings div.col-1 {
   padding: 12px 0 0 12px;
   background-color: #FAFAFA;
   overflow: auto;
-}
-
-div.bookings div.col-1 .cl-new-booking {
-  width: calc(100% - 10px);
 }
 
 div.bookings div.col-1 .cl-agency-filter,
