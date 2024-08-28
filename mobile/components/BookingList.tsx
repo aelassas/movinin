@@ -4,8 +4,11 @@ import {
   FlatList,
   StyleSheet,
   View,
-  Text
+  Text,
+  RefreshControl,
 } from 'react-native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { CommonActions } from '@react-navigation/native'
 import {
   Paragraph,
   Dialog,
@@ -21,6 +24,7 @@ import * as BookingService from '../services/BookingService'
 import Booking from './Booking'
 
 interface BookingListProps {
+  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
   agencies?: string[]
   statuses?: string[]
   filter?: movininTypes.Filter
@@ -31,6 +35,7 @@ interface BookingListProps {
 }
 
 const BookingList = ({
+  navigation,
   agencies,
   statuses,
   filter,
@@ -51,6 +56,7 @@ const BookingList = ({
   const [cancelRequestSent, setCancelRequestSent] = useState(false)
   const [deleted, setDeleted] = useState(false)
   const [locale, setLoacle] = useState(fr)
+  const [refreshing, setRefreshing] = useState(false)
 
   const fetchData = async (reset = false) => {
     try {
@@ -192,6 +198,30 @@ const BookingList = ({
             : <></>
         }
         refreshing={loading}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={() => {
+            setRefreshing(true)
+
+            navigation.dispatch((state) => {
+              const { routes } = state
+              const index = routes.findIndex((r) => r.name === 'Bookings')
+              routes.splice(index, 1)
+              const now = Date.now()
+              routes.push({
+                name: 'Bookings',
+                key: `Bookings-${now}`,
+                params: {},
+              })
+
+              return CommonActions.reset({
+                ...state,
+                routes,
+                index: routes.length - 1,
+              })
+            })
+          }}
+          />
+        }
       />
 
       <Portal>
