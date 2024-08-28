@@ -23,7 +23,7 @@ div.bookings div.col-1 {
   overflow: auto;
 }
 
-div.bookings div.col-1 .cl-supplier-filter,
+div.bookings div.col-1 .cl-agency-filter,
 div.bookings div.col-1 .cl-status-filter,
 div.bookings div.col-1 .cl-booking-filter {
   margin: 10px 10px 10px 0;
@@ -71,13 +71,13 @@ div.bookings div.col-2 {
     inset: 0;
   }
 
-  div.bookings div.col-1 .cl-supplier-filter label.accordion,
+  div.bookings div.col-1 .cl-agency-filter label.accordion,
   div.bookings div.col-1 .cl-status-filter label.accordion,
   div.bookings div.col-1 .cl-booking-filter label.accordion {
     background: #fff;
   }
 
-  div.bookings div.col-1 .cl-supplier-filter,
+  div.bookings div.col-1 .cl-agency-filter,
   div.bookings div.col-1 .cl-status-filter,
   div.bookings div.col-1 .cl-booking-filter {
     margin: 10px;
