@@ -17,6 +17,8 @@ interface StatusFilterProps {
   onChange?: (checkedStatuses: movininTypes.BookingStatus[]) => void
 }
 
+const allStatuses = helper.getBookingStatuses().map((status) => status.value)
+
 const StatusFilter = ({
   visible,
   style,
@@ -24,18 +26,23 @@ const StatusFilter = ({
   onChange
 }: StatusFilterProps) => {
   const [statuses, setStatuses] = useState<movininTypes.StatusFilterItem[]>(
-    helper.getBookingStatuses().map((status) => ({ ...status, checked: true }))
+    helper.getBookingStatuses().map((status) => ({ ...status, checked: false }))
   )
-  const [checkedStatuses, setCheckedStatuses] = useState(
-    helper.getBookingStatuses().map((status) => status.value)
-  )
-  const [allChecked, setAllChecked] = useState(true)
+  const [checkedStatuses, setCheckedStatuses] = useState<movininTypes.BookingStatus[]>([])
+  const [allChecked, setAllChecked] = useState(false)
 
   useEffect(() => {
     if (onLoad) {
-      onLoad(checkedStatuses)
+      onLoad(allStatuses)
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleChange = (_checkedStatuses: movininTypes.BookingStatus[]) => {
+    if (onChange) {
+      onChange(_checkedStatuses.length === 0 ? allStatuses : movininHelper.clone(_checkedStatuses))
+    }
+  }
 
   return (
     visible && (
@@ -68,9 +75,7 @@ const StatusFilter = ({
                         }
                       }
 
-                      if (onChange) {
-                        onChange(movininHelper.clone(checkedStatuses))
-                      }
+                      handleChange(checkedStatuses)
                     }}
                   >
                     <BookingStatus style={styles.bookingStatus} status={status.value} />
