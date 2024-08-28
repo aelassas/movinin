@@ -13,6 +13,7 @@ import * as env from '../config/env.config'
 import StatusFilter from '../components/StatusFilter'
 import * as BookingService from '../services/BookingService'
 import BookingFilter from '../components/BookingFilter'
+import Indicator from '../components/Indicator'
 
 const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Bookings'>) => {
   const isFocused = useIsFocused()
@@ -97,6 +98,7 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   return (
     <Layout style={styles.master} navigation={navigation} route={route} onLoad={onLoad} reload={reload} strict>
+      {!visible && <Indicator style={{ marginVertical: 10 }} />}
       {visible && user?._id && (
         <BookingList
           navigation={navigation}
