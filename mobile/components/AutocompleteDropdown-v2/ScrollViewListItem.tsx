@@ -1,10 +1,5 @@
 import React, { memo } from 'react'
-import {
-  StyleSheet,
-  Text,
-  Pressable,
-  View
-} from 'react-native'
+import { StyleSheet, Text, Pressable, View } from 'react-native'
 
 const ScrollViewListItemComponent = ({
   titleHighlighted,
@@ -22,22 +17,22 @@ const ScrollViewListItemComponent = ({
     numberOfLines?: number
     onPress: () => void
   }) => (
-    <Pressable onPress={onPress}>
-      <View style={styles.container}>
-        <Text numberOfLines={numberOfLines}>
-          <Text numberOfLines={1} style={{ ...styles.text, ...style }}>
-            {titleStart}
-          </Text>
-          <Text numberOfLines={1} style={{ ...styles.text, ...style, fontWeight: 'bold' }}>
-            {titleHighlighted}
-          </Text>
-          <Text numberOfLines={1} style={{ ...styles.text, ...style }}>
-            {titleEnd}
-          </Text>
+  <Pressable onPress={onPress}>
+    <View style={styles.container}>
+      <Text numberOfLines={numberOfLines}>
+        <Text numberOfLines={1} style={{ ...styles.text, ...style }}>
+          {titleStart}
         </Text>
-      </View>
-    </Pressable>
-  )
+        <Text numberOfLines={1} style={{ ...styles.text, ...style, fontWeight: 'bold' }}>
+          {titleHighlighted}
+        </Text>
+        <Text numberOfLines={1} style={{ ...styles.text, ...style }}>
+          {titleEnd}
+        </Text>
+      </Text>
+    </View>
+  </Pressable>
+)
 
 export const ScrollViewListItem = memo(ScrollViewListItemComponent)
 
