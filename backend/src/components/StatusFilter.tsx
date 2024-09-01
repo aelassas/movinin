@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '../lang/common'
@@ -14,24 +14,24 @@ interface StatusFilterProps {
   onChange?: (value: movininTypes.BookingStatus[]) => void
 }
 
+const statuses = helper.getBookingStatuses()
+const allStatuses = statuses.map((status) => status.value)
+
 const StatusFilter = ({
   className,
   collapse,
   onChange
 }: StatusFilterProps) => {
-  const statuses = helper.getBookingStatuses()
-  const [checkedStatuses, setCheckedStatuses] = useState(statuses.map((status) => status.value))
-  const [allChecked, setAllChecked] = useState(true)
+  const [checkedStatuses, setCheckedStatuses] = useState<movininTypes.BookingStatus[]>([])
+  const [allChecked, setAllChecked] = useState(false)
 
   const refs = useRef<(HTMLInputElement | null)[]>([])
 
-  useEffect(() => {
-    refs.current.forEach((checkbox) => {
-      if (checkbox) {
-        checkbox.checked = true
-      }
-    })
-  }, [])
+  const handleChange = (_checkedStatuses: movininTypes.BookingStatus[]) => {
+    if (onChange) {
+      onChange(_checkedStatuses.length === 0 ? allStatuses : movininHelper.clone(_checkedStatuses))
+    }
+  }
 
   const handleCheckStatusChange = (e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
     const status = e.currentTarget.getAttribute('data-value') as movininTypes.BookingStatus
@@ -39,7 +39,7 @@ const StatusFilter = ({
     if ('checked' in e.currentTarget && e.currentTarget.checked) {
       checkedStatuses.push(status)
 
-      if (checkedStatuses.length === statuses.length) {
+      if (checkedStatuses.length === allStatuses.length) {
         setAllChecked(true)
       }
     } else {
@@ -52,9 +52,7 @@ const StatusFilter = ({
     }
 
     setCheckedStatuses(checkedStatuses)
-    if (onChange) {
-      onChange(movininHelper.clone(checkedStatuses))
-    }
+    handleChange(checkedStatuses)
   }
 
   const handleStatusClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -84,18 +82,15 @@ const StatusFilter = ({
         }
       })
 
-      const allStatuses = statuses.map((status) => status.value)
       setAllChecked(true)
       setCheckedStatuses(allStatuses)
 
-      if (onChange) {
-        onChange(movininHelper.clone(allStatuses))
-      }
+      handleChange(allStatuses)
     }
   }
 
   return (
-    (statuses.length > 0 && (
+    (allStatuses.length > 0 && (
       <Accordion title={commonStrings.STATUS} collapse={collapse} className={`${className ? `${className} ` : ''}status-filter`}>
         <ul className="status-list">
           {statuses.map((status, index) => (

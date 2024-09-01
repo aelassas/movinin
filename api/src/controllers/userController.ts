@@ -1342,7 +1342,10 @@ export const getUsers = async (req: Request, res: Response) => {
           type: { $in: types },
         },
         {
-          fullName: { $regex: keyword, $options: options },
+          $or: [
+            { fullName: { $regex: keyword, $options: options } },
+            { email: { $regex: keyword, $options: options } },
+          ],
         },
       ],
     }
