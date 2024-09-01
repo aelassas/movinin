@@ -40,7 +40,14 @@ const SocialLogin = ({
   const navigate = useNavigate()
 
   const loginSuccess = async (socialSignInType: movininTypes.SocialSignInType, accessToken: string, email: string, fullName: string, avatar?: string) => {
-    const data = { socialSignInType, accessToken, email, fullName, avatar }
+    const data: movininTypes.SignInPayload = {
+      socialSignInType,
+      accessToken,
+      email,
+      fullName,
+      avatar,
+      stayConnected: UserService.getStayConnected()
+    }
 
     const res = await UserService.socialSignin(data)
     if (res.status === 200) {
@@ -59,7 +66,6 @@ const SocialLogin = ({
 
   const loginError = (err: any) => {
     console.log(err)
-
     if (onError) {
       onError(err)
     }
