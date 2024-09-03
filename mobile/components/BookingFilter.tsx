@@ -12,6 +12,7 @@ import TextInput from './TextInput'
 interface BookingFilterProps {
   visible?: boolean
   style?: object
+  backgroundColor?: string
   language?: string
   onSubmit: (filter: movininTypes.Filter) => void
 }
@@ -19,6 +20,7 @@ interface BookingFilterProps {
 const BookingFilter = ({
   visible,
   style,
+  backgroundColor = '#F5F5F5',
   language,
   onSubmit
 }: BookingFilterProps) => {
@@ -76,7 +78,7 @@ const BookingFilter = ({
         <Accordion style={styles.accordion} title={i18n.t('SEARCH')}>
           <DateTimePicker
             mode="date"
-            backgroundColor="#fff"
+            backgroundColor={backgroundColor}
             locale={language}
             style={styles.component}
             size="small"
@@ -103,7 +105,7 @@ const BookingFilter = ({
 
           <DateTimePicker
             mode="date"
-            backgroundColor="#fff"
+            backgroundColor={backgroundColor}
             locale={language}
             style={styles.component}
             size="small"
@@ -120,7 +122,7 @@ const BookingFilter = ({
           />
 
           <LocationSelectList
-            backgroundColor="#fff"
+            backgroundColor={backgroundColor}
             label={i18n.t('LOCATION')}
             style={styles.component}
             size="small"

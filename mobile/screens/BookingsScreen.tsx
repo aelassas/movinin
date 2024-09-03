@@ -124,6 +124,7 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
               <BookingFilter
                 style={styles.filter}
                 visible={hasBookings}
+                backgroundColor="#fff"
                 onSubmit={onSubmitBookingFilter}
               />
             </View>
