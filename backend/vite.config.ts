@@ -11,6 +11,7 @@ export default ({ mode }: { mode: string }) => {
 
     resolve: {
       alias: {
+        '@': path.resolve(__dirname, './src'),
         ':movinin-types': path.resolve(__dirname, '../packages/movinin-types'),
         ':movinin-helper': path.resolve(__dirname, '../packages/movinin-helper'),
         ':disable-react-devtools': path.resolve(__dirname, '../packages/disable-react-devtools'),

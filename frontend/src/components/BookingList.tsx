@@ -30,15 +30,15 @@ import { format } from 'date-fns'
 import { fr as dfnsFR, enUS as dfnsENUS } from 'date-fns/locale'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import * as BookingService from '../services/BookingService'
-import * as helper from '../common/helper'
-import { strings } from '../lang/booking-list'
-import { strings as csStrings } from '../lang/properties'
-import { strings as commonStrings } from '../lang/common'
-import env from '../config/env.config'
+import * as BookingService from '@/services/BookingService'
+import * as helper from '@/common/helper'
+import { strings } from '@/lang/booking-list'
+import { strings as csStrings } from '@/lang/properties'
+import { strings as commonStrings } from '@/lang/common'
+import env from '@/config/env.config'
 import BookingStatus from './BookingStatus'
 
-import '../assets/css/booking-list.css'
+import '@/assets/css/booking-list.css'
 
 interface BookingListProps {
   agencies?: string[]

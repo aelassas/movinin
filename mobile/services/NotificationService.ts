@@ -1,7 +1,7 @@
 import axiosInstance from './axiosInstance'
-import * as env from '../config/env.config'
+import * as env from '@/config/env.config'
 import * as UserService from './UserService'
-import * as axiosHelper from '../common/axiosHelper'
+import * as axiosHelper from '@/common/axiosHelper'
 import * as movininTypes from ':movinin-types'
 
 axiosHelper.init(axiosInstance)

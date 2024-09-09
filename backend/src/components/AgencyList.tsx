@@ -18,15 +18,15 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import env from '../config/env.config'
-import Const from '../config/const'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/agency-list'
-import * as AgencyService from '../services/AgencyService'
-import * as helper from '../common/helper'
+import env from '@/config/env.config'
+import Const from '@/config/const'
+import { strings as commonStrings } from '@/lang/common'
+import { strings } from '@/lang/agency-list'
+import * as AgencyService from '@/services/AgencyService'
+import * as helper from '@/common/helper'
 import Pager from './Pager'
 
-import '../assets/css/agency-list.css'
+import '@/assets/css/agency-list.css'
 
 interface AgencyListProps {
   user?: movininTypes.User

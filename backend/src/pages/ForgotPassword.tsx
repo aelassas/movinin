@@ -10,15 +10,15 @@ import {
 } from '@mui/material'
 import validator from 'validator'
 import * as movininTypes from ':movinin-types'
-import * as UserService from '../services/UserService'
-import Layout from '../components/Layout'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/reset-password'
+import * as UserService from '@/services/UserService'
+import Layout from '@/components/Layout'
+import { strings as commonStrings } from '@/lang/common'
+import { strings } from '@/lang/reset-password'
 import NoMatch from './NoMatch'
-import * as helper from '../common/helper'
-import env from '../config/env.config'
+import * as helper from '@/common/helper'
+import env from '@/config/env.config'
 
-import '../assets/css/forgot-password.css'
+import '@/assets/css/forgot-password.css'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')

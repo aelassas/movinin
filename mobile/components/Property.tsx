@@ -12,9 +12,9 @@ import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import AutoHeightWebView from './AutoHeightWebView'
 import Button from './Button'
-import * as helper from '../common/helper'
-import * as env from '../config/env.config'
-import i18n from '../lang/i18n'
+import * as helper from '@/common/helper'
+import * as env from '@/config/env.config'
+import i18n from '@/lang/i18n'
 
 interface PropertyProps {
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>

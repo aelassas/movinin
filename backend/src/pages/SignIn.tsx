@@ -9,14 +9,14 @@ import {
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/sign-in'
-import * as UserService from '../services/UserService'
-import Header from '../components/Header'
-import Error from '../components/Error'
-import * as langHelper from '../common/langHelper'
+import { strings as commonStrings } from '@/lang/common'
+import { strings } from '@/lang/sign-in'
+import * as UserService from '@/services/UserService'
+import Header from '@/components/Header'
+import Error from '@/components/Error'
+import * as langHelper from '@/common/langHelper'
 
-import '../assets/css/signin.css'
+import '@/assets/css/signin.css'
 
 const SignIn = () => {
   const navigate = useNavigate()

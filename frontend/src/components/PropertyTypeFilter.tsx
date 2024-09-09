@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import { strings as commonStrings } from '../lang/common'
-import { strings as cpStrings } from '../lang/property'
-import { strings } from '../lang/properties'
+import { strings as commonStrings } from '@/lang/common'
+import { strings as cpStrings } from '@/lang/property'
+import { strings } from '@/lang/properties'
 import Accordion from './Accordion'
 
-import '../assets/css/property-type-filter.css'
+import '@/assets/css/property-type-filter.css'
 
 interface PropertyTypeFilterProps {
   className?: string

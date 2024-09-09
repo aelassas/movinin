@@ -3,9 +3,9 @@ import {
   Check as AvailableIcon,
   Clear as UnavailableIcon
 } from '@mui/icons-material'
-import { strings } from '../lang/available'
+import { strings } from '@/lang/available'
 
-import '../assets/css/available.css'
+import '@/assets/css/available.css'
 
 interface AvailableProps {
   available: boolean

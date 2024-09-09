@@ -22,15 +22,15 @@ import {
   LocationOn as LocationIcon
 } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
-import env from '../config/env.config'
-import Const from '../config/const'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/locations'
-import * as LocationService from '../services/LocationService'
-import * as helper from '../common/helper'
+import env from '@/config/env.config'
+import Const from '@/config/const'
+import { strings as commonStrings } from '@/lang/common'
+import { strings } from '@/lang/locations'
+import * as LocationService from '@/services/LocationService'
+import * as helper from '@/common/helper'
 import Pager from './Pager'
 
-import '../assets/css/location-list.css'
+import '@/assets/css/location-list.css'
 
 interface LocationListProps {
   keyword?: string

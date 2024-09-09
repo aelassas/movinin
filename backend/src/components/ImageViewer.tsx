@@ -1,6 +1,6 @@
 import React, { KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import '../assets/css/image-viewer.css'
+import '@/assets/css/image-viewer.css'
 
 interface ImageViewerProps {
   title?: string

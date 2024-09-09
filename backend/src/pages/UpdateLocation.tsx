@@ -9,18 +9,18 @@ import {
 } from '@mui/material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import Layout from '../components/Layout'
-import { strings as commonStrings } from '../lang/common'
-import { strings as clStrings } from '../lang/create-location'
-import { strings } from '../lang/update-location'
-import * as LocationService from '../services/LocationService'
+import Layout from '@/components/Layout'
+import { strings as commonStrings } from '@/lang/common'
+import { strings as clStrings } from '@/lang/create-location'
+import { strings } from '@/lang/update-location'
+import * as LocationService from '@/services/LocationService'
 import NoMatch from './NoMatch'
 import Error from './Error'
-import Backdrop from '../components/SimpleBackdrop'
-import * as helper from '../common/helper'
-import env from '../config/env.config'
+import Backdrop from '@/components/SimpleBackdrop'
+import * as helper from '@/common/helper'
+import env from '@/config/env.config'
 
-import '../assets/css/update-location.css'
+import '@/assets/css/update-location.css'
 
 const UpdateLocation = () => {
   const [visible, setVisible] = useState(false)

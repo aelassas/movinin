@@ -1,9 +1,9 @@
 import React from 'react'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import env from '../config/env.config'
+import env from '@/config/env.config'
 
-import '../assets/css/agency-badge.css'
+import '@/assets/css/agency-badge.css'
 
 interface AgencyBadgeProps {
   agency: movininTypes.User

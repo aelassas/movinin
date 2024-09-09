@@ -20,11 +20,11 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import env from '../config/env.config'
-import { strings as commonStrings } from '../lang/common'
-import * as helper from '../common/helper'
-import * as UserService from '../services/UserService'
-import * as PropertyService from '../services/PropertyService'
+import env from '@/config/env.config'
+import { strings as commonStrings } from '@/lang/common'
+import * as helper from '@/common/helper'
+import * as UserService from '@/services/UserService'
+import * as PropertyService from '@/services/PropertyService'
 
 interface AvatarProps {
   width?: number

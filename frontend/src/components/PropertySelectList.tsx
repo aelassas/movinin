@@ -8,14 +8,14 @@ import {
   TextFieldVariants
 } from '@mui/material'
 import * as movininTypes from ':movinin-types'
-import env from '../config/env.config'
-import { strings as commonStrings } from '../lang/common'
-import { strings as bfStrings } from '../lang/booking-filter'
-import { strings as blStrings } from '../lang/booking-list'
-import { strings } from '../lang/booking-property-list'
-import * as PropertyService from '../services/PropertyService'
+import env from '@/config/env.config'
+import { strings as commonStrings } from '@/lang/common'
+import { strings as bfStrings } from '@/lang/booking-filter'
+import { strings as blStrings } from '@/lang/booking-list'
+import { strings } from '@/lang/booking-property-list'
+import * as PropertyService from '@/services/PropertyService'
 import MultipleSelect from './MultipleSelect'
-import * as helper from '../common/helper'
+import * as helper from '@/common/helper'
 
 interface PropertySelectListProps {
   label?: string

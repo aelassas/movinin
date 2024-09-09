@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from '@mui/material'
-import { strings as commonStrings } from '../lang/common'
+import { strings as commonStrings } from '@/lang/common'
 
 const Error = ({ style }: { style?: React.CSSProperties }) => (
   <div className="msg" style={style || {}}>

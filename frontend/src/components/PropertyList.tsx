@@ -8,18 +8,18 @@ import {
 } from '@mui/material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import env from '../config/env.config'
-import Const from '../config/const'
-import { strings as commonStrings } from '../lang/common'
-import { strings as csStrings, strings } from '../lang/properties'
+import env from '@/config/env.config'
+import Const from '@/config/const'
+import { strings as commonStrings } from '@/lang/common'
+import { strings as csStrings, strings } from '@/lang/properties'
 
-import * as helper from '../common/helper'
-import * as PropertyService from '../services/PropertyService'
+import * as helper from '@/common/helper'
+import * as PropertyService from '@/services/PropertyService'
 import Pager from './Pager'
 import PropertyInfo from './PropertyInfo'
 import AgencyBadge from './AgencyBadge'
 
-import '../assets/css/property-list.css'
+import '@/assets/css/property-list.css'
 
 interface PropertyListProps {
   agencies?: string[]
