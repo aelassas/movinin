@@ -6,6 +6,7 @@ const babel = (api) => {
       'module-resolver',
       {
         alias: {
+          '@': './dist/src',
           ':movinin-types': '../packages/movinin-types',
         },
       },

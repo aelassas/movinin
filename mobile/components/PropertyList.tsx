@@ -11,11 +11,11 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { CommonActions } from '@react-navigation/native'
 import * as movininTypes from ':movinin-types'
 
-import * as helper from '../common/helper'
-import * as env from '../config/env.config'
-import i18n from '../lang/i18n'
-import * as UserService from '../services/UserService'
-import * as PropertyService from '../services/PropertyService'
+import * as helper from '@/common/helper'
+import * as env from '@/config/env.config'
+import i18n from '@/lang/i18n'
+import * as UserService from '@/services/UserService'
+import * as PropertyService from '@/services/PropertyService'
 import Property from './Property'
 
 interface PropertyListProps {

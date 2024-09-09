@@ -1,7 +1,7 @@
 import express from 'express'
-import routeNames from '../config/locationRoutes.config'
-import authJwt from '../middlewares/authJwt'
-import * as locationController from '../controllers/locationController'
+import routeNames from '@/config/locationRoutes.config'
+import authJwt from '@/middlewares/authJwt'
+import * as locationController from '@/controllers/locationController'
 
 const routes = express.Router()
 

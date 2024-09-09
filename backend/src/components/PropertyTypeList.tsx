@@ -6,7 +6,7 @@ import {
   SelectChangeEvent
 } from '@mui/material'
 import * as movininTypes from ':movinin-types'
-import { strings } from '../lang/properties'
+import { strings } from '@/lang/properties'
 
 interface PropertyTypeListProps {
   value?: string

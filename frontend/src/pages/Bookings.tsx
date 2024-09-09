@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import Layout from '../components/Layout'
-import env from '../config/env.config'
-import * as helper from '../common/helper'
-import BookingList from '../components/BookingList'
-import AgencyFilter from '../components/AgencyFilter'
-import StatusFilter from '../components/StatusFilter'
-import BookingFilter from '../components/BookingFilter'
-import * as AgencyService from '../services/AgencyService'
+import Layout from '@/components/Layout'
+import env from '@/config/env.config'
+import * as helper from '@/common/helper'
+import BookingList from '@/components/BookingList'
+import AgencyFilter from '@/components/AgencyFilter'
+import StatusFilter from '@/components/StatusFilter'
+import BookingFilter from '@/components/BookingFilter'
+import * as AgencyService from '@/services/AgencyService'
 
-import '../assets/css/bookings.css'
+import '@/assets/css/bookings.css'
 
 const Bookings = () => {
   const [user, setUser] = useState<movininTypes.User>()

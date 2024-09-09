@@ -19,13 +19,13 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import { strings as cpStrings } from '../lang/property'
-import { strings } from '../lang/properties'
-import * as helper from '../common/helper'
-import * as langHelper from '../common/langHelper'
-import env from '../config/env.config'
+import { strings as cpStrings } from '@/lang/property'
+import { strings } from '@/lang/properties'
+import * as helper from '@/common/helper'
+import * as langHelper from '@/common/langHelper'
+import env from '@/config/env.config'
 
-import '../assets/css/property-info.css'
+import '@/assets/css/property-info.css'
 
 interface PropertyInfoProps {
   property: movininTypes.Property

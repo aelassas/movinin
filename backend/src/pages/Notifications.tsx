@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import * as movininTypes from ':movinin-types'
-import Layout from '../components/Layout'
-import NotificationList from '../components/NotificationList'
+import Layout from '@/components/Layout'
+import NotificationList from '@/components/NotificationList'
 
 const Notifications = () => {
   const [user, setUser] = useState<movininTypes.User>()

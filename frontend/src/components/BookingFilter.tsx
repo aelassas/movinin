@@ -11,13 +11,13 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/booking-filter'
+import { strings as commonStrings } from '@/lang/common'
+import { strings } from '@/lang/booking-filter'
 import LocationSelectList from './LocationSelectList'
 import DatePicker from './DatePicker'
-import Accordion from '../components/Accordion'
+import Accordion from '@/components/Accordion'
 
-import '../assets/css/booking-filter.css'
+import '@/assets/css/booking-filter.css'
 
 interface BookingFilterProps {
   collapse?: boolean

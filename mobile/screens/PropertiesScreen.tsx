@@ -5,14 +5,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 
-import Layout from '../components/Layout'
-import i18n from '../lang/i18n'
-import * as UserService from '../services/UserService'
-import PropertyList from '../components/PropertyList'
-import AgencyFilter from '../components/AgencyFilter'
-import RentalTermFilter from '../components/RentalTermFilter'
-import PropertyTypeFilter from '../components/PropertyTypeFilter'
-import Indicator from '../components/Indicator'
+import Layout from '@/components/Layout'
+import i18n from '@/lang/i18n'
+import * as UserService from '@/services/UserService'
+import PropertyList from '@/components/PropertyList'
+import AgencyFilter from '@/components/AgencyFilter'
+import RentalTermFilter from '@/components/RentalTermFilter'
+import PropertyTypeFilter from '@/components/PropertyTypeFilter'
+import Indicator from '@/components/Indicator'
 
 const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Properties'>) => {
   const isFocused = useIsFocused()

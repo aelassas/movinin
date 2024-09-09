@@ -2,12 +2,12 @@ import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
 import * as movininTypes from ':movinin-types'
-import * as env from '../config/env.config'
-import i18n from '../lang/i18n'
-import Location from '../models/Location'
-import LocationValue from '../models/LocationValue'
-import Property from '../models/Property'
-import * as logger from '../common/logger'
+import * as env from '@/config/env.config'
+import i18n from '@/lang/i18n'
+import Location from '@/models/Location'
+import LocationValue from '@/models/LocationValue'
+import Property from '@/models/Property'
+import * as logger from '@/common/logger'
 
 /**
  * Validate a Location name with language code.

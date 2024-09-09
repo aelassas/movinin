@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/properties'
+import { strings as commonStrings } from '@/lang/common'
+import { strings } from '@/lang/properties'
 import Accordion from './Accordion'
-import * as helper from '../common/helper'
+import * as helper from '@/common/helper'
 
-import '../assets/css/availability-filter.css'
+import '@/assets/css/availability-filter.css'
 
 interface AvailabilityFilterProps {
   className?: string

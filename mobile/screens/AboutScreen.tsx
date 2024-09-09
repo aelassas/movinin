@@ -3,9 +3,9 @@ import { StyleSheet, Text, ScrollView } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useIsFocused } from '@react-navigation/native'
 
-import i18n from '../lang/i18n'
-import * as UserService from '../services/UserService'
-import Layout from '../components/Layout'
+import i18n from '@/lang/i18n'
+import * as UserService from '@/services/UserService'
+import Layout from '@/components/Layout'
 
 const AboutScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'About'>) => {
   const isFocused = useIsFocused()

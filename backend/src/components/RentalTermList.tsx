@@ -6,7 +6,7 @@ import {
   SelectChangeEvent
 } from '@mui/material'
 import * as movininTypes from ':movinin-types'
-import { strings } from '../lang/rental-term'
+import { strings } from '@/lang/rental-term'
 
 interface RentalTermListProps {
   value?: string

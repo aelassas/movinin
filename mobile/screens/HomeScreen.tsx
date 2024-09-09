@@ -10,14 +10,14 @@ import {
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
-import * as env from '../config/env.config'
-import i18n from '../lang/i18n'
-import * as UserService from '../services/UserService'
-import * as helper from '../common/helper'
-import Layout from '../components/Layout'
-import Button from '../components/Button'
-import LocationSelectList from '../components/LocationSelectList'
-import DateTimePicker from '../components/DateTimePicker'
+import * as env from '@/config/env.config'
+import i18n from '@/lang/i18n'
+import * as UserService from '@/services/UserService'
+import * as helper from '@/common/helper'
+import Layout from '@/components/Layout'
+import Button from '@/components/Button'
+import LocationSelectList from '@/components/LocationSelectList'
+import DateTimePicker from '@/components/DateTimePicker'
 
 const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Home'>) => {
   const isFocused = useIsFocused()

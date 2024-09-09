@@ -1,9 +1,9 @@
 import React from 'react'
 import { IconButton } from '@mui/material'
 import { ArrowBackIos as PreviousPageIcon, ArrowForwardIos as NextPageIcon } from '@mui/icons-material'
-import { strings as commonStrings } from '../lang/common'
+import { strings as commonStrings } from '@/lang/common'
 
-import '../assets/css/pager.css'
+import '@/assets/css/pager.css'
 
 interface PagerProps {
   page: number

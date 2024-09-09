@@ -4,15 +4,15 @@ import {
   PhotoCamera as ImageIcon
 } from '@mui/icons-material'
 import * as movininHelper from ':movinin-helper'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/image-editor'
+import { strings as commonStrings } from '@/lang/common'
+import { strings } from '@/lang/image-editor'
 import ImageViewer from './ImageViewer'
-import env from '../config/env.config'
-import * as helper from '../common/helper'
-import * as PropertyService from '../services/PropertyService'
+import env from '@/config/env.config'
+import * as helper from '@/common/helper'
+import * as PropertyService from '@/services/PropertyService'
 
-import '../assets/css/image-editor.css'
-import Property from '../assets/img/property.png'
+import '@/assets/css/image-editor.css'
+import Property from '@/assets/img/property.png'
 
 interface ImageEditorProps {
   title?: string

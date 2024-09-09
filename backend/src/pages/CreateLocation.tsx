@@ -9,14 +9,14 @@ import {
 } from '@mui/material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import Layout from '../components/Layout'
-import { strings as commonStrings } from '../lang/common'
-import { strings } from '../lang/create-location'
-import * as LocationService from '../services/LocationService'
-import * as helper from '../common/helper'
-import env from '../config/env.config'
+import Layout from '@/components/Layout'
+import { strings as commonStrings } from '@/lang/common'
+import { strings } from '@/lang/create-location'
+import * as LocationService from '@/services/LocationService'
+import * as helper from '@/common/helper'
+import env from '@/config/env.config'
 
-import '../assets/css/create-location.css'
+import '@/assets/css/create-location.css'
 
 const CreateLocation = () => {
   const [visible, setVisible] = useState(false)

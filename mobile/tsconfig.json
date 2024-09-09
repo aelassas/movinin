@@ -8,6 +8,7 @@
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
+      "@/*": ["./*"],
       ":movinin-types": ["../packages/movinin-types"],
       ":movinin-helper": ["../packages/movinin-helper"]
     }

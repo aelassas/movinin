@@ -12,9 +12,9 @@ import * as movininHelper from ':movinin-helper'
 
 import BookingStatus from './BookingStatus'
 import Button from './Button'
-import * as helper from '../common/helper'
-import * as env from '../config/env.config'
-import i18n from '../lang/i18n'
+import * as helper from '@/common/helper'
+import * as env from '@/config/env.config'
+import i18n from '@/lang/i18n'
 
 interface BookingProps {
   booking: movininTypes.Booking

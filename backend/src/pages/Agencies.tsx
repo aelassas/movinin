@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { Button } from '@mui/material'
 import * as movininTypes from ':movinin-types'
-import Layout from '../components/Layout'
-import { strings } from '../lang/agencies'
-import Search from '../components/Search'
-import AgencyList from '../components/AgencyList'
-import InfoBox from '../components/InfoBox'
-import * as helper from '../common/helper'
+import Layout from '@/components/Layout'
+import { strings } from '@/lang/agencies'
+import Search from '@/components/Search'
+import AgencyList from '@/components/AgencyList'
+import InfoBox from '@/components/InfoBox'
+import * as helper from '@/common/helper'
 
-import '../assets/css/agencies.css'
+import '@/assets/css/agencies.css'
 
 const Agencies = () => {
   const [user, setUser] = useState<movininTypes.User>()
