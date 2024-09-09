@@ -31,7 +31,7 @@ import { strings as propertiesStrings } from '@/lang/properties'
 import { strings as propertyStrings } from '@/lang/property'
 import { strings as rentalTermStrings } from '@/lang/rental-term'
 import { strings as resetPasswordStrings } from '@/lang/reset-password'
-import { strings as settingstrings } from '@/lang/settings'
+import { strings as settingsStrings } from '@/lang/settings'
 import { strings as signInStrings } from '@/lang/sign-in'
 import { strings as signUpStrings } from '@/lang/sign-up'
 import { strings as soldOutStrings } from '@/lang/sold-out'
@@ -121,7 +121,7 @@ if (lang) {
     propertyStrings.setLanguage(_lang)
     rentalTermStrings.setLanguage(_lang)
     resetPasswordStrings.setLanguage(_lang)
-    settingstrings.setLanguage(_lang)
+    settingsStrings.setLanguage(_lang)
     signInStrings.setLanguage(_lang)
     signUpStrings.setLanguage(_lang)
     soldOutStrings.setLanguage(_lang)
