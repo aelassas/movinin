@@ -1,11 +1,11 @@
 import 'dotenv/config'
 import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
-import * as env from '@/config/env.config'
-import * as databaseHelper from '@/common/databaseHelper'
-import * as mailHelper from '@/common/mailHelper'
+import * as env from '../src/config/env.config'
+import * as databaseHelper from '../src/common/databaseHelper'
+import * as mailHelper from '../src/common/mailHelper'
 import * as testHelper from './testHelper'
-import User from '@/models/User'
+import User from '../src/models/User'
 
 //
 // Connecting and initializing the database before running the test suite
