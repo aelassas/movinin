@@ -6,214 +6,108 @@ div.home {
   overflow: hidden auto;
 }
 
-div.home footer {
-  width: 100%;
-  height: 50px;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f2f2f2;
-  color: #70757a;
-  border-top: 1px solid #ebebeb;
-}
-
-div.home footer div.copyright span.part1,
-div.home footer div.copyright span.part3 {
-  font-size: 12px;
-}
-
-div.home footer div.copyright span.part2 {
-  font-size: 10px;
-  position: relative;
-  top: -5px;
-}
-
-div.home div.home-content div.home-logo {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 180px;
-  display: none;
-}
-
-div.home div.home-content span.home-logo-main,
-div.home div.home-content span.home-logo-registered {
-  float: left;
-  color: #0D63C9;
-  opacity: 0.97;
-}
-
-div.home div.home-content span.home-logo-main {
-  font-size: 80px;
-  font-weight: 700;
-  line-height: 135px;
-}
-
-div.home div.home-content span.home-logo-main::after {
-  content: "Movin' In";
-}
-
-div.home div.home-content span.home-logo-registered {
-  margin-top: 40px;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-div.home div.home-content span.home-logo-registered::after {
-  content: '®';
-}
-
-div.home div.home-content div.home-search form.home-search-form {
-  display: table;
-  width: 100%;
-}
-
-div.home div.home-content div.home-search .btn-search {
-  display: table-cell;
-  font-size: 20px;
-  line-height: 28px;
-  font-weight: 500;
-  border: 0;
-  border-radius: 5px;
+div.home div.home-cover {
+  z-index: 2;
   color: #fff;
-  height: 52px;
-  margin: 0;
-  white-space: nowrap;
-  background: #0D63C9;
-  padding: 5px 32px;
-}
-
-div.home div.home-content div.home-search .btn-search:hover {
-  opacity: 0.95;
+  text-align: center;
+  letter-spacing: -.03em;
+  -webkit-font-smoothing: antialiased;
 }
 
 div.home div.home-content {
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   background-image: url(/cover.jpg);
   background-size: cover;
-  background-position: center bottom;
+  background-position: bottom;
   width: 100%;
-  height: 107vh;
+}
+
+div.home div.home-content::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  content: "";
+  background: rgba(51, 51, 51, .32);
+  clear: both;
+  z-index: 1;
+}
+
+div.home div.home-content div.home-search {
+  box-shadow: 0px 3px 5px -1px #00000033, 0px 1px 18px 0px #0000001F, 0px 6px 10px 0px #00000024;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  z-index: 2;
+  background-color: #fff;
+}
+
+div.home div.destinations {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 50px 0 60px 0;
+}
+
+div.home div.destinations h1 {
+  width: fit-content;
+  font-weight: 500;
+}
+
+div.home div.destinations div.tabs {
+  width: 100%;
+}
+
+div.home div.home-map {
+  width: 80%;
+  margin: 15px 0 30px 0;
 }
 
 /* Device width is less than or equal to 960px */
 
 @media only screen and (width <=960px) {
+  div.home div.home-cover {
+    font-size: 40px;
+    font-weight: 800;
+    padding: 20px 5px 10px 5px;
+  }
+
   div.home div.home-content {
     padding: 110px 0;
-  }
-
-  div.home div.home-content div.home-logo {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 140px;
-    display: none;
-  }
-
-  div.home div.home-content span.home-logo-main,
-  div.home div.home-content span.home-logo-registered {
-    float: left;
-    color: #0D63C9;
-    opacity: 0.97;
-  }
-
-  div.home div.home-content span.home-logo-main {
-    font-size: 70px;
-    font-weight: 700;
-    line-height: 125px;
-  }
-
-  div.home div.home-content div.home-search form.home-search-form {
-    display: grid;
-    width: 100%;
-    max-width: 480px;
-  }
-
-  div.home div.home-content div.home-search .pickup-location,
-  div.home div.home-content div.home-search .drop-off-location,
-  div.home div.home-content div.home-search .from,
-  div.home div.home-content div.home-search .to {
-    width: 100%;
-    padding: 10px;
+    justify-content: flex-start !important;
+    height: 800px;
   }
 
   div.home div.home-content div.home-search {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: calc(100% - 30px);
-    background-color: #fff;
+    width: calc(100% - 40px);
     padding: 20px;
-    border-radius: 20px;
     margin: 10px 0;
-  }
-
-  div.home div.home-content div.home-search .btn-search {
-    margin: 10px;
-  }
-
-  div.home footer div.secure-payment {
-    display: none;
-  }
-}
-
-/* Device width is between 500px and 960px */
-
-@media only screen and (width >=500px) and (width <=960px) {
-  div.home footer div.secure-payment {
-    bottom: 0;
   }
 }
 
 /* Device width is greater than or equal to 960px */
 
 @media only screen and (width >=960px) {
-  div.home div.home-content div.home-search .pickup-location {
-    display: table-cell;
-    width: 350px;
-    padding-right: 2px;
-    padding-bottom: 10px;
+  div.home div.home-cover {
+    font-size: 47px;
+    font-weight: 700;
+    margin-bottom: 5px;
   }
 
-  div.home div.home-content div.home-search .drop-off-location {
-    display: table-row;
-    width: 350px;
-    height: 66px;
-  }
-
-  div.home div.home-content div.home-search .from,
-  div.home div.home-content div.home-search .to {
-    display: table-cell;
-    width: 235px;
-    padding: 0 2px;
+  div.home div.home-content {
+    height: 650px;
   }
 
   div.home div.home-content div.home-search {
-    background-color: #fff;
-    display: block;
     padding: 20px;
-    border-radius: 20px;
-    margin: 6% 5%;
-  }
-
-  div.home div.home-content div.home-search .btn-search {
-    min-width: 190px;
-    margin-left: 7px;
-  }
-
-  div.home footer div.secure-payment {
-    position: absolute;
-    right: 0;
-    padding: 5px;
-    display: none;
-  }
-
-  div.home footer div.secure-payment img {
-    height: 32px;
+    margin: 0 5%;
   }
 }

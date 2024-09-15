@@ -513,7 +513,7 @@ const BookingList = ({
         <DialogTitle className="dialog-header">{!cancelRequestSent && !cancelRequestProcessing && commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent className="dialog-content">
           {cancelRequestProcessing ? (
-            <Stack sx={{ color: '#0D63C9' }}>
+            <Stack sx={{ color: '#232323' }}>
               <CircularProgress color="inherit" />
             </Stack>
           ) : cancelRequestSent ? (

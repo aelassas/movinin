@@ -9,7 +9,7 @@ export const init = () => ga4.initialize(TRACKING_ID, {
 })
 
 export const sendEvent = (name: string) => ga4.event('screen_view', {
-  app_name: 'BookCars',
+  app_name: 'movinin',
   screen_name: name,
 })
 

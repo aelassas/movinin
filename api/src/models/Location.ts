@@ -3,11 +3,26 @@ import * as env from '@/config/env.config'
 
 const locationSchema = new Schema<env.Location>(
   {
+    country: {
+      type: Schema.Types.ObjectId,
+      required: [true, "can't be blank"],
+      ref: 'Country',
+      index: true,
+    },
+    latitude: {
+      type: Number,
+    },
+    longitude: {
+      type: Number,
+    },
     values: {
       type: [Schema.Types.ObjectId],
       ref: 'LocationValue',
       required: [true, "can't be blank"],
       validate: (value: any): boolean => Array.isArray(value),
+    },
+    image: {
+      type: String,
     },
   },
   {

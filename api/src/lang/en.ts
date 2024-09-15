@@ -39,4 +39,8 @@ export const en = {
   BOOKING_UPDATED_NOTIFICATION_PART2: 'was updated.',
   PROPERTY_IMAGE_REQUIRED: 'Le champ image ne peut pas être vide: ',
   PROPERTY_IMAGE_NOT_FOUND: 'Le fichier image est introuvable : ',
+  CONTACT_SUBJECT: 'New Message from Contact Form',
+  SUBJECT: 'Subject',
+  FROM: 'From',
+  MESSAGE: 'Message',
 }

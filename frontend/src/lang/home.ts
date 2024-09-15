@@ -1,20 +1,16 @@
 import LocalizedStrings from 'react-localization'
 import * as langHelper from '@/common/langHelper'
 
-const COPYRIGHT_PART1 = `Copyright © ${new Date().getFullYear()} Movin' In`
-
 const strings = new LocalizedStrings({
   fr: {
-    DROP_OFF: 'Restituer au même endroit',
-    COPYRIGHT_PART1,
-    COPYRIGHT_PART2: '®',
-    COPYRIGHT_PART3: '. Tous droits réservés.',
+    COVER: 'Rechercher des biens immobiliers',
+    DESTINATIONS_TITLE: 'Parcourir par destinations',
+    MAP_TITLE: 'Carte des destinations',
   },
   en: {
-    DROP_OFF: 'Return to same location',
-    COPYRIGHT_PART1,
-    COPYRIGHT_PART2: '®',
-    COPYRIGHT_PART3: '. All rights reserved.',
+    COVER: 'Search for Real Estate, Property & Homes',
+    DESTINATIONS_TITLE: 'Browse by Destinations',
+    MAP_TITLE: 'Map of Destinations',
   },
 })
 

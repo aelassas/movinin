@@ -33,6 +33,9 @@ const About = lazy(() => import('@/pages/About'))
 const ChangePassword = lazy(() => import('@/pages/ChangePassword'))
 const Contact = lazy(() => import('@/pages/Contact'))
 const NoMatch = lazy(() => import('@/pages/NoMatch'))
+const Countries = lazy(() => import('@/pages/Countries'))
+const CreateCountry = lazy(() => import('@/pages/CreateCountry'))
+const UpdateCountry = lazy(() => import('@/pages/UpdateCountry'))
 
 const App = () => (
   <GlobalProvider>
@@ -70,6 +73,9 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/tos" element={<ToS />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/countries" element={<Countries />} />
+            <Route path="/create-country" element={<CreateCountry />} />
+            <Route path="/update-country" element={<UpdateCountry />} />
 
             <Route path="*" element={<NoMatch />} />
           </Routes>

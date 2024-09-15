@@ -30,6 +30,7 @@ import {
   InfoTwoTone as AboutIcon,
   DescriptionTwoTone as TosIcon,
   ExitToApp as SignoutIcon,
+  Flag as CountriesIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
@@ -290,6 +291,10 @@ const Header = ({
                 <ListItemLink href="/agencies">
                   <ListItemIcon><AgenciesIcon /></ListItemIcon>
                   <ListItemText primary={strings.AGENCIES} />
+                </ListItemLink>
+                <ListItemLink href="/countries">
+                  <ListItemIcon><CountriesIcon /></ListItemIcon>
+                  <ListItemText primary={strings.COUNTRIES} />
                 </ListItemLink>
                 <ListItemLink href="/locations">
                   <ListItemIcon><LocationsIcon /></ListItemIcon>

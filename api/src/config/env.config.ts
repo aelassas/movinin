@@ -238,6 +238,20 @@ export const CDN_PROPERTIES = __env__('MI_CDN_PROPERTIES', true)
 export const CDN_TEMP_PROPERTIES = __env__('MI_CDN_TEMP_PROPERTIES', true)
 
 /**
+ * Locations' cdn folder path.
+ *
+ * @type {string}
+ */
+export const CDN_LOCATIONS = __env__('MI_CDN_LOCATIONS', true)
+
+/**
+ * Locations' temp cdn folder path.
+ *
+ * @type {string}
+ */
+export const CDN_TEMP_LOCATIONS = __env__('MI_CDN_TEMP_LOCATIONS', true)
+
+/**
  * Backend host.
  *
  * @type {string}
@@ -416,18 +430,6 @@ export interface BookingInfo {
 }
 
 /**
- * Location Document.
- *
- * @export
- * @interface Location
- * @typedef {Location}
- * @extends {Document}
- */
-export interface Location extends Document {
-  values: Types.ObjectId[]
-}
-
-/**
  * LocationValue Document.
  *
  * @export
@@ -441,16 +443,61 @@ export interface LocationValue extends Document {
 }
 
 /**
- * LocationInfo.
+ * Country Document.
+ *
+ * @export
+ * @interface Location
+ * @typedef {Location}
+ * @extends {Document}
+ */
+export interface Country extends Document {
+  values: Types.ObjectId[]
+  name?: string
+}
+
+/**
+ *CountryInfo.
+ *
+ * @export
+ * @interface CountryInfo
+ * @typedef {CountryInfo}
+ */
+export interface CountryInfo {
+  _id?: Types.ObjectId
+  name?: string
+  values: LocationValue[]
+}
+
+/**
+ * Location Document.
+ *
+ * @export
+ * @interface Location
+ * @typedef {Location}
+ * @extends {Document}
+ */
+export interface Location extends Document {
+  country: Types.ObjectId
+  longitude?: number
+  latitude?: number
+  values: Types.ObjectId[]
+  name?: string
+  image?: string | null
+}
+
+/**
+ *LocationInfo.
  *
  * @export
  * @interface LocationInfo
  * @typedef {LocationInfo}
- * @extends {Document}
  */
-export interface LocationInfo extends Document {
+export interface LocationInfo {
   _id?: Types.ObjectId
+  longitude: number
+  latitude: number
   name?: string
+  image?: string | null
   values: LocationValue[]
 }
 

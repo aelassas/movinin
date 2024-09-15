@@ -44,11 +44,11 @@ const Locations = () => {
 
             {rowCount > 0
               && (
-              <InfoBox
-                value={`${rowCount} ${rowCount > 1 ? strings.LOCATIONS : strings.LOCATION}`}
-                className="location-count"
-              />
-)}
+                <InfoBox
+                  value={`${rowCount} ${rowCount > 1 ? strings.LOCATIONS : strings.LOCATION}`}
+                  className="location-count"
+                />
+              )}
           </div>
         </div>
         <div className="col-2">

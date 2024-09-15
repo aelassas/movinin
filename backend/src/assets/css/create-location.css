@@ -1,4 +1,5 @@
 /* Create Location */
+
 div.create-location {
   display: flex;
   flex-direction: column;
@@ -7,7 +8,6 @@ div.create-location {
   transform: translate3d(0, 0, 0);
   margin: 45px 0;
 }
-
 
 .location-form-wrapper {
   margin: 32px 0;
@@ -24,7 +24,6 @@ div.create-location {
 @media only screen and (width <=960px) {
   .location-form {
     width: 360px;
-    min-height: 400px;
     padding: 30px;
   }
 }
@@ -33,8 +32,7 @@ div.create-location {
 
 @media only screen and (width >=960px) {
   .location-form {
-    width: 600px;
-    min-height: 340px;
+    width: 550px;
     padding: 30px;
   }
 }

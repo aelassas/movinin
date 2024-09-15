@@ -11,7 +11,7 @@ import * as UserService from './UserService'
 export const validate = (data: movininTypes.ValidateLocationPayload): Promise<number> =>
   axiosInstance
     .post(
-'/api/validate-location',
+      '/api/validate-location',
       data,
       { withCredentials: true }
     )
@@ -20,13 +20,13 @@ export const validate = (data: movininTypes.ValidateLocationPayload): Promise<nu
 /**
  * Create a Location.
  *
- * @param {movininTypes.LocationName[]} data
+ * @param {movininTypes.UpsertLocationPayload} data
  * @returns {Promise<number>}
  */
-export const create = (data: movininTypes.LocationName[]): Promise<number> =>
+export const create = (data: movininTypes.UpsertLocationPayload): Promise<number> =>
   axiosInstance
     .post(
-'/api/create-location',
+      '/api/create-location',
       data,
       { withCredentials: true }
     )
@@ -36,17 +36,17 @@ export const create = (data: movininTypes.LocationName[]): Promise<number> =>
  * Update a Location.
  *
  * @param {string} id
- * @param {movininTypes.LocationName[]} data
+ * @param {movininTypes.UpsertLocationPayload} data
  * @returns {Promise<number>}
  */
-export const update = (id: string, data: movininTypes.LocationName[]): Promise<number> =>
+export const update = (id: string, data: movininTypes.UpsertLocationPayload): Promise<{ status: number, data: movininTypes.Location }> =>
   axiosInstance
     .put(
-`/api/update-location/${id}`,
+      `/api/update-location/${id}`,
       data,
       { withCredentials: true }
     )
-    .then((res) => res.status)
+    .then((res) => ({ status: res.status, data: res.data }))
 
 /**
  * Delete a Location.
@@ -57,7 +57,7 @@ export const update = (id: string, data: movininTypes.LocationName[]): Promise<n
 export const deleteLocation = (id: string): Promise<number> =>
   axiosInstance
     .delete(
-`/api/delete-location/${encodeURIComponent(id)}`,
+      `/api/delete-location/${encodeURIComponent(id)}`,
       { withCredentials: true }
     )
     .then((res) => res.status)
@@ -93,7 +93,7 @@ export const getLocations = (keyword: string, page: number, size: number): Promi
     .then((res) => res.data)
 
 /**
- * Check if a location is related to a Property.
+ * Check if a Location is related to a Location.
  *
  * @param {string} id
  * @returns {Promise<number>}
@@ -102,6 +102,81 @@ export const check = (id: string): Promise<number> =>
   axiosInstance
     .get(
       `/api/check-location/${encodeURIComponent(id)}`,
+      { withCredentials: true }
+    )
+    .then((res) => res.status)
+
+/**
+* Create temporary Location image.
+*
+* @param { Blob } file
+* @returns { Promise<string> }
+*/
+export const createImage = (file: Blob): Promise<string> => {
+  const formData = new FormData()
+  formData.append('image', file)
+
+  return axiosInstance
+    .post(
+      '/api/create-location-image',
+      formData,
+      {
+        withCredentials: true,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      },
+    )
+    .then((res) => res.data)
+}
+
+/**
+ * Update Location image.
+ *
+ * @param {string} id
+ * @param {Blob} file
+ * @returns {Promise<number>}
+ */
+export const updateImage = (id: string, file: Blob): Promise<number> => {
+  const formData = new FormData()
+  formData.append('image', file)
+
+  return axiosInstance
+    .post(
+      `/api/update-location-image/${encodeURIComponent(id)}`,
+      formData,
+      {
+        withCredentials: true,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      },
+    )
+    .then((res) => res.status)
+}
+
+/**
+ * Delete Location image.
+ *
+ * @param {string} id
+ * @returns {Promise<number>}
+ */
+export const deleteImage = (id: string): Promise<number> =>
+  axiosInstance
+    .post(
+      `/api/delete-location-image/${encodeURIComponent(id)}`,
+      null,
+      { withCredentials: true }
+    )
+    .then((res) => res.status)
+
+/**
+* Delete a temporary Car image.
+*
+* @param {string} image
+* @returns {Promise<number>}
+*/
+export const deleteTempImage = (image: string): Promise<number> =>
+  axiosInstance
+    .post(
+      `/api/delete-temp-location-image/${encodeURIComponent(image)}`,
+      null,
       { withCredentials: true }
     )
     .then((res) => res.status)

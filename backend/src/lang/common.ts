@@ -75,6 +75,9 @@ const strings = new LocalizedStrings({
     BIRTH_DATE_NOT_VALID_PART1: 'Le conducteur doit avoir au moins',
     BIRTH_DATE_NOT_VALID_PART2: 'ans.',
     PAY_LATER: 'Autoriser le paiement plus tard',
+    NAME: 'Nom',
+    LONGITUDE: 'Longitude',
+    LATITUDE: 'Latitude',
   },
   en: {
     GENERIC_ERROR: 'An unhandled error occurred.',
@@ -148,6 +151,9 @@ const strings = new LocalizedStrings({
     BIRTH_DATE_NOT_VALID_PART1: 'The renter must be at least',
     BIRTH_DATE_NOT_VALID_PART2: 'years old.',
     PAY_LATER: 'Authorize payment later',
+    NAME: 'Name',
+    LONGITUDE: 'Longitude',
+    LATITUDE: 'Latitude',
   },
 })
 
