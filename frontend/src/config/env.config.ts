@@ -31,6 +31,7 @@ const env = {
   BOOKINGS_MOBILE_PAGE_SIZE: Number.parseInt(String(import.meta.env.VITE_MI_BOOKINGS_MOBILE_PAGE_SIZE), 10) || 10,
   CDN_USERS: String(import.meta.env.VITE_MI_CDN_USERS),
   CDN_PROPERTIES: String(import.meta.env.VITE_MI_CDN_PROPERTIES),
+  CDN_LOCATIONS: String(import.meta.env.VITE_MI_CDN_LOCATIONS),
   PAGE_OFFSET: 200,
   INFINITE_SCROLL_OFFSET: 40,
   AGENCY_IMAGE_WIDTH: Number.parseInt(String(import.meta.env.VITE_MI_AGENCY_IMAGE_WIDTH), 10) || 60,
@@ -66,6 +67,8 @@ const env = {
   FB_APP_ID: String(import.meta.env.VITE_MI_FB_APP_ID),
   APPLE_ID: String(import.meta.env.VITE_MI_APPLE_ID),
   GG_APP_ID: String(import.meta.env.VITE_MI_GG_APP_ID),
+  MIN_LOCATIONS: Number.parseInt(String(import.meta.env.VITE_MI_MIN_LOCATIONS), 10) || 4,
+  CONTACT_EMAIL: import.meta.env.VITE_MI_CONTACT_EMAIL,
 }
 
 export default env

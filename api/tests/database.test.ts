@@ -4,6 +4,7 @@ import * as databaseHelper from '@/common/databaseHelper'
 import * as testHelper from './testHelper'
 import LocationValue from '@/models/LocationValue'
 import Location from '@/models/Location'
+import Country from '@/models/Country'
 
 beforeAll(() => {
   testHelper.initializeLogger()
@@ -24,8 +25,8 @@ describe('Test database connection failure', () => {
   })
 })
 
-describe('Test locations initialization', () => {
-  it('should initialize locations', async () => {
+describe('Test database initialization', () => {
+  it('should initialize database', async () => {
     let res = await databaseHelper.connect(env.DB_URI, false, false)
     expect(res).toBeTruthy()
 
@@ -33,12 +34,22 @@ describe('Test locations initialization', () => {
     await lv1.save()
     const lv2 = new LocationValue({ language: 'es', value: 'localización' })
     await lv2.save()
-    const l1 = new Location({ values: [lv1.id, lv2.id] })
+    const l1 = new Location({ country: testHelper.GetRandromObjectIdAsString(), values: [lv1.id, lv2.id] })
     await l1.save()
-    const l2 = new Location({ values: [lv2.id] })
+    const l2 = new Location({ country: testHelper.GetRandromObjectIdAsString(), values: [lv2.id] })
     await l2.save()
 
-    res = await databaseHelper.InitializeLocations()
+    const cv1 = new LocationValue({ language: 'en', value: 'country' })
+    await cv1.save()
+    const cv2 = new LocationValue({ language: 'es', value: 'país' })
+    await cv2.save()
+    const c1 = new Country({ values: [cv1.id, cv2.id] })
+    await c1.save()
+    const c2 = new Country({ values: [cv2.id] })
+    await c2.save()
+
+    await testHelper.delay(5 * 1000)
+    res = await databaseHelper.initialize()
     expect(res).toBeTruthy()
 
     const location1 = await Location.findById(l1.id)
@@ -46,6 +57,12 @@ describe('Test locations initialization', () => {
     await LocationValue.deleteMany({ _id: { $in: [...location1!.values, ...location2!.values] } })
     await location1?.deleteOne()
     await location2?.deleteOne()
+
+    const country1 = await Country.findById(c1.id)
+    const country2 = await Country.findById(c2.id)
+    await LocationValue.deleteMany({ _id: { $in: [...country1!.values, ...country2!.values] } })
+    await country1?.deleteOne()
+    await country2?.deleteOne()
 
     await databaseHelper.close()
   })

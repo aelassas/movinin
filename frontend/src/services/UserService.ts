@@ -3305,6 +3305,20 @@ export const verifyRecaptcha = (token: string, ip: string): Promise<number> =>
     .then((res) => res.status)
 
 /**
+* Send an email. reCAPTCHA is mandatory.
+*
+* @param {movininTypes.SendEmailPayload} payload
+* @returns {Promise<number>}
+*/
+export const sendEmail = (payload: movininTypes.SendEmailPayload): Promise<number> =>
+  axiosInstance
+    .post(
+      '/api/send-email',
+      payload,
+    )
+    .then((res) => res.status)
+
+/**
 * Parse JWT token.
 * @param {string} token
 * @returns {any}
@@ -3321,7 +3335,7 @@ export const parseJwt = (token: string) => {
  * Check if password exists.
  *
  * @param {string} id
- * @returns {Promise<bookcarsTypes.User|null>}
+ * @returns {Promise<movininTypes.User|null>}
  */
 export const hasPassword = (id: string): Promise<number> => axiosInstance
   .get(

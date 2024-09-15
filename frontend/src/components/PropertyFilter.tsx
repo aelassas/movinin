@@ -9,12 +9,14 @@ import LocationSelectList from './LocationSelectList'
 import DatePicker from './DatePicker'
 
 import '@/assets/css/property-filter.css'
+import Accordion from './Accordion'
 
 interface PropertyFilterProps {
   from: Date
   to: Date
   location: movininTypes.Location
   className?: string
+  collapse?: boolean
   onSubmit: movininTypes.PropertyFilterSubmitEvent
 }
 
@@ -23,6 +25,7 @@ const PropertyFilter = ({
   to: filterTo,
   location: filterLocation,
   className,
+  collapse,
   onSubmit
 }: PropertyFilterProps) => {
   const _minDate = new Date()
@@ -72,9 +75,13 @@ const PropertyFilter = ({
   }
 
   return (
-    <div className={`${className ? `${className} ` : ''}property-filter`}>
-      <form onSubmit={handleSubmit} className="home-search-form">
-        <FormControl fullWidth className="pickup-location">
+    <Accordion
+      title={commonStrings.LOCATION_TERM}
+      collapse={collapse}
+      className={`${className ? `${className} ` : ''}property-filter`}
+    >
+      <form onSubmit={handleSubmit}>
+        <FormControl fullWidth className="location">
           <LocationSelectList
             label={commonStrings.LOCATION}
             hidePopupIcon
@@ -152,7 +159,7 @@ const PropertyFilter = ({
           </Button>
         </FormControl>
       </form>
-    </div>
+    </Accordion>
   )
 }
 

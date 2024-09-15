@@ -29,6 +29,8 @@ import {
   ExitToApp as SignoutIcon,
   Login as LoginIcon,
   EventSeat as BookingsIcon,
+  Business as AgencyIcon,
+  LocationOn as LocationIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
@@ -303,6 +305,14 @@ const Header = ({
                       <ListItemText primary={strings.BOOKINGS} />
                     </ListItemLink>
                   )}
+                  <ListItemLink href="/agencies">
+                    <ListItemIcon><AgencyIcon /></ListItemIcon>
+                    <ListItemText primary={strings.AGENCIES} />
+                  </ListItemLink>
+                  <ListItemLink href="/destinations">
+                    <ListItemIcon><LocationIcon /></ListItemIcon>
+                    <ListItemText primary={strings.LOCATIONS} />
+                  </ListItemLink>
                   <ListItemLink href="/about">
                     <ListItemIcon><AboutIcon /></ListItemIcon>
                     <ListItemText primary={strings.ABOUT} />

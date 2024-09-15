@@ -37,6 +37,10 @@ export const fr = {
   CANCEL_BOOKING_NOTIFICATION: "a fait une demande d'annulation de la réservation",
   BOOKING_UPDATED_NOTIFICATION_PART1: 'Le statut de la réservation',
   BOOKING_UPDATED_NOTIFICATION_PART2: 'a été mis à jour.',
-  PROPERTY_IMAGE_REQUIRED: "Property's image field can't be blank: ",
-  PROPERTY_IMAGE_NOT_FOUND: 'Image file not found: ',
+  PROPERTY_IMAGE_REQUIRED: 'Le champ image est requis: ',
+  PROPERTY_IMAGE_NOT_FOUND: 'Fichier image introuvable: ',
+  CONTACT_SUBJECT: 'Nouveau Message à partir du formulaire de Contact',
+  SUBJECT: 'Objet',
+  FROM: 'De',
+  MESSAGE: 'Message',
 }

@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { Box, Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material'
+import { Close as CloseIcon } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as helper from '@/common/helper'
+import { strings } from '@/lang/search'
 import * as UserService from '@/services/UserService'
 import * as LocationService from '@/services/LocationService'
 import * as AgencyService from '@/services/AgencyService'
@@ -14,8 +17,11 @@ import AgencyFilter from '@/components/AgencyFilter'
 import RentalTermFilter from '@/components/RentalTermFilter'
 import PropertyList from '@/components/PropertyList'
 import PropertyTypeFilter from '@/components/PropertyTypeFilter'
+import Map from '@/components/Map'
 
-import '@/assets/css/properties.css'
+import ViewOnMap from '@/assets/img/view-on-map.png'
+
+import '@/assets/css/search.css'
 
 const Properties = () => {
   const reactLocation = useLocation()
@@ -31,6 +37,7 @@ const Properties = () => {
   const [propertyTypes, setPropertyTypes] = useState(movininHelper.getAllPropertyTypes())
   const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
+  const [openMapDialog, setOpenMapDialog] = useState(false)
 
   const handleAgencyFilterChange = (newAgencies: string[]) => {
     setAgencies(newAgencies)
@@ -102,11 +109,31 @@ const Properties = () => {
           <div className="col-1">
             {!loading && (
               <>
+                {location.latitude && location.longitude && (
+                  <Map
+                    position={[location.latitude || 36.966428, location.longitude || -95.844032]}
+                    initialZoom={location.latitude && location.longitude ? 10 : 2.5}
+                    locations={[location]}
+                    className="map"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOpenMapDialog(true)
+                      }}
+                      className="view-on-map"
+                    >
+                      <img alt="View On Map" src={ViewOnMap} />
+                      <span>{strings.VIEW_ON_MAP}</span>
+                    </button>
+                  </Map>
+                )}
                 <PropertyFilter
                   className="filter"
                   location={location}
                   from={from}
                   to={to}
+                  collapse
                   onSubmit={handlePropertyFilterSubmit}
                 />
                 <AgencyFilter
@@ -139,6 +166,57 @@ const Properties = () => {
           </div>
         </div>
       )}
+
+      <Dialog
+        fullWidth={env.isMobile()}
+        maxWidth={false}
+        open={openMapDialog}
+        onClose={() => {
+          setOpenMapDialog(false)
+        }}
+        sx={{
+          '& .MuiDialog-container': {
+            '& .MuiPaper-root': {
+              width: '80%',
+              height: '800px',
+            },
+          },
+        }}
+      >
+        <DialogTitle>
+          <Box display="flex" justifyContent="flex-end">
+            <Box>
+              <IconButton
+                onClick={() => {
+                  setOpenMapDialog(false)
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </Box>
+        </DialogTitle>
+        <DialogContent className="map-dialog-content">
+          {location && (
+            <Map
+              position={[location.latitude || 36.966428, location.longitude || -95.844032]}
+              initialZoom={location.latitude && location.longitude ? 10 : 2.5}
+              locations={[location]}
+              className="map"
+            >
+              <button
+                type="button"
+                onClick={() => { }}
+                className="view-on-map"
+              >
+                <img alt="View On Map" src={ViewOnMap} />
+                <span>{strings.VIEW_ON_MAP}</span>
+              </button>
+            </Map>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {noMatch && <NoMatch hideHeader />}
     </Layout>
   )

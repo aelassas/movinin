@@ -25,7 +25,7 @@ export enum BookingStatus {
   Deposit = 'DEPOSIT',
   Paid = 'PAID',
   Reserved = 'RESERVED',
-  Cancelled = 'CANCELLED'
+  Cancelled = 'CANCELLED',
 }
 
 export enum RecordType {
@@ -33,19 +33,20 @@ export enum RecordType {
   Agency = 'AGENCY',
   User = 'USER',
   Property = 'PROPERTY',
-  Location = 'LOCATION'
+  Location = 'LOCATION',
+  Country = 'COUNTRY',
 }
 
 export enum Availablity {
   Available = 'AVAILABLE',
-  Unavailable = 'UNAVAILABLE'
+  Unavailable = 'UNAVAILABLE',
 }
 
 export enum RentalTerm {
   Monthly = 'MONTHLY',
   Weekly = 'WEEKLY',
   Daily = 'DAILY',
-  Yearly = 'YEARLY'
+  Yearly = 'YEARLY',
 }
 
 export interface SignUpPayload {
@@ -165,6 +166,20 @@ export interface LocationName {
   name: string
 }
 
+export interface CountryName {
+  language: string
+  name: string
+}
+
+export interface UpsertLocationPayload {
+  country: string
+  longitude?: number
+  latitude?: number
+  names: LocationName[]
+  image?: string | null
+}
+
+
 export interface ActivatePayload {
   userId: string
   token: string
@@ -206,6 +221,11 @@ export interface ValidateAgencyPayload {
 }
 
 export interface ValidateLocationPayload {
+  language: string
+  name: string
+}
+
+export interface ValidateCountryPayload {
   language: string
   name: string
 }
@@ -253,8 +273,22 @@ export interface LocationValue {
 
 export interface Location {
   _id: string
+  country?: Country
+  longitude?: number
+  latitude?: number
   name?: string
   values?: LocationValue[]
+  image?: string
+}
+
+export interface Country {
+  _id: string
+  name?: string
+  values?: LocationValue[]
+}
+
+export interface CountryInfo extends Country {
+  locations?: Location[]
 }
 
 export interface Property {
@@ -402,6 +436,15 @@ export interface PaymentResult {
   paymentIntentId?: string
   customerId: string
   clientSecret: string | null
+}
+
+export interface SendEmailPayload {
+  from: string
+  to: string
+  subject: string
+  message: string
+  recaptchaToken: string
+  ip: string
 }
 
 // 

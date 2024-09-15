@@ -122,6 +122,7 @@ export const createAgency = async (email: string, fullName: string) => {
     language: LANGUAGE,
     password: passwordHash,
     type: movininTypes.UserType.Agency,
+    avatar: 'avatar.jpg',
   }
   const agency = new User(body)
   await agency.save()
@@ -148,7 +149,17 @@ export const deleteLocation = async (id: string) => {
   expect(res.deletedCount).toBe(1)
 }
 
-export const createLocation = async (nameEN: string, nameFR: string) => {
+export const GetRandomEmail = () => `random.${uuid()}.${Date.now()}@test.movinin.io`
+
+export const GetRandromObjectId = () => new mongoose.Types.ObjectId()
+
+export const GetRandromObjectIdAsString = () => GetRandromObjectId().toString()
+
+export const delay = (milliseconds: number) => new Promise((resolve) => {
+  setTimeout(resolve, milliseconds)
+})
+
+export const createLocation = async (nameEN: string, nameFR: string, country?: string) => {
   const locationValueBodyEN = {
     language: 'en',
     value: nameEN,
@@ -164,18 +175,8 @@ export const createLocation = async (nameEN: string, nameFR: string) => {
   await locationValueFR.save()
 
   const values = [locationValueEN._id, locationValueFR._id]
-  const location = new Location({ values })
+  const location = new Location({ country: country || GetRandromObjectIdAsString(), values })
   await location.save()
   expect(location.id).toBeDefined()
   return location.id as string
 }
-
-export const GetRandomEmail = () => `random.${uuid()}.${Date.now()}@test.movinin.io`
-
-export const GetRandromObjectId = () => new mongoose.Types.ObjectId()
-
-export const GetRandromObjectIdAsString = () => GetRandromObjectId().toString()
-
-export const delay = (milliseconds: number) => new Promise((resolve) => {
-  setTimeout(resolve, milliseconds)
-})

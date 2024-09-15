@@ -19,6 +19,9 @@ import Error from './Error'
 import Backdrop from '@/components/SimpleBackdrop'
 import * as helper from '@/common/helper'
 import env from '@/config/env.config'
+import CountrySelectList from '@/components/CountrySelectList'
+import Avatar from '@/components/Avatar'
+import PositionInput from '@/components/PositionInput'
 
 import '@/assets/css/update-location.css'
 
@@ -30,7 +33,19 @@ const UpdateLocation = () => {
   const [noMatch, setNoMatch] = useState(false)
   const [error, setError] = useState(false)
   const [location, setLocation] = useState<movininTypes.Location>()
-  const [nameChanged, setNameChanged] = useState(false)
+  const [country, setCountry] = useState<movininTypes.Country>()
+  const [image, setImage] = useState('')
+  const [longitude, setLongitude] = useState('')
+  const [latitude, setLatitude] = useState('')
+
+  const handleBeforeUpload = () => {
+    setLoading(true)
+  }
+
+  const handleImageChange = (_image: string) => {
+    setLoading(false)
+    setImage(_image as string)
+  }
 
   const _error = () => {
     setLoading(false)
@@ -53,7 +68,6 @@ const UpdateLocation = () => {
       }
     }
 
-    setNameChanged(_nameChanged)
     return _nameChanged
   }
 
@@ -61,14 +75,8 @@ const UpdateLocation = () => {
     e.preventDefault()
 
     try {
-      if (!location || !location.values) {
+      if (!country || !location || !location.values) {
         helper.error()
-        return
-      }
-
-      const _nameChanged = checkName()
-
-      if (!_nameChanged) {
         return
       }
 
@@ -81,7 +89,7 @@ const UpdateLocation = () => {
       for (let i = 0; i < names.length; i += 1) {
         const name = names[i]
         if (name.name !== location.values[i].value) {
-          const _isValid = (await LocationService.validate(name)) === 200
+          const _isValid = (await LocationService.validate({ language: name.language, name: name.name })) === 200
           isValid = isValid && _isValid
           if (!_isValid) {
             nameErrors[i] = true
@@ -92,7 +100,14 @@ const UpdateLocation = () => {
       setNameErrors(movininHelper.cloneArray(nameErrors) as boolean[])
 
       if (isValid) {
-        const status = await LocationService.update(location._id, names)
+        const payload: movininTypes.UpsertLocationPayload = {
+          country: country._id,
+          latitude: latitude ? Number(latitude) : undefined,
+          longitude: longitude ? Number(longitude) : undefined,
+          names,
+          image,
+        }
+        const { status, data } = await LocationService.update(location._id, payload)
 
         if (status === 200) {
           for (let i = 0; i < names.length; i += 1) {
@@ -100,7 +115,7 @@ const UpdateLocation = () => {
             location.values[i].value = name.name
           }
 
-          setLocation(movininHelper.clone(location))
+          setLocation(data)
           helper.info(strings.LOCATION_UPDATED)
         } else {
           _error()
@@ -116,8 +131,8 @@ const UpdateLocation = () => {
       setLoading(true)
 
       const params = new URLSearchParams(window.location.search)
-      if (params.has('l')) {
-        const id = params.get('l')
+      if (params.has('loc')) {
+        const id = params.get('loc')
         if (id && id !== '') {
           try {
             const _location = await LocationService.getLocation(id)
@@ -125,7 +140,7 @@ const UpdateLocation = () => {
             if (_location && _location.values) {
               env._LANGUAGES.forEach((lang) => {
                 if (_location.values && !_location.values.some((value) => value.language === lang.code)) {
-                  _location.values.push({ language: lang.code, name: '' })
+                  _location.values.push({ language: lang.code, value: '' })
                 }
               })
 
@@ -135,7 +150,10 @@ const UpdateLocation = () => {
               }))
 
               setLocation(_location)
+              setCountry(_location.country)
               setNames(_names)
+              setLongitude((_location.longitude && _location.longitude.toString()) || '')
+              setLatitude((_location.latitude && _location.latitude.toString()) || '')
               setVisible(true)
               setLoading(false)
             } else {
@@ -170,13 +188,39 @@ const UpdateLocation = () => {
               {' '}
             </h1>
             <form onSubmit={handleSubmit}>
+              <Avatar
+                type={movininTypes.RecordType.Location}
+                mode="update"
+                record={location}
+                size="large"
+                readonly={false}
+                onBeforeUpload={handleBeforeUpload}
+                onChange={handleImageChange}
+                color="disabled"
+                className="avatar-ctn"
+              />
+
+              <FormControl fullWidth margin="dense">
+                <CountrySelectList
+                  label={clStrings.COUNTRY}
+                  variant="standard"
+                  value={country}
+                  onChange={(countries: movininTypes.Option[]) => {
+                    if (countries.length > 0) {
+                      const opt = countries[0]
+                      const _country = { _id: opt._id, name: opt.name }
+                      setCountry(_country)
+                    } else {
+                      setCountry(undefined)
+                    }
+                  }}
+                  required
+                />
+              </FormControl>
+
               {location.values.map((value, index) => (
-                <FormControl
-                  key={value.language}
-                  fullWidth
-                  margin="dense"
-                >
-                  <InputLabel className="required">{env._LANGUAGES.filter((l) => l.code === value.language)[0].label}</InputLabel>
+                <FormControl key={value.language} fullWidth margin="dense">
+                  <InputLabel className="required">{`${commonStrings.NAME} (${env._LANGUAGES.filter((l) => l.code === value.language)[0].label})`}</InputLabel>
                   <Input
                     type="text"
                     value={(names[index] && names[index].name) || ''}
@@ -194,8 +238,28 @@ const UpdateLocation = () => {
                 </FormControl>
               ))}
 
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{commonStrings.LATITUDE}</InputLabel>
+                <PositionInput
+                  value={latitude}
+                  onChange={(e) => {
+                    setLatitude(e.target.value)
+                  }}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{commonStrings.LONGITUDE}</InputLabel>
+                <PositionInput
+                  value={longitude}
+                  onChange={(e) => {
+                    setLongitude(e.target.value)
+                  }}
+                />
+              </FormControl>
+
               <div className="buttons">
-                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" disabled={!nameChanged}>
+                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
                   {commonStrings.SAVE}
                 </Button>
                 <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" href="/locations">

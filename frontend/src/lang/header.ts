@@ -12,6 +12,8 @@ const strings = new LocalizedStrings({
     LANGUAGE: 'Langue',
     SETTINGS: 'Paramètres',
     SIGN_OUT: 'Déconnexion',
+    AGENCIES: 'Agences',
+    LOCATIONS: 'Destinations',
   },
   en: {
     SIGN_IN: 'Sign in',
@@ -23,6 +25,8 @@ const strings = new LocalizedStrings({
     LANGUAGE: 'Language',
     SETTINGS: 'Settings',
     SIGN_OUT: 'Sign out',
+    AGENCIES: 'Agencies',
+    LOCATIONS: 'Destinations',
   },
 })
 
