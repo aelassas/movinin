@@ -119,63 +119,63 @@ div.main div.property div.right-panel div.price {
   white-space: nowrap;
 }
 
-div.main div.footer {
+div.main div.property-footer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-div.main div.footer form.action {
+div.main div.property-footer form.action {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   margin-top: 20px;
 }
 
-div.main div.footer form.action .from {
+div.main div.property-footer form.action .from {
   margin-right: 5px;
 }
 
-div.main div.footer form.action .to {
+div.main div.property-footer form.action .to {
   margin-right: 7px;
 }
 
-div.main div.footer form.action .btn-book {
+div.main div.property-footer form.action .btn-book {
   margin: 1px;
 }
 
-div.main div.footer form.action .button {
+div.main div.property-footer form.action .button {
   width: 100%;
   height: 38px;
 }
 
-div.main div.footer div.agency {
+div.main div.property-footer div.agency {
   display: flex;
   align-items: center;
 }
 
 @media only screen and (width <=960px) {
-  div.main div.footer {
+  div.main div.property-footer {
     flex-direction: column;
     justify-content: flex-start;
   }
 
-  div.main div.footer form.action {
+  div.main div.property-footer form.action {
     flex-direction: column;
     justify-content: flex-end;
     margin-top: 20px;
   }
 
-  div.main div.footer form.action .from {
+  div.main div.property-footer form.action .from {
     margin-right: 0;
   }
 
-  div.main div.footer form.action .to {
+  div.main div.property-footer form.action .to {
     margin-top: 10px;
     margin-right: 0;
   }
 
-  div.main div.footer form.action .btn-book {
+  div.main div.property-footer form.action .btn-book {
     margin-top: 10px;
     min-height: 56px !important;
     font-size: 1.1em;
