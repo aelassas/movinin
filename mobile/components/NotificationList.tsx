@@ -169,10 +169,10 @@ const NotificationList = ({ user, locale, navigation }: NotificationListProps) =
                   )}
                   <Pressable
                     style={styles.action}
-                    onPress={() => {
-                      setSelectedRows(checkedRows)
-                      setOpenDeleteDialog(true)
-                    }}
+                  // onPress={() => {
+                  //   setSelectedRows(checkedRows)
+                  //   setOpenDeleteDialog(true)
+                  // }}
                   >
                     <MaterialIcons name="delete" size={24} color={iconColor} />
                   </Pressable>
@@ -289,10 +289,10 @@ const NotificationList = ({ user, locale, navigation }: NotificationListProps) =
                       )}
                       <Pressable
                         style={styles.action}
-                        onPress={() => {
-                          setSelectedRows([row])
-                          setOpenDeleteDialog(true)
-                        }}
+                      // onPress={() => {
+                      //   setSelectedRows([row])
+                      //   setOpenDeleteDialog(true)
+                      // }}
                       >
                         <MaterialIcons name="delete" size={24} color={iconColor} />
                       </Pressable>
