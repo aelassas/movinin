@@ -49,7 +49,7 @@ div.notifications div.header-container div.header {
   max-width: 680px;
 }
 
-div.notifications div.footer {
+div.notifications div.notifications-footer {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -62,7 +62,7 @@ div.notifications div.footer {
   padding: 5px 10px 5px 0;
 }
 
-div.notifications div.footer div.row-count {
+div.notifications div.notifications-footer div.row-count {
   font-size: 14px;
   display: flex;
   flex-direction: row;
@@ -70,12 +70,12 @@ div.notifications div.footer div.row-count {
   margin-right: 7px;
 }
 
-div.notifications div.footer div.actions {
+div.notifications div.notifications-footer div.actions {
   display: flex;
   flex-direction: row;
 }
 
-div.notifications div.footer div.actions .icon {
+div.notifications div.notifications-footer div.actions .icon {
   font-size: 16px;
   width: 24px;
 }
