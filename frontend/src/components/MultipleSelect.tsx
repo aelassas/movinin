@@ -194,20 +194,22 @@ const MultipleSelect = ({
                 label={label}
                 variant={variant || 'outlined'}
                 required={required}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <>
-                      <InputAdornment position="start">
-                        {option.image ? (
-                          <Avatar src={movininHelper.joinURL(env.CDN_USERS, option.image)} className="avatar-small suo" />
-                        ) : (
-                          <AccountCircle className="avatar-small suo" color="disabled" />
-                        )}
-                      </InputAdornment>
-                      {params.InputProps.startAdornment}
-                    </>
-                  ),
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          {option.image ? (
+                            <Avatar src={movininHelper.joinURL(env.CDN_USERS, option.image)} className="avatar-small suo" />
+                          ) : (
+                            <AccountCircle className="avatar-small suo" color="disabled" />
+                          )}
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }
                 }}
               />
             )
@@ -222,22 +224,24 @@ const MultipleSelect = ({
                 label={label}
                 variant={variant || 'outlined'}
                 required={required}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <>
-                      <InputAdornment position="start">
-                        <div className="agency-ia">
-                          <img
-                            src={movininHelper.joinURL(env.CDN_USERS, option.image)}
-                            alt={option.name}
-                            style={{ height: env.AGENCY_IMAGE_HEIGHT }}
-                          />
-                        </div>
-                      </InputAdornment>
-                      {params.InputProps.startAdornment}
-                    </>
-                  ),
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <div className="agency-ia">
+                            <img
+                              src={movininHelper.joinURL(env.CDN_USERS, option.image)}
+                              alt={option.name}
+                              style={{ height: env.AGENCY_IMAGE_HEIGHT }}
+                            />
+                          </div>
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }
                 }}
               />
             )
@@ -250,16 +254,18 @@ const MultipleSelect = ({
                 label={label}
                 variant={variant || 'outlined'}
                 required={required}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <>
-                      <InputAdornment position="start">
-                        <LocationIcon />
-                      </InputAdornment>
-                      {params.InputProps.startAdornment}
-                    </>
-                  ),
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <LocationIcon />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }
                 }}
               />
             )
@@ -274,22 +280,24 @@ const MultipleSelect = ({
                 label={label}
                 variant={variant || 'outlined'}
                 required={required}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <>
-                      <InputAdornment position="start">
-                        <img
-                          src={movininHelper.joinURL(env.CDN_PROPERTIES, option.image)}
-                          alt={option.name}
-                          style={{
-                            height: env.SELECTED_PROPERTY_OPTION_IMAGE_HEIGHT,
-                          }}
-                        />
-                      </InputAdornment>
-                      {params.InputProps.startAdornment}
-                    </>
-                  ),
+                slotProps={{
+                  input: {
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <img
+                            src={movininHelper.joinURL(env.CDN_PROPERTIES, option.image)}
+                            alt={option.name}
+                            style={{
+                              height: env.SELECTED_PROPERTY_OPTION_IMAGE_HEIGHT,
+                            }}
+                          />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }
                 }}
               />
             )
