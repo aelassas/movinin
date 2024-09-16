@@ -72,7 +72,6 @@ interface MapProps {
   className?: string,
   children?: ReactNode
   onSelelectLocation?: (locationId: string) => void
-  // onSelelectDropOffLocation?: (locationId: string) => void
 }
 
 const Map = ({
@@ -83,7 +82,6 @@ const Map = ({
   className,
   children,
   onSelelectLocation,
-  // onSelelectDropOffLocation,
 }: MapProps) => {
   const _initialZoom = initialZoom || 5.5
   const [zoom, setZoom] = useState(_initialZoom)
@@ -143,29 +141,6 @@ const Map = ({
                 {strings.SELECT_LOCATION}
               </button>
             )}
-            {/* {!!onSelelectDropOffLocation && (
-              <button
-                type="button"
-                className="action-btn"
-                onClick={async () => {
-                  try {
-                    if (onSelelectDropOffLocation) {
-                      const { status, data } = await LocationService.getLocationId(marker.name, 'en')
-
-                      if (status === 200) {
-                        onSelelectDropOffLocation(data)
-                      } else {
-                        helper.error()
-                      }
-                    }
-                  } catch (err) {
-                    helper.error(err)
-                  }
-                }}
-              >
-                {strings.SELECT_DROP_OFF_LOCATION}
-              </button>
-            )} */}
           </div>
         </Popup>
       </Marker>
