@@ -313,11 +313,6 @@ export const getLocations = async (req: Request, res: Response) => {
         },
         { $unwind: { path: '$country', preserveNullAndEmptyArrays: true } },
         {
-          $project: {
-            parkingSpots: 0,
-          },
-        },
-        {
           $facet: {
             resultData: [{ $sort: { name: 1, _id: 1 } }, { $skip: (page - 1) * size }, { $limit: size }],
             pageInfo: [
@@ -382,12 +377,6 @@ export const getLocationsWithPosition = async (req: Request, res: Response) => {
         },
         { $unwind: { path: '$value', preserveNullAndEmptyArrays: false } },
         { $addFields: { name: '$value.value' } },
-
-        {
-          $project: {
-            parkingSpots: 0,
-          },
-        },
       ],
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
