@@ -167,7 +167,7 @@ const Property = () => {
                 <div dangerouslySetInnerHTML={{ __html: property.description }} />
               </div>
 
-              <div className="footer">
+              <div className="property-footer">
                 <AgencyBadge agency={property.agency} />
 
                 {
