@@ -71,7 +71,7 @@ interface MapProps {
   locations?: movininTypes.Location[]
   className?: string,
   children?: ReactNode
-  onSelelectPickUpLocation?: (locationId: string) => void
+  onSelelectLocation?: (locationId: string) => void
   // onSelelectDropOffLocation?: (locationId: string) => void
 }
 
@@ -82,7 +82,7 @@ const Map = ({
   locations,
   className,
   children,
-  onSelelectPickUpLocation,
+  onSelelectLocation,
   // onSelelectDropOffLocation,
 }: MapProps) => {
   const _initialZoom = initialZoom || 5.5
@@ -120,17 +120,17 @@ const Map = ({
         <Popup className="marker">
           <div className="name">{marker.name}</div>
           <div className="action">
-            {!!onSelelectPickUpLocation && (
+            {!!onSelelectLocation && (
               <button
                 type="button"
                 className="action-btn"
                 onClick={async () => {
                   try {
-                    if (onSelelectPickUpLocation) {
+                    if (onSelelectLocation) {
                       const { status, data } = await LocationService.getLocationId(marker.name, 'en')
 
                       if (status === 200) {
-                        onSelelectPickUpLocation(data)
+                        onSelelectLocation(data)
                       } else {
                         helper.error()
                       }

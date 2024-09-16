@@ -28,7 +28,7 @@ const Locations = () => {
           position={new L.LatLng(36.966428, -95.844032)}
           initialZoom={5}
           locations={locations}
-          onSelelectPickUpLocation={async (locationId) => {
+          onSelelectLocation={async (locationId) => {
             setLocation(locationId)
             setOpenSearchFormDialog(true)
           }}
