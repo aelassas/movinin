@@ -493,7 +493,7 @@ export const getProperties = async (req: Request, res: Response) => {
     const options = 'i'
     // const language = body.language || env.DEFAULT_LANGUAGE
 
-    const $match: mongoose.FilterQuery<any> = {
+    const $match: mongoose.FilterQuery<movininTypes.Property> = {
       $and: [
         { agency: { $in: agencies } },
         { type: { $in: types } },
@@ -666,7 +666,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
     const types = body.types || []
     const rentalTerms = body.rentalTerms || []
 
-    const $match: mongoose.FilterQuery<any> = {
+    const $match: mongoose.FilterQuery<movininTypes.Property> = {
       $and: [
         { agency: { $in: agencies } },
         { location },
