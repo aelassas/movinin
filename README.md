@@ -14,7 +14,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 
 A key design decision was made to use TypeScript instead of JavaScript due to its numerous advantages. TypeScript offers strong typing, tooling, and integration, resulting in high-quality, scalable, more readable and maintainable code that is easy to debug and test.
 
-Movin' In can run in a Docker container. Follow this step by step [guide](https://github.com/aelassas/movinin/wiki/Docker) to walk you through on how to build Movin' In Docker image and run it in a Docker container.
+Movin' In can run in a Docker container. Follow this step by step [guide](https://github.com/aelassas/movinin/wiki/Installing-(Docker)) to walk you through on how to build Movin' In Docker image and run it in a Docker container.
 
 ## Features
 
@@ -48,7 +48,25 @@ Movin' In can run in a Docker container. Follow this step by step [guide](https:
 
 ### Mobile App
 
-* [Download APK](https://github.com/aelassas/movinin/releases/download/v3.6/movinin-3.6.apk)
+You can install the Android app on any Android device.
+
+#### Scan this code with a device
+
+Open the Camera app and point it at this code. Then tap the notification that appears.
+
+![QR](https://movin-in.github.io/content/qr-code-3.7.png)
+
+#### How to install the Mobile App on Android
+
+* On devices running Android 8.0 (API level 26) and higher, you must navigate to the Install unknown apps system settings screen to enable app installations from a particular location (i.e. the web browser you are downloading the app from).
+
+* On devices running Android 7.1.1 (API level 25) and lower, you should enable the Unknown sources system setting, found in Settings > Security on your device.
+
+#### Alternative Way
+
+You can also install the Android App by directly downloading the APK and installing it on any Android device.
+
+* [Download APK](https://github.com/aelassas/movinin/releases/download/v3.7/movinin-3.7.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
@@ -56,12 +74,12 @@ Movin' In can run in a Docker container. Follow this step by step [guide](https:
 
 1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)
 2. [Architecture](https://github.com/aelassas/movinin/wiki/Architecture)
-3. [Installing](https://github.com/aelassas/movinin/wiki/Installing)
-4. [Installing on VPS](https://github.com/aelassas/movinin/wiki/Installing-on-VPS)
-5. [Setup Stripe](https://github.com/aelassas/movinin/wiki/Setup-Stripe)
-6. [Docker](https://github.com/aelassas/movinin/wiki/Docker)
+3. [Installing (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))
+4. [Installing (VPS)](https://github.com/aelassas/movinin/wiki/Installing-(VPS))
+5. [Installing (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))
    1. [Docker Image](https://github.com/aelassas/movinin/wiki/Docker#docker-image)
    2. [SSL](https://github.com/aelassas/movinin/wiki/Docker#ssl)
+6. [Setup Stripe](https://github.com/aelassas/movinin/wiki/Setup-Stripe)
 7. [Build Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App)
 8. [Demo Database](https://github.com/aelassas/movinin/wiki/Demo-Database)
    1. [Windows, Linux and macOS](https://github.com/aelassas/movinin/wiki/Demo-Database#windows-linux-and-macos)
