@@ -87,7 +87,7 @@ const ImageViewer = ({
   )
 
   const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
+    (event: KeyboardEvent<HTMLElement>) => {
       event.preventDefault()
       const { key } = event
 

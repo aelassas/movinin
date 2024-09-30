@@ -11,8 +11,9 @@ import env from '@/config/env.config'
 import * as helper from '@/common/helper'
 import * as PropertyService from '@/services/PropertyService'
 
-import '@/assets/css/image-editor.css'
 import Property from '@/assets/img/property.png'
+
+import '@/assets/css/image-editor.css'
 
 interface ImageEditorProps {
   title?: string
