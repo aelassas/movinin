@@ -3351,7 +3351,7 @@ export const hasPassword = (id: string): Promise<number> => axiosInstance
 * @returns {void}
 */
 export const setStayConnected = (value: boolean) => {
-  localStorage.setItem('oj-stay-connected', JSON.stringify(value))
+  localStorage.setItem('mi-stay-connected', JSON.stringify(value))
 }
 
 /**
@@ -3361,6 +3361,6 @@ export const setStayConnected = (value: boolean) => {
  * @returns {boolean}
  */
 export const getStayConnected = () => {
-  const value = JSON.parse(localStorage.getItem('oj-stay-connected') ?? 'false')
+  const value = JSON.parse(localStorage.getItem('mi-stay-connected') ?? 'false')
   return value as boolean
 }
