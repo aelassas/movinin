@@ -391,6 +391,7 @@ export const activate = async (req: Request, res: Response) => {
 
         user.active = true
         user.verified = true
+        user.expireAt = undefined
         await user.save()
 
         return res.sendStatus(200)
@@ -1317,7 +1318,7 @@ export const getUsers = async (req: Request, res: Response) => {
     const { body }: { body: movininTypes.GetUsersBody } = req
     const { types, user: userId } = body
 
-    const $match: mongoose.FilterQuery<movininTypes.User> = {
+    const $match: mongoose.FilterQuery<env.User> = {
       $and: [
         {
           type: { $in: types },
@@ -1327,6 +1328,9 @@ export const getUsers = async (req: Request, res: Response) => {
             { fullName: { $regex: keyword, $options: options } },
             { email: { $regex: keyword, $options: options } },
           ],
+        },
+        {
+          expireAt: null,
         },
       ],
     }

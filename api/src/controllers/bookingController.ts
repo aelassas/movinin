@@ -166,41 +166,6 @@ export const checkout = async (req: Request, res: Response) => {
       throw new Error('Booking missing')
     }
 
-    if (!body.payLater) {
-      const { paymentIntentId, sessionId } = body
-
-      if (!paymentIntentId && !sessionId) {
-        const message = 'Payment intent missing'
-        logger.error(message, body)
-        return res.status(400).send(message)
-      }
-
-      body.booking.customerId = body.customerId
-
-      if (paymentIntentId) {
-        const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
-        if (paymentIntent.status !== 'succeeded') {
-          const message = `Payment failed: ${paymentIntent.status}`
-          logger.error(message, body)
-          return res.status(400).send(message)
-        }
-
-        body.booking.paymentIntentId = paymentIntentId
-        body.booking.status = movininTypes.BookingStatus.Paid
-      } else {
-        //
-        // Bookings created from checkout with Stripe are temporary
-        // and are automatically deleted if the payment checkout session expires.
-        //
-        const expireAt = new Date()
-        expireAt.setSeconds(expireAt.getSeconds() + env.BOOKING_EXPIRE_AT)
-
-        body.booking.sessionId = body.sessionId
-        body.booking.status = movininTypes.BookingStatus.Void
-        body.booking.expireAt = expireAt
-      }
-    }
-
     if (renter) {
       renter.verified = false
       renter.blacklisted = false
@@ -232,6 +197,51 @@ export const checkout = async (req: Request, res: Response) => {
     if (!user) {
       logger.info('Renter not found', body)
       return res.sendStatus(204)
+    }
+
+    if (!body.payLater) {
+      const { paymentIntentId, sessionId } = body
+
+      if (!paymentIntentId && !sessionId) {
+        const message = 'Payment intent missing'
+        logger.error(message, body)
+        return res.status(400).send(message)
+      }
+
+      body.booking.customerId = body.customerId
+
+      if (paymentIntentId) {
+        const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
+        if (paymentIntent.status !== 'succeeded') {
+          const message = `Payment failed: ${paymentIntent.status}`
+          logger.error(message, body)
+          return res.status(400).send(message)
+        }
+
+        body.booking.paymentIntentId = paymentIntentId
+        body.booking.status = movininTypes.BookingStatus.Paid
+      } else {
+        //
+        // Bookings created from checkout with Stripe are temporary
+        // and are automatically deleted if the payment checkout session expires.
+        //
+        let expireAt = new Date()
+        expireAt.setSeconds(expireAt.getSeconds() + env.BOOKING_EXPIRE_AT)
+
+        body.booking.sessionId = body.sessionId
+        body.booking.status = movininTypes.BookingStatus.Void
+        body.booking.expireAt = expireAt
+
+        //
+        // Non verified and active users created from checkout with Stripe are temporary
+        // and are automatically deleted if the payment checkout session expires.
+        //
+        expireAt = new Date()
+        expireAt.setSeconds(expireAt.getSeconds() + env.USER_EXPIRE_AT)
+
+        user.expireAt = expireAt
+        await user.save()
+      }
     }
 
     const { customerId } = body
@@ -521,7 +531,12 @@ export const deleteTempBooking = async (req: Request, res: Response) => {
   const { bookingId, sessionId } = req.params
 
   try {
-    await Booking.deleteOne({ _id: bookingId, sessionId, status: movininTypes.BookingStatus.Void, expireAt: { $ne: null } })
+    const booking = await Booking.findOne({ _id: bookingId, sessionId, status: movininTypes.BookingStatus.Void, expireAt: { $ne: null } })
+    if (booking) {
+      const user = await User.findOne({ _id: booking.renter, verified: false, expireAt: { $ne: null } })
+      await user?.deleteOne()
+    }
+    await booking?.deleteOne()
     return res.sendStatus(200)
   } catch (err) {
     logger.error(`[booking.deleteTempBooking] ${i18n.t('DB_ERROR')} ${JSON.stringify({ bookingId, sessionId })}`, err)
