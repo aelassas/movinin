@@ -14,6 +14,8 @@ import Token from '../src/models/Token'
 import * as env from '../src/config/env.config'
 import stripeAPI from '../src/stripe'
 
+const RENTER1_NAME = 'Renter 1'
+
 let AGENCY_ID: string
 let RENTER1_ID: string
 let RENTER2_ID: string
@@ -37,8 +39,15 @@ beforeAll(async () => {
   const agencyName = testHelper.getAgencyName()
   AGENCY_ID = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
 
-  // get user id
-  RENTER1_ID = testHelper.getUserId()
+  // create renter 1
+  const renter1 = new User({
+    fullName: RENTER1_NAME,
+    email: testHelper.GetRandomEmail(),
+    language: testHelper.LANGUAGE,
+    type: movininTypes.UserType.User,
+  })
+  await renter1.save()
+  RENTER1_ID = renter1.id
 
   // create a location
   LOCATION_ID = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
@@ -450,9 +459,9 @@ describe('POST /api/bookings/:page/:size/:language', () => {
         location: LOCATION_ID,
         from: new Date(2024, 2, 1),
         to: new Date(1990, 2, 4),
-        keyword: testHelper.USER_FULL_NAME,
+        keyword: RENTER1_NAME,
       },
-      user: testHelper.getUserId(),
+      user: RENTER1_ID,
       property: PROPERTY2_ID,
     }
     let res = await request(app)
@@ -579,10 +588,19 @@ describe('DELETE /api/delete-temp-booking', () => {
     const expireAt = new Date()
     expireAt.setSeconds(expireAt.getSeconds() + env.BOOKING_EXPIRE_AT)
 
+    const renter = new User({
+      fullName: 'Renter',
+      email: testHelper.GetRandomEmail(),
+      language: testHelper.LANGUAGE,
+      type: movininTypes.UserType.User,
+      expireAt,
+    })
+    await renter.save()
+
     const booking = new Booking({
       agency: AGENCY_ID,
       property: PROPERTY1_ID,
-      renter: RENTER1_ID,
+      renter: renter.id,
       location: LOCATION_ID,
       from: new Date(2024, 2, 1),
       to: new Date(1990, 2, 4),
@@ -604,6 +622,8 @@ describe('DELETE /api/delete-temp-booking', () => {
     expect(res.statusCode).toBe(200)
     const _booking = await Booking.findById(booking._id)
     expect(_booking).toBeNull()
+    const _renter = await User.findById(renter._id)
+    expect(_renter).toBeNull()
 
     //
     // Test failure

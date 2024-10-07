@@ -40,27 +40,30 @@ export const initialize = async () => {
 
   const salt = await bcrypt.genSalt(10)
   const passwordHash = await bcrypt.hash(PASSWORD, salt)
-  const body = {
+
+  // admin
+  const admin = new User({
     fullName: 'admin',
     email: ADMIN_EMAIL,
     language: LANGUAGE,
     password: passwordHash,
     type: movininTypes.UserType.Admin,
-  }
-
-  // admin
-  let user = new User(body)
-  await user.save()
-  expect(user.id).toBeDefined()
-  ADMIN_USER_ID = user.id
+  })
+  await admin.save()
+  expect(admin.id).toBeDefined()
+  ADMIN_USER_ID = admin.id
 
   // user
-  user = new User({ ...body, fullName: USER_FULL_NAME, email: USER_EMAIL, type: movininTypes.UserType.User })
+  const user = new User({
+    fullName: USER_FULL_NAME,
+    email: USER_EMAIL,
+    language: LANGUAGE,
+    password: passwordHash,
+    type: movininTypes.UserType.User,
+  })
   await user.save()
   expect(user.id).toBeDefined()
   USER_ID = user.id
-
-  initializeLogger()
 }
 
 export const getAdminUserId = () => ADMIN_USER_ID
