@@ -68,5 +68,6 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'import/no-extraneous-dependencies': 'off',
     'react/no-danger': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 }
