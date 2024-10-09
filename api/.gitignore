@@ -15,7 +15,7 @@ npm-debug.log*
 .env.docker
 .env.dev
 .env.development
-.env.oraclecloud
+.env.production
 
 # eslint
 .eslintcache
