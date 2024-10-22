@@ -13,8 +13,8 @@
 }
 
 .popup {
-  width: 80%;
-  height: 80%;
+  width: 90%;
+  height: 90%;
   background-color: #fff;
   border-radius: 8px;
   position: absolute;
@@ -22,7 +22,7 @@
 
 .iv-content {
   margin: auto;
-  padding: 130px 60px;
+  padding: 60px 60px 120px 60px;
   width: 90%;
   height: 100%;
   max-height: 100%;
