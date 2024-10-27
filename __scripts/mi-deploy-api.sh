@@ -7,6 +7,8 @@ cd /opt/movinin
 git pull
 chmod +x -R /opt/movinin/__scripts
 
+/bin/bash /opt/bookcars/__scripts/free-mem.sh
+
 cd /opt/movinin/api
 
 npm install --omit=dev
