@@ -7,7 +7,7 @@ cd /opt/movinin
 git pull
 chmod +x -R /opt/movinin/__scripts
 
-/bin/bash /opt/bookcars/__scripts/free-mem.sh
+/bin/bash /opt/movinin/__scripts/free-mem.sh
 
 cd /opt/movinin/api
 
@@ -15,6 +15,8 @@ npm install --omit=dev
 
 sudo systemctl restart movinin
 sudo systemctl status movinin --no-pager
+
+/bin/bash /opt/movinin/__scripts/free-mem.sh
 
 finish_time=$(date +%s)
 elapsed_time=$((finish_time - start_time))
