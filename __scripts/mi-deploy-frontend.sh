@@ -7,7 +7,7 @@ cd /opt/movinin
 git pull
 sudo chmod +x -R /opt/movinin/__scripts
 
-/bin/bash /opt/bookcars/__scripts/free-mem.sh
+/bin/bash /opt/movinin/__scripts/free-mem.sh
 
 cd /opt/movinin/frontend
 
@@ -21,6 +21,8 @@ sudo cp -rf build/* /var/www/movinin/frontend
 sudo rm -rf /var/cache/nginx
 sudo systemctl restart nginx
 sudo systemctl status nginx --no-pager
+
+/bin/bash /opt/movinin/__scripts/free-mem.sh
 
 finish_time=$(date +%s)
 elapsed_time=$((finish_time - start_time))
