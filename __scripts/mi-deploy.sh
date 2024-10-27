@@ -14,5 +14,5 @@ elif [ "$1" == "backend" ]; then
 elif [ "$1" == "frontend" ]; then
   /bin/bash /opt/movinin/__scripts/mi-deploy-frontend.sh
 else
-  echo "Usage: mi-deploy all|api|backend|frontend"
+  echo "Usage: mi-deploy all|ui|api|backend|frontend"
 fi
