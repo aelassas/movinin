@@ -86,15 +86,15 @@ describe('POST /api/create-property', () => {
 
     const mainImage = path.join(env.CDN_TEMP_PROPERTIES, MAIN_IMAGE1)
     if (!await helper.exists(mainImage)) {
-      fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
+      await fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
     }
     const additionalImage1 = path.join(env.CDN_TEMP_PROPERTIES, ADDITIONAL_IMAGE1_1)
     if (!await helper.exists(additionalImage1)) {
-      fs.copyFile(ADDITIONAL_IMAGE1_1_PATH, additionalImage1)
+      await fs.copyFile(ADDITIONAL_IMAGE1_1_PATH, additionalImage1)
     }
     const additionalImage2 = path.join(env.CDN_TEMP_PROPERTIES, ADDITIONAL_IMAGE1_2)
     if (!await helper.exists(additionalImage2)) {
-      fs.copyFile(ADDITIONAL_IMAGE1_2_PATH, additionalImage2)
+      await fs.copyFile(ADDITIONAL_IMAGE1_2_PATH, additionalImage2)
     }
     const payload: movininTypes.CreatePropertyPayload = {
       name: 'Beautiful House in Detroit',
@@ -128,7 +128,7 @@ describe('POST /api/create-property', () => {
     PROPERTY_ID = res.body._id
 
     if (!await helper.exists(mainImage)) {
-      fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
+      await fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
     }
     payload.images = undefined
     res = await request(app)
@@ -140,7 +140,7 @@ describe('POST /api/create-property', () => {
     expect(deleteRes.deletedCount).toBe(1)
 
     if (!await helper.exists(mainImage)) {
-      fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
+      await fs.copyFile(MAIN_IMAGE1_PATH, mainImage)
     }
     payload.images = ['unknown.jpg']
     res = await request(app)
@@ -186,17 +186,17 @@ describe('PUT /api/update-property', () => {
 
     const mainImage = path.join(env.CDN_TEMP_PROPERTIES, MAIN_IMAGE2)
     if (!await helper.exists(mainImage)) {
-      fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
+      await fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
     }
 
     const additionalImage1 = path.join(env.CDN_TEMP_PROPERTIES, ADDITIONAL_IMAGE2_1)
     if (!await helper.exists(additionalImage1)) {
-      fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
+      await fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
     }
 
     const additionalImage2 = path.join(env.CDN_TEMP_PROPERTIES, ADDITIONAL_IMAGE2_2)
     if (!await helper.exists(additionalImage2)) {
-      fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
+      await fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
     }
 
     const payload: movininTypes.UpdatePropertyPayload = {
@@ -265,13 +265,13 @@ describe('PUT /api/update-property', () => {
     expect(property.images.length).toBe(0)
 
     if (!await helper.exists(mainImage)) {
-      fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
+      await fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
     }
     if (!await helper.exists(additionalImage1)) {
-      fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
+      await fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
     }
     if (!await helper.exists(additionalImage2)) {
-      fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
+      await fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
     }
     payload.images = [ADDITIONAL_IMAGE2_1, ADDITIONAL_IMAGE2_2]
     res = await request(app)
@@ -281,7 +281,7 @@ describe('PUT /api/update-property', () => {
     expect(res.statusCode).toBe(200)
 
     if (!await helper.exists(mainImage)) {
-      fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
+      await fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
     }
     payload.images = []
     res = await request(app)
@@ -294,10 +294,10 @@ describe('PUT /api/update-property', () => {
       fs.unlink(additionalImage1)
     }
     if (!await helper.exists(additionalImage1)) {
-      fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
+      await fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
     }
     if (!await helper.exists(additionalImage2)) {
-      fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
+      await fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
     }
     property = await Property.findById(PROPERTY_ID)
     property.images = [ADDITIONAL_IMAGE2_1, ADDITIONAL_IMAGE2_2, `${uuid()}.jpg`]
@@ -324,13 +324,13 @@ describe('PUT /api/update-property', () => {
     property.images = []
     await property.save()
     if (!await helper.exists(mainImage)) {
-      fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
+      await fs.copyFile(MAIN_IMAGE2_PATH, mainImage)
     }
     if (!await helper.exists(additionalImage1)) {
-      fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
+      await fs.copyFile(ADDITIONAL_IMAGE2_1_PATH, additionalImage1)
     }
     if (!await helper.exists(additionalImage2)) {
-      fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
+      await fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
     }
     payload._id = PROPERTY_ID
     payload.image = MAIN_IMAGE2
@@ -435,7 +435,7 @@ describe('POST /api/delete-temp-property-image/:image', () => {
 
     const tempImage = path.join(env.CDN_TEMP_PROPERTIES, MAIN_IMAGE1)
     if (!await helper.exists(tempImage)) {
-      fs.copyFile(MAIN_IMAGE1_PATH, tempImage)
+      await fs.copyFile(MAIN_IMAGE1_PATH, tempImage)
     }
     let res = await request(app)
       .post(`/api/delete-temp-property-image/${MAIN_IMAGE1}`)

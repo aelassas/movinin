@@ -207,7 +207,7 @@ describe('DELETE /api/delete-agency/:id', () => {
     let avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
     let avatar = path.join(env.CDN_USERS, avatarName)
     if (!await helper.exists(avatar)) {
-      fs.copyFile(avatarPath, avatar)
+      await fs.copyFile(avatarPath, avatar)
     }
     agency!.avatar = avatarName
     await agency?.save()
@@ -242,11 +242,11 @@ describe('DELETE /api/delete-agency/:id', () => {
     })
     const propertyImage = path.join(env.CDN_PROPERTIES, propertyImageName)
     if (!await helper.exists(propertyImage)) {
-      fs.copyFile(propertyImagePath, propertyImage)
+      await fs.copyFile(propertyImagePath, propertyImage)
     }
     const additionalImage = path.join(env.CDN_PROPERTIES, additionalImageName)
     if (!await helper.exists(propertyImage)) {
-      fs.copyFile(additionalImagePath, additionalImage)
+      await fs.copyFile(additionalImagePath, additionalImage)
     }
     await property.save()
     let res = await request(app)
@@ -329,7 +329,7 @@ describe('DELETE /api/delete-agency/:id', () => {
     avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
     avatar = path.join(env.CDN_USERS, avatarName)
     if (!await helper.exists(avatar)) {
-      fs.copyFile(avatarPath, avatar)
+      await fs.copyFile(avatarPath, avatar)
     }
     agency!.avatar = avatarName
     await agency?.save()

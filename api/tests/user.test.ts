@@ -66,7 +66,7 @@ describe('POST /api/sign-up', () => {
   it('should create a user', async () => {
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
     if (!await helper.exists(tempAvatar)) {
-      fs.copyFile(AVATAR1_PATH, tempAvatar)
+      await fs.copyFile(AVATAR1_PATH, tempAvatar)
     }
     const payload: movininTypes.SignUpPayload = {
       email: USER1_EMAIL,
@@ -153,7 +153,7 @@ describe('POST /api/create-user', () => {
 
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
     if (!await helper.exists(tempAvatar)) {
-      fs.copyFile(AVATAR1_PATH, tempAvatar)
+      await fs.copyFile(AVATAR1_PATH, tempAvatar)
     }
 
     let payload: movininTypes.CreateUserPayload = {
@@ -988,7 +988,7 @@ describe('POST /api/delete-temp-avatar/:avatar', () => {
 
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
     if (!await helper.exists(tempAvatar)) {
-      fs.copyFile(AVATAR1_PATH, tempAvatar)
+      await fs.copyFile(AVATAR1_PATH, tempAvatar)
     }
     let res = await request(app)
       .post(`/api/delete-temp-avatar/${AVATAR1}`)
@@ -1183,19 +1183,19 @@ describe('POST /api/delete-users', () => {
     const mainImagePath = path.resolve(__dirname, `./img/${mainImageName}`)
     const mainImage = path.join(env.CDN_PROPERTIES, mainImageName)
     if (!await helper.exists(mainImage)) {
-      fs.copyFile(mainImagePath, mainImage)
+      await fs.copyFile(mainImagePath, mainImage)
     }
     const additionalImage1Name = 'additional1-1.jpg'
     const additionalImage1Path = path.resolve(__dirname, `./img/${additionalImage1Name}`)
     const additionalImage1 = path.join(env.CDN_PROPERTIES, additionalImage1Name)
     if (!await helper.exists(additionalImage1)) {
-      fs.copyFile(additionalImage1Path, additionalImage1)
+      await fs.copyFile(additionalImage1Path, additionalImage1)
     }
     const additionalImage2Name = 'additional1-2.jpg'
     const additionalImage2Path = path.resolve(__dirname, `./img/${additionalImage2Name}`)
     const additionalImage2 = path.join(env.CDN_PROPERTIES, additionalImage2Name)
     if (!await helper.exists(additionalImage2)) {
-      fs.copyFile(additionalImage2Path, additionalImage2)
+      await fs.copyFile(additionalImage2Path, additionalImage2)
     }
     let property = new Property({
       name: 'Beautiful House in Detroit',
