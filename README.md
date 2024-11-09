@@ -4,7 +4,25 @@
 
 Movin' In is a Rental Property Management Platform, agency-oriented with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
-Deploy your own customizable property rental solution at minimal cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform integrates Stripe for secure payments and can be efficiently hosted on a 1GB RAM droplet, making it an ideal choice for single/multi-agency operations looking for a scalable and cost-effective solution. You can deploy this solution for under $5 monthly using cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
+This project emerged from a desire to build without boundaries – a fully customizable and operational property rental platform and mobile app where every aspect is within your control:
+
+- **Own the UI/UX**: Design unique customer experiences without fighting against template limitations
+- **Control the Backend**: Implement custom business logic and data structures that perfectly match the requirements
+- **Master DevOps**: Deploy, scale, and monitor the application with preferred tools and workflows
+- **Extend Freely**: Add new features and integrations without platform constraints or additional fees
+
+Technical Requirements:
+
+- **Payment Gateway**: 
+  - Implement a secure, internationally supported payment gateway
+  - Ensure compatibility across multiple countries and currencies.
+- **DevOps**:
+  - Deploy using Docker containers for consistency and scalability
+  - Host on minimal infrastructure (1GB RAM server)
+  - Maintain monthly hosting costs under $5 using providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets)
+  - Optimize resource usage for efficient operation
+
+With this solution, you can deploy your own customizable property rental solution at minimal cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform integrates Stripe for secure payments and can be efficiently hosted on a 1GB RAM droplet, making it an ideal choice for single/multi-agency operations looking for a scalable and cost-effective solution. You can deploy this solution for under $5 monthly using cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency and can be used as a property rental aggregator.
 
