@@ -15,7 +15,7 @@ Technical Requirements:
 
 - **Payment Gateway**: 
   - Implement a secure, internationally supported payment gateway
-  - Ensure compatibility across multiple countries and currencies.
+  - Ensure compatibility across multiple countries and currencies
 - **DevOps**:
   - Deploy using Docker containers for consistency and scalability
   - Host on minimal infrastructure (1GB RAM server)
