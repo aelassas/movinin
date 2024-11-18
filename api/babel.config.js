@@ -7,7 +7,7 @@ const babel = (api) => {
       {
         alias: {
           // '@': './dist/src',
-          ':bookcars-types': '../packages/bookcars-types',
+          ':movinin-types': '../packages/movinin-types',
         },
       },
     ],
