@@ -58,6 +58,7 @@ jobs:
            echo MI_MINIMUM_AGE=$MI_MINIMUM_AGE >> .env
            echo MI_EXPO_ACCESS_TOKEN=$MI_EXPO_ACCESS_TOKEN >> .env
            echo MI_STRIPE_SECRET_KEY=$MI_STRIPE_SECRET_KEY >> .env
+           echo MI_ADMIN_EMAIL=$MI_ADMIN_EMAIL >> .env
            npm install
            npm test
       env:
@@ -88,6 +89,7 @@ jobs:
         MI_MINIMUM_AGE: ${{ vars.MI_MINIMUM_AGE }}
         MI_EXPO_ACCESS_TOKEN: ${{ secrets.MI_EXPO_ACCESS_TOKEN }}
         MI_STRIPE_SECRET_KEY: ${{ secrets.MI_STRIPE_SECRET_KEY }}
+        MI_ADMIN_EMAIL: ${{ vars.MI_ADMIN_EMAIL }}
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4
       with:
