@@ -53,29 +53,6 @@ export const initialize = async () => {
   expect(admin.id).toBeDefined()
   ADMIN_USER_ID = admin.id
 
-  // env admin
-  if (env.ADMIN_EMAIL) {
-    let adminFromEnv = await User.exists({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin })
-    if (!adminFromEnv) {
-      const _admin = new User({
-        fullName: 'admin',
-        email: env.ADMIN_EMAIL,
-        language: LANGUAGE,
-        password: passwordHash,
-        type: movininTypes.UserType.Admin,
-      })
-      //
-      // This check is necessary to avoid getting an error creating the same env admin multiple times when
-      // test suites are run in parallel.
-      //
-      adminFromEnv = await User.exists({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin })
-      if (!adminFromEnv) {
-        await _admin.save()
-      }
-      expect(_admin.id).toBeTruthy()
-    }
-  }
-
   // user
   const user = new User({
     fullName: USER_FULL_NAME,

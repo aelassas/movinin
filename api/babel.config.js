@@ -6,7 +6,8 @@ const babel = (api) => {
       'module-resolver',
       {
         alias: {
-          ':movinin-types': '../packages/movinin-types',
+          // '@': './dist/src',
+          ':bookcars-types': '../packages/bookcars-types',
         },
       },
     ],
@@ -21,7 +22,7 @@ const babel = (api) => {
       [
         '@babel/preset-env',
         {
-          modules: false,
+          modules: isTest ? undefined : false,
           targets: {
             node: 'current',
           },
