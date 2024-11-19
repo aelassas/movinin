@@ -54,12 +54,13 @@
 }
 
 .msg h2 {
-  color: #212121;
+  color: #232323;
   margin: 0;
 }
 
 .msg p {
   color: #333;
+  margin-top: 0;
 }
 
 /* Avatar */
