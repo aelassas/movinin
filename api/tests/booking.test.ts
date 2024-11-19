@@ -13,6 +13,8 @@ import PushToken from '../src/models/PushToken'
 import Token from '../src/models/Token'
 import * as env from '../src/config/env.config'
 import stripeAPI from '../src/stripe'
+import Notification from '../src/models/Notification'
+import NotificationCounter from '../src/models/NotificationCounter'
 
 const RENTER1_NAME = 'Renter 1'
 
@@ -107,6 +109,8 @@ afterAll(async () => {
 
     // delete renters
     await User.deleteMany({ _id: { $in: [RENTER1_ID, RENTER2_ID] } })
+    await Notification.deleteMany({ user: { $in: [RENTER1_ID, RENTER2_ID] } })
+    await NotificationCounter.deleteMany({ user: { $in: [RENTER1_ID, RENTER2_ID] } })
 
     await databaseHelper.close()
   }
