@@ -106,7 +106,7 @@ afterAll(async () => {
     await Property.deleteMany({ _id: { $in: [PROPERTY1_ID, PROPERTY2_ID] } })
 
     // delete renters
-    await User.deleteOne({ _id: { $in: [RENTER1_ID, RENTER2_ID] } })
+    await User.deleteMany({ _id: { $in: [RENTER1_ID, RENTER2_ID] } })
 
     await databaseHelper.close()
   }
