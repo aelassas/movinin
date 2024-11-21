@@ -35,6 +35,7 @@ I invested significant time and effort into building this open-source project to
 * Booking management
 * Payment management
 * Customer management
+* Multiple login options (Google, Facebook, Apple, Email)
 * Multiple payment methods (Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later)
 * Operational Stripe Payment Gateway
 * Multiple language support (English, French)
@@ -58,7 +59,7 @@ I invested significant time and effort into building this open-source project to
 * Password: M00vinin
 
 ### Mobile App
-
+<!--
 You can install the Android app on any Android device.
 
 #### Scan this code with a device
@@ -74,8 +75,8 @@ Open the Camera app and point it at this code. Then tap the notification that ap
 * On devices running Android 7.1.1 (API level 25) and lower, you should enable the Unknown sources system setting, found in Settings > Security on your device.
 
 #### Alternative Way
-
-You can also install the Android App by directly downloading the APK and installing it on any Android device.
+-->
+You can also install the Android App by downloading the APK and installing it on any Android device.
 
 * [Download APK](https://github.com/aelassas/movinin/releases/download/v3.7/movinin-3.7.apk)
 * Login: jdoe@movinin.io
@@ -84,6 +85,7 @@ You can also install the Android App by directly downloading the APK and install
 ## Resources
 
 1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)
+2. [Why Use Movin' In](https://github.com/aelassas/movinin/wiki/Why-Use-Movin'-In)
 2. [Architecture](https://github.com/aelassas/movinin/wiki/Architecture)
 3. [Installing (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))
 4. [Installing (VPS)](https://github.com/aelassas/movinin/wiki/Installing-(VPS))
