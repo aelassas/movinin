@@ -2,7 +2,7 @@
 
 # Movin' In
 
-Movin' In is a Rental Property Management Platform, agency-oriented with a backend for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
+Movin' In is a Rental Property Management Platform, agency-oriented with an admin dashboard for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
 Movin' In is built with React for its powerful rendering capabilities, MongoDB for flexible data modeling, and Stripe for secure payment processing.
 
@@ -15,11 +15,11 @@ This project emerged from a desire to build without boundaries – a fully custo
 
 With this solution, you can deploy your own customizable property rental marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform integrates Stripe for secure payments and can be efficiently hosted on a 1GB RAM droplet, making it an ideal choice for single/multi-agency operations looking for a scalable and cost-effective solution. You can deploy this solution for under $5 monthly using cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
-Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the backend. Movin' In can also work with only one agency and can be used as a property rental aggregator.
+Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the admin dashboard. Movin' In can also work with only one agency and can be used as a property rental aggregator.
 
-From the backend, administrators can create and manage agencies, properties, locations, users and bookings.
+From the admin dashboard, administrators can create and manage agencies, properties, locations, users and bookings.
 
-When new agencies are created, they receive an email prompting them to create their account to access the backend and manage their properties, customers and bookings.
+When new agencies are created, they receive an email prompting them to create their account to access the admin dashboard and manage their properties, customers and bookings.
 
 Customers can sign up from the frontend or the mobile app, search for available properties based on location point and time, choose a property and complete the checkout process.
 
@@ -40,7 +40,7 @@ I invested significant time and effort into building this open-source project to
 * Operational Stripe Payment Gateway
 * Multiple language support (English, French)
 * Multiple pagination options (Classic pagination with next and previous buttons, infinite scroll)
-* Responsive backend and frontend
+* Responsive admin dashboard and frontend
 * Native Mobile app for Android and iOS with single codebase
 * Push notifications
 * Secure against XSS, XST, CSRF and MITM
@@ -53,7 +53,7 @@ I invested significant time and effort into building this open-source project to
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
-## Backend
+## Admin Dashboard
 * URL: https://movinin.dynv6.net:3003/
 * Login: admin@movinin.io
 * Password: M00vinin
