@@ -3,7 +3,7 @@ import request from 'supertest'
 import url from 'url'
 import path from 'path'
 import fs from 'node:fs/promises'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import * as databaseHelper from '../src/common/databaseHelper'
@@ -40,7 +40,7 @@ let PROPERTY_ID: string
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
-  testHelper.initializeLogger()
+  // testHelper.initializeLogger()
 
   const res = await databaseHelper.connect(env.DB_URI, false, false)
   expect(res).toBeTruthy()
@@ -300,10 +300,10 @@ describe('PUT /api/update-property', () => {
       await fs.copyFile(ADDITIONAL_IMAGE2_2_PATH, additionalImage2)
     }
     property = await Property.findById(PROPERTY_ID)
-    property.images = [ADDITIONAL_IMAGE2_1, ADDITIONAL_IMAGE2_2, `${uuid()}.jpg`]
-    property.image = `${uuid()}.jpg`
+    property.images = [ADDITIONAL_IMAGE2_1, ADDITIONAL_IMAGE2_2, `${nanoid()}.jpg`]
+    property.image = `${nanoid()}.jpg`
     await property.save()
-    payload.images = [ADDITIONAL_IMAGE2_1, `${uuid()}.jpg`]
+    payload.images = [ADDITIONAL_IMAGE2_1, `${nanoid()}.jpg`]
     res = await request(app)
       .put('/api/update-property')
       .set(env.X_ACCESS_TOKEN, token)
@@ -311,7 +311,7 @@ describe('PUT /api/update-property', () => {
     expect(res.statusCode).toBe(200)
 
     property = await Property.findById(PROPERTY_ID)
-    property.images = [`${uuid()}.jpg`]
+    property.images = [`${nanoid()}.jpg`]
     await property.save()
     payload.images = []
     res = await request(app)
@@ -365,7 +365,6 @@ describe('POST /api/delete-property-image/:id/:image', () => {
     expect(property?.images).toBeDefined()
     expect(property?.images?.length).toBe(2)
     const additionalImageName = (property?.images ?? [])[0]
-    console.log(additionalImageName)
     const additionalImagePath = path.join(env.CDN_PROPERTIES, additionalImageName)
     let imageExists = await helper.exists(additionalImagePath)
     expect(imageExists).toBeTruthy()
@@ -378,7 +377,7 @@ describe('POST /api/delete-property-image/:id/:image', () => {
     imageExists = await helper.exists(additionalImagePath)
     expect(imageExists).toBeFalsy()
 
-    const image = `${uuid()}.jpg`
+    const image = `${nanoid()}.jpg`
     property!.images?.push(image)
     await property?.save()
     res = await request(app)
@@ -671,8 +670,8 @@ describe('DELETE /api/delete-property/:id', () => {
       agency: AGENCY1_ID,
       type: movininTypes.PropertyType.House,
       description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
-      image: `${uuid()}.jpg`,
-      images: [`${uuid()}.jpg`],
+      image: `${nanoid()}.jpg`,
+      images: [`${nanoid()}.jpg`],
       bedrooms: 3,
       bathrooms: 2,
       kitchens: 1,

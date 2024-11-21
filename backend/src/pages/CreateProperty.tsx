@@ -375,7 +375,9 @@ const CreateProperty = () => {
             <FormControl fullWidth margin="dense">
               <TextField
                 label={`${strings.PRICE} ${rentalTerm ? `(${commonStrings.CURRENCY}/${helper.rentalTermUnit(rentalTerm as movininTypes.RentalTerm)})` : ''}`}
-                inputProps={{ inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }}
+                slotProps={{
+                  htmlInput: { inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }
+                }}
                 onChange={handlePriceChange}
                 required
                 variant="standard"
@@ -489,7 +491,9 @@ const CreateProperty = () => {
             <FormControl fullWidth margin="dense">
               <TextField
                 label={`${csStrings.CANCELLATION} (${commonStrings.CURRENCY})`}
-                inputProps={{ inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }}
+                slotProps={{
+                  htmlInput: { inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }
+                }}
                 onChange={handleCancellationChange}
                 variant="standard"
                 autoComplete="off"

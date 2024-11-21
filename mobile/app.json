@@ -18,10 +18,10 @@
         "foregroundImage": "./assets/icon.png"
       },
       "icon": "./assets/icon.png",
-      "splash": {
-        "backgroundColor": "#0D63C9",
-        "image": "./assets/splash.png"
-      },
+      // "splash": {
+      //   "backgroundColor": "#0D63C9",
+      //   "image": "./assets/splash.png"
+      // },
       "googleServicesFile": "./google-services.json",
       "package": "com.movinin"
     },
@@ -29,16 +29,24 @@
       "buildNumber": "3.8.0",
       "supportsTablet": true,
       "icon": "./assets/icon.png",
-      "splash": {
-        "backgroundColor": "#0D63C9",
-        "image": "./assets/splash.png",
-        "tabletImage": "./assets/splash-tablet.png"
-      },
+      // "splash": {
+      //   "backgroundColor": "#0D63C9",
+      //   "image": "./assets/splash.png",
+      //   "tabletImage": "./assets/splash-tablet.png"
+      // },
       "bundleIdentifier": "com.movinin"
     },
     "plugins": [
       "expo-localization",
       "./plugins/usesCleartextTraffic",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#f37022",
+          "image": "./assets/icon.png",
+          "imageWidth": 200
+        }
+      ],
       [
         "@stripe/stripe-react-native",
         {

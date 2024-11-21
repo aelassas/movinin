@@ -1,7 +1,7 @@
 import path from 'node:path'
 import fs from 'node:fs/promises'
 import bcrypt from 'bcrypt'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { CookieOptions, Request, Response } from 'express'
@@ -391,6 +391,7 @@ export const activate = async (req: Request, res: Response) => {
 
         user.active = true
         user.verified = true
+        user.expireAt = undefined
         await user.save()
 
         return res.sendStatus(200)
@@ -1078,7 +1079,7 @@ export const createAvatar = async (req: Request, res: Response) => {
       throw new Error('[user.createAvatar] req.file not found')
     }
 
-    const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+    const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
@@ -1317,7 +1318,7 @@ export const getUsers = async (req: Request, res: Response) => {
     const { body }: { body: movininTypes.GetUsersBody } = req
     const { types, user: userId } = body
 
-    const $match: mongoose.FilterQuery<movininTypes.User> = {
+    const $match: mongoose.FilterQuery<env.User> = {
       $and: [
         {
           type: { $in: types },
@@ -1327,6 +1328,9 @@ export const getUsers = async (req: Request, res: Response) => {
             { fullName: { $regex: keyword, $options: options } },
             { email: { $regex: keyword, $options: options } },
           ],
+        },
+        {
+          expireAt: null,
         },
       ],
     }

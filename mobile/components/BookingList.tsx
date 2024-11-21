@@ -8,7 +8,6 @@ import {
   RefreshControl,
 } from 'react-native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { CommonActions } from '@react-navigation/native'
 import {
   Paragraph,
   Dialog,
@@ -203,23 +202,25 @@ const BookingList = ({
             <RefreshControl refreshing={refreshing} onRefresh={() => {
               setRefreshing(true)
 
-              navigation.dispatch((state) => {
-                const { routes } = state
-                const index = routes.findIndex((r) => r.name === 'Bookings')
-                routes.splice(index, 1)
-                const now = Date.now()
-                routes.push({
-                  name: 'Bookings',
-                  key: `Bookings-${now}`,
-                  params: {},
-                })
+              navigation.navigate('Bookings', {})
 
-                return CommonActions.reset({
-                  ...state,
-                  routes,
-                  index: routes.length - 1,
-                })
-              })
+              // navigation.dispatch((state) => {
+              //   const { routes } = state
+              //   const index = routes.findIndex((r) => r.name === 'Bookings')
+              //   routes.splice(index, 1)
+              //   const now = Date.now()
+              //   routes.push({
+              //     name: 'Bookings',
+              //     key: `Bookings-${now}`,
+              //     params: {},
+              //   })
+
+              //   return CommonActions.reset({
+              //     ...state,
+              //     routes,
+              //     index: routes.length - 1,
+              //   })
+              // })
             }}
             />)
         }

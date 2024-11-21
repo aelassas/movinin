@@ -3,7 +3,7 @@ import request from 'supertest'
 import url from 'url'
 import path from 'path'
 import fs from 'node:fs/promises'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import app from '../src/app'
@@ -31,11 +31,11 @@ let LOCATION_ID: string
 let LOCATION_NAMES: movininTypes.LocationName[] = [
   {
     language: 'en',
-    name: uuid(),
+    name: nanoid(),
   },
   {
     language: 'fr',
-    name: uuid(),
+    name: nanoid(),
   },
 ]
 
@@ -86,7 +86,7 @@ describe('POST /api/validate-location', () => {
     const token = await testHelper.signinAsAdmin()
 
     const language = testHelper.LANGUAGE
-    const name = uuid()
+    const name = nanoid()
     const locationValue = new LocationValue({ language, value: name })
     await locationValue.save()
     const payload: movininTypes.ValidateLocationPayload = {
@@ -99,7 +99,7 @@ describe('POST /api/validate-location', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
-    payload.name = uuid()
+    payload.name = nanoid()
     res = await request(app)
       .post('/api/validate-location')
       .set(env.X_ACCESS_TOKEN, token)
@@ -186,11 +186,11 @@ describe('PUT /api/update-location/:id', () => {
       },
       {
         language: 'fr',
-        name: uuid(),
+        name: nanoid(),
       },
       {
         language: 'es',
-        name: uuid(),
+        name: nanoid(),
       },
     ]
 
@@ -282,7 +282,7 @@ describe('POST /api/update-location-image/:id', () => {
     expect(location).not.toBeNull()
     expect(location?.image).toBe(filename)
 
-    location!.image = `${uuid()}.jpg`
+    location!.image = `${nanoid()}.jpg`
     await location?.save()
     res = await request(app)
       .post(`/api/update-location-image/${LOCATION_ID}`)
@@ -476,7 +476,7 @@ describe('GET /api/check-location/:id', () => {
     expect(res.statusCode).toBe(204)
 
     res = await request(app)
-      .get(`/api/check-location/${uuid()}`)
+      .get(`/api/check-location/${nanoid()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(400)
 
