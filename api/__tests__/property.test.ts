@@ -40,7 +40,7 @@ let PROPERTY_ID: string
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
-  // testHelper.initializeLogger()
+  testHelper.initializeLogger()
 
   const res = await databaseHelper.connect(env.DB_URI, false, false)
   expect(res).toBeTruthy()
