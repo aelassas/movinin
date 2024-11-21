@@ -63,7 +63,7 @@ export const getMimeType = (fileName: string) => mime.getType(fileName)
  */
 export const registerPushToken = async (userId: string) => {
   const registerForPushNotificationsAsync = async () => {
-    let token: string | undefined
+    let token
 
     try {
       if (android()) {
@@ -72,19 +72,29 @@ export const registerPushToken = async (userId: string) => {
           importance: Notifications.AndroidImportance.MAX,
           vibrationPattern: [0, 250, 250, 250],
           lightColor: '#FF231F7C',
-          enableVibrate: true,
-          showBadge: true
         })
       }
 
       if (Device.isDevice) {
-        const { status: existingStatus } = await Notifications.getPermissionsAsync()
-        let finalStatus = existingStatus
-        if (existingStatus !== 'granted') {
-          const { status } = await Notifications.requestPermissionsAsync()
-          finalStatus = status
+        const settings = await Notifications.getPermissionsAsync()
+        let granted = ('granted' in settings && settings.granted) || settings.ios?.status === Notifications.IosAuthorizationStatus.AUTHORIZED
+
+        if (!granted) {
+          const status = await Notifications.requestPermissionsAsync({
+            ios: {
+              allowAlert: true,
+              allowBadge: true,
+              allowSound: true,
+            },
+            android: {
+              allowAlert: true,
+              allowBadge: true,
+              allowSound: true,
+            }
+          })
+          granted = ('granted' in status && status.granted) || status.ios?.status === Notifications.IosAuthorizationStatus.AUTHORIZED
         }
-        if (finalStatus !== 'granted') {
+        if (!granted) {
           alert('Failed to get push token for push notification!')
           return ''
         }

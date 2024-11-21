@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
@@ -97,7 +97,7 @@ export const create = async (req: Request, res: Response) => {
         const _img = path.join(env.CDN_TEMP_PROPERTIES, img)
 
         if (await helper.exists(_img)) {
-          const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(img)}`
+          const filename = `${property._id}_${nanoid()}_${Date.now()}_${i}${path.extname(img)}`
           const newPath = path.join(env.CDN_PROPERTIES, filename)
 
           await fs.rename(_img, newPath)
@@ -234,7 +234,7 @@ export const update = async (req: Request, res: Response) => {
             const _image = path.join(env.CDN_TEMP_PROPERTIES, img)
 
             if (await helper.exists(_image)) {
-              const filename = `${property._id}_${uuid()}_${Date.now()}_${i}${path.extname(img)}`
+              const filename = `${property._id}_${nanoid()}_${Date.now()}_${i}${path.extname(img)}`
               const newPath = path.join(env.CDN_PROPERTIES, filename)
 
               await fs.rename(_image, newPath)
@@ -346,7 +346,7 @@ export const uploadImage = async (req: Request, res: Response) => {
       throw new Error('[property.uploadImage] req.file not found')
     }
 
-    const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${uuid()}_${Date.now()}${path.extname(req.file.originalname)}`
+    const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_PROPERTIES, filename)
 
     await fs.writeFile(filepath, req.file.buffer)

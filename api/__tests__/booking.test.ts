@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import request from 'supertest'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import app from '../src/app'
@@ -444,7 +444,7 @@ describe('GET /api/booking/:id/:language', () => {
     expect(res.statusCode).toBe(204)
 
     res = await request(app)
-      .get(`/api/booking/${uuid()}/${testHelper.LANGUAGE}`)
+      .get(`/api/booking/${nanoid()}/${testHelper.LANGUAGE}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(400)
 
@@ -522,7 +522,7 @@ describe('GET /api/has-bookings/:renter', () => {
     expect(booking?.status).toBe(movininTypes.BookingStatus.Reserved)
 
     res = await request(app)
-      .get(`/api/has-bookings/${uuid()}`)
+      .get(`/api/has-bookings/${nanoid()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(400)
 
@@ -549,7 +549,7 @@ describe('POST /api/cancel-booking/:id', () => {
     expect(res.statusCode).toBe(204)
 
     res = await request(app)
-      .post(`/api/cancel-booking/${uuid()}`)
+      .post(`/api/cancel-booking/${nanoid()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(400)
 

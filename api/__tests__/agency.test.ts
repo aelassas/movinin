@@ -3,7 +3,7 @@ import request from 'supertest'
 import url from 'url'
 import path from 'path'
 import fs from 'node:fs/promises'
-import { v1 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import * as databaseHelper from '../src/common/databaseHelper'
@@ -171,7 +171,7 @@ describe('GET /api/agencies/:page/:size', () => {
     expect(res.statusCode).toBe(400)
 
     res = await request(app)
-      .get(`/api/agencies/${testHelper.PAGE}/${testHelper.SIZE}?s=${uuid()}`)
+      .get(`/api/agencies/${testHelper.PAGE}/${testHelper.SIZE}?s=${nanoid()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
     expect(res.body[0].resultData.length).toBe(0)
@@ -285,7 +285,7 @@ describe('DELETE /api/delete-agency/:id', () => {
     agencyId = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
     agency = await User.findById(agencyId)
     expect(agency).not.toBeNull()
-    agency!.avatar = `${uuid()}.jpg`
+    agency!.avatar = `${nanoid()}.jpg`
     await agency?.save()
     locationId = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
     property = new Property({
@@ -339,8 +339,8 @@ describe('DELETE /api/delete-agency/:id', () => {
       agency: agencyId,
       type: movininTypes.PropertyType.House,
       description: '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium rem aperiam, veritatis et quasi.</p>',
-      image: `${uuid()}.jpg`,
-      images: [`${uuid()}.jpg`],
+      image: `${nanoid()}.jpg`,
+      images: [`${nanoid()}.jpg`],
       bedrooms: 3,
       bathrooms: 2,
       kitchens: 1,
