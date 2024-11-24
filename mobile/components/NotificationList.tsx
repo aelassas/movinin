@@ -338,7 +338,7 @@ const NotificationList = ({ user, locale, navigation }: NotificationListProps) =
               </Dialog.Content>
               <Dialog.Actions style={styles.dialogActions}>
                 <NativeButton
-                  // color='#f37022'
+                  // color='#0D63C9'
                   onPress={() => {
                     setOpenDeleteDialog(false)
                   }}
@@ -346,7 +346,7 @@ const NotificationList = ({ user, locale, navigation }: NotificationListProps) =
                   {i18n.t('CANCEL')}
                 </NativeButton>
                 <NativeButton
-                  // color='#f37022'
+                  // color='#0D63C9'
                   onPress={async () => {
                     try {
                       if (user?._id) {
