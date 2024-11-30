@@ -182,18 +182,7 @@ const UpdateUser = () => {
   }
 
   const handleCancel = async () => {
-    try {
-      if (avatar) {
-        setLoading(true)
-
-        await UserService.deleteTempAvatar(avatar)
-        navigate('/users')
-      } else {
-        navigate('/users')
-      }
-    } catch {
-      navigate('/users')
-    }
+    navigate('/users')
   }
 
   const handleResendActivationLink = async () => {
@@ -346,8 +335,7 @@ const UpdateUser = () => {
                 mode="update"
                 record={user}
                 size="large"
-                // readonly={false}
-                readonly
+                readonly={false}
                 onBeforeUpload={onBeforeUpload}
                 onChange={onAvatarChange}
                 color="disabled"
