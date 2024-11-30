@@ -91,6 +91,16 @@ div.home div.home-map {
     padding: 20px;
     margin: 10px 0;
   }
+
+  div.home div.home-map {
+    width: 100%;
+    padding: 5px;
+  }
+
+  div.home div.home-map .map {
+    min-height: 0;
+    height: 340px;
+  }
 }
 
 /* Device width is greater than or equal to 960px */
