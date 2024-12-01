@@ -235,6 +235,12 @@ const UpdateBooking = () => {
                 return
               }
 
+              if (!_booking.renter) {
+                setLoading(false)
+                setNoMatch(true)
+                return
+              }
+
               setBooking(_booking)
               setPrice(_booking.price)
               setLoading(false)
