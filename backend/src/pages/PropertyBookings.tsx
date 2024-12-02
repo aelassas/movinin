@@ -181,8 +181,8 @@ const PropertyBookings = () => {
               property={property._id}
               hideAgencyColumn
               hidePropertyColumn
-              hideDates={env.isMobile()}
-              checkboxSelection={!env.isMobile()}
+              hideDates={env.isMobile}
+              checkboxSelection={!env.isMobile}
             />
           </div>
 

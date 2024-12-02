@@ -85,8 +85,8 @@ const PropertyFilter = ({
           <LocationSelectList
             label={commonStrings.LOCATION}
             hidePopupIcon
-            customOpen={env.isMobile()}
-            init={!env.isMobile()}
+            customOpen={env.isMobile}
+            init={!env.isMobile}
             required
             variant="standard"
             value={location as movininTypes.Location}

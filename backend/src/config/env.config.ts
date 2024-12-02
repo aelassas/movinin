@@ -17,7 +17,7 @@ const LANGUAGES = [
 ]
 
 const env = {
-  isMobile: () => window.innerWidth <= 960,
+  isMobile: window.innerWidth <= 960,
 
   APP_TYPE: movininTypes.AppType.Backend,
   API_HOST: String(import.meta.env.VITE_MI_API_HOST),

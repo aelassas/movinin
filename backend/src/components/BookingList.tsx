@@ -96,12 +96,12 @@ const BookingList = ({
     page: 0,
   })
   const [page, setPage] = useState(0)
-  const [pageSize, setPageSize] = useState(env.isMobile() ? env.BOOKINGS_MOBILE_PAGE_SIZE : env.BOOKINGS_PAGE_SIZE)
+  const [pageSize, setPageSize] = useState(env.isMobile ? env.BOOKINGS_MOBILE_PAGE_SIZE : env.BOOKINGS_PAGE_SIZE)
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (!env.isMobile()) {
+    if (!env.isMobile) {
       setPage(paginationModel.page)
       setPageSize(paginationModel.pageSize)
     }
@@ -109,7 +109,7 @@ const BookingList = ({
 
   const fetchData = async (_page: number, _user?: movininTypes.User) => {
     try {
-      const _pageSize = env.isMobile() ? env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
+      const _pageSize = env.isMobile ? env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
 
       if (agencies && statuses) {
         setLoading(true)
@@ -135,7 +135,7 @@ const BookingList = ({
         }
         const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
 
-        if (env.isMobile()) {
+        if (env.isMobile) {
           const _rows = _page === 0 ? _data.resultData : [...rows, ..._data.resultData]
           setRows(_rows)
           setRowCount(totalRecords)
@@ -369,7 +369,7 @@ const BookingList = ({
   }, [bookingLoggedUser])
 
   useEffect(() => {
-    if (env.isMobile()) {
+    if (env.isMobile) {
       const element: HTMLDivElement | null = containerClassName
         ? document.querySelector(`.${containerClassName}`)
         : document.querySelector('div.bookings')
@@ -444,7 +444,7 @@ const BookingList = ({
 
   const handleConfirmDelete = async () => {
     try {
-      if (env.isMobile()) {
+      if (env.isMobile) {
         const ids = [selectedId]
 
         const _status = await BookingService.deleteBookings(ids)
@@ -500,7 +500,7 @@ const BookingList = ({
               </CardContent>
             </Card>
           )
-        ) : env.isMobile() ? (
+        ) : env.isMobile ? (
           <>
             {rows.map((booking, index) => {
               const from = new Date(booking.from)
