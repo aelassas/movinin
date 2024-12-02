@@ -82,8 +82,8 @@ const SearchForm = (
           label={commonStrings.LOCATION}
           variant="outlined"
           hidePopupIcon
-          customOpen={env.isMobile()}
-          init={!env.isMobile()}
+          customOpen={env.isMobile}
+          init={!env.isMobile}
           required
           value={selectedLocation}
           onChange={handleLocationChange}

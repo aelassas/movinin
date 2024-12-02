@@ -325,7 +325,7 @@ const Header = ({
                     <ListItemIcon><MailIcon /></ListItemIcon>
                     <ListItemText primary={strings.CONTACT} />
                   </ListItemLink>
-                  {env.isMobile() && !hideSignin && !isSignedIn && isLoaded && !loading && (
+                  {env.isMobile && !hideSignin && !isSignedIn && isLoaded && !loading && (
                     <ListItemLink href="/sign-in">
                       <ListItemIcon><LoginIcon /></ListItemIcon>
                       <ListItemText primary={strings.SIGN_IN} />
