@@ -7,7 +7,7 @@ import Location from '../src/models/Location'
 import Country from '../src/models/Country'
 
 beforeAll(() => {
-  testHelper.initializeLogger()
+  // testHelper.initializeLogger()
 })
 
 describe('Test database connection', () => {
