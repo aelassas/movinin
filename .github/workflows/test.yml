@@ -89,11 +89,21 @@ jobs:
         MI_MINIMUM_AGE: ${{ vars.MI_MINIMUM_AGE }}
         MI_EXPO_ACCESS_TOKEN: ${{ secrets.MI_EXPO_ACCESS_TOKEN }}
         MI_STRIPE_SECRET_KEY: ${{ secrets.MI_STRIPE_SECRET_KEY }}
-        MI_ADMIN_EMAIL: ${{ vars.MI_ADMIN_EMAIL }}
+        MI_ADMIN_EMAIL: ${{ vars.MI_ADMIN_EMAIL }}  
+
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: cobertura-coverage.xml
-          directory: ./api/coverage        
-          fail_ci_if_error: true
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./cobertura-coverage.xml
+        directory: ./api/coverage
+        fail_ci_if_error: true
+        verbose: true
+        
+    - name: Upload coverage reports to Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+         github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
+         fail-on-error: true
+         debug: true
+         measure: true
