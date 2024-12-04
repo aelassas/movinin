@@ -100,9 +100,9 @@ const initializeLocations = async () => {
     const values = await LocationValue.find({ language: { $nin: env.LANGUAGES } })
     const valuesIds = values.map((v) => v.id)
     for (const val of values) {
-      const _locations = await Location.find({ values: val.id })
+      const _locations = await Location.find({ values: val.id }).lean()
       for (const _loc of _locations) {
-        const loc = await Location.findById(_loc.id)
+        const loc = await Location.findById(_loc._id)
         if (loc) {
           loc.values.splice(loc.values.findIndex((v) => v.equals(val.id)), 1)
           await loc.save()
@@ -161,9 +161,9 @@ const initializeCountries = async () => {
     const values = await LocationValue.find({ language: { $nin: env.LANGUAGES } })
     const valuesIds = values.map((v) => v.id)
     for (const val of values) {
-      const _countries = await Country.find({ values: val.id })
+      const _countries = await Country.find({ values: val.id }).lean()
       for (const _country of _countries) {
-        const country = await Country.findById(_country.id)
+        const country = await Country.findById(_country._id)
         if (country) {
           country.values.splice(country.values.findIndex((v) => v.equals(val.id)), 1)
           await country.save()
