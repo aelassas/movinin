@@ -55,9 +55,10 @@ export const connect = async (uri: string, ssl: boolean, debug: boolean): Promis
  * @returns {Promise<void>}
  */
 export const close = async (force: boolean = false): Promise<void> => {
-  await mongoose.connection.close(force)
+  if (mongoose.connection.readyState) {
+    await mongoose.connection.close(force)
+  }
 }
-
 /**
  * Initialize locations.
  * If a new language is added, english values will be added by default with the new language.
