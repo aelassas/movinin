@@ -66,7 +66,7 @@ export const close = async (force: boolean = false): Promise<void> => {
  * @async
  * @returns {*}
  */
-const initializeLocations = async () => {
+export const initializeLocations = async () => {
   try {
     logger.info('Initializing locations...')
     const locations = await Location.find({})
@@ -127,7 +127,7 @@ const initializeLocations = async () => {
  * @async
  * @returns {*}
  */
-const initializeCountries = async () => {
+export const initializeCountries = async () => {
   try {
     logger.info('Initializing countries...')
     const countries = await Country.find({})
