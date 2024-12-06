@@ -36,7 +36,7 @@ import { strings as signInStrings } from '@/lang/sign-in'
 import { strings as signUpStrings } from '@/lang/sign-up'
 import { strings as soldOutStrings } from '@/lang/sold-out'
 
-import 'github-fork-ribbon-css/gh-fork-ribbon.css'
+// import 'github-fork-ribbon-css/gh-fork-ribbon.css'
 
 import 'react-toastify/dist/ReactToastify.min.css'
 import '@/assets/css/common.css'
@@ -238,13 +238,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         theme="dark"
       />
     </CssBaseline>
-    <a
+    {/* <a
       className="github-fork-ribbon fixed left-bottom"
       href="https://github.com/aelassas/movinin"
       data-ribbon="Fork me on GitHub"
       title="Fork me on GitHub"
     >
       Fork me on GitHub
-    </a>
+    </a> */}
   </ThemeProvider>,
 )
