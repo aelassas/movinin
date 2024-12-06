@@ -36,7 +36,7 @@ import { strings as signInStrings } from '@/lang/sign-in'
 import { strings as signUpStrings } from '@/lang/sign-up'
 import { strings as soldOutStrings } from '@/lang/sold-out'
 
-import 'github-fork-ribbon-css/gh-fork-ribbon.css'
+// import 'github-fork-ribbon-css/gh-fork-ribbon.css'
 
 import 'react-toastify/dist/ReactToastify.min.css'
 import '@/assets/css/common.css'
