@@ -16,7 +16,7 @@
     "ts:check": "tsc --build",
     "lint": "eslint --ext .ts,.tsx .",
     "fix": "eslint --fix .",
-    "ncu": "ncu -u -x eslint,react,react-nativetypescript,eslint-plugin-import,eslint-plugin-react,eslint-plugin-react-hooks && npm i --force && npm prune && expo install --fix",
+    "ncu": "ncu -u -x eslint,react,@types/react,react-native,typescript,eslint-plugin-import,eslint-plugin-react,eslint-plugin-react-hooks && npm i --force && npm prune && expo install --fix",
     "prebuild": "expo prebuild",
     "prebuild:clean": "expo prebuild --clean"
   },
