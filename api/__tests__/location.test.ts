@@ -85,10 +85,13 @@ describe('POST /api/validate-location', () => {
   it('should validate a location', async () => {
     const token = await testHelper.signinAsAdmin()
 
+    // test success (location found)
     const language = testHelper.LANGUAGE
     const name = nanoid()
     const locationValue = new LocationValue({ language, value: name })
     await locationValue.save()
+    const location = new Location({ country: countryId, values: [locationValue.id] })
+    await location.save()
     const payload: movininTypes.ValidateLocationPayload = {
       language,
       name,
@@ -99,6 +102,7 @@ describe('POST /api/validate-location', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
+    // test success (location not found)
     payload.name = nanoid()
     res = await request(app)
       .post('/api/validate-location')
@@ -106,7 +110,9 @@ describe('POST /api/validate-location', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     await locationValue.deleteOne()
+    await location.deleteOne()
 
+    // test failure (no payload)
     res = await request(app)
       .post('/api/validate-location')
       .set(env.X_ACCESS_TOKEN, token)
