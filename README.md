@@ -83,7 +83,7 @@ You can also install the Android App by downloading the APK and installing it on
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
-# Resources
+# Documentation
 
 1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)
 2. [Why Use Movin' In](https://github.com/aelassas/movinin/wiki/Why-Use-Movin'-In)
