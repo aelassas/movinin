@@ -21,6 +21,7 @@ const Home = () => {
   const [openLocationSearchFormDialog, setOpenLocationSearchFormDialog] = useState(false)
   const [locations, setLocations] = useState<movininTypes.Location[]>([])
   const [location, setLocation] = useState('')
+  const [videoLoaded, setVideoLoaded] = useState(false)
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
@@ -31,12 +32,20 @@ const Home = () => {
     setCountries(_countries)
     const _locations = await LocationService.getLocationsWithPosition()
     setLocations(_locations)
+
+    const video = document.getElementById('cover') as HTMLVideoElement
+    if (video) {
+      video.muted = true
+      video.play()
+    } else {
+      console.error('Cover video tag not loaded')
+    }
   }
 
   return (
     <Layout onLoad={onLoad} strict={false}>
       <div className="home">
-        <div className="home-content">
+        {/* <div className="home-content">
 
           <div className="home-cover">{strings.COVER}</div>
 
@@ -44,6 +53,40 @@ const Home = () => {
             <SearchForm />
           </div>
 
+        </div> */}
+
+        <div className="home-content">
+
+          <div className="video">
+            <video
+              id="cover"
+              muted={!env.isSafari}
+              autoPlay={!env.isSafari}
+              loop
+              playsInline
+              disablePictureInPicture
+              onLoadedData={async () => {
+                setVideoLoaded(true)
+              }}
+            >
+              <source src="cover.mp4" type="video/mp4" />
+              <track kind="captions" />
+            </video>
+            {!videoLoaded && (
+              <div className="video-background" />
+            )}
+          </div>
+
+          <div className="home-title">{strings.TITLE}</div>
+          <div className="home-cover">{strings.COVER}</div>
+          {/* <div className="home-subtitle">{strings.SUBTITLE}</div> */}
+
+        </div>
+
+        <div className="search">
+          <div className="home-search">
+            <SearchForm />
+          </div>
         </div>
 
         {countries.length > 0 && (
@@ -112,9 +155,9 @@ const Home = () => {
         <DialogContent className="search-dialog-content">
           <SearchForm
             location={location}
-            onCancel={() => {
-              setOpenLocationSearchFormDialog(false)
-            }}
+            // onCancel={() => {
+            //   setOpenLocationSearchFormDialog(false)
+            // }}
           />
         </DialogContent>
       </Dialog>
