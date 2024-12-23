@@ -1,6 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MailOutline } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
+import {
+  MailOutline,
+  FacebookTwoTone as FacebookIcon,
+  X,
+  LinkedIn,
+  Instagram,
+} from '@mui/icons-material'
 import { strings } from '@/lang/footer'
 
 import SecurePayment from '@/assets/img/secure-payment.png'
@@ -32,9 +39,15 @@ const Footer = () => {
           <ul className="links">
             <li onClick={() => navigate('/contact')}>{strings.CONTACT}</li>
           </ul>
-          <div className="contact">
+          <div className="footer-contact">
             <MailOutline className="icon" />
             <a href="mailto:info@movinin.io">info@movinin.io</a>
+          </div>
+          <div className="footer-contact">
+            <IconButton href="https://www.facebook.com/" target="_blank" aria-label="Facebook" className="social-icon"><FacebookIcon /></IconButton>
+            <IconButton href="https://x.com/" target="_blank" aria-label="X" className="social-icon"><X /></IconButton>
+            <IconButton href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn" className="social-icon"><LinkedIn /></IconButton>
+            <IconButton href="https://www.instagram.com/" target="_blank" aria-label="Instagram" className="social-icon"><Instagram /></IconButton>
           </div>
         </div>
       </section>

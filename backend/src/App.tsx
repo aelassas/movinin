@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import SuspenseRouter from '@/components/SuspenseRouter'
 import { GlobalProvider } from '@/context/GlobalContext'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const SignIn = lazy(() => import('@/pages/SignIn'))
 const Activate = lazy(() => import('@/pages/Activate'))
@@ -41,6 +42,8 @@ const UpdateCountry = lazy(() => import('@/pages/UpdateCountry'))
 const App = () => (
   <GlobalProvider>
     <SuspenseRouter window={window}>
+      <ScrollToTop />
+
       <div className="app">
         <Suspense fallback={<></>}>
           <Routes>
