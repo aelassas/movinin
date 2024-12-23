@@ -12,7 +12,7 @@ sudo chmod +x -R /opt/movinin/__scripts
 cd /opt/movinin/backend
 sudo rm -rf build
 
-npm install
+npm install --force
 npm run build
 
 sudo rm -rf /var/www/movinin/backend
