@@ -244,8 +244,9 @@ const UpdateAgency = () => {
       const status = await AgencyService.update(data)
 
       if (status === 200) {
-        agency.fullName = fullName
-        setAgency(movininHelper.clone(agency))
+        const _agency = movininHelper.clone(agency) as movininTypes.User
+        _agency.fullName = fullName
+        setAgency(_agency)
         helper.info(commonStrings.UPDATED)
       } else {
         helper.error()
@@ -268,8 +269,7 @@ const UpdateAgency = () => {
                 mode="update"
                 record={agency}
                 size="large"
-                // readonly={false}
-                readonly
+                readonly={false}
                 hideDelete
                 onBeforeUpload={onBeforeUpload}
                 onChange={onAvatarChange}

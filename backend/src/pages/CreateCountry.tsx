@@ -29,8 +29,9 @@ const CreateCountry = () => {
     try {
       let isValid = true
 
+      const _nameErrors = movininHelper.clone(nameErrors) as boolean[]
       for (let i = 0; i < nameErrors.length; i += 1) {
-        nameErrors[i] = false
+        _nameErrors[i] = false
       }
 
       for (let i = 0; i < names.length; i += 1) {
@@ -38,20 +39,21 @@ const CreateCountry = () => {
         const _isValid = (await CountryService.validate(name)) === 200
         isValid = isValid && _isValid
         if (!_isValid) {
-          nameErrors[i] = true
+          _nameErrors[i] = true
         }
       }
 
-      setNameErrors(movininHelper.cloneArray(nameErrors) as boolean[])
+      setNameErrors(_nameErrors)
 
       if (isValid) {
         const status = await CountryService.create(names)
 
         if (status === 200) {
+          const _names = movininHelper.clone(names) as movininTypes.CountryName[]
           for (let i = 0; i < names.length; i += 1) {
-            names[i].name = ''
+            _names[i].name = ''
           }
-          setNames(movininHelper.cloneArray(names) as movininTypes.CountryName[])
+          setNames(_names)
           helper.info(strings.COUNTRY_CREATED)
         } else {
           helper.error()
@@ -85,14 +87,16 @@ const CreateCountry = () => {
                   error={nameErrors[index]}
                   required
                   onChange={(e) => {
-                    names[index] = {
+                    const _names = movininHelper.clone(names) as movininTypes.CountryName[]
+                    _names[index] = {
                       language: language.code,
                       name: e.target.value,
                     }
-                    setNames(movininHelper.cloneArray(names) as movininTypes.CountryName[])
+                    setNames(_names)
 
-                    nameErrors[index] = false
-                    setNameErrors(movininHelper.cloneArray(nameErrors) as boolean[])
+                    const _nameErrors = movininHelper.clone(nameErrors) as boolean[]
+                    _nameErrors[index] = false
+                    setNameErrors(_nameErrors)
                   }}
                   autoComplete="off"
                 />

@@ -125,15 +125,16 @@ const UpdateBooking = () => {
 
   const handleCancellationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (booking) {
-      booking.cancellation = e.target.checked
+      const _booking = movininHelper.clone(booking) as movininTypes.Booking
+      _booking.cancellation = e.target.checked
 
       helper.price(
-        booking,
-        booking.property as movininTypes.Property,
+        _booking,
+        _booking.property as movininTypes.Property,
         (_price) => {
-          setBooking(booking)
+          setBooking(_booking)
           setPrice(_price)
-          setCancellation(booking.cancellation || false)
+          setCancellation(_booking.cancellation || false)
         },
         (err) => {
           helper.error(err)
@@ -350,13 +351,14 @@ const UpdateBooking = () => {
                   required
                   onChange={(date) => {
                     if (date) {
-                      booking.from = date
+                      const _booking = movininHelper.clone(booking) as movininTypes.Booking
+                      _booking.from = date
 
                       helper.price(
-                        booking,
-                        booking.property as movininTypes.Property,
+                        _booking,
+                        _booking.property as movininTypes.Property,
                         (_price) => {
-                          setBooking(booking)
+                          setBooking(_booking)
                           setPrice(_price)
                           setFrom(date)
 
@@ -392,13 +394,14 @@ const UpdateBooking = () => {
                   required
                   onChange={(date) => {
                     if (date) {
-                      booking.to = date
+                      const _booking = movininHelper.clone(booking) as movininTypes.Booking
+                      _booking.to = date
 
                       helper.price(
-                        booking,
-                        booking.property as movininTypes.Property,
+                        _booking,
+                        _booking.property as movininTypes.Property,
                         (_price) => {
-                          setBooking(booking)
+                          setBooking(_booking)
                           setPrice(_price)
                           setTo(date)
 

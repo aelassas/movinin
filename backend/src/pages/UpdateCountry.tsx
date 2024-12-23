@@ -74,8 +74,9 @@ const UpdateCountry = () => {
 
       let isValid = true
 
+      const _nameErrors = movininHelper.clone(nameErrors) as boolean[]
       for (let i = 0; i < nameErrors.length; i += 1) {
-        nameErrors[i] = false
+        _nameErrors[i] = false
       }
 
       for (let i = 0; i < names.length; i += 1) {
@@ -84,23 +85,24 @@ const UpdateCountry = () => {
           const _isValid = (await CountryService.validate(name)) === 200
           isValid = isValid && _isValid
           if (!_isValid) {
-            nameErrors[i] = true
+            _nameErrors[i] = true
           }
         }
       }
 
-      setNameErrors(movininHelper.cloneArray(nameErrors) as boolean[])
+      setNameErrors(_nameErrors)
 
       if (isValid) {
         const status = await CountryService.update(country._id, names)
 
         if (status === 200) {
+          const _country = movininHelper.clone(country) as movininTypes.Country
           for (let i = 0; i < names.length; i += 1) {
             const name = names[i]
-            country.values[i].value = name.name
+            _country.values![i].value = name.name
           }
 
-          setCountry(movininHelper.clone(country))
+          setCountry(_country)
           helper.info(strings.COUNTRY_UPDATED)
         } else {
           _error()
@@ -179,10 +181,13 @@ const UpdateCountry = () => {
                     error={nameErrors[index]}
                     required
                     onChange={(e) => {
-                      nameErrors[index] = false
-                      names[index].name = e.target.value
+                      const _names = movininHelper.clone(names) as movininTypes.CountryName[]
+                      _names[index].name = e.target.value
+                      const _nameErrors = movininHelper.cloneArray(nameErrors) as boolean[]
+                      _nameErrors[index] = false
                       checkName()
-                      setNames(movininHelper.cloneArray(names) as movininTypes.CountryName[])
+                      setNames(_names)
+                      setNameErrors(_nameErrors)
                     }}
                     autoComplete="off"
                   />

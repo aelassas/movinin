@@ -160,15 +160,8 @@ const PropertyList = ({
         }
         setInit(false)
       }
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    page,
-    agencies,
-    keyword,
-    availability,
-    types,
-    rentalTerms
-  ])
+    }
+  }, [page, agencies, keyword, availability, types, rentalTerms]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (properties) {
@@ -196,15 +189,8 @@ const PropertyList = ({
     if (reload) {
       setPage(1)
       fetchData(1)
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    reload,
-    agencies,
-    keyword,
-    types,
-    rentalTerms,
-    availability
-  ])
+    }
+  }, [reload, agencies, keyword, types, rentalTerms, availability]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setUser(propertyListUser)
@@ -346,11 +332,11 @@ const PropertyList = ({
                               <EditIcon />
                             </IconButton>
                           </Tooltip>
-                          {/* <Tooltip title={commonStrings.DELETE}>
+                          <Tooltip title={commonStrings.DELETE}>
                             <IconButton data-id={property._id} data-index={index} onClick={handleDelete}>
                               <DeleteIcon />
                             </IconButton>
-                          </Tooltip> */}
+                          </Tooltip>
                         </>
                       )}
                     </div>

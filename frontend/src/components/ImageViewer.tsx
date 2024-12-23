@@ -201,7 +201,8 @@ const ImageViewer = ({
                   <div
                     key={srcItem}
                     ref={(el) => {
-                      thumbnails[index] = el
+                      // thumbnails[index] = el
+                      thumbnails.splice(index, 0, el)
                     }}
                     className={`thumbnail${currentIndex === index ? ' selected' : ''}`}
                     onClick={() => setCurrentIndex(index)}

@@ -145,14 +145,8 @@ const PropertyList = ({
         }
         setInit(false)
       }
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    page,
-    agencies,
-    types,
-    rentalTerms,
-    location
-  ])
+    }
+  }, [page, agencies, types, rentalTerms, location]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (properties) {
@@ -179,14 +173,8 @@ const PropertyList = ({
     if (reload) {
       setPage(1)
       fetchData(1)
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    reload,
-    agencies,
-    types,
-    rentalTerms,
-    location
-  ])
+    }
+  }, [reload, agencies, types, rentalTerms, location]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const days = movininHelper.days(from, to)
 
