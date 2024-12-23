@@ -107,7 +107,6 @@ You can also install the Android App by downloading the APK and installing it on
 11. [Change Currency](https://github.com/aelassas/movinin/wiki/Change-Currency)
 12. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)
 13. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
-14. [Logs](https://github.com/aelassas/movinin/wiki/Logs)aelassas/movinin/wiki/Unit-Tests-and-Coverage)
 14. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
 
 # License
