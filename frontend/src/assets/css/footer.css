@@ -6,7 +6,7 @@ div.footer {
   display: flex;
   flex-direction: column;
   background: #f2f2f2;
-  color: #70757a;
+  color: #1a1a1a;
   border-top: 1px solid #ebebeb;
   font-size: 12px;
   padding: 12px;
@@ -25,17 +25,18 @@ div.footer section.main {
   display: flex;
   flex-direction: row;
   margin-bottom: 15px;
+  padding-bottom: 80px;
 }
 
 div.footer div.main-section {
   flex: 1 1 0%;
-  font-weight: bold;
 }
 
 div.footer div.main-section div.title {
   text-align: left;
   margin-bottom: 10px;
-  color: #121212;
+  color: #1a1a1a;
+  font-weight: bold;
 }
 
 div.footer ul.links {
@@ -50,26 +51,38 @@ div.footer ul.links li {
 }
 
 div.footer ul.links li:hover {
-  opacity: 0.85;
+  text-decoration: underline;
 }
 
-div.footer div.contact {
+div.footer div.footer-contact {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin: 10px 0;
 }
 
-div.footer div.contact .icon {
+div.footer div.footer-contact .icon {
+  color: #525252;
   margin-right: 5px;
 }
 
-div.footer div.contact a {
+div.footer div.footer-contact a {
   text-decoration: none;
-  color: #70757a;
+  color: #1a1a1a;
 }
 
-div.footer div.contact a:hover {
-  opacity: 0.85;
+div.footer div.footer-contact a:hover {
+  /* opacity: 0.85; */
+  text-decoration: underline;
+}
+
+div.footer div.footer-contact .social-icon {
+  color: #525252;
+  /* margin-right: 12px; */
+}
+
+div.footer div.footer-contact .social-icon:hover {
+  color: #1a1a1a;
 }
 
 div.footer section.payment {
@@ -91,6 +104,14 @@ div.footer section.payment div.payment-text {
 }
 
 @media only screen and (width <=960px) {
+  div.footer section.main {
+    flex-direction: column;
+  }
+
+  div.footer div.main-section {
+    margin: 10px;
+  }
+
   div.footer section.payment {
     display: flex;
     flex-direction: column;
@@ -98,6 +119,8 @@ div.footer section.payment div.payment-text {
 
   div.footer section.payment div.payment-text {
     margin: 5px 0;
+    padding-left: 8px;
+    align-items: flex-start;
   }
 
   div.footer section.payment img {
@@ -107,7 +130,7 @@ div.footer section.payment div.payment-text {
 
 div.footer section.copyright {
   width: 100%;
-  padding: 40px 0 15px 0;
+  padding: 40px 0 15px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
