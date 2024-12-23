@@ -19,6 +19,7 @@ const LANGUAGES = [
 const env = {
   isMobile: window.innerWidth <= 960,
   isProduction: import.meta.env.VITE_NODE_ENV === 'production',
+  isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
 
   APP_TYPE: movininTypes.AppType.Frontend,
   API_HOST: String(import.meta.env.VITE_MI_API_HOST),
