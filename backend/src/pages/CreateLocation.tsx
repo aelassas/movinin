@@ -55,8 +55,9 @@ const CreateLocation = () => {
 
       let isValid = true
 
+      const _nameErrors = movininHelper.clone(nameErrors) as boolean[]
       for (let i = 0; i < nameErrors.length; i += 1) {
-        nameErrors[i] = false
+        _nameErrors[i] = false
       }
 
       for (let i = 0; i < names.length; i += 1) {
@@ -64,11 +65,11 @@ const CreateLocation = () => {
         const _isValid = (await LocationService.validate({ language: name.language, name: name.name })) === 200
         isValid = isValid && _isValid
         if (!_isValid) {
-          nameErrors[i] = true
+          _nameErrors[i] = true
         }
       }
 
-      setNameErrors(movininHelper.cloneArray(nameErrors) as boolean[])
+      setNameErrors(_nameErrors)
 
       if (isValid) {
         const payload: movininTypes.UpsertLocationPayload = {
@@ -81,10 +82,11 @@ const CreateLocation = () => {
         const status = await LocationService.create(payload)
 
         if (status === 200) {
+          const _names = movininHelper.clone(names) as movininTypes.LocationName[]
           for (let i = 0; i < names.length; i += 1) {
-            names[i].name = ''
+            _names[i].name = ''
           }
-          setNames(movininHelper.cloneArray(names) as movininTypes.LocationName[])
+          setNames(_names)
           setImage(undefined)
           setCountry(null)
           setLongitude('')
@@ -147,14 +149,16 @@ const CreateLocation = () => {
                   error={nameErrors[index]}
                   required
                   onChange={(e) => {
-                    names[index] = {
+                    const _names = movininHelper.clone(names) as movininTypes.LocationName[]
+                    _names[index] = {
                       language: language.code,
                       name: e.target.value,
                     }
-                    setNames(movininHelper.cloneArray(names) as movininTypes.LocationName[])
+                    setNames(_names)
 
-                    nameErrors[index] = false
-                    setNameErrors(movininHelper.cloneArray(nameErrors) as boolean[])
+                    const _nameErrors = movininHelper.clone(nameErrors) as boolean[]
+                    _nameErrors[index] = false
+                    setNameErrors(_nameErrors)
                   }}
                   autoComplete="off"
                 />

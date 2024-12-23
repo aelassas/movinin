@@ -112,16 +112,17 @@ const NotificationList = ({ user }: NotificationListProps) => {
                     checked={allChecked}
                     indeterminate={indeterminate}
                     onChange={(event) => {
+                      const _rows = movininHelper.clone(rows) as movininTypes.Notification[]
                       if (indeterminate) {
-                        for (const row of rows) {
+                        for (const row of _rows) {
                           row.checked = false
                         }
                       } else {
-                        for (const row of rows) {
+                        for (const row of _rows) {
                           row.checked = event.target.checked
                         }
                       }
-                      setRows(movininHelper.clone(rows))
+                      setRows(_rows)
                     }}
                   />
                 </div>
@@ -141,10 +142,11 @@ const NotificationList = ({ user }: NotificationListProps) => {
                               const status = await NotificationService.markAsRead(user._id, ids)
 
                               if (status === 200) {
-                                for (const row of rows) {
+                                const __rows = movininHelper.clone(rows) as movininTypes.Notification[]
+                                for (const row of __rows) {
                                   row.isRead = true
                                 }
-                                setRows(movininHelper.clone(rows))
+                                setRows(__rows)
                                 setNotificationCount((prev) => prev - _rows.length)
                               } else {
                                 helper.error()
@@ -172,10 +174,11 @@ const NotificationList = ({ user }: NotificationListProps) => {
                               const status = await NotificationService.markAsUnread(user._id, ids)
 
                               if (status === 200) {
-                                for (const row of rows) {
+                                const __rows = movininHelper.clone(rows) as movininTypes.Notification[]
+                                for (const row of __rows) {
                                   row.isRead = false
                                 }
-                                setRows(movininHelper.clone(rows))
+                                setRows(__rows)
                                 setNotificationCount((prev) => prev + _rows.length)
                               } else {
                                 helper.error()

@@ -71,16 +71,17 @@ const Settings = () => {
       if (user) {
         setEnableEmailNotifications(e.target.checked)
 
-        user.enableEmailNotifications = e.target.checked
+        const _user = movininHelper.clone(user) as movininTypes.User
+        _user.enableEmailNotifications = e.target.checked
 
         const payload: movininTypes.UpdateEmailNotificationsPayload = {
           _id: user._id as string,
-          enableEmailNotifications: user.enableEmailNotifications
+          enableEmailNotifications: _user.enableEmailNotifications
         }
         const status = await UserService.updateEmailNotifications(payload)
 
         if (status === 200) {
-          setUser(user)
+          setUser(_user)
           helper.info(strings.SETTINGS_UPDATED)
         } else {
           helper.error()

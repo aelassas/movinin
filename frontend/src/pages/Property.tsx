@@ -111,7 +111,7 @@ const Property = () => {
   return (
     <Layout onLoad={onLoad}>
       {
-        property
+        property && image
         && (
           <>
             <div className="main">
