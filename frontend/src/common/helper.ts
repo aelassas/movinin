@@ -5,6 +5,7 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings as rtStrings } from '@/lang/rental-term'
 import { strings } from '@/lang/properties'
 import env from '@/config/env.config'
+import * as UserService from '@/services/UserService'
 
 /**
  * Get language.
@@ -367,3 +368,22 @@ export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
  */
 export const priceLabel = (property: movininTypes.Property, language: string): string =>
   `${movininHelper.formatPrice(property.price, commonStrings.CURRENCY, language)}/${rentalTermUnit(property.rentalTerm)}`
+
+/**
+ * Verify reCAPTCHA token.
+ *
+ * @async
+ * @param {string} token
+ * @returns {Promise<boolean>}
+ */
+export const verifyReCaptcha = async (token: string): Promise<boolean> => {
+  try {
+    const ip = await UserService.getIP()
+    const status = await UserService.verifyRecaptcha(token, ip)
+    const valid = status === 200
+    return valid
+  } catch (err) {
+    error(err)
+    return false
+  }
+}
