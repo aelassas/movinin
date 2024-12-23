@@ -1312,15 +1312,11 @@ describe('POST /api/delete-users', () => {
 
 describe('POST /api/send-email', () => {
   it('should send an email', async () => {
-    const ip = '134.236.60.166'
-    const recaptchaToken = 'XXXXXX'
     const payload = {
       from: 'no-replay@bookcars.ma',
       to: 'test@test.com',
       subject: 'test',
       message: 'test message',
-      recaptchaToken,
-      ip,
     }
     const res = await request(app)
       .post('/api/send-email')
