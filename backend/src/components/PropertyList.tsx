@@ -332,11 +332,11 @@ const PropertyList = ({
                               <EditIcon />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title={commonStrings.DELETE}>
+                          {/* <Tooltip title={commonStrings.DELETE}>
                             <IconButton data-id={property._id} data-index={index} onClick={handleDelete}>
                               <DeleteIcon />
                             </IconButton>
-                          </Tooltip>
+                          </Tooltip> */}
                         </>
                       )}
                     </div>
