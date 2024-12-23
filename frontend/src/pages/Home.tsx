@@ -45,15 +45,6 @@ const Home = () => {
   return (
     <Layout onLoad={onLoad} strict={false}>
       <div className="home">
-        {/* <div className="home-content">
-
-          <div className="home-cover">{strings.COVER}</div>
-
-          <div className="home-search">
-            <SearchForm />
-          </div>
-
-        </div> */}
 
         <div className="home-content">
 
