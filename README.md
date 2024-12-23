@@ -79,7 +79,7 @@ Open the Camera app and point it at this code. Then tap the notification that ap
 -->
 You can also install the Android App by downloading the APK and installing it on any Android device.
 
-* [Download APK](https://github.com/aelassas/movinin/releases/download/v3.7/movinin-3.7.apk)
+* [Download APK](https://github.com/aelassas/movinin/releases/download/v3.8/movinin-3.8.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
