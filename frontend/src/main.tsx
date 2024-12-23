@@ -14,16 +14,20 @@ import env from '@/config/env.config'
 import App from '@/App'
 
 import { strings as activateStrings } from '@/lang/activate'
+import { strings as bookingStrings } from '@/lang/booking'
 import { strings as bookingFilterStrings } from '@/lang/booking-filter'
 import { strings as bookingListStrings } from '@/lang/booking-list'
 import { strings as bookingPropertyListStrings } from '@/lang/booking-property-list'
-import { strings as bookingStrings } from '@/lang/booking'
 import { strings as bookingsStrings } from '@/lang/bookings'
 import { strings as changePasswordStrings } from '@/lang/change-password'
 import { strings as checkoutStrings } from '@/lang/checkout'
 import { strings as commonStrings } from '@/lang/common'
+import { strings as contactFormStrings } from '@/lang/contact-form'
+import { strings as footerStrings } from '@/lang/footer'
 import { strings as headerStrings } from '@/lang/header'
 import { strings as homeStrings } from '@/lang/home'
+import { strings as locationCarrouselStrings } from '@/lang/location-carrousel'
+import { strings as mapStrings } from '@/lang/map'
 import { strings as masterStrings } from '@/lang/master'
 import { strings as noMatchStrings } from '@/lang/no-match'
 import { strings as notificationsStrings } from '@/lang/notifications'
@@ -31,14 +35,15 @@ import { strings as propertiesStrings } from '@/lang/properties'
 import { strings as propertyStrings } from '@/lang/property'
 import { strings as rentalTermStrings } from '@/lang/rental-term'
 import { strings as resetPasswordStrings } from '@/lang/reset-password'
+import { strings as searchStrings } from '@/lang/search'
 import { strings as settingsStrings } from '@/lang/settings'
 import { strings as signInStrings } from '@/lang/sign-in'
 import { strings as signUpStrings } from '@/lang/sign-up'
 import { strings as soldOutStrings } from '@/lang/sold-out'
+import { strings as tosStrings } from '@/lang/tos'
 
 // import 'github-fork-ribbon-css/gh-fork-ribbon.css'
 
-import 'react-toastify/dist/ReactToastify.min.css'
 import '@/assets/css/common.css'
 import '@/assets/css/index.css'
 
@@ -106,16 +111,20 @@ if (lang) {
     UserService.setLanguage(_lang)
 
     activateStrings.setLanguage(_lang)
+    bookingStrings.setLanguage(_lang)
     bookingFilterStrings.setLanguage(_lang)
     bookingListStrings.setLanguage(_lang)
     bookingPropertyListStrings.setLanguage(_lang)
-    bookingStrings.setLanguage(_lang)
     bookingsStrings.setLanguage(_lang)
     changePasswordStrings.setLanguage(_lang)
     checkoutStrings.setLanguage(_lang)
     commonStrings.setLanguage(_lang)
+    contactFormStrings.setLanguage(_lang)
+    footerStrings.setLanguage(_lang)
     headerStrings.setLanguage(_lang)
     homeStrings.setLanguage(_lang)
+    locationCarrouselStrings.setLanguage(_lang)
+    mapStrings.setLanguage(_lang)
     masterStrings.setLanguage(_lang)
     noMatchStrings.setLanguage(_lang)
     notificationsStrings.setLanguage(_lang)
@@ -123,10 +132,12 @@ if (lang) {
     propertyStrings.setLanguage(_lang)
     rentalTermStrings.setLanguage(_lang)
     resetPasswordStrings.setLanguage(_lang)
+    searchStrings.setLanguage(_lang)
     settingsStrings.setLanguage(_lang)
     signInStrings.setLanguage(_lang)
     signUpStrings.setLanguage(_lang)
     soldOutStrings.setLanguage(_lang)
+    tosStrings.setLanguage(_lang)
   }
 
   if (env.SET_LANGUAGE_FROM_IP && !storedLang) {
@@ -238,13 +249,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         theme="dark"
       />
     </CssBaseline>
-    <a
+    {/* <a
       className="github-fork-ribbon fixed left-bottom"
       href="https://github.com/aelassas/movinin"
       data-ribbon="Fork me on GitHub"
       title="Fork me on GitHub"
     >
       Fork me on GitHub
-    </a>
+    </a> */}
   </ThemeProvider>,
 )

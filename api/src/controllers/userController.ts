@@ -1484,14 +1484,17 @@ export const verifyRecaptcha = async (req: Request, res: Response) => {
  */
 export const sendEmail = async (req: Request, res: Response) => {
   try {
-    const { body }: { body: movininTypes.SendEmailPayload } = req
-    const { from, to, subject, message, recaptchaToken: token, ip } = body
-    const result = await axios.get(`https://www.google.com/recaptcha/api/siteverify?secret=${encodeURIComponent(env.RECAPTCHA_SECRET)}&response=${encodeURIComponent(token)}&remoteip=${ip}`)
-    const { success } = result.data
-
-    if (!success) {
-      return res.sendStatus(400)
+    const whitelist = [
+      helper.trimEnd(env.BACKEND_HOST, '/'),
+      helper.trimEnd(env.FRONTEND_HOST, '/'),
+    ]
+    const { origin } = req.headers
+    if (!origin || whitelist.indexOf(helper.trimEnd(origin, '/')) === -1) {
+      throw new Error('Unauthorized!')
     }
+
+    const { body }: { body: movininTypes.SendEmailPayload } = req
+    const { from, to, subject, message } = body
 
     const mailOptions: nodemailer.SendMailOptions = {
       from: env.SMTP_FROM,
@@ -1500,16 +1503,16 @@ export const sendEmail = async (req: Request, res: Response) => {
       html:
         `<p>
               ${i18n.t('FROM')}: ${from}<br>
-              ${i18n.t('SUBJECT')}: ${subject}<br>
-              ${i18n.t('MESSAGE')}:<br>${message.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br>
+              ${`${i18n.t('SUBJECT')}: ${subject}<br>`}
+              ${(message && `${i18n.t('MESSAGE')}:<br>${message.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br>`) || ''}
          </p>`,
     }
     await mailHelper.sendMail(mailOptions)
 
     return res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.delete] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.sendEmail] ${JSON.stringify(req.body)}`, err)
+    return res.status(400).send(err)
   }
 }
 

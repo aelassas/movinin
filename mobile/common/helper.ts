@@ -3,7 +3,7 @@ import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { CommonActions, DrawerActions, RouteProp } from '@react-navigation/native'
+import { CommonActions, DrawerActions, NavigationRoute, RouteProp } from '@react-navigation/native'
 
 import mime from 'mime'
 import i18n from '@/lang/i18n'
@@ -428,18 +428,25 @@ export const navigate = (
         navigation.dispatch((state) => {
           const { routes } = state
           const index = routes.findIndex((r) => r.name === route.name)
-          routes.splice(index, 1)
+          const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
+          // routes.splice(index, 1)
           const now = Date.now()
-          routes.push({
+          _routes[index] = {
             name: route.name,
             key: `${route.name}-${now}`,
             params,
-          })
+          }
+          // routes.push({
+          //   name: route.name,
+          //   key: `${route.name}-${now}`,
+          //   params,
+          // })
 
           return CommonActions.reset({
             ...state,
             routes,
-            index: routes.length - 1,
+            // index: routes.length - 1,
+            index,
           })
         })
         navigation.dispatch(DrawerActions.closeDrawer())
@@ -457,18 +464,25 @@ export const navigate = (
         navigation.dispatch((state) => {
           const { routes } = state
           const index = routes.findIndex((r) => r.name === 'Booking')
-          routes.splice(index, 1)
+          const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
+          // routes.splice(index, 1)
           const now = Date.now()
-          routes.push({
-            name: 'Booking',
-            key: `Booking-${now}`,
+          _routes[index] = {
+            name: route.name,
+            key: `${route.name}-${now}`,
             params,
-          })
+          }
+          // routes.push({
+          //   name: 'Booking',
+          //   key: `Booking-${now}`,
+          //   params,
+          // })
 
           return CommonActions.reset({
             ...state,
             routes,
-            index: routes.length - 1,
+            // index: routes.length - 1,
+            index,
           })
         })
         navigation.dispatch(DrawerActions.closeDrawer())
@@ -491,18 +505,25 @@ export const navigate = (
         navigation.dispatch((state) => {
           const { routes } = state
           const index = routes.findIndex((r) => r.name === 'Properties')
-          routes.splice(index, 1)
+          const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
+          // routes.splice(index, 1)
           const now = Date.now()
-          routes.push({
-            name: 'Properties',
-            key: `Properties-${now}`,
+          _routes[index] = {
+            name: route.name,
+            key: `${route.name}-${now}`,
             params,
-          })
+          }
+          // routes.push({
+          //   name: 'Properties',
+          //   key: `Properties-${now}`,
+          //   params,
+          // })
 
           return CommonActions.reset({
             ...state,
             routes,
-            index: routes.length - 1,
+            // index: routes.length - 1,
+            index,
           })
         })
         navigation.dispatch(DrawerActions.closeDrawer())
@@ -526,18 +547,25 @@ export const navigate = (
         navigation.dispatch((state) => {
           const { routes } = state
           const index = routes.findIndex((r) => r.name === 'Checkout')
-          routes.splice(index, 1)
+          const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
+          // routes.splice(index, 1)
           const now = Date.now()
-          routes.push({
-            name: 'Checkout',
-            key: `Checkout-${now}`,
+          _routes[index] = {
+            name: route.name,
+            key: `${route.name}-${now}`,
             params,
-          })
+          }
+          // routes.push({
+          //   name: 'Checkout',
+          //   key: `Checkout-${now}`,
+          //   params,
+          // })
 
           return CommonActions.reset({
             ...state,
             routes,
-            index: routes.length - 1,
+            // index: routes.length - 1,
+            index,
           })
         })
         navigation.dispatch(DrawerActions.closeDrawer())

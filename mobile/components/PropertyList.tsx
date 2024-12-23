@@ -8,7 +8,9 @@ import {
   RefreshControl,
 } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { CommonActions, NavigationRoute, RouteProp } from '@react-navigation/native'
 import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 
 import * as helper from '@/common/helper'
 import * as env from '@/config/env.config'
@@ -29,7 +31,8 @@ interface PropertyListProps {
   properties?: movininTypes.Property[]
   hidePrice?: boolean
   footerComponent?: React.ReactElement
-  route?: 'Properties' | 'Checkout',
+  route: RouteProp<StackParams, keyof StackParams>
+  routeName?: 'Properties' | 'Checkout'
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
 }
 
@@ -45,7 +48,8 @@ const PropertyList = ({
   properties,
   hidePrice,
   footerComponent,
-  route,
+  // route,
+  routeName,
   onLoad
 }: PropertyListProps) => {
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
@@ -202,63 +206,71 @@ const PropertyList = ({
             <RefreshControl refreshing={refreshing} onRefresh={() => {
               setRefreshing(true)
 
-              if ((route && location && from && to) && ((route === 'Checkout' && properties && properties.length > 0) || route === 'Properties')) {
-                if (route === 'Properties') {
-                  navigation.navigate(route, {
-                    location: location!,
-                    from: from!.getTime(),
-                    to: to!.getTime(),
-                    d: Date.now(),
-                  })
-                } else {
-                  navigation.navigate(route, {
-                    property: properties![0]._id,
-                    location: location!,
-                    from: from!.getTime(),
-                    to: to!.getTime(),
-                    d: Date.now(),
-                  })
-                }
+              if ((routeName && location && from && to) && ((routeName === 'Checkout' && properties && properties.length > 0) || routeName === 'Properties')) {
+                // helper.navigate(route, navigation, true)
 
-                // navigation.dispatch((state) => {
-                //   const { routes } = state
-                //   if (route === 'Properties') {
-                //     const index = routes.findIndex((r) => r.name === 'Properties')
-                //     routes.splice(index, 1)
-                //     const now = Date.now()
-                //     routes.push({
-                //       name: 'Properties',
-                //       key: `Properties-${now}`,
-                //       params: {
-                //         location: location!,
-                //         from: from!.getTime(),
-                //         to: to!.getTime(),
-                //         d: now,
-                //       },
-                //     })
-                //   } else {
-                //     const index = routes.findIndex((r) => r.name === 'Checkout')
-                //     routes.splice(index, 1)
-                //     const now = Date.now()
-                //     routes.push({
-                //       name: 'Checkout',
-                //       key: `Checkout-${now}`,
-                //       params: {
-                //         property: properties![0]._id,
-                //         location: location!,
-                //         from: from!.getTime(),
-                //         to: to!.getTime(),
-                //         d: now,
-                //       },
-                //     })
-                //   }
+                navigation.dispatch((state) => {
+                  const { routes } = state
+                  const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
+                  let index = 0
+                  if (routeName === 'Properties') {
+                    index = routes.findIndex((r) => r.name === 'Properties')
+                    // routes.splice(index, 1)
+                    const now = Date.now()
+                    _routes[index] = {
+                      name: routeName,
+                      key: `${routeName}-${now}`,
+                      params: {
+                        location: location!,
+                        from: from!.getTime(),
+                        to: to!.getTime(),
+                        d: now,
+                      },
+                    }
+                    // routes.push({
+                    //   name: 'Properties',
+                    //   key: `Properties-${now}`,
+                    //   params: {
+                    //     location: location!,
+                    //     from: from!.getTime(),
+                    //     to: to!.getTime(),
+                    //     d: now,
+                    //   },
+                    // })
+                  } else {
+                    index = routes.findIndex((r) => r.name === 'Checkout')
+                    // routes.splice(index, 1)
+                    const now = Date.now()
+                    _routes[index] = {
+                      name: routeName,
+                      key: `${routeName}-${now}`,
+                      params: {
+                        property: properties![0]._id,
+                        location: location!,
+                        from: from!.getTime(),
+                        to: to!.getTime(),
+                        d: now,
+                      },
+                    }
+                    // routes.push({
+                    //   name: 'Checkout',
+                    //   key: `Checkout-${now}`,
+                    //   params: {
+                    //     property: properties![0]._id,
+                    //     location: location!,
+                    //     from: from!.getTime(),
+                    //     to: to!.getTime(),
+                    //     d: now,
+                    //   },
+                    // })
+                  }
 
-                //   return CommonActions.reset({
-                //     ...state,
-                //     routes,
-                //     index: routes.length - 1,
-                //   })
-                // })
+                  return CommonActions.reset({
+                    ...state,
+                    routes: _routes,
+                    index,
+                  })
+                })
               } else {
                 setRefreshing(false)
               }

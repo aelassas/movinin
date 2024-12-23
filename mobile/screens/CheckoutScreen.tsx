@@ -535,7 +535,8 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
               from={from}
               to={to}
               hidePrice
-              route="Checkout"
+              route={route}
+              routeName="Checkout"
               // header={<Text style={styles.header}>{i18n.t('CREATE_BOOKING')}</Text>}
               footerComponent={<View style={styles.contentContainer}>
                 <View style={styles.section}>

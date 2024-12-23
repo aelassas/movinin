@@ -9,7 +9,6 @@ import Button from './Button'
 import i18n from '@/lang/i18n'
 import * as helper from '@/common/helper'
 import Header from './Header'
-import { AutocompleteDropdownContextProvider } from './AutocompleteDropdown-v4'
 
 interface LayoutProps {
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
@@ -136,7 +135,7 @@ const Layout = ({
       <Header title={title} hideTitle={hideTitle} loggedIn={loggedIn} reload={reload} _avatar={avatar} />
       {(!loading
         && ((!user && !strict) || (user && user.verified) ? (
-          <AutocompleteDropdownContextProvider>{children}</AutocompleteDropdownContextProvider>
+          children
         ) : (
           <View style={styles.validate}>
             <Text style={styles.validateText}>{i18n.t('VALIDATE_EMAIL')}</Text>
