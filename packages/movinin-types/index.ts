@@ -443,7 +443,6 @@ export interface SendEmailPayload {
   to: string
   subject: string
   message: string
-  ip: string
 }
 
 // 

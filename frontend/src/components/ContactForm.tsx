@@ -95,14 +95,11 @@ const ContactForm = ({ user, className }: ContactFormProps) => {
         }
       }
 
-      const ip = await UserService.getIP()
-
       const payload: movininTypes.SendEmailPayload = {
         from: email,
         to: env.CONTACT_EMAIL,
         subject,
         message,
-        ip
       }
       const status = await UserService.sendEmail(payload)
 
