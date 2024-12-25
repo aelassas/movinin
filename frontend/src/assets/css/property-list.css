@@ -117,7 +117,14 @@ section.property-list article div.right-panel div.action {
   flex-direction: column;
 }
 
-section.property-list article .btn {
+section.property-list article .btn-view {
+  height: 42px;
+  font-size: 1.5em;
+  font-weight: 400;
+  padding: 0 2em;
+}
+
+section.property-list article .btn-book {
   border: 0;
   border-radius: 5px;
   color: #fff;
@@ -126,6 +133,7 @@ section.property-list article .btn {
   white-space: nowrap;
   background: #232323;
   font-size: 1.5em;
+  font-weight: 400;
   padding: 0 2em;
 }
 

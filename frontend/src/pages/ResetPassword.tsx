@@ -163,7 +163,7 @@ const ResetPassword = () => {
                 <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
                   {commonStrings.UPDATE}
                 </Button>
-                <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" href="/">
+                <Button className="btn-margin-bottom" size="small" variant="outlined" href="/">
                   {commonStrings.CANCEL}
                 </Button>
               </div>

@@ -137,7 +137,7 @@ const SignIn = () => {
               <SocialLogin />
 
               <div className="signin-buttons">
-                <Button variant="contained" size="small" href="/sign-up" className="btn-secondary btn-margin btn-margin-bottom">
+                <Button variant="outlined" size="small" href="/sign-up" className="btn-margin btn-margin-bottom">
                   {strings.SIGN_UP}
                 </Button>
                 <Button type="submit" variant="contained" size="small" className="btn-primary btn-margin btn-margin-bottom">

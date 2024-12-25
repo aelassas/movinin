@@ -245,8 +245,8 @@ const Settings = () => {
                   {commonStrings.SAVE}
                 </Button>
                 <Button
-                  variant="contained"
-                  className="btn-secondary btn-margin-bottom"
+                  variant="outlined"
+                  className="btn-margin-bottom"
                   size="small"
                   onClick={() => {
                     navigate('/')

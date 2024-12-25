@@ -626,7 +626,7 @@ const Checkout = () => {
                     </Button>
                   )}
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     className="btn-cancel btn-margin-bottom"
                     size="small"
                     onClick={async () => {

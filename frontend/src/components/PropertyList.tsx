@@ -233,8 +233,8 @@ const PropertyList = ({
                     && (
                       <div className="action">
                         <Button
-                          variant="contained"
-                          className="btn-action btn-margin-bottom btn"
+                          variant="outlined"
+                          className="btn-margin-bottom btn-view"
                           onClick={() => {
                             navigate('/property', {
                               state: {
@@ -251,7 +251,7 @@ const PropertyList = ({
                           !hidePrice && (
                             <Button
                               variant="contained"
-                              className="btn-action btn-margin-bottom btn"
+                              className="btn-margin-bottom btn-book"
                               onClick={() => {
                                 navigate('/checkout', {
                                   state: {
