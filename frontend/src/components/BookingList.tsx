@@ -468,8 +468,7 @@ const BookingList = ({
                       && booking.status !== movininTypes.BookingStatus.Cancelled
                       && new Date(booking.from) > new Date() && (
                         <Button
-                          variant="contained"
-                          className="btn-secondary"
+                          variant="outlined"
                           onClick={() => {
                             setSelectedId(booking._id as string)
                             setOpenCancelDialog(true)
@@ -524,7 +523,7 @@ const BookingList = ({
         </DialogContent>
         <DialogActions className="dialog-actions">
           {!cancelRequestProcessing && (
-            <Button onClick={handleCloseCancelBooking} variant="contained" className="btn-secondary">
+            <Button onClick={handleCloseCancelBooking} variant="outlined">
               {commonStrings.CLOSE}
             </Button>
           )}

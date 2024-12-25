@@ -235,7 +235,7 @@ const Avatar = ({
         <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{commonStrings.DELETE_AVATAR_CONFIRM}</DialogContent>
         <DialogActions className="dialog-actions">
-          <Button onClick={handleCancelDelete} className="btn-secondary">
+          <Button variant="outlined" onClick={handleCancelDelete}>
             {commonStrings.CANCEL}
           </Button>
           <Button onClick={handleDelete} className="btn-primary">

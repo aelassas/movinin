@@ -180,8 +180,8 @@ const ContactForm = ({ user, className }: ContactFormProps) => {
             }
           </Button>
           <Button
-            variant="contained"
-            className="btn-secondary btn-margin-bottom btn"
+            variant="outlined"
+            className="btn-margin-bottom btn"
             size="small"
             onClick={() => {
               navigate('/')

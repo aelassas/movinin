@@ -185,8 +185,7 @@ const Settings = () => {
                 loggedUser={user}
                 user={user}
                 size="large"
-                // readonly={false}
-                readonly
+                readonly={false}
                 onBeforeUpload={onBeforeUpload}
                 onChange={onAvatarChange}
                 color="disabled"
@@ -246,8 +245,8 @@ const Settings = () => {
                   {commonStrings.SAVE}
                 </Button>
                 <Button
-                  variant="contained"
-                  className="btn-secondary btn-margin-bottom"
+                  variant="outlined"
+                  className="btn-margin-bottom"
                   size="small"
                   onClick={() => {
                     navigate('/')

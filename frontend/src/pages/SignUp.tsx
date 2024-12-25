@@ -385,8 +385,7 @@ const SignUp = () => {
                   <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
                     {strings.SIGN_UP}
                   </Button>
-                  <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" href="/">
-                    {' '}
+                  <Button variant="outlined" className="btn-margin-bottom" size="small" href="/">
                     {commonStrings.CANCEL}
                   </Button>
                 </div>

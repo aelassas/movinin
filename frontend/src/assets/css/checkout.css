@@ -154,8 +154,7 @@ div.booking div.booking-buttons a {
   float: right;
 }
 
-div.booking .btn-checkout,
-div.booking .btn-cancel {
+div.booking .btn-checkout {
   font-size: 18px;
   line-height: 24px;
   font-weight: 500;
@@ -175,8 +174,16 @@ div.booking .btn-checkout {
 }
 
 div.booking .btn-cancel {
-  background: #999;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 500;
+  height: 42px;
+  min-width: 164px;
 }
+
+/* div.booking .btn-cancel {
+  background: #999;
+} */
 
 /* Device width is less than or equal to 960px */
 
@@ -205,7 +212,6 @@ div.booking .btn-cancel {
 /* Device width is greater than or equal to 960px */
 
 @media only screen and (width >=960px) {
-
   div.booking .booking-form {
     width: 860px;
     padding: 30px;

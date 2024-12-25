@@ -204,7 +204,7 @@ const Activate = () => {
                 <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
                   {reset ? commonStrings.UPDATE : strings.ACTIVATE}
                 </Button>
-                <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" href="/">
+                <Button className="btn-margin-bottom" size="small" variant="outlined" href="/">
                   {commonStrings.CANCEL}
                 </Button>
               </div>

@@ -206,7 +206,7 @@ const PropertySelectList = ({
           )}
         </DialogContent>
         <DialogActions className="dialog-actions">
-          <Button onClick={handleCloseDialog} variant="contained" className="btn-secondary">
+          <Button onClick={handleCloseDialog} variant="outlined">
             {commonStrings.CLOSE}
           </Button>
         </DialogActions>
