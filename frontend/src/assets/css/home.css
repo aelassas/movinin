@@ -82,7 +82,7 @@ div.home-subtitle {
 
 div.home div.search {
   z-index: 2;
-  background-color: #F9F9F9;
+  background-color: #fff;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -100,6 +100,55 @@ div.home div.search div.home-search {
   z-index: 2;
   background-color: #fff;
   width: fit-content;
+}
+
+div.home div.services {
+  background-color: #fff;
+  width: 100%;
+  padding: 40px 0 100px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+div.home div.services h1 {
+  font-weight: 500;
+  padding: 0 10px;
+  text-align: center;
+}
+
+div.home div.services div.services-boxes {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+div.home div.services div.services-boxes div.services-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  margin: 20px;
+  background-color: #F9F9F9;
+  padding: 25px;
+  text-align: center;
+}
+
+div.home div.services div.services-boxes div.services-box div.services-icon-wrapper {
+  padding: 20px;
+}
+
+div.home div.services div.services-boxes div.services-box div.services-icon-wrapper .services-icon {
+  font-size: 48px;
+}
+
+div.home div.services div.services-boxes div.services-box div.services-text-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+div.home div.services div.services-boxes div.services-box div.services-text-wrapper span.services-title {
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 div.home div.destinations {
@@ -124,6 +173,62 @@ div.home div.home-map {
   width: 80%;
   margin: 15px 0 30px;
   background-color: #fff;
+}
+
+div.home div.customer-care {
+  background-color: #f9f9f9;
+  width: 100%;
+  padding: 140px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+div.home div.customer-care div.customer-care-wrapper {
+  width: 1200px;
+  display: flex;
+  flex-direction: row;
+}
+
+div.home div.customer-care div.customer-care-text {
+  padding: 0 160px;
+  width: 900px;
+}
+
+div.home div.customer-care div.customer-care-text div.customer-care-content {
+  margin-bottom: 30px;
+}
+
+div.home div.customer-care div.customer-care-text div.customer-care-boxes {
+  display: grid;
+  grid-template-columns: auto auto;
+  margin-bottom: 40px;
+}
+
+div.home div.customer-care div.customer-care-text div.customer-care-boxes div.customer-care-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 5px 0;
+}
+
+div.home div.customer-care div.customer-care-text div.customer-care-boxes .customer-care-icon {
+  margin-right: 10px;
+}
+
+div.home div.customer-care div.customer-care-img {
+  padding: 40px;
+  flex: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+div.home div.customer-care div.customer-care-img img {
+  height: 160px;
+  margin-left: -80px;
+  display: none;
 }
 
 /* Device width is less than or equal to 960px */
@@ -154,6 +259,11 @@ div.home div.home-map {
     max-width: 480px;
   }
 
+  div.home div.services div.services-boxes {
+    display: flex;
+    flex-direction: column;
+  }
+
   div.home div.home-map {
     width: 100%;
     padding: 5px;
@@ -162,6 +272,22 @@ div.home div.home-map {
   div.home div.home-map .map {
     min-height: 0;
     height: 340px;
+  }
+
+  div.home div.customer-care div.customer-care-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  div.home div.customer-care div.customer-care-text {
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  div.home div.customer-care div.customer-care-img img {
+    height: 160px;
+    margin-left: 0;
   }
 }
 

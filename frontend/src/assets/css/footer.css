@@ -85,6 +85,10 @@ div.footer div.footer-contact .social-icon:hover {
   color: #1a1a1a;
 }
 
+div.footer div.newsletter {
+  margin-top: 80px;
+}
+
 div.footer section.payment {
   width: 100%;
   display: flex;
