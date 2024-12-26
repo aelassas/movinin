@@ -35,9 +35,9 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * Customer management
 * Multiple login options (Google, Facebook, Apple, Email)
 * Multiple payment methods (Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later)
-* Operational Stripe Payment Gateway
 * Multiple language support (English, French)
 * Multiple pagination options (Classic pagination with next and previous buttons, infinite scroll)
+* Operational Stripe Payment Gateway
 * Responsive admin dashboard and frontend
 * Native Mobile app for Android and iOS with single codebase
 * Push notifications
