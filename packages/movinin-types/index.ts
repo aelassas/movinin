@@ -443,6 +443,7 @@ export interface SendEmailPayload {
   to: string
   subject: string
   message: string
+  isContactForm: boolean
 }
 
 // 

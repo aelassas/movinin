@@ -1494,16 +1494,16 @@ export const sendEmail = async (req: Request, res: Response) => {
     }
 
     const { body }: { body: movininTypes.SendEmailPayload } = req
-    const { from, to, subject, message } = body
+    const { from, to, subject, message, isContactForm } = body
 
     const mailOptions: nodemailer.SendMailOptions = {
       from: env.SMTP_FROM,
       to,
-      subject: i18n.t('CONTACT_SUBJECT'),
+      subject: isContactForm ? i18n.t('CONTACT_SUBJECT') : subject,
       html:
         `<p>
               ${i18n.t('FROM')}: ${from}<br>
-              ${`${i18n.t('SUBJECT')}: ${subject}<br>`}
+              ${(isContactForm && `${i18n.t('SUBJECT')}: ${subject}<br>`) || ''}
               ${(message && `${i18n.t('MESSAGE')}:<br>${message.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br>`) || ''}
          </p>`,
     }

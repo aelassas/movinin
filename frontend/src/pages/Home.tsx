@@ -1,5 +1,15 @@
 import React, { useState } from 'react'
-import { Tabs, Tab, Dialog, DialogContent } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { Tabs, Tab, Dialog, DialogContent, Button } from '@mui/material'
+import {
+  RoomService,
+  Apartment,
+  AccessTime,
+  AttachMoney,
+  Public,
+  FlashOn,
+  CheckBox,
+} from '@mui/icons-material'
 import L from 'leaflet'
 import * as movininTypes from ':movinin-types'
 import env from '@/config/env.config'
@@ -16,6 +26,8 @@ import Footer from '@/components/Footer'
 import '@/assets/css/home.css'
 
 const Home = () => {
+  const navigate = useNavigate()
+
   const [countries, setCountries] = useState<movininTypes.CountryInfo[]>([])
   const [tabValue, setTabValue] = useState(0)
   const [openLocationSearchFormDialog, setOpenLocationSearchFormDialog] = useState(false)
@@ -80,6 +92,75 @@ const Home = () => {
           </div>
         </div>
 
+        <div className="services">
+
+          <h1>{strings.SERVICES_TITLE}</h1>
+
+          <div className="services-boxes">
+
+            <div className="services-box">
+              <div className="services-icon-wrapper">
+                <Apartment className="services-icon" />
+              </div>
+              <div className="services-text-wrapper">
+                <span className="services-title">{strings.SERVICES_FLEET_TITLE}</span>
+                <span className="services-text">{strings.SERVICES_FLEET}</span>
+              </div>
+            </div>
+
+            <div className="services-box">
+              <div className="services-icon-wrapper">
+                <AccessTime className="services-icon" />
+              </div>
+              <div className="services-text-wrapper">
+                <span className="services-title">{strings.SERVICES_FLEXIBLE_TITLE}</span>
+                <span className="services-text">{strings.SERVICES_FLEXIBLE}</span>
+              </div>
+            </div>
+
+            <div className="services-box">
+              <div className="services-icon-wrapper">
+                <AttachMoney className="services-icon" />
+              </div>
+              <div className="services-text-wrapper">
+                <span className="services-title">{strings.SERVICES_PRICES_TITLE}</span>
+                <span className="services-text">{strings.SERVICES_PRICES}</span>
+              </div>
+            </div>
+
+            <div className="services-box">
+              <div className="services-icon-wrapper">
+                <Public className="services-icon" />
+              </div>
+              <div className="services-text-wrapper">
+                <span className="services-title">{strings.SERVICES_BOOKING_ONLINE_TITLE}</span>
+                <span className="services-text">{strings.SERVICES_BOOKING_ONLINE}</span>
+              </div>
+            </div>
+
+            <div className="services-box">
+              <div className="services-icon-wrapper">
+                <FlashOn className="services-icon" />
+              </div>
+              <div className="services-text-wrapper">
+                <span className="services-title">{strings.SERVICE_INSTANT_BOOKING_TITLE}</span>
+                <span className="services-text">{strings.SERVICE_INSTANT_BOOKING}</span>
+              </div>
+            </div>
+
+            <div className="services-box">
+              <div className="services-icon-wrapper">
+                <RoomService className="services-icon" />
+              </div>
+              <div className="services-text-wrapper">
+                <span className="services-title">{strings.SERVICES_SUPPORT_TITLE}</span>
+                <span className="services-text">{strings.SERVICES_SUPPORT}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         {countries.length > 0 && (
           <div className="destinations">
             <h1>{strings.DESTINATIONS_TITLE}</h1>
@@ -132,6 +213,44 @@ const Home = () => {
           />
         </div>
 
+        <div className="customer-care">
+          <div className="customer-care-wrapper">
+            <div className="customer-care-text">
+              <h1>{strings.CUSTOMER_CARE_TITLE}</h1>
+              <h2>{strings.CUSTOMER_CARE_SUBTITLE}</h2>
+              <div className="customer-care-content">{strings.CUSTOMER_CARE_TEXT}</div>
+              <div className="customer-care-boxes">
+                <div className="customer-care-box">
+                  <CheckBox className="customer-care-icon" />
+                  <span>{strings.CUSTOMER_CARE_ASSISTANCE}</span>
+                </div>
+                <div className="customer-care-box">
+                  <CheckBox className="customer-care-icon" />
+                  <span>{strings.CUSTOMER_CARE_MODIFICATION}</span>
+                </div>
+                <div className="customer-care-box">
+                  <CheckBox className="customer-care-icon" />
+                  <span>{strings.CUSTOMER_CARE_GUIDANCE}</span>
+                </div>
+                <div className="customer-care-box">
+                  <CheckBox className="customer-care-icon" />
+                  <span>{strings.CUSTOMER_CARE_SUPPORT}</span>
+                </div>
+              </div>
+              <Button
+                variant="contained"
+                className="btn-primary btn-home"
+                onClick={() => navigate('/contact')}
+              >
+                {strings.CONTACT_US}
+              </Button>
+            </div>
+
+            <div className="customer-care-img">
+              <img src="/customer-care.png" alt="" />
+            </div>
+          </div>
+        </div>
         <Footer />
       </div>
 
@@ -146,9 +265,9 @@ const Home = () => {
         <DialogContent className="search-dialog-content">
           <SearchForm
             location={location}
-            // onCancel={() => {
-            //   setOpenLocationSearchFormDialog(false)
-            // }}
+          // onCancel={() => {
+          //   setOpenLocationSearchFormDialog(false)
+          // }}
           />
         </DialogContent>
       </Dialog>
