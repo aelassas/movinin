@@ -142,7 +142,8 @@ const ImageViewer = ({
       ref={imageViewerRef}
       onKeyDown={handleKeyDown}
       onClick={handleClick}
-      style={{ ...backgroundStyle, height: window.innerHeight, marginTop: `${document.documentElement.scrollTop}px` }}
+      // style={{ ...backgroundStyle, height: window.innerHeight, marginTop: `${document.documentElement.scrollTop}px` }}
+      style={{ ...backgroundStyle, height: window.innerHeight }}
       role="dialog"
     >
       <div className="popup">
