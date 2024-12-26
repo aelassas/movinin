@@ -100,6 +100,7 @@ const ContactForm = ({ user, className }: ContactFormProps) => {
         to: env.CONTACT_EMAIL,
         subject,
         message,
+        isContactForm: true,
       }
       const status = await UserService.sendEmail(payload)
 
