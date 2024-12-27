@@ -25,6 +25,7 @@ export default ({ mode }: { mode: string }) => {
         ':movinin-types': path.resolve(__dirname, '../packages/movinin-types'),
         ':movinin-helper': path.resolve(__dirname, '../packages/movinin-helper'),
         ':disable-react-devtools': path.resolve(__dirname, '../packages/disable-react-devtools'),
+        ':currency-converter': path.resolve(__dirname, '../packages/currency-converter'),
       },
     },
 

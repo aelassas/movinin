@@ -74,6 +74,10 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   const [success, setSuccess] = useState(true)
   const [locale, setLoacle] = useState(fr)
 
+  const [currencySymbol, setCurrencySymbol] = useState('')
+  const [cancellationText, setCancellationText] = useState('')
+  const [priceLabel, setPriceLabel] = useState('')
+
   const fullNameRef = useRef<ReactTextInput>(null)
   const emailRef = useRef<ReactTextInput>(null)
   const phoneRef = useRef<ReactTextInput>(null)
@@ -192,12 +196,15 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       const _to = new Date(route.params.to)
       setTo(_to)
 
-      const _price = helper.price(_property, _from, _to)
+      const _price = await StripeService.convertPrice(movininHelper.calculateTotalPrice(_property, _from, _to))
       setPrice(_price)
 
       const included = (val: number) => val === 0
 
+      setCurrencySymbol(await StripeService.getCurrencySymbol())
       setCancellation(included(_property.cancellation))
+      setCancellationText(await helper.getCancellationOption(_property.cancellation, _language))
+      setPriceLabel(await helper.priceLabel(_property, _language))
 
       setVisible(true)
       setFormVisible(true)
@@ -345,11 +352,11 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     }
   }
 
-  const onCancellationChange = (checked: boolean) => {
+  const onCancellationChange = async (checked: boolean) => {
     const options = {
       cancellation: checked
     }
-    const _price = helper.price(property as movininTypes.Property, from as Date, to as Date, options)
+    const _price = await StripeService.convertPrice(movininHelper.calculateTotalPrice(property as movininTypes.Property, from as Date, to as Date, options))
     setCancellation(checked)
     setPrice(_price)
   }
@@ -411,6 +418,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         }
       }
 
+      const currency = await StripeService.getCurrency()
       let paid = payLater
       let canceled = false
       let paymentIntentId: string | undefined
@@ -419,7 +427,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         if (!payLater) {
           const createPaymentIntentPayload: movininTypes.CreatePaymentPayload = {
             amount: price,
-            currency: env.STRIPE_CURRENCY_CODE,
+            currency,
             locale: language,
             receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
             name: '',
@@ -444,7 +452,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
               googlePay: {
                 merchantCountryCode: env.STRIPE_COUNTRY_CODE.toUpperCase(),
                 testEnv: env.STRIPE_PUBLISHABLE_KEY.includes('_test_'),
-                currencyCode: env.STRIPE_CURRENCY_CODE.toUpperCase(),
+                currencyCode: currency,
               },
               applePay: {
                 merchantCountryCode: env.STRIPE_COUNTRY_CODE.toUpperCase(),
@@ -483,6 +491,8 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         return
       }
 
+      const basePrice = await movininHelper.convertPrice(price, currency, env.BASE_CURRENCY)
+
       const booking: movininTypes.Booking = {
         agency: property.agency._id as string,
         property: property._id as string,
@@ -492,7 +502,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         to,
         status: payLater ? movininTypes.BookingStatus.Pending : movininTypes.BookingStatus.Paid,
         cancellation,
-        price,
+        price: basePrice,
       }
 
       const payload: movininTypes.CheckoutPayload = {
@@ -553,7 +563,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                       value={cancellation}
                       onValueChange={onCancellationChange}
                     />
-                    <Text style={styles.extraText}>{helper.getCancellationOption(property.cancellation, language)}</Text>
+                    <Text style={styles.extraText}>{cancellationText}</Text>
                   </View>
                 </View>
 
@@ -574,7 +584,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   <Text style={styles.detailText}>{location.name}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('PROPERTY')}</Text>
-                  <Text style={styles.detailText}>{`${property.name} (${helper.priceLabel(property, language)})`}</Text>
+                  <Text style={styles.detailText}>{`${property.name} (${priceLabel})`}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('AGENCY')}</Text>
                   <View style={styles.agency}>
@@ -588,7 +598,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   </View>
 
                   <Text style={styles.detailTitle}>{i18n.t('COST')}</Text>
-                  <Text style={styles.detailTextBold}>{movininHelper.formatPrice(price, i18n.t('CURRENCY'), language)}</Text>
+                  <Text style={styles.detailTextBold}>{movininHelper.formatPrice(price, currencySymbol, language)}</Text>
                 </View>
 
                 {!authenticated && (
@@ -767,7 +777,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   extra: {
-    flexDirection: 'column',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   extraSwitch: {
     fontWeight: '600',
@@ -778,8 +789,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     flex: 1,
     flexWrap: 'wrap',
-    marginLeft: 53,
-    marginTop: -3,
+    marginLeft: 13,
   },
   detailTitle: {
     alignSelf: 'stretch',

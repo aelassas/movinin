@@ -117,6 +117,7 @@ div.main div.property div.right-panel div.price {
   font-size: 1.5em;
   font-weight: 700;
   white-space: nowrap;
+  margin-left: 15px;
 }
 
 div.main div.footer {

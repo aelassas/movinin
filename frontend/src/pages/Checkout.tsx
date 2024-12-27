@@ -9,7 +9,6 @@ import {
   Checkbox,
   Link,
   FormControlLabel,
-  Switch,
   RadioGroup,
   Radio,
   CircularProgress
@@ -17,7 +16,6 @@ import {
 import {
   Home as PropertyIcon,
   Person as RenterIcon,
-  EventSeat as BookingIcon,
   Settings as PaymentOptionsIcon
 } from '@mui/icons-material'
 import validator from 'validator'
@@ -33,7 +31,6 @@ import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as BookingService from '@/services/BookingService'
 import { strings as commonStrings } from '@/lang/common'
-import { strings as csStrings } from '@/lang/properties'
 import { strings } from '@/lang/checkout'
 import * as helper from '@/common/helper'
 import * as UserService from '@/services/UserService'
@@ -50,6 +47,7 @@ import SocialLogin from '@/components/SocialLogin'
 import { useRecaptchaContext, RecaptchaContextType } from '@/context/RecaptchaContext'
 
 import '@/assets/css/checkout.css'
+import CheckoutOptions from '@/components/CheckoutOptions'
 
 //
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -106,19 +104,6 @@ const Checkout = () => {
     format(from, _format, { locale: _locale }),
   )} 
   - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`
-
-  const handleCancellationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (property && from && to) {
-      const _cancellation = e.target.checked
-      const options: movininTypes.PropertyOptions = {
-        cancellation: _cancellation
-      }
-      const _price = helper.price(property, from, to, options)
-
-      setCancellation(_cancellation)
-      setPrice(_price)
-    }
-  }
 
   const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value)
@@ -284,6 +269,8 @@ const Checkout = () => {
         }
       }
 
+      const basePrice = await movininHelper.convertPrice(price, StripeService.getCurrency(), env.BASE_CURRENCY)
+
       const booking: movininTypes.Booking = {
         agency: property.agency._id as string,
         property: property._id,
@@ -293,7 +280,7 @@ const Checkout = () => {
         to,
         status: movininTypes.BookingStatus.Pending,
         cancellation,
-        price,
+        price: basePrice,
       }
 
       //
@@ -304,7 +291,7 @@ const Checkout = () => {
       if (!payLater) {
         const payload: movininTypes.CreatePaymentPayload = {
           amount: price,
-          currency: env.STRIPE_CURRENCY_CODE,
+          currency: StripeService.getCurrency(),
           locale: language,
           receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
           name: `${property.name} 
@@ -384,7 +371,7 @@ const Checkout = () => {
         return
       }
 
-      const _price = helper.price(_property, _from, _to)
+      const _price = await StripeService.convertPrice(movininHelper.calculateTotalPrice(_property, _from, _to))
 
       const included = (val: number) => val === 0
 
@@ -403,9 +390,9 @@ const Checkout = () => {
   return (
     <Layout onLoad={onLoad} strict={false}>
       {visible && property && from && to && location && (
-        <div className="booking">
-          <Paper className="booking-form" elevation={10}>
-            <h1 className="booking-form-title">
+        <div className="checkout">
+          <Paper className="checkout-form" elevation={10}>
+            <h1 className="checkout-form-title">
               {' '}
               {strings.BOOKING_HEADING}
               {' '}
@@ -418,70 +405,57 @@ const Checkout = () => {
                   hideActions
                   hidePrice
                   sizeAuto
-                  language={language}
                 />
 
-                <div className="booking-options-container">
-                  <div className="booking-info">
-                    <BookingIcon />
-                    <span>{strings.BOOKING_OPTIONS}</span>
-                  </div>
-                  <div className="booking-options">
-                    <FormControl fullWidth margin="dense">
-                      <FormControlLabel
-                        disabled={property.cancellation === -1 || property.cancellation === 0 || !!clientSecret}
-                        control={<Switch checked={cancellation} onChange={handleCancellationChange} color="primary" />}
-                        label={(
-                          <span>
-                            <span className="booking-option-label">{csStrings.CANCELLATION}</span>
-                            <span className="booking-option-value">{helper.getCancellationOption(property.cancellation, language)}</span>
-                          </span>
-                        )}
-                      />
-                    </FormControl>
+                <CheckoutOptions
+                  property={property}
+                  from={from}
+                  to={to}
+                  language={language}
+                  clientSecret={clientSecret}
+                  onPriceChange={(value) => setPrice(value)}
+                  onCancellationChange={(value) => setCancellation(value)}
+                />
 
-                  </div>
-                </div>
-
-                <div className="booking-details-container">
-                  <div className="booking-info">
+                <div className="checkout-details-container">
+                  <div className="checkout-info">
                     <PropertyIcon />
                     <span>{strings.BOOKING_DETAILS}</span>
                   </div>
-                  <div className="booking-details">
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{strings.DAYS}</span>
-                      <div className="booking-detail-value">
+                  <div className="checkout-details">
+                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="checkout-detail-title">{strings.DAYS}</span>
+                      <div className="checkout-detail-value">
                         {daysLabel}
                       </div>
                     </div>
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{commonStrings.LOCATION}</span>
-                      <div className="booking-detail-value">{location.name}</div>
+                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="checkout-detail-title">{commonStrings.LOCATION}</span>
+                      <div className="checkout-detail-value">{location.name}</div>
                     </div>
 
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{strings.PROPERTY}</span>
-                      <div className="booking-detail-value">{`${property.name} (${helper.priceLabel(property, language)})`}</div>
+                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="checkout-detail-title">{strings.PROPERTY}</span>
+                      <div className="checkout-detail-value">{`${property.name} (${helper.priceLabel(property, language)})`}</div>
                     </div>
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{commonStrings.AGENCY}</span>
-                      <div className="booking-detail-value">
+                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="checkout-detail-title">{commonStrings.AGENCY}</span>
+                      <div className="checkout-detail-value">
                         <div className="property-agency">
                           <img src={movininHelper.joinURL(env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: env.AGENCY_IMAGE_HEIGHT }} />
                           <span className="property-agency-name">{property.agency.fullName}</span>
                         </div>
                       </div>
                     </div>
-                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="booking-detail-title">{strings.COST}</span>
-                      <div className="booking-detail-value booking-price">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</div>
+                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="checkout-detail-title">{strings.COST}</span>
+                      <div className="checkout-detail-value checkout-price">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</div>
                     </div>
                   </div>
                 </div>
                 {!authenticated && (
                   <div className="renter-details">
-                    <div className="booking-info">
+                    <div className="checkout-info">
                       <RenterIcon />
                       <span>{strings.RENTER_DETAILS}</span>
                     </div>
@@ -540,7 +514,7 @@ const Checkout = () => {
                         <FormHelperText error={!birthDateValid}>{(!birthDateValid && helper.getBirthDateError(property.minimumAge)) || ''}</FormHelperText>
                       </FormControl>
 
-                      <div className="booking-tos">
+                      <div className="checkout-tos">
                         <table>
                           <tbody>
                             <tr>
@@ -564,7 +538,7 @@ const Checkout = () => {
 
                 {property.agency.payLater && (
                   <div className="payment-options-container">
-                    <div className="booking-info">
+                    <div className="checkout-info">
                       <PaymentOptionsIcon />
                       <span>{strings.PAYMENT_OPTIONS}</span>
                     </div>
@@ -615,7 +589,7 @@ const Checkout = () => {
                     </div>
                   )
                 )}
-                <div className="booking-buttons">
+                <div className="checkout-buttons">
                   {(!clientSecret || payLater) && (
                     <Button type="submit" variant="contained" className="btn-checkout btn-margin-bottom" size="small" disabled={loading}>
                       {

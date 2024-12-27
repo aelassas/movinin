@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   Card,
   CardContent,
   Typography,
-  Button
 } from '@mui/material'
 import * as movininTypes from ':movinin-types'
-import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import Const from '@/config/const'
-import { strings as commonStrings } from '@/lang/common'
-import { strings as csStrings, strings } from '@/lang/properties'
-
+import { strings } from '@/lang/properties'
 import * as helper from '@/common/helper'
 import * as PropertyService from '@/services/PropertyService'
 import Pager from './Pager'
-import PropertyInfo from './PropertyInfo'
-import AgencyBadge from './AgencyBadge'
 
 import '@/assets/css/property-list.css'
+import Property from './Property'
 
 interface PropertyListProps {
   agencies?: string[]
@@ -35,7 +29,6 @@ interface PropertyListProps {
   hideAgency?: boolean
   hidePrice?: boolean
   hideActions?: boolean
-  language: string
   sizeAuto?: boolean
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
 }
@@ -54,12 +47,9 @@ const PropertyList = ({
   hideAgency,
   hidePrice,
   hideActions,
-  language,
   sizeAuto,
   onLoad,
 }: PropertyListProps) => {
-  const navigate = useNavigate()
-
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
   const [fetch, setFetch] = useState(false)
@@ -176,8 +166,6 @@ const PropertyList = ({
     }
   }, [reload, agencies, types, rentalTerms, location]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const days = movininHelper.days(from, to)
-
   return (
     <>
       <section className={`${className ? `${className} ` : ''}property-list`}>
@@ -191,91 +179,20 @@ const PropertyList = ({
               </CardContent>
             </Card>
           )
-          : rows.map((property) => {
-            const price = (from && to && helper.price(property, from, to)) || 0
-
-            return (
-              <article key={property._id}>
-
-                <div className="left-panel">
-                  <img
-                    src={movininHelper.joinURL(env.CDN_PROPERTIES, property.image)}
-                    alt={property.name}
-                    className="property-img"
-                  />
-                  {!hideAgency && <AgencyBadge agency={property.agency} style={sizeAuto ? { bottom: 10 } : {}} />}
-                </div>
-
-                <div className="middle-panel">
-                  <div className="name">
-                    <h2>{property.name}</h2>
-                  </div>
-
-                  <PropertyInfo
-                    property={property}
-                    className="property-info"
-                    language={language}
-                    description
-                  />
-                </div>
-
-                <div className="right-panel">
-                  {!hidePrice && from && to && (
-                    <div className="price">
-                      <span className="price-days">{helper.getDays(days)}</span>
-                      <span className="price-main">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</span>
-                      <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatPrice((price as number) / days, commonStrings.CURRENCY, language)}`}</span>
-                    </div>
-                  )}
-                  {hidePrice && !hideActions && <span />}
-                  {
-                    !hideActions
-                    && (
-                      <div className="action">
-                        <Button
-                          variant="outlined"
-                          className="btn-margin-bottom btn-view"
-                          onClick={() => {
-                            navigate('/property', {
-                              state: {
-                                propertyId: property._id,
-                                from,
-                                to
-                              }
-                            })
-                          }}
-                        >
-                          {strings.VIEW}
-                        </Button>
-                        {
-                          !hidePrice && (
-                            <Button
-                              variant="contained"
-                              className="btn-margin-bottom btn-book"
-                              onClick={() => {
-                                navigate('/checkout', {
-                                  state: {
-                                    propertyId: property._id,
-                                    locationId: location,
-                                    from,
-                                    to
-                                  }
-                                })
-                              }}
-                            >
-                              {strings.BOOK}
-                            </Button>
-                          )
-                        }
-                      </div>
-                    )
-                  }
-
-                </div>
-
-              </article>
-            )
-          })}
+          : ((from && to && location) || hidePrice) // || (hidePrice && booking))
+          && rows.map((property) => (
+            <Property
+              key={property._id}
+              property={property}
+              location={location}
+              from={from}
+              to={to}
+              sizeAuto={sizeAuto}
+              hideAgency={hideAgency}
+              hidePrice={hidePrice}
+              hideActions={hideActions}
+            />
+          ))}
       </section>
 
       {env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !env.isMobile && (

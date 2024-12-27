@@ -8,9 +8,18 @@ interface AutoHeightWebViewProps extends WebViewProps {
   autoHeight: boolean
 }
 
-const injectedScript = `window.ReactNativeWebView.postMessage(
-  Math.max(document.documentElement.clientHeight, document.documentElement.scrollHeight, document.body.clientHeight, document.body.scrollHeight)
-);`
+// const injectedScript = `window.ReactNativeWebView.postMessage(
+//   Math.max(document.documentElement.clientHeight, document.documentElement.scrollHeight, document.body.clientHeight, document.body.scrollHeight)
+// );`
+
+const injectedScript = `
+  setTimeout(function() {
+    window.ReactNativeWebView.postMessage(
+      Math.max(document.documentElement.clientHeight, document.documentElement.scrollHeight, document.body.clientHeight, document.body.scrollHeight)
+    );
+  }, 300);
+  true; // note: this is required, or you'll sometimes get silent failures
+`
 
 const AutoHeightWebView = (props: AutoHeightWebViewProps) => {
   const [webViewHeight, setWebViewHeight] = useState(props.defaultHeight)

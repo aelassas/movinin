@@ -14,6 +14,5 @@ declare module '@env' {
   export const MI_STRIPE_PUBLISHABLE_KEY: string
   export const MI_STRIPE_MERCHANT_IDENTIFIER: string
   export const MI_STRIPE_COUNTRY_CODE: string
-  export const MI_STRIPE_CURRENCY_CODE: string
-  export const MI_CURRENCY: string
+  export const MI_BASE_CURRENCY: string
 }

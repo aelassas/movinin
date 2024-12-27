@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import {
@@ -15,6 +15,7 @@ import Button from './Button'
 import * as helper from '@/common/helper'
 import * as env from '@/config/env.config'
 import i18n from '@/lang/i18n'
+import * as StripeService from '@/services/StripeService'
 
 interface PropertyProps {
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
@@ -42,9 +43,26 @@ const Property = ({
   hidePrice
 }: PropertyProps) => {
   const { width } = useWindowDimensions()
-  const days = movininHelper.days(from, to)
-  const price = !hidePrice && from && to ? helper.price(property, from, to) : 0
-  const pricePerDay = price / days
+
+  const [days, setDays] = useState<number>()
+  const [loading, setLoading] = useState(true)
+  const [currencySymbol, setCurrencySymbol] = useState('')
+  const [totalPrice, setTotalPrice] = useState<number>()
+  const [cancellation, setCancellation] = useState('')
+
+  useEffect(() => {
+    const init = async () => {
+      if (property && from && to && language) {
+        setCurrencySymbol(await StripeService.getCurrencySymbol())
+        setDays(movininHelper.days(from, to))
+        setTotalPrice(await StripeService.convertPrice(movininHelper.calculateTotalPrice(property, from as Date, to as Date)))
+        setCancellation(await helper.getCancellation(property.cancellation, language))
+        setLoading(false)
+      }
+    }
+
+    init()
+  }, [property, from, language, to])
 
   const styles = StyleSheet.create({
     propertyContainer: {
@@ -71,6 +89,7 @@ const Property = ({
       fontSize: 20,
       fontWeight: '700',
       textAlign: 'center',
+      marginBottom: 10,
     },
     imgView: {
       width: '100%',
@@ -172,7 +191,7 @@ const Property = ({
     },
   })
 
-  return (
+  return !loading && days && totalPrice && (
     <View key={property._id} style={styles.propertyContainer}>
       <View style={styles.property}>
         <Text style={styles.name}>{property.name}</Text>
@@ -240,7 +259,7 @@ const Property = ({
           }
           <View style={styles.extra}>
             <MaterialIcons name={getExtraIcon(property.cancellation)} size={iconSize} style={styles.infoIcon} />
-            <Text style={styles.text}>{helper.getCancellation(property.cancellation, language)}</Text>
+            <Text style={styles.text}>{cancellation}</Text>
           </View>
         </View>
 
@@ -248,7 +267,6 @@ const Property = ({
           <AutoHeightWebView
             originWhitelist={['*']}
             source={{ html: `<meta id="Viewport" name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"> ${property.description}` }}
-
             automaticallyAdjustContentInsets={true}
             scalesPageToFit={true}
             startInLoadingState={true}
@@ -273,8 +291,8 @@ const Property = ({
           {!hidePrice && (
             <View style={styles.price}>
               <Text style={styles.priceSecondary}>{helper.getDays(days)}</Text>
-              <Text style={styles.pricePrimary}>{`${movininHelper.formatPrice(price, i18n.t('CURRENCY'), language)}`}</Text>
-              <Text style={styles.priceSecondary}>{`${i18n.t('PRICE_PER_DAY')} ${movininHelper.formatPrice(pricePerDay, i18n.t('CURRENCY'), language)}`}</Text>
+              <Text style={styles.pricePrimary}>{`${movininHelper.formatPrice(totalPrice, currencySymbol, language)}`}</Text>
+              <Text style={styles.priceSecondary}>{`${i18n.t('PRICE_PER_DAY')} ${movininHelper.formatPrice(totalPrice / days, currencySymbol, language)}`}</Text>
             </View>
           )}
         </View>

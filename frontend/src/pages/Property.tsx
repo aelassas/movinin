@@ -11,13 +11,13 @@ import Layout from '@/components/Layout'
 import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/properties'
-import * as PropertyService from '@/services/PropertyService'
 import * as helper from '@/common/helper'
 import PropertyInfo from '@/components/PropertyInfo'
 import NoMatch from './NoMatch'
 import ImageViewer from '@/components/ImageViewer'
 import AgencyBadge from '@/components/AgencyBadge'
 import DatePicker from '@/components/DatePicker'
+import * as PropertyService from '@/services/PropertyService'
 import * as UserService from '@/services/UserService'
 
 import '@/assets/css/property.css'
@@ -42,6 +42,7 @@ const Property = () => {
   const [maxDate, setMaxDate] = useState<Date>()
   const [hideAction, setHideAction] = useState(true)
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
+  const [priceLabel, setPriceLabel] = useState('')
 
   useEffect(() => {
     const src = (_image: string) => movininHelper.joinURL(env.CDN_PROPERTIES, _image)
@@ -83,7 +84,8 @@ const Property = () => {
     }
 
     setLoading(true)
-    setLanguage(UserService.getLanguage())
+    const _language = UserService.getLanguage()
+    setLanguage(_language)
     setFrom(_from || undefined)
     setTo(_to || undefined)
     setMinDate(_from || undefined)
@@ -98,6 +100,8 @@ const Property = () => {
 
       if (_property) {
         setProperty(_property)
+        const _priceLabel = await helper.priceLabel(_property, _language)
+        setPriceLabel(_priceLabel)
       } else {
         setNoMatch(true)
       }
@@ -153,7 +157,7 @@ const Property = () => {
                 <div className="right-panel">
                   <div className="right-panel-header">
                     <div className="name"><h2>{property.name}</h2></div>
-                    <div className="price">{helper.priceLabel(property, language)}</div>
+                    {priceLabel && <div className="price">{priceLabel}</div>}
                   </div>
                   <PropertyInfo
                     property={property}

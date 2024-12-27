@@ -14,8 +14,7 @@ import {
   MI_STRIPE_PUBLISHABLE_KEY,
   MI_STRIPE_MERCHANT_IDENTIFIER,
   MI_STRIPE_COUNTRY_CODE,
-  MI_STRIPE_CURRENCY_CODE,
-  MI_CURRENCY
+  MI_BASE_CURRENCY
 } from '@env'
 
 /**
@@ -34,6 +33,30 @@ export const LANGUAGES = [
     label: 'English',
   },
 ]
+
+type Currency = { code: string, symbol: string }
+
+/**
+ * The three-letter ISO 4217 alphabetic currency codes, e.g. "USD" or "EUR" and their symbols.
+ * https://docs.stripe.com/currencies
+ *
+ * @type {Currency[]}
+ */
+export const CURRENCIES: Currency[] = [
+  {
+    code: 'USD',
+    symbol: '$',
+  },
+  {
+    code: 'EUR',
+    symbol: '€',
+  },
+  {
+    code: 'GBP',
+    symbol: '£',
+  }
+]
+
 /**
  * Application type.
  *
@@ -182,16 +205,8 @@ export const STRIPE_MERCHANT_IDENTIFIER: string = MI_STRIPE_MERCHANT_IDENTIFIER
 export const STRIPE_COUNTRY_CODE: string = MI_STRIPE_COUNTRY_CODE
 
 /**
- * The three-letter ISO 4217 alphabetic currency code, e.g. "USD" or "EUR". Required for Stripe payments.
- * Must be a supported currency: https://docs.stripe.com/currencies
+ * The three-letter ISO 4217 alphabetic currency code, e.g. "USD" or "EUR" base currency. Default is USD.
  *
  * @type {string}
  */
-export const STRIPE_CURRENCY_CODE: string = MI_STRIPE_CURRENCY_CODE
-
-/**
- * Currency. Default is $.
- *
- * @type {string}
- */
-export const CURRENCY: string = MI_CURRENCY
+export const BASE_CURRENCY: string = MI_BASE_CURRENCY || 'USD'

@@ -12,6 +12,10 @@
   display: none !important;
 }
 
+.bold {
+  font-weight: 500 !important;
+}
+
 .buttons button {
   margin-right: 15px;
   margin-left: 0 !important;
