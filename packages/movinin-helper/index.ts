@@ -398,7 +398,7 @@ export const formatPrice = (price: number, currency: string, language: string) =
   const formatedPrice = formatNumber(price, language)
 
   if (currencyRTL(currency)) {
-    return `$${formatedPrice}`
+    return `${currency}${formatedPrice}`
   }
 
   return `${formatedPrice} ${currency}`
