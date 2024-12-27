@@ -1,4 +1,5 @@
 import * as movininTypes from ':movinin-types'
+import CurrencyConverter, { currencies } from ':currency-converter'
 
 /**
  * Format a number.
@@ -326,3 +327,79 @@ export const formatPrice = (price: number, currency: string, language: string) =
  * @returns {boolean}
  */
 export const isFrench = (language?: string) => language === 'fr'
+
+/**
+ * Calculate total price.
+ *
+ * @param {movininTypes.Property} property
+ * @param {Date} from
+ * @param {Date} to
+ * @param {?movininTypes.PropertyOptions} [options]
+ * @returns {number}
+ */
+export const calculateTotalPrice = (property: movininTypes.Property, from: Date, to: Date, options?: movininTypes.PropertyOptions) => {
+  const now = new Date()
+  const _days = days(from, to)
+
+  let _price = 0
+
+  if (property.rentalTerm === movininTypes.RentalTerm.Monthly) {
+    _price = (property.price * _days) / daysInMonth(now.getMonth(), now.getFullYear())
+  } else if (property.rentalTerm === movininTypes.RentalTerm.Weekly) {
+    _price = (property.price * _days) / 7
+  } else if (property.rentalTerm === movininTypes.RentalTerm.Daily) {
+    _price = property.price * _days
+  } else if (property.rentalTerm === movininTypes.RentalTerm.Yearly) {
+    _price = (property.price * _days) / daysInYear(now.getFullYear())
+  }
+
+  if (options) {
+    if (options.cancellation && property.cancellation > 0) {
+      _price += property.cancellation
+    }
+  }
+
+  return _price
+}
+
+/**
+ * Convert price from a given currency to another.
+ *
+ * @async
+ * @param {number} amount
+ * @param {string} from
+ * @param {string} to
+ * @returns {Promise<number>}
+ */
+export const convertPrice = async (amount: number, from: string, to: string): Promise<number> => {
+  if (!checkCurrency(from)) {
+    throw new Error(`Currency ${from} not supported`)
+  }
+  if (!checkCurrency(to)) {
+    throw new Error(`Currency ${to} not supported`)
+  }
+  if (from === to) {
+    return amount
+  }
+  const cc = new CurrencyConverter({ from, to, amount })
+  const res = await cc.convert()
+  return res
+}
+
+/**
+ * Check if currency is supported.
+ *
+ * @param {string} currency
+ * @returns {boolean}
+ */
+export const checkCurrency = (currency: string) => currencies.findIndex((c) => c === currency) > -1
+
+/**
+ * Check if currency is written from right to left.
+ *
+ * @returns {*}
+ */
+export const currencyRTL = (currencySymbol: string) => {
+  const isRTL = ['$', '£'].includes(currencySymbol)
+  return isRTL
+}

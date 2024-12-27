@@ -8,12 +8,28 @@
   z-index: 1401 !important;
 }
 
+.menu div.language,
+.btn div.language {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.menu div.language .flag {
+  width: 24px;
+  margin-right: 10px;
+}
+
 .header-action {
   margin-right: 20px;
 }
 
 .header-desktop {
   display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .header-mobile {
@@ -23,11 +39,17 @@
 .header .btn {
   background-color: transparent !important;
   color: #121212 !important;
+  text-transform: none !important;
+  width: fit-content;
 }
 
-/* .header .btn:hover {
-  background-color: rgb(0 0 0 / 5%) !important;
-} */
+.header .btn:hover {
+  background-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+.header .btn-auth span.btn-auth-txt {
+  white-space: nowrap;
+}
 
 .header .logo {
   text-decoration: none;

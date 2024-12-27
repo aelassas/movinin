@@ -7,13 +7,38 @@ import Const from './const'
 //
 const LANGUAGES = [
   {
-    code: 'fr',
-    label: 'Français',
-  },
-  {
     code: 'en',
+    countryCode: 'us',
     label: 'English',
   },
+  {
+    code: 'fr',
+    countryCode: 'fr',
+    label: 'Français',
+  },
+]
+
+type Currency = { code: string, symbol: string }
+
+/**
+ * The three-letter ISO 4217 alphabetic currency codes, e.g. "USD" or "EUR" and their symbols.
+ * https://docs.stripe.com/currencies
+ *
+ * @type {Currency[]}
+ */
+const CURRENCIES: Currency[] = [
+  {
+    code: 'USD',
+    symbol: '$',
+  },
+  {
+    code: 'EUR',
+    symbol: '€',
+  },
+  {
+    code: 'GBP',
+    symbol: '£',
+  }
 ]
 
 const env = {
@@ -26,6 +51,8 @@ const env = {
   LANGUAGES: LANGUAGES.map((l) => l.code),
   _LANGUAGES: LANGUAGES,
   DEFAULT_LANGUAGE: String(import.meta.env.VITE_MI_DEFAULT_LANGUAGE || 'en'),
+  BASE_CURRENCY: String(import.meta.env.VITE_MI_BASE_CURRENCY || 'USD'),
+  CURRENCIES,
   PAGE_SIZE: Number.parseInt(String(import.meta.env.VITE_MI_PAGE_SIZE), 10) || 30,
   PROPERTIES_PAGE_SIZE: Number.parseInt(String(import.meta.env.VITE_MI_PROPERTIES_PAGE_SIZE), 10) || 15,
   BOOKINGS_PAGE_SIZE: Number.parseInt(String(import.meta.env.VITE_MI_BOOKINGS_PAGE_SIZE), 10) || 20,
@@ -56,12 +83,6 @@ const env = {
       : Const.PAGINATION_MODE.CLASSIC,
   SIZE_UNIT: 'm²',
   STRIPE_PUBLISHABLE_KEY: String(import.meta.env.VITE_MI_STRIPE_PUBLISHABLE_KEY),
-  /**
-   * The three-letter ISO 4217 alphabetic currency code, e.g. "USD" or "EUR". Required for Stripe payments. Default is "USD".
-   * Must be a supported currency: https://docs.stripe.com/currencies
-   * */
-  STRIPE_CURRENCY_CODE: String(import.meta.env.VITE_MI_STRIPE_CURRENCY_CODE || 'USD'),
-  CURRENCY: import.meta.env.VITE_MI_CURRENCY || '$',
   SET_LANGUAGE_FROM_IP: (import.meta.env.VITE_MI_SET_LANGUAGE_FROM_IP && import.meta.env.VITE_MI_SET_LANGUAGE_FROM_IP.toLowerCase()) === 'true',
   GOOGLE_ANALYTICS_ENABLED: (import.meta.env.VITE_MI_GOOGLE_ANALYTICS_ENABLED && import.meta.env.VITE_MI_GOOGLE_ANALYTICS_ENABLED.toLowerCase()) === 'true',
   GOOGLE_ANALYTICS_ID: String(import.meta.env.VITE_MI_GOOGLE_ANALYTICS_ID),

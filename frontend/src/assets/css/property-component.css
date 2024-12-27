@@ -1,0 +1,149 @@
+article.property {
+  position: relative;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #333;
+  font-size: 12px;
+  margin-bottom: 10px;
+  min-height: 430px;
+  max-width: 800px;
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+article.property div.left-panel {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+article.property div.left-panel .property-img {
+  margin-top: 15px;
+  margin-bottom: 0;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+article.property div.left-panel div.property-agency a.property-agency-info {
+  color: #0064c8;
+  text-decoration: underline;
+  font-size: 0.9em;
+  line-height: 1em;
+  white-space: nowrap;
+  margin-left: 5px;
+}
+
+article.property div.middle-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+article.property div.middle-panel div.name {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 7px 11px;
+  pointer-events: none;
+}
+
+article.property div.middle-panel div.name h2 {
+  font-size: 1.8em;
+  font-weight: 700;
+  text-size-adjust: none;
+  line-height: 1.3em;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+article.property div.middle-panel .property-info div.property-info-description {
+  max-width: 400px;
+}
+
+article.property div.right-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+article.property div.right-panel div.price {
+  display: flex;
+  flex-direction: column;
+}
+
+article.property div.right-panel div.price span.price-main {
+  color: #383838;
+  font-size: 2.5em;
+  font-weight: 700;
+  line-height: 1em;
+  white-space: nowrap;
+  display: table-row;
+  text-align: right;
+}
+
+article.property div.right-panel div.price span.price-days,
+article.property div.right-panel div.price span.price-day {
+  font-size: 13px;
+  color: #a1a1a1;
+  display: table-row;
+  text-align: right;
+}
+
+article.property div.right-panel div.action {
+  display: flex;
+  flex-direction: column;
+}
+
+article.property .btn-view {
+  height: 42px;
+  font-size: 1.5em;
+  font-weight: 400;
+  padding: 0 2em;
+}
+
+article.property .btn-book {
+  border: 0;
+  border-radius: 5px;
+  color: #fff;
+  height: 42px;
+  margin: 0;
+  white-space: nowrap;
+  background: #232323;
+  font-size: 1.5em;
+  font-weight: 400;
+  padding: 0 2em;
+}
+
+@media only screen and (width <=960px) {
+  article.property {
+    position: relative;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #333;
+    font-size: 12px;
+    margin: 0 1px 10px;
+    min-height: 730px;
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  article.property div.left-panel {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+  }
+}

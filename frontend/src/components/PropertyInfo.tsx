@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tooltip } from '@mui/material'
 import {
   House as PropertyTypeIcon,
@@ -41,6 +41,18 @@ const PropertyInfo = ({
   language
 }: PropertyInfoProps) => {
   const fr = langHelper.fr()
+  const [cancellation, setCancellation] = useState('')
+
+  useEffect(() => {
+    const init = async () => {
+      if (property && language) {
+        const _cancellation = await helper.getCancellation(property.cancellation, language)
+        setCancellation(_cancellation)
+      }
+    }
+
+    init()
+  }, [property, language])
 
   const getExtraIcon = (extra: number) => (extra === -1
     ? <UncheckIcon className="unavailable" />
@@ -145,10 +157,10 @@ const PropertyInfo = ({
               )
             }
             <li>
-              <Tooltip title={property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : helper.getCancellation(property.cancellation, language)} placement="left">
+              <Tooltip title={property.cancellation > -1 ? strings.CANCELLATION_TOOLTIP : cancellation} placement="left">
                 <div className="property-info-list-item">
                   {getExtraIcon(property.cancellation)}
-                  <span className="property-info-list-text">{helper.getCancellation(property.cancellation, language)}</span>
+                  <span className="property-info-list-text">{cancellation}</span>
                 </div>
               </Tooltip>
             </li>

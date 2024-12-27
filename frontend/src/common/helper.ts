@@ -6,6 +6,7 @@ import { strings as rtStrings } from '@/lang/rental-term'
 import { strings } from '@/lang/properties'
 import env from '@/config/env.config'
 import * as UserService from '@/services/UserService'
+import * as StripeService from '@/services/StripeService'
 
 /**
  * Get language.
@@ -183,40 +184,6 @@ export const getKParkingSpacesTooltip = (parkingSpaces: number, fr?: boolean) =>
     : strings.PARKING_SPACES_TOOLTIP_1 + (parkingSpaces > 1 ? 's' : '')}`
 
 /**
- * Get price.
- *
- * @param {movininTypes.Property} property
- * @param {Date} from
- * @param {Date} to
- * @param {?movininTypes.PropertyOptions} [options]
- * @returns {number}
- */
-export const price = (property: movininTypes.Property, from: Date, to: Date, options?: movininTypes.PropertyOptions) => {
-  const now = new Date()
-  const days = movininHelper.days(from, to)
-
-  let _price = 0
-
-  if (property.rentalTerm === movininTypes.RentalTerm.Monthly) {
-    _price = (property.price * days) / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
-  } else if (property.rentalTerm === movininTypes.RentalTerm.Weekly) {
-    _price = (property.price * days) / 7
-  } else if (property.rentalTerm === movininTypes.RentalTerm.Daily) {
-    _price = property.price * days
-  } else if (property.rentalTerm === movininTypes.RentalTerm.Yearly) {
-    _price = (property.price * days) / movininHelper.daysInYear(now.getFullYear())
-  }
-
-  if (options) {
-    if (options.cancellation && property.cancellation > 0) {
-      _price += property.cancellation
-    }
-  }
-
-  return _price
-}
-
-/**
  * Get days label.
  *
  * @param {number} days
@@ -239,7 +206,7 @@ export const getDaysShort = (days: number) => `${days} ${strings.PRICE_DAYS_PART
  * @param {string} language
  * @returns {string}
  */
-export const getCancellation = (cancellation: number, language: string) => {
+export const getCancellation = async (cancellation: number, language: string) => {
   const fr = movininHelper.isFrench(language)
 
   if (cancellation === -1) {
@@ -247,7 +214,8 @@ export const getCancellation = (cancellation: number, language: string) => {
   } if (cancellation === 0) {
     return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${strings.INCLUDED}${fr ? 'e' : ''}`
   }
-  return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${movininHelper.formatPrice(cancellation, commonStrings.CURRENCY, language)}`
+  const _cancellation = await StripeService.convertPrice(cancellation)
+  return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${movininHelper.formatPrice(_cancellation, commonStrings.CURRENCY, language)}`
 }
 
 /**
@@ -258,7 +226,7 @@ export const getCancellation = (cancellation: number, language: string) => {
  * @param {?boolean} [hidePlus]
  * @returns {string}
  */
-export const getCancellationOption = (cancellation: number, language: string, hidePlus?: boolean) => {
+export const getCancellationOption = async (cancellation: number, language: string, hidePlus?: boolean) => {
   const fr = movininHelper.isFrench(language)
 
   if (cancellation === -1) {
@@ -266,7 +234,8 @@ export const getCancellationOption = (cancellation: number, language: string, hi
   } if (cancellation === 0) {
     return `${strings.INCLUDED}${fr ? 'e' : ''}`
   }
-  return `${hidePlus ? '' : '+ '}${movininHelper.formatPrice(cancellation, commonStrings.CURRENCY, language)}`
+  const _cancellation = await StripeService.convertPrice(cancellation)
+  return `${hidePlus ? '' : '+ '}${movininHelper.formatPrice(_cancellation, commonStrings.CURRENCY, language)}`
 }
 
 /**
@@ -366,8 +335,10 @@ export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
  * @param {string} language
  * @returns {string}
  */
-export const priceLabel = (property: movininTypes.Property, language: string): string =>
-  `${movininHelper.formatPrice(property.price, commonStrings.CURRENCY, language)}/${rentalTermUnit(property.rentalTerm)}`
+export const priceLabel = async (property: movininTypes.Property, language: string): Promise<string> => {
+  const _price = await StripeService.convertPrice(property.price)
+  return `${movininHelper.formatPrice(_price, commonStrings.CURRENCY, language)}/${rentalTermUnit(property.rentalTerm)}`
+}
 
 /**
  * Verify reCAPTCHA token.

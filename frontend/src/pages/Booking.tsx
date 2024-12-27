@@ -16,6 +16,7 @@ import * as helper from '@/common/helper'
 import Layout from '@/components/Layout'
 import * as UserService from '@/services/UserService'
 import * as BookingService from '@/services/BookingService'
+import * as StripeService from '@/services/StripeService'
 import Backdrop from '@/components/SimpleBackdrop'
 import NoMatch from './NoMatch'
 import Error from './Error'
@@ -59,7 +60,7 @@ const Booking = () => {
 
             if (_booking) {
               setBooking(_booking)
-              setPrice(_booking.price)
+              setPrice(await StripeService.convertPrice(_booking.price!))
               setLoading(false)
               setVisible(true)
               setIsAgency(user.type === movininTypes.RecordType.Agency)
@@ -187,13 +188,12 @@ const Booking = () => {
               <div className="price">
                 <span className="price-days">{helper.getDays(days)}</span>
                 <span className="price-main">{`${movininHelper.formatPrice(price as number, commonStrings.CURRENCY, language)}`}</span>
-                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatPrice(Math.floor((price as number) / days), commonStrings.CURRENCY, language)}`}</span>
+                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatPrice((price as number) / days, commonStrings.CURRENCY, language)}`}</span>
               </div>
             </div>
             <PropertyList
               className="property"
               properties={((property && [booking.property]) as movininTypes.Property[]) || []}
-              language={language}
               hidePrice
             />
           </div>

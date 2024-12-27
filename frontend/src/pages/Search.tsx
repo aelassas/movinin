@@ -7,7 +7,6 @@ import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as helper from '@/common/helper'
 import { strings } from '@/lang/search'
-import * as UserService from '@/services/UserService'
 import * as LocationService from '@/services/LocationService'
 import * as AgencyService from '@/services/AgencyService'
 import Layout from '@/components/Layout'
@@ -36,7 +35,6 @@ const Properties = () => {
   const [loading, setLoading] = useState(true)
   const [propertyTypes, setPropertyTypes] = useState(movininHelper.getAllPropertyTypes())
   const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())
-  const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
   const [openMapDialog, setOpenMapDialog] = useState(false)
 
   const handleAgencyFilterChange = (newAgencies: string[]) => {
@@ -72,8 +70,6 @@ const Properties = () => {
       setNoMatch(true)
       return
     }
-
-    setLanguage(UserService.getLanguage())
 
     let _location: movininTypes.Location | null = null
     try {
@@ -161,7 +157,6 @@ const Properties = () => {
               loading={loading}
               from={from}
               to={to}
-              language={language}
             />
           </div>
         </div>

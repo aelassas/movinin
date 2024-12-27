@@ -23,7 +23,6 @@ import {
 } from '@mui/material'
 import {
   Visibility as ViewIcon,
-  Check as CheckIcon,
   Cancel as CancelIcon
 } from '@mui/icons-material'
 import { format } from 'date-fns'
@@ -31,12 +30,13 @@ import { fr as dfnsFR, enUS as dfnsENUS } from 'date-fns/locale'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import * as BookingService from '@/services/BookingService'
+import * as StripeService from '@/services/StripeService'
 import * as helper from '@/common/helper'
 import { strings } from '@/lang/booking-list'
-import { strings as csStrings } from '@/lang/properties'
 import { strings as commonStrings } from '@/lang/common'
 import env from '@/config/env.config'
-import BookingStatus from './BookingStatus'
+import BookingStatus from '@/components/BookingStatus'
+import Extras from '@/components/Extras'
 
 import '@/assets/css/booking-list.css'
 
@@ -126,6 +126,10 @@ const BookingList = ({
           return
         }
         const totalRecords = Array.isArray(_data.pageInfo) && _data.pageInfo.length > 0 ? _data.pageInfo[0].totalRecords : 0
+
+        for (const booking of _data.resultData) {
+          booking.price = await StripeService.convertPrice(booking.price!)
+        }
 
         if (env.isMobile) {
           const _rows = _page === 0 ? _data.resultData : [...rows, ..._data.resultData]
@@ -441,21 +445,7 @@ const BookingList = ({
                     </div>
                   </div>
 
-                  {booking.cancellation && (
-                    <>
-                      <div className="extras">
-                        <span className="extras-title">{commonStrings.OPTIONS}</span>
-                        {booking.cancellation && (
-                          <div className="extra">
-                            <CheckIcon className="extra-icon" />
-                            <span className="extra-title">{csStrings.CANCELLATION}</span>
-                            <span className="extra-text">{helper.getCancellationOption((booking.property as movininTypes.Property).cancellation, language as string, true)}</span>
-                          </div>
-                        )}
-
-                      </div>
-                    </>
-                  )}
+                  {booking.cancellation && <Extras booking={booking} />}
 
                   <div className="booking-detail" style={{ height: bookingDetailHeight }}>
                     <span className="booking-detail-title">{strings.COST}</span>

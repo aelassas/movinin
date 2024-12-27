@@ -8,6 +8,7 @@ import { CommonActions, DrawerActions, NavigationRoute, RouteProp } from '@react
 import mime from 'mime'
 import i18n from '@/lang/i18n'
 import * as UserService from '@/services/UserService'
+import * as StripeService from '@/services/StripeService'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import * as toastHelper from './toastHelper'
@@ -151,9 +152,9 @@ export const dateTime = (date: Date, time: Date) => {
  *
  * @param {number} cancellation
  * @param {string} language
- * @returns {string}
+ * @returns {Promise<string>}
  */
-export const getCancellation = (cancellation: number, language: string) => {
+export const getCancellation = async (cancellation: number, language: string) => {
   const fr = movininHelper.isFrench(language)
 
   if (cancellation === -1) {
@@ -161,7 +162,8 @@ export const getCancellation = (cancellation: number, language: string) => {
   } if (cancellation === 0) {
     return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${i18n.t('INCLUDED')}${fr ? 'e' : ''}`
   }
-  return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${movininHelper.formatPrice(cancellation, i18n.t('CURRENCY'), language)}`
+  const _cancellation = await StripeService.convertPrice(cancellation)
+  return `${i18n.t('CANCELLATION')}${fr ? ' : ' : ': '}${movininHelper.formatPrice(_cancellation, await StripeService.getCurrencySymbol(), language)}`
 }
 
 /**
@@ -181,48 +183,14 @@ export const getDays = (days: number) => `${i18n.t('PRICE_DAYS_PART_1')} ${days}
 export const getDaysShort = (days: number) => `${days} ${i18n.t('PRICE_DAYS_PART_2')}${days > 1 ? 's' : ''}`
 
 /**
- * Get price.
- *
- * @param {movininTypes.Property} property
- * @param {Date} from
- * @param {Date} to
- * @param {?movininTypes.PropertyOptions} [options]
- * @returns {number}
- */
-export const price = (property: movininTypes.Property, from: Date, to: Date, options?: movininTypes.PropertyOptions) => {
-  const now = new Date()
-  const days = movininHelper.days(from, to)
-
-  let _price = 0
-
-  if (property.rentalTerm === movininTypes.RentalTerm.Monthly) {
-    _price = (property.price * days) / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
-  } else if (property.rentalTerm === movininTypes.RentalTerm.Weekly) {
-    _price = (property.price * days) / 7
-  } else if (property.rentalTerm === movininTypes.RentalTerm.Daily) {
-    _price = property.price * days
-  } else if (property.rentalTerm === movininTypes.RentalTerm.Yearly) {
-    _price = (property.price * days) / movininHelper.daysInYear(now.getFullYear())
-  }
-
-  if (options) {
-    if (options.cancellation && property.cancellation > 0) {
-      _price += property.cancellation
-    }
-  }
-
-  return _price
-}
-
-/**
  * Get cancellation option label.
  *
  * @param {number} cancellation
  * @param {string} language
  * @param {?boolean} [hidePlus]
- * @returns {string}
+ * @returns {Promise<string>}
  */
-export const getCancellationOption = (cancellation: number, language: string, hidePlus?: boolean) => {
+export const getCancellationOption = async (cancellation: number, language: string, hidePlus?: boolean) => {
   const fr = movininHelper.isFrench(language)
 
   if (cancellation === -1) {
@@ -230,7 +198,8 @@ export const getCancellationOption = (cancellation: number, language: string, hi
   } if (cancellation === 0) {
     return `${i18n.t('INCLUDED')}${fr ? 'e' : ''}`
   }
-  return `${hidePlus ? '' : '+ '}${movininHelper.formatPrice(cancellation, i18n.t('CURRENCY'), language)}`
+  const _cancellation = await StripeService.convertPrice(cancellation)
+  return `${hidePlus ? '' : '+ '}${movininHelper.formatPrice(_cancellation, await StripeService.getCurrencySymbol(), language)}`
 }
 
 /**
@@ -352,11 +321,12 @@ export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
  *
  * @param {movininTypes.Property} property
  * @param {string} language
- * @returns {string}
+ * @returns {Promise<string>}
  */
-export const priceLabel = (property: movininTypes.Property, language: string): string =>
-  `${movininHelper.formatPrice(property.price, i18n.t('CURRENCY'), language)}/${rentalTermUnit(property.rentalTerm)}`
-
+export const priceLabel = async (property: movininTypes.Property, language: string): Promise<string> => {
+  const _price = await StripeService.convertPrice(property.price)
+  return `${movininHelper.formatPrice(_price, await StripeService.getCurrencySymbol(), language)}/${rentalTermUnit(property.rentalTerm)}`
+}
 /**
  * Check whether property option is available or not.
  *
@@ -429,14 +399,14 @@ export const navigate = (
           const { routes } = state
           const index = routes.findIndex((r) => r.name === route.name)
           const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
-          // routes.splice(index, 1)
+          // _routes.splice(index, 1)
           const now = Date.now()
           _routes[index] = {
             name: route.name,
             key: `${route.name}-${now}`,
             params,
           }
-          // routes.push({
+          // _routes.push({
           //   name: route.name,
           //   key: `${route.name}-${now}`,
           //   params,
@@ -444,7 +414,7 @@ export const navigate = (
 
           return CommonActions.reset({
             ...state,
-            routes,
+            routes: _routes,
             // index: routes.length - 1,
             index,
           })
@@ -465,22 +435,23 @@ export const navigate = (
           const { routes } = state
           const index = routes.findIndex((r) => r.name === 'Booking')
           const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
-          // routes.splice(index, 1)
+          // _routes.splice(index, 1)
+          // const now = Date.now()
+          // _routes.push({
+          //   name: 'Booking',
+          //   key: `Booking-${now}`,
+          //   params,
+          // })
           const now = Date.now()
           _routes[index] = {
             name: route.name,
             key: `${route.name}-${now}`,
             params,
           }
-          // routes.push({
-          //   name: 'Booking',
-          //   key: `Booking-${now}`,
-          //   params,
-          // })
 
           return CommonActions.reset({
             ...state,
-            routes,
+            routes: _routes,
             // index: routes.length - 1,
             index,
           })
@@ -506,32 +477,30 @@ export const navigate = (
           const { routes } = state
           const index = routes.findIndex((r) => r.name === 'Properties')
           const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
-          // routes.splice(index, 1)
+          // _routes.splice(index, 1)
+          // const now = Date.now()
+          // _routes.push({
+          //   name: 'Cars',
+          //   key: `Cars-${now}`,
+          //   params,
+          // })
           const now = Date.now()
           _routes[index] = {
             name: route.name,
             key: `${route.name}-${now}`,
             params,
           }
-          // routes.push({
-          //   name: 'Properties',
-          //   key: `Properties-${now}`,
-          //   params,
-          // })
 
           return CommonActions.reset({
             ...state,
-            routes,
+            routes: _routes,
             // index: routes.length - 1,
             index,
           })
         })
         navigation.dispatch(DrawerActions.closeDrawer())
       } else {
-        navigation.navigate(
-          route.name,
-          params,
-        )
+        navigation.navigate(route.name, params)
       }
       break
     }
@@ -548,22 +517,23 @@ export const navigate = (
           const { routes } = state
           const index = routes.findIndex((r) => r.name === 'Checkout')
           const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
-          // routes.splice(index, 1)
+          // _routes.splice(index, 1)
+          // const now = Date.now()
+          // _routes.push({
+          //   name: 'Checkout',
+          //   key: `Checkout-${now}`,
+          //   params,
+          // })
           const now = Date.now()
           _routes[index] = {
             name: route.name,
             key: `${route.name}-${now}`,
             params,
           }
-          // routes.push({
-          //   name: 'Checkout',
-          //   key: `Checkout-${now}`,
-          //   params,
-          // })
 
           return CommonActions.reset({
             ...state,
-            routes,
+            routes: _routes,
             // index: routes.length - 1,
             index,
           })
