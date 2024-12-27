@@ -70,27 +70,31 @@ const Header = ({
           <Text style={styles.text}>{title}</Text>
         </View>
       )}
-      {loggedIn && (
-        <View style={styles.actions}>
-          <CurrencyMenu
-            route={route}
-            textColor="#fff"
-            style={styles.currency}
-          />
 
-          <Pressable style={styles.notifications} onPress={() => navigation.navigate('Notifications', {})}>
-            {notificationCount > 0 && (
-              <Badge style={styles.badge} size={18}>
-                {notificationCount}
-              </Badge>
-            )}
-            <MaterialIcons name="notifications" size={24} color="#fff" style={styles.badgeIcon} />
-          </Pressable>
-          <Pressable style={styles.avatar} onPress={() => navigation.navigate('Settings', {})}>
-            {avatar ? <Avatar.Image size={24} source={{ uri: avatar }} /> : <MaterialIcons name="account-circle" size={24} color="#fff" />}
-          </Pressable>
-        </View>
-      )}
+      <View style={styles.actions}>
+        <CurrencyMenu
+          route={route}
+          textColor="#fff"
+          style={styles.currency}
+        />
+
+        {loggedIn && (
+          <>
+            <Pressable style={styles.notifications} onPress={() => navigation.navigate('Notifications', {})}>
+              {notificationCount > 0 && (
+                <Badge style={styles.badge} size={18}>
+                  {notificationCount}
+                </Badge>
+              )}
+              <MaterialIcons name="notifications" size={24} color="#fff" style={styles.badgeIcon} />
+            </Pressable>
+            <Pressable style={styles.avatar} onPress={() => navigation.navigate('Settings', {})}>
+              {avatar ? <Avatar.Image size={24} source={{ uri: avatar }} /> : <MaterialIcons name="account-circle" size={24} color="#fff" />}
+            </Pressable>
+          </>
+        )}
+      </View>
+
     </View>
   )
 }
