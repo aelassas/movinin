@@ -303,24 +303,6 @@ export const getAllRentalTerms = () =>
   ]
 
 /**
- * Format price
- *
- * @param {number} price
- * @param {string} currency
- * @param {string} language ISO 639-1 language code
- * @returns {boolean}
- */
-export const formatPrice = (price: number, currency: string, language: string) => {
-  const formatedPrice = formatNumber(price, language)
-
-  if (currency === '$') {
-    return `$${formatedPrice}`
-  }
-
-  return `${formatedPrice} ${currency}`
-}
-
-/**
  * Check whether language is french
  *
  * @param {string} language
@@ -403,3 +385,22 @@ export const currencyRTL = (currencySymbol: string) => {
   const isRTL = ['$', '£'].includes(currencySymbol)
   return isRTL
 }
+
+/**
+ * Format price
+ *
+ * @param {number} price
+ * @param {string} currency
+ * @param {string} language ISO 639-1 language code
+ * @returns {boolean}
+ */
+export const formatPrice = (price: number, currency: string, language: string) => {
+  const formatedPrice = formatNumber(price, language)
+
+  if (currencyRTL(currency)) {
+    return `$${formatedPrice}`
+  }
+
+  return `${formatedPrice} ${currency}`
+}
+
