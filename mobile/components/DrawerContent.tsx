@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   signoutIcon: {
-    marginRight: 5,
+    marginRight: -15,
   },
   text: {
     color: 'rgba(0, 0, 0, 0.54)',
