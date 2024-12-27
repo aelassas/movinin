@@ -36,6 +36,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * Multiple login options (Google, Facebook, Apple, Email)
 * Multiple payment methods (Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later)
 * Multiple language support (English, French)
+* [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination options (Classic pagination with next and previous buttons, infinite scroll)
 * Operational Stripe Payment Gateway
 * Responsive admin dashboard and frontend
