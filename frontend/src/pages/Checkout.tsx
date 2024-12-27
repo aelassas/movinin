@@ -37,6 +37,7 @@ import * as UserService from '@/services/UserService'
 import * as PropertyService from '@/services/PropertyService'
 import * as LocationService from '@/services/LocationService'
 import * as StripeService from '@/services/StripeService'
+import { useRecaptchaContext, RecaptchaContextType } from '@/context/RecaptchaContext'
 import PropertyList from '@/components/PropertyList'
 import Layout from '@/components/Layout'
 import Error from '@/components/Error'
@@ -44,10 +45,10 @@ import DatePicker from '@/components/DatePicker'
 import NoMatch from './NoMatch'
 import Info from './Info'
 import SocialLogin from '@/components/SocialLogin'
-import { useRecaptchaContext, RecaptchaContextType } from '@/context/RecaptchaContext'
+import CheckoutOptions from '@/components/CheckoutOptions'
+import Footer from '@/components/Footer'
 
 import '@/assets/css/checkout.css'
-import CheckoutOptions from '@/components/CheckoutOptions'
 
 //
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -390,249 +391,253 @@ const Checkout = () => {
   return (
     <Layout onLoad={onLoad} strict={false}>
       {visible && property && from && to && location && (
-        <div className="checkout">
-          <Paper className="checkout-form" elevation={10}>
-            <h1 className="checkout-form-title">
-              {' '}
-              {strings.BOOKING_HEADING}
-              {' '}
-            </h1>
-            <form onSubmit={handleSubmit}>
-              <div>
+        <>
+          <div className="checkout">
+            <Paper className="checkout-form" elevation={10}>
+              <h1 className="checkout-form-title">
+                {' '}
+                {strings.BOOKING_HEADING}
+                {' '}
+              </h1>
+              <form onSubmit={handleSubmit}>
+                <div>
 
-                <PropertyList
-                  properties={[property]}
-                  hideActions
-                  hidePrice
-                  sizeAuto
-                />
+                  <PropertyList
+                    properties={[property]}
+                    hideActions
+                    hidePrice
+                    sizeAuto
+                  />
 
-                <CheckoutOptions
-                  property={property}
-                  from={from}
-                  to={to}
-                  language={language}
-                  clientSecret={clientSecret}
-                  onPriceChange={(value) => setPrice(value)}
-                  onCancellationChange={(value) => setCancellation(value)}
-                />
+                  <CheckoutOptions
+                    property={property}
+                    from={from}
+                    to={to}
+                    language={language}
+                    clientSecret={clientSecret}
+                    onPriceChange={(value) => setPrice(value)}
+                    onCancellationChange={(value) => setCancellation(value)}
+                  />
 
-                <div className="checkout-details-container">
-                  <div className="checkout-info">
-                    <PropertyIcon />
-                    <span>{strings.BOOKING_DETAILS}</span>
-                  </div>
-                  <div className="checkout-details">
-                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="checkout-detail-title">{strings.DAYS}</span>
-                      <div className="checkout-detail-value">
-                        {daysLabel}
-                      </div>
+                  <div className="checkout-details-container">
+                    <div className="checkout-info">
+                      <PropertyIcon />
+                      <span>{strings.BOOKING_DETAILS}</span>
                     </div>
-                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="checkout-detail-title">{commonStrings.LOCATION}</span>
-                      <div className="checkout-detail-value">{location.name}</div>
-                    </div>
-
-                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="checkout-detail-title">{strings.PROPERTY}</span>
-                      <div className="checkout-detail-value">{`${property.name} (${helper.priceLabel(property, language)})`}</div>
-                    </div>
-                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="checkout-detail-title">{commonStrings.AGENCY}</span>
-                      <div className="checkout-detail-value">
-                        <div className="property-agency">
-                          <img src={movininHelper.joinURL(env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: env.AGENCY_IMAGE_HEIGHT }} />
-                          <span className="property-agency-name">{property.agency.fullName}</span>
+                    <div className="checkout-details">
+                      <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="checkout-detail-title">{strings.DAYS}</span>
+                        <div className="checkout-detail-value">
+                          {daysLabel}
                         </div>
                       </div>
-                    </div>
-                    <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
-                      <span className="checkout-detail-title">{strings.COST}</span>
-                      <div className="checkout-detail-value checkout-price">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</div>
-                    </div>
-                  </div>
-                </div>
-                {!authenticated && (
-                  <div className="renter-details">
-                    <div className="checkout-info">
-                      <RenterIcon />
-                      <span>{strings.RENTER_DETAILS}</span>
-                    </div>
-                    <div className="renter-details-form">
-                      <FormControl fullWidth margin="dense">
-                        <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
-                        <OutlinedInput type="text" label={commonStrings.FULL_NAME} required onChange={handleFullNameChange} autoComplete="off" />
-                      </FormControl>
-                      <FormControl fullWidth margin="dense">
-                        <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
-                        <OutlinedInput
-                          type="text"
-                          label={commonStrings.EMAIL}
-                          error={!emailValid || emailRegitered}
-                          onBlur={handleEmailBlur}
-                          onChange={handleEmailChange}
-                          required
-                          autoComplete="off"
-                        />
-                        <FormHelperText error={!emailValid || emailRegitered}>
-                          {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
-                          {(emailRegitered && (
-                            <span>
-                              <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
-                              <span> </span>
-                              <a href={`/sign-in?p=${property._id}&l=${location._id}&f=${from.getTime()}&t=${to.getTime()}&from=checkout`}>{strings.SIGN_IN}</a>
-                            </span>
-                          ))
-                            || ''}
-                          {(emailInfo && strings.EMAIL_INFO) || ''}
-                        </FormHelperText>
-                      </FormControl>
-                      <FormControl fullWidth margin="dense">
-                        <InputLabel className="required">{commonStrings.PHONE}</InputLabel>
-                        <OutlinedInput type="text" label={commonStrings.PHONE} error={!phoneValid} onBlur={handlePhoneBlur} onChange={handlePhoneChange} required autoComplete="off" />
-                        <FormHelperText error={!phoneValid}>
-                          {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
-                          {(phoneInfo && strings.PHONE_INFO) || ''}
-                        </FormHelperText>
-                      </FormControl>
-                      <FormControl fullWidth margin="dense">
-                        <DatePicker
-                          label={commonStrings.BIRTH_DATE}
-                          variant="outlined"
-                          required
-                          onChange={(_birthDate) => {
-                            if (_birthDate) {
-                              const _birthDateValid = validateBirthDate(_birthDate)
-
-                              setBirthDate(_birthDate)
-                              setBirthDateValid(_birthDateValid)
-                            }
-                          }}
-                          language={language}
-                        />
-                        <FormHelperText error={!birthDateValid}>{(!birthDateValid && helper.getBirthDateError(property.minimumAge)) || ''}</FormHelperText>
-                      </FormControl>
-
-                      <div className="checkout-tos">
-                        <table>
-                          <tbody>
-                            <tr>
-                              <td aria-label="tos">
-                                <Checkbox checked={tosChecked} onChange={handleTosChange} color="primary" />
-                              </td>
-                              <td>
-                                <Link href="/tos" target="_blank" rel="noreferrer">
-                                  {commonStrings.TOS}
-                                </Link>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                      <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="checkout-detail-title">{commonStrings.LOCATION}</span>
+                        <div className="checkout-detail-value">{location.name}</div>
                       </div>
 
-                      <SocialLogin />
+                      <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="checkout-detail-title">{strings.PROPERTY}</span>
+                        <div className="checkout-detail-value">{`${property.name} (${helper.priceLabel(property, language)})`}</div>
+                      </div>
+                      <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="checkout-detail-title">{commonStrings.AGENCY}</span>
+                        <div className="checkout-detail-value">
+                          <div className="property-agency">
+                            <img src={movininHelper.joinURL(env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: env.AGENCY_IMAGE_HEIGHT }} />
+                            <span className="property-agency-name">{property.agency.fullName}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                        <span className="checkout-detail-title">{strings.COST}</span>
+                        <div className="checkout-detail-value checkout-price">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</div>
+                      </div>
                     </div>
                   </div>
-                )}
-
-                {property.agency.payLater && (
-                  <div className="payment-options-container">
-                    <div className="checkout-info">
-                      <PaymentOptionsIcon />
-                      <span>{strings.PAYMENT_OPTIONS}</span>
-                    </div>
-                    <div className="payment-options">
-                      <FormControl>
-                        <RadioGroup
-                          defaultValue="payOnline"
-                          onChange={(event) => {
-                            setPayLater(event.target.value === 'payLater')
-                          }}
-                        >
-                          <FormControlLabel
-                            value="payLater"
-                            control={<Radio />}
-                            label={(
-                              <span className="payment-button">
-                                <span>{strings.PAY_LATER}</span>
-                                <span className="payment-info">{`(${strings.PAY_LATER_INFO})`}</span>
-                              </span>
-                            )}
+                  {!authenticated && (
+                    <div className="renter-details">
+                      <div className="checkout-info">
+                        <RenterIcon />
+                        <span>{strings.RENTER_DETAILS}</span>
+                      </div>
+                      <div className="renter-details-form">
+                        <FormControl fullWidth margin="dense">
+                          <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
+                          <OutlinedInput type="text" label={commonStrings.FULL_NAME} required onChange={handleFullNameChange} autoComplete="off" />
+                        </FormControl>
+                        <FormControl fullWidth margin="dense">
+                          <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
+                          <OutlinedInput
+                            type="text"
+                            label={commonStrings.EMAIL}
+                            error={!emailValid || emailRegitered}
+                            onBlur={handleEmailBlur}
+                            onChange={handleEmailChange}
+                            required
+                            autoComplete="off"
                           />
-                          <FormControlLabel
-                            value="payOnline"
-                            control={<Radio />}
-                            label={(
-                              <span className="payment-button">
-                                <span>{strings.PAY_ONLINE}</span>
-                                <span className="payment-info">{`(${strings.PAY_ONLINE_INFO})`}</span>
+                          <FormHelperText error={!emailValid || emailRegitered}>
+                            {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
+                            {(emailRegitered && (
+                              <span>
+                                <span>{commonStrings.EMAIL_ALREADY_REGISTERED}</span>
+                                <span> </span>
+                                <a href={`/sign-in?p=${property._id}&l=${location._id}&f=${from.getTime()}&t=${to.getTime()}&from=checkout`}>{strings.SIGN_IN}</a>
                               </span>
-                            )}
+                            ))
+                              || ''}
+                            {(emailInfo && strings.EMAIL_INFO) || ''}
+                          </FormHelperText>
+                        </FormControl>
+                        <FormControl fullWidth margin="dense">
+                          <InputLabel className="required">{commonStrings.PHONE}</InputLabel>
+                          <OutlinedInput type="text" label={commonStrings.PHONE} error={!phoneValid} onBlur={handlePhoneBlur} onChange={handlePhoneChange} required autoComplete="off" />
+                          <FormHelperText error={!phoneValid}>
+                            {(!phoneValid && commonStrings.PHONE_NOT_VALID) || ''}
+                            {(phoneInfo && strings.PHONE_INFO) || ''}
+                          </FormHelperText>
+                        </FormControl>
+                        <FormControl fullWidth margin="dense">
+                          <DatePicker
+                            label={commonStrings.BIRTH_DATE}
+                            variant="outlined"
+                            required
+                            onChange={(_birthDate) => {
+                              if (_birthDate) {
+                                const _birthDateValid = validateBirthDate(_birthDate)
+
+                                setBirthDate(_birthDate)
+                                setBirthDateValid(_birthDateValid)
+                              }
+                            }}
+                            language={language}
                           />
-                        </RadioGroup>
-                      </FormControl>
-                    </div>
-                  </div>
-                )}
+                          <FormHelperText error={!birthDateValid}>{(!birthDateValid && helper.getBirthDateError(property.minimumAge)) || ''}</FormHelperText>
+                        </FormControl>
 
-                {(!property.agency.payLater || !payLater) && (
-                  clientSecret && (
-                    <div className="payment-options-container">
+                        <div className="checkout-tos">
+                          <table>
+                            <tbody>
+                              <tr>
+                                <td aria-label="tos">
+                                  <Checkbox checked={tosChecked} onChange={handleTosChange} color="primary" />
+                                </td>
+                                <td>
+                                  <Link href="/tos" target="_blank" rel="noreferrer">
+                                    {commonStrings.TOS}
+                                  </Link>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
 
-                      <EmbeddedCheckoutProvider
-                        stripe={stripePromise}
-                        options={{ clientSecret }}
-                      >
-                        <EmbeddedCheckout />
-                      </EmbeddedCheckoutProvider>
+                        <SocialLogin />
+                      </div>
                     </div>
-                  )
-                )}
-                <div className="checkout-buttons">
-                  {(!clientSecret || payLater) && (
-                    <Button type="submit" variant="contained" className="btn-checkout btn-margin-bottom" size="small" disabled={loading}>
-                      {
-                        loading
-                          ? <CircularProgress color="inherit" size={24} />
-                          : strings.BOOK
-                      }
-                    </Button>
                   )}
-                  <Button
-                    variant="outlined"
-                    className="btn-cancel btn-margin-bottom"
-                    size="small"
-                    onClick={async () => {
-                      try {
-                        if (bookingId && sessionId) {
-                          //
-                          // Delete temporary booking on cancel.
-                          // Otherwise, temporary bookings are
-                          // automatically deleted through a TTL index.
-                          //
-                          await BookingService.deleteTempBooking(bookingId, sessionId)
+
+                  {property.agency.payLater && (
+                    <div className="payment-options-container">
+                      <div className="checkout-info">
+                        <PaymentOptionsIcon />
+                        <span>{strings.PAYMENT_OPTIONS}</span>
+                      </div>
+                      <div className="payment-options">
+                        <FormControl>
+                          <RadioGroup
+                            defaultValue="payOnline"
+                            onChange={(event) => {
+                              setPayLater(event.target.value === 'payLater')
+                            }}
+                          >
+                            <FormControlLabel
+                              value="payLater"
+                              control={<Radio />}
+                              label={(
+                                <span className="payment-button">
+                                  <span>{strings.PAY_LATER}</span>
+                                  <span className="payment-info">{`(${strings.PAY_LATER_INFO})`}</span>
+                                </span>
+                              )}
+                            />
+                            <FormControlLabel
+                              value="payOnline"
+                              control={<Radio />}
+                              label={(
+                                <span className="payment-button">
+                                  <span>{strings.PAY_ONLINE}</span>
+                                  <span className="payment-info">{`(${strings.PAY_ONLINE_INFO})`}</span>
+                                </span>
+                              )}
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
+                    </div>
+                  )}
+
+                  {(!property.agency.payLater || !payLater) && (
+                    clientSecret && (
+                      <div className="payment-options-container">
+
+                        <EmbeddedCheckoutProvider
+                          stripe={stripePromise}
+                          options={{ clientSecret }}
+                        >
+                          <EmbeddedCheckout />
+                        </EmbeddedCheckoutProvider>
+                      </div>
+                    )
+                  )}
+                  <div className="checkout-buttons">
+                    {(!clientSecret || payLater) && (
+                      <Button type="submit" variant="contained" className="btn-checkout btn-margin-bottom" size="small" disabled={loading}>
+                        {
+                          loading
+                            ? <CircularProgress color="inherit" size={24} />
+                            : strings.BOOK
                         }
-                      } catch (err) {
-                        helper.error(err)
-                      } finally {
-                        navigate('/')
-                      }
-                    }}
-                  >
-                    {commonStrings.CANCEL}
-                  </Button>
+                      </Button>
+                    )}
+                    <Button
+                      variant="outlined"
+                      className="btn-cancel btn-margin-bottom"
+                      size="small"
+                      onClick={async () => {
+                        try {
+                          if (bookingId && sessionId) {
+                            //
+                            // Delete temporary booking on cancel.
+                            // Otherwise, temporary bookings are
+                            // automatically deleted through a TTL index.
+                            //
+                            await BookingService.deleteTempBooking(bookingId, sessionId)
+                          }
+                        } catch (err) {
+                          helper.error(err)
+                        } finally {
+                          navigate('/')
+                        }
+                      }}
+                    >
+                      {commonStrings.CANCEL}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <div className="form-error">
-                {tosError && <Error message={commonStrings.TOS_ERROR} />}
-                {error && <Error message={commonStrings.GENERIC_ERROR} />}
-                {paymentFailed && <Error message={strings.PAYMENT_FAILED} />}
-                {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
-              </div>
-            </form>
-          </Paper>
-        </div>
+                <div className="form-error">
+                  {tosError && <Error message={commonStrings.TOS_ERROR} />}
+                  {error && <Error message={commonStrings.GENERIC_ERROR} />}
+                  {paymentFailed && <Error message={strings.PAYMENT_FAILED} />}
+                  {recaptchaError && <Error message={commonStrings.RECAPTCHA_ERROR} />}
+                </div>
+              </form>
+            </Paper>
+          </div>
+
+          <Footer />
+        </>
       )}
       {noMatch && <NoMatch hideHeader />}
       {success && <Info message={payLater ? strings.PAY_LATER_SUCCESS : strings.SUCCESS} />}
