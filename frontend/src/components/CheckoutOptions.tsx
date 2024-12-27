@@ -6,6 +6,7 @@ import * as movininHelper from ':movinin-helper'
 import { strings as csStrings } from '@/lang/properties'
 import { strings } from '@/lang/checkout'
 import * as helper from '@/common/helper'
+import * as StripeService from '@/services/StripeService'
 
 import '@/assets/css/checkout-options.css'
 
@@ -45,13 +46,13 @@ const CheckoutOptions = ({
     return null
   }
 
-  const handleCancellationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCancellationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (property && from && to) {
       const _cancellation = e.target.checked
       const options: movininTypes.PropertyOptions = {
         cancellation: _cancellation
       }
-      const _price = movininHelper.calculateTotalPrice(property, from, to, options)
+      const _price = await StripeService.convertPrice(movininHelper.calculateTotalPrice(property, from, to, options))
 
       setCancellation(_cancellation)
       onCancellationChange(_cancellation)
