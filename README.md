@@ -36,6 +36,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * Multiple login options (Google, Facebook, Apple, Email)
 * Multiple payment methods (Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later)
 * Multiple language support (English, French)
+* [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination options (Classic pagination with next and previous buttons, infinite scroll)
 * Operational Stripe Payment Gateway
 * Responsive admin dashboard and frontend
@@ -104,8 +105,8 @@ You can also install the Android App by downloading the APK and installing it on
     2. [Instructions](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#instructions)
     3. [Push Notifications](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#push-notifications)
     4. [Run iOS App](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#run-ios-app)
-11. [Change Currency](https://github.com/aelassas/movinin/wiki/Change-Currency)
-12. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)
+11. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)
+12. [Add New Currency](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 13. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
 14. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
 
