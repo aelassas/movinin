@@ -52,7 +52,7 @@ export const createPaymentIntent = (payload: movininTypes.CreatePaymentPayload):
 */
 export const setCurrency = (currency: string) => {
   if (currency && movininHelper.checkCurrency(currency.toUpperCase())) {
-    localStorage.setItem('mi-currency', currency.toUpperCase())
+    localStorage.setItem('mi-fe-currency', currency.toUpperCase())
   }
 }
 
@@ -62,7 +62,7 @@ export const setCurrency = (currency: string) => {
  * @returns {string}
  */
 export const getCurrency = () => {
-  const currency = localStorage.getItem('mi-currency')
+  const currency = localStorage.getItem('mi-fe-currency')
   if (currency && movininHelper.checkCurrency(currency.toUpperCase())) {
     return currency.toUpperCase()
   }

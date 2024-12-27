@@ -102,7 +102,7 @@ export const signin = (data: movininTypes.SignInPayload): Promise<{ status: numb
       { withCredentials: true }
     )
     .then((res) => {
-      localStorage.setItem('mi-user', JSON.stringify(res.data))
+      localStorage.setItem('mi-fe-user', JSON.stringify(res.data))
       return { status: res.status, data: res.data }
     })
 
@@ -120,7 +120,7 @@ export const socialSignin = (data: movininTypes.SignInPayload): Promise<{ status
       { withCredentials: true }
     )
     .then((res) => {
-      localStorage.setItem('mi-user', JSON.stringify(res.data))
+      localStorage.setItem('mi-fe-user', JSON.stringify(res.data))
       return { status: res.status, data: res.data }
     })
 
@@ -142,7 +142,7 @@ export const signout = async (redirect = true, redirectSignin = false) => {
   }
 
   sessionStorage.clear()
-  localStorage.removeItem('mi-user')
+  localStorage.removeItem('mi-fe-user')
   deleteAllCookies()
 
   await
@@ -211,12 +211,12 @@ export const resendLink = (data: movininTypes.ResendLinkPayload): Promise<number
  * @returns {string}
  */
 export const getLanguage = () => {
-  const user = JSON.parse(localStorage.getItem('mi-user') ?? 'null')
+  const user = JSON.parse(localStorage.getItem('mi-fe-user') ?? 'null')
 
   if (user && user.language) {
     return user.language
   }
-  const lang = localStorage.getItem('mi-language')
+  const lang = localStorage.getItem('mi-fe-language')
   if (lang && lang.length === 2) {
     return lang
   }
@@ -251,9 +251,9 @@ export const updateLanguage = (data: movininTypes.UpdateLanguagePayload) =>
     )
     .then((res) => {
       if (res.status === 200) {
-        const user = JSON.parse(localStorage.getItem('mi-user') ?? 'null')
+        const user = JSON.parse(localStorage.getItem('mi-fe-user') ?? 'null')
         user.language = data.language
-        localStorage.setItem('mi-user', JSON.stringify(user))
+        localStorage.setItem('mi-fe-user', JSON.stringify(user))
       }
       return res.status
     })
@@ -264,7 +264,7 @@ export const updateLanguage = (data: movininTypes.UpdateLanguagePayload) =>
  * @param {string} lang
  */
 export const setLanguage = (lang: string) => {
-  localStorage.setItem('mi-language', lang)
+  localStorage.setItem('mi-fe-language', lang)
 }
 
 /**
@@ -273,7 +273,7 @@ export const setLanguage = (lang: string) => {
  * @returns {movininTypes.User | null}
  */
 export const getCurrentUser = (): movininTypes.User | null => {
-  const user = JSON.parse(localStorage.getItem('mi-user') ?? 'null') as movininTypes.User | null
+  const user = JSON.parse(localStorage.getItem('mi-fe-user') ?? 'null') as movininTypes.User | null
   return user
 }
 
@@ -330,7 +330,7 @@ export const updateEmailNotifications = (data: movininTypes.UpdateEmailNotificat
         const user = getCurrentUser()
         if (user) {
           user.enableEmailNotifications = data.enableEmailNotifications
-          localStorage.setItem('mi-user', JSON.stringify(user))
+          localStorage.setItem('mi-fe-user', JSON.stringify(user))
         }
       }
       return res.status
@@ -3351,7 +3351,7 @@ export const hasPassword = (id: string): Promise<number> => axiosInstance
 * @returns {void}
 */
 export const setStayConnected = (value: boolean) => {
-  localStorage.setItem('mi-stay-connected', JSON.stringify(value))
+  localStorage.setItem('mi-fe-stay-connected', JSON.stringify(value))
 }
 
 /**
@@ -3361,6 +3361,6 @@ export const setStayConnected = (value: boolean) => {
  * @returns {boolean}
  */
 export const getStayConnected = () => {
-  const value = JSON.parse(localStorage.getItem('mi-stay-connected') ?? 'false')
+  const value = JSON.parse(localStorage.getItem('mi-fe-stay-connected') ?? 'false')
   return value as boolean
 }
