@@ -5,7 +5,7 @@ WORKDIR /movinin/frontend
 COPY ./frontend ./
 COPY ./frontend/.env.docker .env
 COPY ./packages /movinin/packages
-RUN npm install
+RUN npm install --force
 RUN npm run build
 
 FROM nginx:stable-alpine
