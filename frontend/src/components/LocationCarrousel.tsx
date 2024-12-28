@@ -64,14 +64,14 @@ const LocationCarrousel = ({
   }
 
   return (
-    <div className="locations-caroussel">
+    <div className="location-caroussel">
       <Slick ref={slider} {...sliderSettings}>
         {locations.map((location) => (
           <div key={location._id} className="box">
             <div className="location-image">
               {
                 location.image ? (
-                  <img alt="Tirana" src={movininHelper.joinURL(env.CDN_LOCATIONS, location.image)} />
+                  <img alt="" src={movininHelper.joinURL(env.CDN_LOCATIONS, location.image)} />
                 )
                   : <LocationIcon className="location-icon" />
               }
