@@ -45,17 +45,17 @@ export const create = async (req: Request, res: Response) => {
  * Notify a agency or admin.
  *
  * @async
- * @param {env.User} driver
+ * @param {env.User} renter
  * @param {string} bookingId
  * @param {env.User} user
  * @param {boolean} notificationMessage
  * @returns {void}
  */
-export const notify = async (driver: env.User, bookingId: string, user: env.User, notificationMessage: string) => {
+export const notify = async (renter: env.User, bookingId: string, user: env.User, notificationMessage: string) => {
   i18n.locale = user.language
 
   // notification
-  const message = `${driver.fullName} ${notificationMessage} ${bookingId}.`
+  const message = `${renter.fullName} ${notificationMessage} ${bookingId}.`
   const notification = new Notification({
     user: user._id,
     message,
@@ -845,7 +845,20 @@ export const cancelBooking = async (req: Request, res: Response) => {
       await booking.save()
 
       // Notify agency
-      await notify(booking.renter, booking.id.toString(), booking.agency, i18n.t('CANCEL_BOOKING_NOTIFICATION'))
+      const agency = await User.findById(booking.agency)
+      if (!agency) {
+        logger.info(`Supplier ${booking.agency} not found`)
+        return res.sendStatus(204)
+      }
+      i18n.locale = agency.language
+      await notify(booking.renter, booking.id.toString(), agency, i18n.t('CANCEL_BOOKING_NOTIFICATION'))
+
+      // Notify admin
+      const admin = !!env.ADMIN_EMAIL && await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin })
+      if (admin) {
+        i18n.locale = admin.language
+        await notify(booking.renter, booking.id.toString(), admin, i18n.t('CANCEL_BOOKING_NOTIFICATION'))
+      }
 
       return res.sendStatus(200)
     }
