@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import SuspenseRouter from '@/components/SuspenseRouter'
 import { GlobalProvider } from '@/context/GlobalContext'
 import ScrollToTop from '@/components/ScrollToTop'
 
