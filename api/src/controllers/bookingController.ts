@@ -259,15 +259,9 @@ export const checkout = async (req: Request, res: Response) => {
 
     await booking.save()
 
-    if (booking.status === movininTypes.BookingStatus.Paid && body.paymentIntentId && body.customerId) {
-      if (!await confirm(user, booking, false)) {
-        return res.sendStatus(400)
-      }
-    }
-
-    if (body.payLater) {
+    if (body.payLater || (booking.status === movininTypes.BookingStatus.Paid && body.paymentIntentId && body.customerId)) {
       // Send confirmation email
-      if (!await confirm(user, booking, body.payLater)) {
+      if (!await confirm(user, booking, body.payLater!)) {
         return res.sendStatus(400)
       }
 
