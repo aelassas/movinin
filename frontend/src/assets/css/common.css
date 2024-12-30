@@ -12,6 +12,10 @@
   display: none !important;
 }
 
+#nprogress .bar {
+  background: #1a1a1a !important;
+}
+
 .bold {
   font-weight: 500 !important;
 }
