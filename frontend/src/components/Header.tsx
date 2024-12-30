@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   AppBar,
@@ -11,10 +11,9 @@ import {
   Button,
   Drawer,
   List,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
-  Link
+  ListItem
 } from '@mui/material'
 import {
   Menu as MenuIcon,
@@ -47,26 +46,28 @@ import Avatar from './Avatar'
 import * as langHelper from '@/common/langHelper'
 import * as helper from '@/common/helper'
 import { useGlobalContext, GlobalContextType } from '@/context/GlobalContext'
+import { useUserContext, UserContextType } from '@/context/UserContext'
+import { useInit } from '@/common/customHooks'
 
 import '@/assets/css/header.css'
 
 const flagHeight = 28
 
 interface HeaderProps {
-  user?: movininTypes.User
   hidden?: boolean
   hideSignin?: boolean
 }
 
-const ListItemLink = (props: any) => <ListItemButton component="a" {...props} />
-
 const Header = ({
-  user,
   hidden,
   hideSignin,
 }: HeaderProps) => {
   const navigate = useNavigate()
+
+  const { user, setUser, setUserLoaded } = useUserContext() as UserContextType
   const { notificationCount, setNotificationCount } = useGlobalContext() as GlobalContextType
+
+  const [currentUser, setCurrentUser] = useState<movininTypes.User>()
 
   const [lang, setLang] = useState(helper.getLanguage(env.DEFAULT_LANGUAGE))
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -75,7 +76,7 @@ const Header = ({
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<HTMLElement | null>(null)
   const [sideAnchorEl, setSideAnchorEl] = useState<HTMLElement | null>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
-  const [loading, setIsLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [isLoaded, setIsLoaded] = useState(false)
 
   const isMenuOpen = Boolean(anchorEl)
@@ -103,6 +104,76 @@ const Header = ({
       color: '#121212',
     },
   }
+
+  const exit = async () => {
+    setLoading(false)
+    setUserLoaded(true)
+
+    await UserService.signout(false, false)
+  }
+
+  useInit(async () => {
+    const _currentUser = UserService.getCurrentUser()
+
+    if (_currentUser) {
+      try {
+        const status = await UserService.validateAccessToken()
+
+        if (status === 200) {
+          const _user = await UserService.getUser(_currentUser._id)
+
+          if (_user) {
+            if (_user.blacklisted) {
+              await exit()
+              return
+            }
+            setUser(_user)
+            setCurrentUser(_user)
+            setIsSignedIn(true)
+            setLoading(false)
+            setUserLoaded(true)
+          } else {
+            await exit()
+          }
+        } else {
+          await exit()
+        }
+      } catch {
+        await exit()
+      }
+    } else {
+      await exit()
+    }
+  }, [])
+
+  useEffect(() => {
+    const language = langHelper.getLanguage()
+    setLang(helper.getLanguage(language))
+    langHelper.setLanguage(strings, language)
+  }, [])
+
+  useEffect(() => {
+    if (user) {
+      setCurrentUser(user)
+    }
+  }, [user])
+
+  useEffect(() => {
+    const init = async () => {
+      if (!hidden) {
+        if (currentUser) {
+          const notificationCounter = await NotificationService.getNotificationCounter(currentUser._id as string)
+          setIsSignedIn(true)
+          setNotificationCount(notificationCounter.count)
+          setIsLoaded(true)
+        } else {
+          setIsLoaded(true)
+        }
+      }
+    }
+
+    init()
+  }, [hidden, currentUser]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAccountMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -187,11 +258,13 @@ const Header = ({
   }
 
   const handleSettingsClick = () => {
+    handleMenuClose()
     navigate('/settings')
   }
 
   const handleSignout = async () => {
-    await UserService.signout()
+    await UserService.signout(true, false)
+    handleMenuClose()
   }
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -209,28 +282,6 @@ const Header = ({
   const handleNotificationsClick = () => {
     navigate('/notifications')
   }
-
-  useEffect(() => {
-    const language = langHelper.getLanguage()
-    setLang(helper.getLanguage(language))
-    langHelper.setLanguage(strings, language)
-  }, [])
-
-  useEffect(() => {
-    if (!hidden) {
-      if (user) {
-        NotificationService.getNotificationCounter(user._id as string).then((notificationCounter) => {
-          setIsSignedIn(true)
-          setNotificationCount(notificationCounter.count)
-          setIsLoading(false)
-          setIsLoaded(true)
-        })
-      } else {
-        setIsLoading(false)
-        setIsLoaded(true)
-      }
-    }
-  }, [hidden, user, setNotificationCount])
 
   const menuId = 'primary-account-menu'
   const renderMenu = (
@@ -343,47 +394,99 @@ const Header = ({
                 <IconButton edge="start" sx={classes.menuButton} color="inherit" aria-label="open drawer" onClick={handleSideMenuOpen}>
                   <MenuIcon />
                 </IconButton>
-                <Link href="/" className="logo">Movin&#39; In</Link>
+
+                <Button onClick={() => navigate('/')} className="logo">Movin&#39; In</Button>
               </>
             )}
             <>
-              <Drawer open={isSideMenuOpen} onClose={handleSideMenuClose} className="menu">
+              <Drawer open={isSideMenuOpen} onClose={handleSideMenuClose} className="menu side-menu">
                 <List sx={classes.list}>
-                  <ListItemLink href="/">
+                  <ListItem
+                    onClick={() => {
+                      navigate('/')
+                      handleSideMenuClose()
+                    }}
+                  >
                     <ListItemIcon><HomeIcon /></ListItemIcon>
                     <ListItemText primary={strings.HOME} />
-                  </ListItemLink>
+                  </ListItem>
                   {isSignedIn && (
-                    <ListItemLink href="/bookings">
+                    <ListItem
+                      onClick={() => {
+                        navigate('/bookings')
+                        handleSideMenuClose()
+                      }}
+                    >
                       <ListItemIcon><BookingsIcon /></ListItemIcon>
                       <ListItemText primary={strings.BOOKINGS} />
-                    </ListItemLink>
+                    </ListItem>
                   )}
-                  <ListItemLink href="/agencies">
+                  <ListItem
+                    onClick={() => {
+                      navigate('/agencies')
+                      handleSideMenuClose()
+                    }}
+                  >
                     <ListItemIcon><AgencyIcon /></ListItemIcon>
                     <ListItemText primary={strings.AGENCIES} />
-                  </ListItemLink>
-                  <ListItemLink href="/destinations">
+                  </ListItem>
+                  <ListItem
+                    onClick={() => {
+                      navigate('/destinations')
+                      handleSideMenuClose()
+                    }}
+                  >
                     <ListItemIcon><LocationIcon /></ListItemIcon>
                     <ListItemText primary={strings.LOCATIONS} />
-                  </ListItemLink>
-                  <ListItemLink href="/about">
+                  </ListItem>
+                  <ListItem
+                    onClick={() => {
+                      navigate('/about')
+                      handleSideMenuClose()
+                    }}
+                  >
                     <ListItemIcon><AboutIcon /></ListItemIcon>
                     <ListItemText primary={strings.ABOUT} />
-                  </ListItemLink>
-                  <ListItemLink href="/tos">
+                  </ListItem>
+                  <ListItem
+                    onClick={() => {
+                      navigate('/tos')
+                      handleSideMenuClose()
+                    }}
+                  >
                     <ListItemIcon><TosIcon /></ListItemIcon>
                     <ListItemText primary={strings.TOS} />
-                  </ListItemLink>
-                  <ListItemLink href="/contact">
+                  </ListItem>
+                  <ListItem
+                    onClick={() => {
+                      navigate('/contact')
+                      handleSideMenuClose()
+                    }}
+                  >
                     <ListItemIcon><MailIcon /></ListItemIcon>
                     <ListItemText primary={strings.CONTACT} />
-                  </ListItemLink>
+                  </ListItem>
                   {env.isMobile && !hideSignin && !isSignedIn && isLoaded && !loading && (
-                    <ListItemLink href="/sign-in">
-                      <ListItemIcon><LoginIcon /></ListItemIcon>
-                      <ListItemText primary={strings.SIGN_IN} />
-                    </ListItemLink>
+                    <>
+                      <ListItem
+                        onClick={() => {
+                          navigate('/sign-in')
+                          handleSideMenuClose()
+                        }}
+                      >
+                        <ListItemIcon><LoginIcon /></ListItemIcon>
+                        <ListItemText primary={strings.SIGN_IN} />
+                      </ListItem>
+                      <ListItem
+                        onClick={() => {
+                          navigate('/sign-up')
+                          handleSideMenuClose()
+                        }}
+                      >
+                        <ListItemIcon><SignUpIcon /></ListItemIcon>
+                        <ListItemText primary={suStrings.SIGN_UP} />
+                      </ListItem>
+                    </>
                   )}
                 </List>
               </Drawer>
@@ -420,7 +523,7 @@ const Header = ({
               )}
               {isSignedIn && (
                 <IconButton edge="end" aria-label="account" aria-controls={menuId} aria-haspopup="true" onClick={handleAccountMenuOpen} color="inherit" className="btn">
-                  <Avatar loggedUser={user} user={user} size="small" readonly />
+                  <Avatar loggedUser={currentUser} user={currentUser} size="small" readonly />
                 </IconButton>
               )}
             </div>
@@ -461,4 +564,4 @@ const Header = ({
   )
 }
 
-export default Header
+export default memo(Header)
