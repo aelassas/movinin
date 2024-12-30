@@ -10,6 +10,7 @@ import { IResolveParams } from '@/types'
 import { strings as commonStrings } from '@/lang/common'
 import env from '@/config/env.config'
 import * as UserService from '@/services/UserService'
+import { useUserContext, UserContextType } from '@/context/UserContext'
 
 import FacebookIcon from '@/assets/img/facebook-icon.png'
 import AppleIcon from '@/assets/img/apple-icon.png'
@@ -23,6 +24,7 @@ interface SocialLoginProps {
   facebook?: boolean
   apple?: boolean
   google?: boolean
+  redirectToHomepage?: boolean
   className?: string
   onError?: (error: any) => void
   onSignInError?: () => void
@@ -33,11 +35,14 @@ const SocialLogin = ({
   facebook,
   apple,
   google = true,
+  redirectToHomepage,
   className,
   onError,
   onSignInError,
   onBlackListed }: SocialLoginProps) => {
   const navigate = useNavigate()
+
+  const { setUser, setUserLoaded } = useUserContext() as UserContextType
 
   const loginSuccess = async (socialSignInType: movininTypes.SocialSignInType, accessToken: string, email: string, fullName: string, avatar?: string) => {
     const data: movininTypes.SignInPayload = {
@@ -57,7 +62,15 @@ const SocialLogin = ({
           onBlackListed()
         }
       } else {
-        navigate(0)
+        const user = await UserService.getUser(res.data._id)
+        setUser(user)
+        setUserLoaded(true)
+
+        if (redirectToHomepage) {
+          navigate('/')
+        } else {
+          navigate(0)
+        }
       }
     } else if (onSignInError) {
       onSignInError()

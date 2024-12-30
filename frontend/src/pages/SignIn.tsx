@@ -141,7 +141,7 @@ const SignIn = () => {
                 <Link href="/forgot-password">{strings.RESET_PASSWORD}</Link>
               </div>
 
-              <SocialLogin />
+              <SocialLogin redirectToHomepage />
 
               <div className="signin-buttons">
                 <Button variant="outlined" size="small" href="/sign-up" className="btn-margin btn-margin-bottom">
