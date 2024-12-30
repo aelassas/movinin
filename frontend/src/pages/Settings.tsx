@@ -23,13 +23,14 @@ import Backdrop from '@/components/SimpleBackdrop'
 import DatePicker from '@/components/DatePicker'
 import Avatar from '@/components/Avatar'
 import * as helper from '@/common/helper'
+import { useUserContext, UserContextType } from '@/context/UserContext'
 
 import '@/assets/css/settings.css'
 
 const Settings = () => {
   const navigate = useNavigate()
 
-  const [user, setUser] = useState<movininTypes.User>()
+  const { user, setUser } = useUserContext() as UserContextType
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
   const [location, setLocation] = useState('')
@@ -176,7 +177,7 @@ const Settings = () => {
   }
 
   return (
-    <Layout onLoad={onLoad} user={user} strict>
+    <Layout onLoad={onLoad} strict>
       {visible && user && (
         <div className="settings">
           <Paper className="settings-form settings-form-wrapper" elevation={10}>
