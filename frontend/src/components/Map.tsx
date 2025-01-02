@@ -4,7 +4,7 @@ import L, { LatLngExpression } from 'leaflet'
 import icon from 'leaflet/dist/images/marker-icon.png'
 import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 import * as movininTypes from ':movinin-types'
-import * as UserService from '@/services/UserService'
+// import * as UserService from '@/services/UserService'
 import { strings } from '@/lang/map'
 import * as LocationService from '@/services/LocationService'
 import * as helper from '@/common/helper'
@@ -94,15 +94,13 @@ const Map = ({
   //
   // Tile server
   //
-  const language = UserService.getLanguage()
 
-  let tileURL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+  const tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+  // const language = UserService.getLanguage()
+  // let tileURL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
   // if (language === 'fr') {
   //   tileURL = 'https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png'
   // }
-  if (language === 'el') {
-    tileURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-  }
 
   const getLocationMarkers = (): Marker[] => (
     (locations

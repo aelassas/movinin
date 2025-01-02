@@ -1,0 +1,78 @@
+import React, { useCallback, useEffect, useState } from 'react'
+import { Box, Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material'
+import { Close as CloseIcon } from '@mui/icons-material'
+import * as movininTypes from ':movinin-types'
+import env from '@/config/env.config'
+import Map from '@/components/Map'
+
+import '@/assets/css/map-dialog.css'
+
+interface MapDialogProps {
+  location?: movininTypes.Location
+  openMapDialog: boolean
+  onClose: () => void
+}
+
+const MapDialog = ({
+  location,
+  openMapDialog: openMapDialogProp,
+  onClose,
+}: MapDialogProps) => {
+  const [openMapDialog, setOpenMapDialog] = useState(openMapDialogProp)
+
+  useEffect(() => {
+    setOpenMapDialog(openMapDialogProp)
+  }, [openMapDialogProp])
+
+  const close = useCallback(() => {
+    setOpenMapDialog(false)
+    if (onClose) {
+      onClose()
+    }
+  }, [onClose])
+
+  return (
+    <Dialog
+      fullWidth={env.isMobile}
+      maxWidth={false}
+      open={openMapDialog}
+      onClose={() => {
+        close()
+      }}
+      sx={{
+        '& .MuiDialog-container': {
+          '& .MuiPaper-root': {
+            width: '90%',
+            height: '90%',
+          },
+        },
+      }}
+    >
+      <DialogTitle>
+        <Box display="flex" justifyContent="flex-end">
+          <Box>
+            <IconButton
+              onClick={() => {
+                close()
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        </Box>
+      </DialogTitle>
+      <DialogContent className="map-dialog-content">
+        {location && (
+          <Map
+            position={[location.latitude || 36.966428, location.longitude || -95.844032]}
+            initialZoom={location.latitude && location.longitude ? 10 : 2.5}
+            locations={[location]}
+            className="map"
+          />
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export default MapDialog

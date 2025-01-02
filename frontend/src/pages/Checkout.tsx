@@ -47,6 +47,9 @@ import Info from './Info'
 import SocialLogin from '@/components/SocialLogin'
 import CheckoutOptions from '@/components/CheckoutOptions'
 import Footer from '@/components/Footer'
+import Map from '@/components/Map'
+import ViewOnMapButton from '@/components/ViewOnMapButton'
+import MapDialog from '@/components/MapDialog'
 
 import '@/assets/css/checkout.css'
 
@@ -94,6 +97,7 @@ const Checkout = () => {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [bookingId, setBookingId] = useState<string>()
   const [sessionId, setSessionId] = useState<string>()
+  const [openMapDialog, setOpenMapDialog] = useState(false)
 
   const _fr = language === 'fr'
   const _locale = _fr ? fr : enUS
@@ -402,6 +406,17 @@ const Checkout = () => {
               <form onSubmit={handleSubmit}>
                 <div>
 
+                  {(location.latitude && location.longitude) && (
+                    <Map
+                      position={[location.latitude || 36.966428, location.longitude || -95.844032]}
+                      initialZoom={location.latitude && location.longitude ? 10 : 2.5}
+                      locations={[location]}
+                      className="map"
+                    >
+                      <ViewOnMapButton onClick={() => setOpenMapDialog(true)} />
+                    </Map>
+                  )}
+
                   <PropertyList
                     properties={[property]}
                     hideActions
@@ -641,6 +656,12 @@ const Checkout = () => {
       )}
       {noMatch && <NoMatch hideHeader />}
       {success && <Info message={payLater ? strings.PAY_LATER_SUCCESS : strings.SUCCESS} />}
+
+      <MapDialog
+        location={location}
+        openMapDialog={openMapDialog}
+        onClose={() => setOpenMapDialog(false)}
+      />
     </Layout>
   )
 }
