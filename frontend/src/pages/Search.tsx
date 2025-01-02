@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Box, Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material'
-import { Close as CloseIcon } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import env from '@/config/env.config'
 import * as helper from '@/common/helper'
-import { strings } from '@/lang/search'
 import * as LocationService from '@/services/LocationService'
 import * as AgencyService from '@/services/AgencyService'
 import Layout from '@/components/Layout'
@@ -17,8 +13,8 @@ import RentalTermFilter from '@/components/RentalTermFilter'
 import PropertyList from '@/components/PropertyList'
 import PropertyTypeFilter from '@/components/PropertyTypeFilter'
 import Map from '@/components/Map'
-
-import ViewOnMap from '@/assets/img/view-on-map.png'
+import ViewOnMapButton from '@/components/ViewOnMapButton'
+import MapDialog from '@/components/MapDialog'
 
 import '@/assets/css/search.css'
 
@@ -112,16 +108,7 @@ const Properties = () => {
                     locations={[location]}
                     className="map"
                   >
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setOpenMapDialog(true)
-                      }}
-                      className="view-on-map"
-                    >
-                      <img alt="View On Map" src={ViewOnMap} />
-                      <span>{strings.VIEW_ON_MAP}</span>
-                    </button>
+                    <ViewOnMapButton onClick={() => setOpenMapDialog(true)} />
                   </Map>
                 )}
                 <PropertyFilter
@@ -162,55 +149,11 @@ const Properties = () => {
         </div>
       )}
 
-      <Dialog
-        fullWidth={env.isMobile}
-        maxWidth={false}
-        open={openMapDialog}
-        onClose={() => {
-          setOpenMapDialog(false)
-        }}
-        sx={{
-          '& .MuiDialog-container': {
-            '& .MuiPaper-root': {
-              width: '80%',
-              height: '800px',
-            },
-          },
-        }}
-      >
-        <DialogTitle>
-          <Box display="flex" justifyContent="flex-end">
-            <Box>
-              <IconButton
-                onClick={() => {
-                  setOpenMapDialog(false)
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </Box>
-          </Box>
-        </DialogTitle>
-        <DialogContent className="map-dialog-content">
-          {location && (
-            <Map
-              position={[location.latitude || 36.966428, location.longitude || -95.844032]}
-              initialZoom={location.latitude && location.longitude ? 10 : 2.5}
-              locations={[location]}
-              className="map"
-            >
-              <button
-                type="button"
-                onClick={() => { }}
-                className="view-on-map"
-              >
-                <img alt="View On Map" src={ViewOnMap} />
-                <span>{strings.VIEW_ON_MAP}</span>
-              </button>
-            </Map>
-          )}
-        </DialogContent>
-      </Dialog>
+      <MapDialog
+        location={location}
+        openMapDialog={openMapDialog}
+        onClose={() => setOpenMapDialog(false)}
+      />
 
       {noMatch && <NoMatch hideHeader />}
     </Layout>
