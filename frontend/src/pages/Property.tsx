@@ -12,13 +12,14 @@ import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/properties'
 import * as helper from '@/common/helper'
+import * as PropertyService from '@/services/PropertyService'
+import * as UserService from '@/services/UserService'
 import PropertyInfo from '@/components/PropertyInfo'
 import NoMatch from './NoMatch'
 import ImageViewer from '@/components/ImageViewer'
 import AgencyBadge from '@/components/AgencyBadge'
 import DatePicker from '@/components/DatePicker'
-import * as PropertyService from '@/services/PropertyService'
-import * as UserService from '@/services/UserService'
+import Footer from '@/components/Footer'
 
 import '@/assets/css/property.css'
 
@@ -117,8 +118,8 @@ const Property = () => {
       {
         property && image
         && (
-          <>
-            <div className="main">
+          <div className="main-page">
+            <div className="property-card">
               <div className="property">
                 <div className="images-container">
                   {/* Main image */}
@@ -268,12 +269,14 @@ const Property = () => {
                 />
               )
             }
-          </>
+          </div>
         )
       }
 
       {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
       {noMatch && <NoMatch hideHeader />}
+
+      <Footer />
     </Layout>
   )
 }
