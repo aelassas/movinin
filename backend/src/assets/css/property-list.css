@@ -20,7 +20,7 @@ section.property-list article {
   color: #333;
   font-size: 12px;
   margin-bottom: 10px;
-  min-height: 430px;
+  /* min-height: 430px; */
   width: 800px;
   padding: 5px;
   display: flex;

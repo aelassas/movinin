@@ -303,7 +303,7 @@ const PropertyList = ({
                       booking={booking}
                       className="property-info"
                       language={language}
-                      description
+                      // description
                     />
                   </div>
 
