@@ -148,7 +148,7 @@ const PropertyBookings = () => {
                 property={property}
                 user={user}
                 language={language}
-                description
+                // description
               />
             </section>
 
