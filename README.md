@@ -112,3 +112,4 @@ You can also install the Android App by downloading the APK and installing it on
 ## License
 
 Movin' In is [MIT licensed](https://github.com/aelassas/movinin/blob/main/LICENSE).
+
