@@ -84,7 +84,7 @@ const Property = ({
           property={property}
           className="property-info"
           language={language}
-          description
+          // description
         />
       </div>
 
