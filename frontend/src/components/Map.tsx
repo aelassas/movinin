@@ -146,7 +146,7 @@ const Map = ({
 
   return (
     <>
-      {title && <h1 className="title">{title}</h1>}
+      {title && <h1 className="map-title">{title}</h1>}
       <MapContainer
         center={position}
         zoom={_initialZoom}

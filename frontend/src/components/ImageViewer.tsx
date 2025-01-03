@@ -156,7 +156,7 @@ const ImageViewer = ({
           {closeComponent || '×'}
         </span>
 
-        {title && <span className="title">{title}</span>}
+        {title && <span className="img-title">{title}</span>}
 
         {src.length > 1 && (
           <span
