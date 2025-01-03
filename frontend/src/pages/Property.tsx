@@ -6,7 +6,6 @@ import {
 } from '@mui/material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import Backdrop from '@/components/SimpleBackdrop'
 import Layout from '@/components/Layout'
 import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'
@@ -20,6 +19,7 @@ import ImageViewer from '@/components/ImageViewer'
 import AgencyBadge from '@/components/AgencyBadge'
 import DatePicker from '@/components/DatePicker'
 import Footer from '@/components/Footer'
+import Progress from '@/components/Progress'
 
 import '@/assets/css/property.css'
 
@@ -116,167 +116,169 @@ const Property = () => {
   return (
     <Layout onLoad={onLoad}>
       {
-        property && image
+        !loading && property && image
         && (
-          <div className="main-page">
-            <div className="property-card">
-              <div className="property">
-                <div className="images-container">
-                  {/* Main image */}
-                  <div className="main-image">
-                    <img
-                      className="main-image"
-                      alt=""
-                      src={image}
-                      onClick={() => setOpenImageDialog(true)}
+          <>
+            <div className="main-page">
+              <div className="property-card">
+                <div className="property">
+                  <div className="images-container">
+                    {/* Main image */}
+                    <div className="main-image">
+                      <img
+                        className="main-image"
+                        alt=""
+                        src={image}
+                        onClick={() => setOpenImageDialog(true)}
+                      />
+                    </div>
+
+                    {/* Additional images */}
+                    <div className="images">
+                      {
+                        images.map((_image, index) => (
+                          <div
+                            key={_image}
+                            className={`image${currentIndex === index ? ' selected' : ''}`}
+                            onClick={() => {
+                              setCurrentIndex(index)
+                              setImage(_image)
+                            }}
+                            role="button"
+                            tabIndex={0}
+                            aria-label="image"
+                          >
+                            <img alt="" className="image" src={_image} />
+                          </div>
+                        ))
+                      }
+                    </div>
+                  </div>
+
+                  {/* Property info */}
+                  <div className="right-panel">
+                    <div className="right-panel-header">
+                      <div className="name"><h2>{property.name}</h2></div>
+                      {priceLabel && <div className="price">{priceLabel}</div>}
+                    </div>
+                    <PropertyInfo
+                      property={property}
+                      language={language}
                     />
                   </div>
-
-                  {/* Additional images */}
-                  <div className="images">
-                    {
-                      images.map((_image, index) => (
-                        <div
-                          key={_image}
-                          className={`image${currentIndex === index ? ' selected' : ''}`}
-                          onClick={() => {
-                            setCurrentIndex(index)
-                            setImage(_image)
-                          }}
-                          role="button"
-                          tabIndex={0}
-                          aria-label="image"
-                        >
-                          <img alt="" className="image" src={_image} />
-                        </div>
-                      ))
-                    }
-                  </div>
                 </div>
 
-                {/* Property info */}
-                <div className="right-panel">
-                  <div className="right-panel-header">
-                    <div className="name"><h2>{property.name}</h2></div>
-                    {priceLabel && <div className="price">{priceLabel}</div>}
-                  </div>
-                  <PropertyInfo
-                    property={property}
-                    language={language}
-                  />
+                {/* Property description */}
+                <div className="description">
+                  <div dangerouslySetInnerHTML={{ __html: property.description }} />
                 </div>
-              </div>
 
-              {/* Property description */}
-              <div className="description">
-                <div dangerouslySetInnerHTML={{ __html: property.description }} />
-              </div>
+                <div className="property-footer">
+                  <AgencyBadge agency={property.agency} />
 
-              <div className="property-footer">
-                <AgencyBadge agency={property.agency} />
+                  {
+                    !hideAction
+                    && (
+                      <form
+                        className="action"
+                        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                          e.preventDefault()
 
-                {
-                  !hideAction
-                  && (
-                    <form
-                      className="action"
-                      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                        e.preventDefault()
+                          navigate('/checkout', {
+                            state: {
+                              propertyId: property._id,
+                              locationId: property.location._id,
+                              from,
+                              to
+                            }
+                          })
+                        }}
+                      >
+                        <FormControl className="from">
+                          <DatePicker
+                            label={commonStrings.FROM}
+                            value={from}
+                            minDate={new Date()}
+                            maxDate={maxDate}
+                            variant="outlined"
+                            required
+                            onChange={(date) => {
+                              if (date) {
+                                if (to && to.getTime() <= date.getTime()) {
+                                  setTo(undefined)
+                                }
 
-                        navigate('/checkout', {
-                          state: {
-                            propertyId: property._id,
-                            locationId: property.location._id,
-                            from,
-                            to
-                          }
-                        })
-                      }}
-                    >
-                      <FormControl className="from">
-                        <DatePicker
-                          label={commonStrings.FROM}
-                          value={from}
-                          minDate={new Date()}
-                          maxDate={maxDate}
-                          variant="outlined"
-                          required
-                          onChange={(date) => {
-                            if (date) {
-                              if (to && to.getTime() <= date.getTime()) {
-                                setTo(undefined)
+                                const __minDate = new Date(date)
+                                __minDate.setDate(date.getDate() + 1)
+                                setMinDate(__minDate)
+                              } else {
+                                setMinDate(_minDate)
                               }
 
-                              const __minDate = new Date(date)
-                              __minDate.setDate(date.getDate() + 1)
-                              setMinDate(__minDate)
-                            } else {
-                              setMinDate(_minDate)
-                            }
+                              setFrom(date || undefined)
+                            }}
+                            language={UserService.getLanguage()}
+                          />
+                        </FormControl>
+                        <FormControl className="to">
+                          <DatePicker
+                            label={commonStrings.TO}
+                            value={to}
+                            minDate={minDate}
+                            variant="outlined"
+                            required
+                            onChange={(date) => {
+                              if (date) {
+                                setTo(date)
+                                const _maxDate = new Date(date)
+                                _maxDate.setDate(_maxDate.getDate() - 1)
+                                setMaxDate(_maxDate)
+                              } else {
+                                setTo(undefined)
+                                setMaxDate(undefined)
+                              }
+                            }}
+                            language={UserService.getLanguage()}
+                          />
+                        </FormControl>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          className="btn-action btn-book"
+                        >
+                          {strings.BOOK}
+                        </Button>
+                      </form>
+                    )
+                  }
 
-                            setFrom(date || undefined)
-                          }}
-                          language={UserService.getLanguage()}
-                        />
-                      </FormControl>
-                      <FormControl className="to">
-                        <DatePicker
-                          label={commonStrings.TO}
-                          value={to}
-                          minDate={minDate}
-                          variant="outlined"
-                          required
-                          onChange={(date) => {
-                            if (date) {
-                              setTo(date)
-                              const _maxDate = new Date(date)
-                              _maxDate.setDate(_maxDate.getDate() - 1)
-                              setMaxDate(_maxDate)
-                            } else {
-                              setTo(undefined)
-                              setMaxDate(undefined)
-                            }
-                          }}
-                          language={UserService.getLanguage()}
-                        />
-                      </FormControl>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        className="btn-action btn-book"
-                      >
-                        {strings.BOOK}
-                      </Button>
-                    </form>
-                  )
-                }
+                </div>
 
               </div>
 
+              {
+                openImageDialog
+                && (
+                  <ImageViewer
+                    src={images}
+                    currentIndex={currentIndex}
+                    closeOnClickOutside
+                    title={property.name}
+                    onClose={() => {
+                      setOpenImageDialog(false)
+                    }}
+                  />
+                )
+              }
             </div>
 
-            {
-              openImageDialog
-              && (
-                <ImageViewer
-                  src={images}
-                  currentIndex={currentIndex}
-                  closeOnClickOutside
-                  title={property.name}
-                  onClose={() => {
-                    setOpenImageDialog(false)
-                  }}
-                />
-              )
-            }
-          </div>
+            <Footer />
+          </>
         )
       }
 
-      {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
+      {loading && <Progress />}
       {noMatch && <NoMatch hideHeader />}
-
-      <Footer />
     </Layout>
   )
 }
