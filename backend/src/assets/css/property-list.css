@@ -3,16 +3,13 @@ section.property-list {
   flex-direction: column;
   align-items: center;
   flex: 1 0 auto;
+  padding-top: 10px;
 }
 
 section.property-list .empty-list {
   margin-top: 15px;
   text-align: center;
   width: 250px;
-}
-
-section.property-list {
-  padding-top: 10px;
 }
 
 section.property-list article {
@@ -23,7 +20,7 @@ section.property-list article {
   color: #333;
   font-size: 12px;
   margin-bottom: 10px;
-  min-height: 430px;
+  /* min-height: 430px; */
   width: 800px;
   padding: 5px;
   display: flex;
@@ -35,9 +32,7 @@ section.property-list article div.left-panel {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  flex-basis: 200px;
-  flex-grow: 0;
-  flex-shrink: 0;
+  flex: 0 0 200px;
 }
 
 section.property-list article div.left-panel .property-img {
@@ -71,12 +66,6 @@ section.property-list article div.middle-panel div.name {
 }
 
 section.property-list article div.middle-panel div.name h2 {
-  font-size: 2em;
-  font-weight: 700;
-  text-size-adjust: none;
-  line-height: 1.3em;
-  word-break: break-word;
-  display: inline;
   font-size: 2em;
   font-weight: 700;
   text-size-adjust: none;
