@@ -6,7 +6,6 @@ import {
   FormHelperText,
   Button,
   Paper,
-  Link
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
@@ -17,13 +16,17 @@ import { strings as cpStrings } from '@/lang/change-password'
 import { strings as rpStrings } from '@/lang/reset-password'
 import { strings as mStrings } from '@/lang/master'
 import { strings } from '@/lang/activate'
+import { useUserContext, UserContextType } from '@/context/UserContext'
 import NoMatch from './NoMatch'
 import * as helper from '@/common/helper'
+import Footer from '@/components/Footer'
 
 import '@/assets/css/activate.css'
 
 const Activate = () => {
   const navigate = useNavigate()
+
+  const { setUser, setUserLoaded } = useUserContext() as UserContextType
   const [userId, setUserId] = useState('')
   const [email, setEmail] = useState('')
   const [token, setToken] = useState('')
@@ -39,10 +42,12 @@ const Activate = () => {
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
+    setConfirmPasswordError(false)
   }
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(e.target.value)
+    setConfirmPasswordError(false)
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
@@ -70,10 +75,13 @@ const Activate = () => {
 
       const status = await UserService.activate(data)
       if (status === 200) {
-        console.log(email)
         const signInResult = await UserService.signin({ email, password })
-        console.log(signInResult)
+
         if (signInResult.status === 200) {
+          const user = await UserService.getUser(signInResult.data._id)
+          setUser(user)
+          setUserLoaded(true)
+
           const _status = await UserService.deleteTokens(userId)
 
           if (_status === 200) {
@@ -161,11 +169,11 @@ const Activate = () => {
             <h1>{strings.ACTIVATE_HEADING}</h1>
             <div className="resend-form-content">
               <span>{strings.TOKEN_EXPIRED}</span>
-              <Button type="button" variant="contained" size="small" className="btn-primary btn-resend" onClick={handleResend}>
+              <Button type="button" variant="contained" className="btn-primary btn-resend" onClick={handleResend}>
                 {mStrings.RESEND}
               </Button>
               <p className="go-to-home">
-                <Link href="/">{commonStrings.GO_TO_HOME}</Link>
+                <Button variant="text" onClick={() => navigate('/')} className="btn-lnk">{commonStrings.GO_TO_HOME}</Button>
               </p>
             </div>
           </Paper>
@@ -197,14 +205,18 @@ const Activate = () => {
                   required
                 />
                 <FormHelperText error={confirmPasswordError || passwordLengthError}>
-                  {confirmPasswordError ? commonStrings.PASSWORDS_DONT_MATCH : passwordLengthError ? commonStrings.PASSWORD_ERROR : ''}
+                  {
+                    (confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH)
+                    || (passwordLengthError && commonStrings.PASSWORD_ERROR)
+                    || ''
+                  }
                 </FormHelperText>
               </FormControl>
               <div className="buttons">
-                <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
+                <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" variant="contained" disableElevation>
                   {reset ? commonStrings.UPDATE : strings.ACTIVATE}
                 </Button>
-                <Button className="btn-margin-bottom" size="small" variant="outlined" href="/">
+                <Button variant="outlined" color="primary" className="btn-margin-bottom" onClick={() => navigate('/')}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>
@@ -213,6 +225,8 @@ const Activate = () => {
         </div>
       )}
       {noMatch && <NoMatch hideHeader />}
+
+      {(resend || visible) && <Footer />}
     </Layout>
   )
 }
