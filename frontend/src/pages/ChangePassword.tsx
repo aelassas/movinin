@@ -14,6 +14,7 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/change-password'
 import * as UserService from '@/services/UserService'
 import Backdrop from '@/components/SimpleBackdrop'
+import Footer from '@/components/Footer'
 import * as helper from '@/common/helper'
 
 import '@/assets/css/change-password.css'
@@ -35,10 +36,12 @@ const ChangePassword = () => {
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(e.target.value)
+    setConfirmPasswordError(false)
   }
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(e.target.value)
+    setConfirmPasswordError(false)
   }
 
   const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,14 +184,13 @@ const ChangePassword = () => {
               <FormHelperText error={confirmPasswordError}>{confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH}</FormHelperText>
             </FormControl>
             <div className="buttons">
-              <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
+              <Button type="submit" className="btn-primary btn-margin btn-margin-bottom btn-cp" variant="contained">
                 {commonStrings.RESET_PASSWORD}
               </Button>
               <Button
                 className="btn-margin-bottom btn-cp"
-                size="small"
-                variant="contained"
-                color="inherit"
+                variant="outlined"
+                color="primary"
                 onClick={() => {
                   navigate('/')
                 }}
@@ -200,6 +202,7 @@ const ChangePassword = () => {
         </Paper>
       </div>
 
+      <Footer />
       {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
     </Layout>
   )

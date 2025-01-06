@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Input,
   InputLabel,
@@ -6,21 +7,23 @@ import {
   FormHelperText,
   Button,
   Paper,
-  Link
 } from '@mui/material'
 import validator from 'validator'
 import * as movininTypes from ':movinin-types'
 import * as UserService from '@/services/UserService'
+import * as helper from '@/common/helper'
 import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/reset-password'
-import NoMatch from './NoMatch'
-import * as helper from '@/common/helper'
 import SocialLogin from '@/components/SocialLogin'
+import NoMatch from './NoMatch'
+import Footer from '@/components/Footer'
 
 import '@/assets/css/forgot-password.css'
 
 const ForgotPassword = () => {
+  const navigate = useNavigate()
+
   const [email, setEmail] = useState('')
   const [visible, setVisible] = useState(false)
   const [error, setError] = useState(false)
@@ -49,9 +52,9 @@ const ForgotPassword = () => {
             setEmailValid(true)
             return false
           }
-            setError(false)
-            setEmailValid(true)
-            return true
+          setError(false)
+          setEmailValid(true)
+          return true
         } catch (err) {
           helper.error(err)
           setError(false)
@@ -98,6 +101,12 @@ const ForgotPassword = () => {
     }
   }
 
+  const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e)
+    }
+  }
+
   const onLoad = (user?: movininTypes.User) => {
     if (user) {
       setNoMatch(true)
@@ -106,56 +115,54 @@ const ForgotPassword = () => {
     }
   }
 
-  const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.key === 'Enter') {
-      handleSubmit(e)
-    }
-  }
-
   return (
     <Layout onLoad={onLoad} strict={false}>
       {visible && (
-        <div className="forgot-password">
-          <Paper className="forgot-password-form" elevation={10}>
-            <h1 className="forgot-password-title">
-              {' '}
-              {strings.RESET_PASSWORD_HEADING}
-              {' '}
-            </h1>
-            {sent && (
-              <div>
-                <span>{strings.EMAIL_SENT}</span>
-                <p>
-                  <Link href="/">{commonStrings.GO_TO_HOME}</Link>
-                </p>
-              </div>
-            )}
-            {!sent && (
-              <form onSubmit={handleSubmit}>
-                <span>{strings.RESET_PASSWORD}</span>
-                <FormControl fullWidth margin="dense">
-                  <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
-                  <Input onChange={handleEmailChange} onKeyDown={handleEmailKeyDown} onBlur={handleEmailBlur} type="text" error={error || !emailValid} autoComplete="off" required />
-                  <FormHelperText error={error || !emailValid}>
-                    {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
-                    {(error && strings.EMAIL_ERROR) || ''}
-                  </FormHelperText>
-                </FormControl>
-
-                <SocialLogin />
-
-                <div className="buttons">
-                  <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
-                    {strings.RESET}
-                  </Button>
-                  <Button className="btn-margin-bottom" size="small" variant="outlined" href="/">
-                    {commonStrings.CANCEL}
-                  </Button>
+        <>
+          <div className="forgot-password">
+            <Paper className="forgot-password-form" elevation={10}>
+              <h1 className="forgot-password-title">
+                {' '}
+                {strings.RESET_PASSWORD_HEADING}
+                {' '}
+              </h1>
+              {sent && (
+                <div>
+                  <span>{strings.EMAIL_SENT}</span>
+                  <p>
+                    <Button variant="text" onClick={() => navigate('/')} className="btn-lnk">{commonStrings.GO_TO_HOME}</Button>
+                  </p>
                 </div>
-              </form>
-            )}
-          </Paper>
-        </div>
+              )}
+              {!sent && (
+                <form onSubmit={handleSubmit}>
+                  <span>{strings.RESET_PASSWORD}</span>
+                  <FormControl fullWidth margin="dense">
+                    <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
+                    <Input onChange={handleEmailChange} onKeyDown={handleEmailKeyDown} onBlur={handleEmailBlur} type="text" error={error || !emailValid} autoComplete="off" required />
+                    <FormHelperText error={error || !emailValid}>
+                      {(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}
+                      {(error && strings.EMAIL_ERROR) || ''}
+                    </FormHelperText>
+                  </FormControl>
+
+                  <SocialLogin />
+
+                  <div className="buttons">
+                    <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" variant="contained" disableElevation>
+                      {strings.RESET}
+                    </Button>
+                    <Button variant="outlined" color="primary" className="btn-margin-bottom" onClick={() => navigate('/')}>
+                      {commonStrings.CANCEL}
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </Paper>
+          </div>
+
+          <Footer />
+        </>
       )}
       {noMatch && <NoMatch hideHeader />}
     </Layout>
