@@ -43,13 +43,13 @@ import Layout from '@/components/Layout'
 import Error from '@/components/Error'
 import DatePicker from '@/components/DatePicker'
 import NoMatch from './NoMatch'
-import Info from './Info'
 import SocialLogin from '@/components/SocialLogin'
 import CheckoutOptions from '@/components/CheckoutOptions'
 import Footer from '@/components/Footer'
 import Map from '@/components/Map'
 import ViewOnMapButton from '@/components/ViewOnMapButton'
 import MapDialog from '@/components/MapDialog'
+import CheckoutStatus from '@/components/CheckoutStatus'
 
 import '@/assets/css/checkout.css'
 
@@ -659,7 +659,16 @@ const Checkout = () => {
         </>
       )}
       {noMatch && <NoMatch hideHeader />}
-      {success && <Info message={payLater ? strings.PAY_LATER_SUCCESS : strings.SUCCESS} />}
+
+      {success && bookingId && (
+        <CheckoutStatus
+          bookingId={bookingId}
+          language={language}
+          payLater={payLater}
+          status="success"
+          className="status"
+        />
+      )}
 
       <MapDialog
         location={location}

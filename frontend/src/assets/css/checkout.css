@@ -18,6 +18,10 @@ div.checkout .payment-radio-disabled span.payment-info {
   color: #919191 !important;
 }
 
+.status {
+  margin: 40px 0 0 30px;
+}
+
 @media only screen and (width <=960px) {
   div.checkout {
     flex: 0 1 auto;
