@@ -5,7 +5,7 @@ div.settings {
   flex: 1 0 auto;
   justify-content: center;
   align-items: center;
-  margin: 45px 0;
+  margin: 80px 0 200px 0;
   transform: translate3d(0, 0, 0);
 }
 
