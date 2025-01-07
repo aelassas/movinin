@@ -4,7 +4,6 @@ import url from 'url'
 import path from 'path'
 import fs from 'node:fs/promises'
 import { nanoid } from 'nanoid'
-import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import app from '../src/app'
 import * as databaseHelper from '../src/common/databaseHelper'
@@ -71,10 +70,8 @@ afterAll(async () => {
   await LocationValue.deleteMany({ _id: { $in: [countryValue1Id, countryValue2Id] } })
   await Country.deleteOne({ _id: countryId })
 
-  if (mongoose.connection.readyState) {
-    await testHelper.close()
-    await databaseHelper.close()
-  }
+  await testHelper.close()
+  await databaseHelper.close()
 })
 
 //
