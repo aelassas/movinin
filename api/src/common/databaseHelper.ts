@@ -55,9 +55,10 @@ export const connect = async (uri: string, ssl: boolean, debug: boolean): Promis
  * @returns {Promise<void>}
  */
 export const close = async (force: boolean = false): Promise<void> => {
-  if (mongoose.connection.readyState) {
-    await mongoose.connection.close(force)
-  }
+  // if (mongoose.connection.readyState) {
+  //   await mongoose.connection.close(force)
+  // }
+  await mongoose.connection.close(force)
 }
 /**
  * Initialize locations.
@@ -222,18 +223,16 @@ const createCollection = async<T>(model: Model<T>) => {
  */
 export const initialize = async (): Promise<boolean> => {
   try {
-    if (mongoose.connection.readyState) {
-      await createCollection<env.Booking>(Booking)
-      await createCollection<env.LocationValue>(LocationValue)
-      await createCollection<env.Country>(Country)
-      await createCollection<env.Location>(Location)
-      await createCollection<env.Notification>(Notification)
-      await createCollection<env.NotificationCounter>(NotificationCounter)
-      await createCollection<env.Property>(Property)
-      await createCollection<env.PushToken>(PushToken)
-      await createCollection<env.Token>(Token)
-      await createCollection<env.User>(User)
-    }
+    await createCollection<env.Booking>(Booking)
+    await createCollection<env.LocationValue>(LocationValue)
+    await createCollection<env.Country>(Country)
+    await createCollection<env.Location>(Location)
+    await createCollection<env.Notification>(Notification)
+    await createCollection<env.NotificationCounter>(NotificationCounter)
+    await createCollection<env.Property>(Property)
+    await createCollection<env.PushToken>(PushToken)
+    await createCollection<env.Token>(Token)
+    await createCollection<env.User>(User)
 
     //
     // Update Booking TTL index if configuration changes

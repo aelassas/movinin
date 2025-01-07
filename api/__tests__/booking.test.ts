@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import request from 'supertest'
 import { nanoid } from 'nanoid'
-import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import app from '../src/app'
 import * as databaseHelper from '../src/common/databaseHelper'
@@ -95,25 +94,23 @@ beforeAll(async () => {
 // Closing and cleaning the database connection after running the test suite
 //
 afterAll(async () => {
-  if (mongoose.connection.readyState) {
-    await testHelper.close()
+  await testHelper.close()
 
-    // delete the agency
-    await testHelper.deleteAgency(AGENCY_ID)
+  // delete the agency
+  await testHelper.deleteAgency(AGENCY_ID)
 
-    // delete the location
-    await testHelper.deleteLocation(LOCATION_ID)
+  // delete the location
+  await testHelper.deleteLocation(LOCATION_ID)
 
-    // delete the property
-    await Property.deleteMany({ _id: { $in: [PROPERTY1_ID, PROPERTY2_ID] } })
+  // delete the property
+  await Property.deleteMany({ _id: { $in: [PROPERTY1_ID, PROPERTY2_ID] } })
 
-    // delete renters
-    await User.deleteMany({ _id: { $in: [RENTER1_ID, RENTER2_ID] } })
-    await Notification.deleteMany({ user: { $in: [RENTER1_ID, RENTER2_ID] } })
-    await NotificationCounter.deleteMany({ user: { $in: [RENTER1_ID, RENTER2_ID] } })
+  // delete renters
+  await User.deleteMany({ _id: { $in: [RENTER1_ID, RENTER2_ID] } })
+  await Notification.deleteMany({ user: { $in: [RENTER1_ID, RENTER2_ID] } })
+  await NotificationCounter.deleteMany({ user: { $in: [RENTER1_ID, RENTER2_ID] } })
 
-    await databaseHelper.close()
-  }
+  await databaseHelper.close()
 })
 
 //
