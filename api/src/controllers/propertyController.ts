@@ -42,6 +42,8 @@ export const create = async (req: Request, res: Response) => {
       minimumAge,
       location,
       address,
+      latitude,
+      longitude,
       price,
       hidden,
       cancellation,
@@ -64,6 +66,8 @@ export const create = async (req: Request, res: Response) => {
       minimumAge,
       location,
       address,
+      latitude,
+      longitude,
       price,
       hidden,
       cancellation,
@@ -159,6 +163,8 @@ export const update = async (req: Request, res: Response) => {
         minimumAge,
         location,
         address,
+        latitude,
+        longitude,
         price,
         hidden,
         cancellation,
@@ -181,6 +187,8 @@ export const update = async (req: Request, res: Response) => {
       property.minimumAge = minimumAge
       property.location = new mongoose.Types.ObjectId(location)
       property.address = address
+      property.latitude = latitude
+      property.longitude = longitude
       property.price = price
       property.hidden = hidden
       property.cancellation = cancellation

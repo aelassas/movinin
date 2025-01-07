@@ -61,20 +61,6 @@ const SignIn = () => {
           const user = await UserService.getUser(res.data._id)
           setUser(user)
           setUserLoaded(true)
-
-          const params = new URLSearchParams(window.location.search)
-          if (params.has('from')) {
-            const from = params.get('from')
-            if (from === 'checkout') {
-              navigate(`/checkout${window.location.search}`)
-            } else {
-              // navigate(0)
-              navigate('/')
-            }
-          } else {
-            // navigate(0)
-            navigate('/')
-          }
         }
       } else {
         setError(true)
@@ -97,15 +83,23 @@ const SignIn = () => {
 
     if (user) {
       const params = new URLSearchParams(window.location.search)
+
       if (params.has('from')) {
         const from = params.get('from')
         if (from === 'checkout') {
-          navigate(`/checkout${window.location.search}`)
+          navigate('/checkout', {
+            state: {
+              propertyId: params.get('p'),
+              locationId: params.get('l'),
+              from: new Date(Number(params.get('f'))),
+              to: new Date(Number(params.get('t'))),
+            }
+          })
         } else {
-          navigate(`/${window.location.search}`)
+          navigate('/')
         }
       } else {
-        navigate(`/${window.location.search}`)
+        navigate('/')
       }
     } else {
       setVisible(true)

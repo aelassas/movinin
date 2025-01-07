@@ -564,6 +564,8 @@ export interface Property extends Document {
   minimumAge: number
   location: Types.ObjectId
   address?: string
+  latitude?: number
+  longitude?: number
   price: number
   hidden?: boolean
   cancellation?: number

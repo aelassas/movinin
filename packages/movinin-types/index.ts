@@ -311,6 +311,8 @@ export interface Property {
   minimumAge: number
   location: Location
   address?: string
+  latitude?: number
+  longitude?: number
   price: number
   hidden: boolean
   cancellation: number
@@ -337,6 +339,8 @@ export interface CreatePropertyPayload {
   minimumAge: number
   location?: string
   address: string
+  latitude?: number
+  longitude?: number
   price: number
   hidden: boolean
   cancellation: number

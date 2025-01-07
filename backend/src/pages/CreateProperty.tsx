@@ -31,6 +31,7 @@ import PropertyTypeList from '@/components/PropertyTypeList'
 import ImageEditor from '@/components/ImageEditor'
 import RentalTermList from '@/components/RentalTermList'
 import Backdrop from '@/components/SimpleBackdrop'
+import PositionInput from '@/components/PositionInput'
 
 import '@/assets/css/create-property.css'
 
@@ -69,6 +70,8 @@ const CreateProperty = () => {
   const [imageViewerOpen, setImageViewerOpen] = useState(false)
   const [editorState, setEditorState] = useState<EditorState>()
   const [rentalTerm, setRentalTerm] = useState('')
+  const [latitude, setLatitude] = useState('')
+  const [longitude, setLongitude] = useState('')
   const [loading, setLoading] = useState(false)
 
   const createPropertyRef = useRef<HTMLDivElement>(null)
@@ -244,6 +247,8 @@ const CreateProperty = () => {
         minimumAge: Number.parseInt(minimumAge, 10),
         location: location?._id,
         address,
+        latitude: latitude ? Number(latitude) : undefined,
+        longitude: longitude ? Number(longitude) : undefined,
         price: Number(price),
         hidden,
         cancellation: movininHelper.extraToNumber(cancellation),
@@ -349,6 +354,26 @@ const CreateProperty = () => {
                 value={address}
                 autoComplete="off"
                 onChange={handleAddressChange}
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="dense">
+              <InputLabel>{commonStrings.LATITUDE}</InputLabel>
+              <PositionInput
+                value={latitude}
+                onChange={(e) => {
+                  setLatitude(e.target.value)
+                }}
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="dense">
+              <InputLabel>{commonStrings.LONGITUDE}</InputLabel>
+              <PositionInput
+                value={longitude}
+                onChange={(e) => {
+                  setLongitude(e.target.value)
+                }}
               />
             </FormControl>
 

@@ -31,6 +31,7 @@ import LocationSelectList from '@/components/LocationSelectList'
 import PropertyTypeList from '@/components/PropertyTypeList'
 import ImageEditor from '@/components/ImageEditor'
 import RentalTermList from '@/components/RentalTermList'
+import PositionInput from '@/components/PositionInput'
 
 import '@/assets/css/create-property.css'
 
@@ -75,6 +76,8 @@ const UpdateProperty = () => {
   const [imageViewerOpen, setImageViewerOpen] = useState(false)
   const [editorState, setEditorState] = useState<EditorState>()
   const [rentalTerm, setRentalTerm] = useState('')
+  const [latitude, setLatitude] = useState('')
+  const [longitude, setLongitude] = useState('')
 
   const createPropertyRef = useRef<HTMLDivElement>(null)
 
@@ -244,6 +247,8 @@ const UpdateProperty = () => {
         minimumAge: Number.parseInt(minimumAge, 10),
         location: location?._id,
         address,
+        latitude: latitude ? Number(latitude) : undefined,
+        longitude: longitude ? Number(longitude) : undefined,
         price: Number(price),
         hidden,
         cancellation: movininHelper.extraToNumber(cancellation),
@@ -313,6 +318,8 @@ const UpdateProperty = () => {
               setMinimumAge(_property.minimumAge.toString())
               setLocation({ _id: _property.location._id, name: _property.location.name })
               setAddress(_property.address || '')
+              setLatitude((_property.latitude && _property.latitude.toString()) || '')
+              setLongitude((_property.longitude && _property.longitude.toString()) || '')
               setPrice(_property.price.toString())
               setHidden(_property.hidden)
               setCancellation(movininHelper.extraToString(_property.cancellation))
@@ -417,6 +424,26 @@ const UpdateProperty = () => {
                   value={address}
                   autoComplete="off"
                   onChange={handleAddressChange}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{commonStrings.LATITUDE}</InputLabel>
+                <PositionInput
+                  value={latitude}
+                  onChange={(e) => {
+                    setLatitude(e.target.value)
+                  }}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{commonStrings.LONGITUDE}</InputLabel>
+                <PositionInput
+                  value={longitude}
+                  onChange={(e) => {
+                    setLongitude(e.target.value)
+                  }}
                 />
               </FormControl>
 
