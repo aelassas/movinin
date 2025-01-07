@@ -98,6 +98,12 @@ const propertySchema = new Schema<env.Property>(
     address: {
       type: String,
     },
+    latitude: {
+      type: Number,
+    },
+    longitude: {
+      type: Number,
+    },
     price: {
       type: Number,
       required: [true, "can't be blank"],

@@ -136,6 +136,8 @@ export const confirm = async (user: env.User, booking: env.Booking, payLater: bo
         ${i18n.t('BOOKING_CONFIRMED_PART3')}${property.agency.fullName}${i18n.t('BOOKING_CONFIRMED_PART4')}${i18n.t('BOOKING_CONFIRMED_PART5')}`
       + `${from} ${i18n.t('BOOKING_CONFIRMED_PART6')}`
       + `${property.name}${i18n.t('BOOKING_CONFIRMED_PART7')}`
+      + `${((property.address && (`<br><br>${i18n.t('BOOKING_CONFIRMED_ADDRESS')}${property.address}`)) || '')}`
+      + `${((property.latitude && property.longitude && (`<br><br>${i18n.t('BOOKING_CONFIRMED_MAP_PART1')}<a href='https://maps.google.com/?q=${property.latitude},${property.longitude}'>${i18n.t('BOOKING_CONFIRMED_MAP_PART2')}</a>`)) || '')}`
       + `<br><br>${i18n.t('BOOKING_CONFIRMED_PART8')}<br><br>`
       + `${i18n.t('BOOKING_CONFIRMED_PART9')}${property.agency.fullName}${i18n.t('BOOKING_CONFIRMED_PART10')}${i18n.t('BOOKING_CONFIRMED_PART11')}`
       + `${to} ${i18n.t('BOOKING_CONFIRMED_PART12')}`
