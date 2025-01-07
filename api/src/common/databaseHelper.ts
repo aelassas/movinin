@@ -223,16 +223,18 @@ const createCollection = async<T>(model: Model<T>) => {
  */
 export const initialize = async (): Promise<boolean> => {
   try {
-    await createCollection<env.Booking>(Booking)
-    await createCollection<env.LocationValue>(LocationValue)
-    await createCollection<env.Country>(Country)
-    await createCollection<env.Location>(Location)
-    await createCollection<env.Notification>(Notification)
-    await createCollection<env.NotificationCounter>(NotificationCounter)
-    await createCollection<env.Property>(Property)
-    await createCollection<env.PushToken>(PushToken)
-    await createCollection<env.Token>(Token)
-    await createCollection<env.User>(User)
+    if (mongoose.connection.readyState) {
+      await createCollection<env.Booking>(Booking)
+      await createCollection<env.LocationValue>(LocationValue)
+      await createCollection<env.Country>(Country)
+      await createCollection<env.Location>(Location)
+      await createCollection<env.Notification>(Notification)
+      await createCollection<env.NotificationCounter>(NotificationCounter)
+      await createCollection<env.Property>(Property)
+      await createCollection<env.PushToken>(PushToken)
+      await createCollection<env.Token>(Token)
+      await createCollection<env.User>(User)
+    }
 
     //
     // Update Booking TTL index if configuration changes
