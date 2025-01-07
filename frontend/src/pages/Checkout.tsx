@@ -548,7 +548,7 @@ const Checkout = () => {
                           </table>
                         </div>
 
-                        <SocialLogin />
+                        <SocialLogin reloadPage />
                       </div>
                     </div>
                   )}
