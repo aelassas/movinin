@@ -67,7 +67,7 @@ You can install the Android app on any Android device.
 
 Open the Camera app and point it at this code. Then tap the notification that appears.
 
-![QR](https://movin-in.github.io/content/qr-code-4.2.png)
+![QR](https://movin-in.github.io/content/qr-code-4.3.png)
 
 ### How to install the Mobile App on Android
 
@@ -79,7 +79,7 @@ Open the Camera app and point it at this code. Then tap the notification that ap
 
 You can also install the Android App by downloading the APK and installing it on any Android device.
 
-* [Download APK](https://github.com/aelassas/movinin/releases/download/v4.2/movinin-4.2.apk)
+* [Download APK](https://github.com/aelassas/movinin/releases/download/v4.3/movinin-4.3.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
