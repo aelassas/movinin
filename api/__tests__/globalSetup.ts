@@ -1,6 +1,5 @@
 import 'dotenv/config'
 import bcrypt from 'bcrypt'
-import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import * as env from '../src/config/env.config'
 import * as logger from '../src/common/logger'
@@ -26,10 +25,8 @@ export default async function globalSetup() {
         await admin.save()
         logger.info('globalSetup: Admin user created:', admin.id)
       }
-      if (mongoose.connection.readyState) {
-        await databaseHelper.close()
-        logger.info('Database connection closed')
-      }
+      await databaseHelper.close()
+      logger.info('Database connection closed')
     }
   } catch (err) {
     logger.error('Error while running global setup', err)
