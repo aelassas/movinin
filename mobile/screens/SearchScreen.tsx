@@ -14,7 +14,7 @@ import RentalTermFilter from '@/components/RentalTermFilter'
 import PropertyTypeFilter from '@/components/PropertyTypeFilter'
 import Indicator from '@/components/Indicator'
 
-const PropertiesScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Properties'>) => {
+const SearchScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Properties'>) => {
   const isFocused = useIsFocused()
   const [reload, setReload] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default PropertiesScreen
+export default SearchScreen
