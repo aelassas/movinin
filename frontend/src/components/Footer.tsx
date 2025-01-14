@@ -10,6 +10,7 @@ import {
 } from '@mui/icons-material'
 import { strings } from '@/lang/footer'
 import NewsletterForm from '@/components/NewsletterForm'
+import env from '@/config/env.config'
 
 import SecurePayment from '@/assets/img/secure-payment.png'
 import '@/assets/css/footer.css'
@@ -42,7 +43,7 @@ const Footer = () => {
           </ul>
           <div className="footer-contact">
             <MailOutline className="icon" />
-            <a href="mailto:info@movinin.io">info@movinin.io</a>
+            <a href={`mailto:${env.CONTACT_EMAIL}`}>{env.CONTACT_EMAIL}</a>
           </div>
           <div className="footer-contact">
             <IconButton href="https://www.facebook.com/" target="_blank" aria-label="Facebook" className="social-icon"><FacebookIcon /></IconButton>
