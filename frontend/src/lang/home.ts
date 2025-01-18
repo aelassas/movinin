@@ -1,5 +1,6 @@
 import LocalizedStrings from 'localized-strings'
 import * as langHelper from '@/common/langHelper'
+import env from '@/config/env.config'
 
 const strings = new LocalizedStrings({
   fr: {
@@ -20,10 +21,10 @@ const strings = new LocalizedStrings({
     SERVICE_INSTANT_BOOKING: "Pas d'attente ! Une fois que vous avez choisi votre propriété et terminé votre réservation, vous recevrez une confirmation immédiate, garantissant un processus de location fluide et sans tracas.",
     SERVICES_SUPPORT_TITLE: 'Assistance client 24h/24 et 7j/7',
     SERVICES_SUPPORT: "Que vous réserviez une propriété, ayez besoin d'aide ou ayez des questions, notre équipe d'assistance dédiée est disponible 24h/24.",
-    CUSTOMER_CARE_TITLE: "Service client Movin' In",
+    CUSTOMER_CARE_TITLE: `Service client ${env.WEBSITE_NAME}`,
     CONTACT_US: 'Contactez-nous',
     CUSTOMER_CARE_SUBTITLE: 'Toujours là pour vous aider',
-    CUSTOMER_CARE_TEXT: "Chez Movin' In, nous nous engageons à fournir une assistance rapide et fiable pour garantir que votre expérience de location de propriété soit fluide et agréable du début à la fin.",
+    CUSTOMER_CARE_TEXT: `Chez ${env.WEBSITE_NAME}, nous nous engageons à fournir une assistance rapide et fiable pour garantir que votre expérience de location de propriété soit fluide et agréable du début à la fin.`,
     CUSTOMER_CARE_ASSISTANCE: 'Assistance 24h/24 et 7j/7',
     CUSTOMER_CARE_MODIFICATION: 'Demandes et modifications',
     CUSTOMER_CARE_GUIDANCE: 'Conseils pour la sélection de biens',
@@ -47,10 +48,10 @@ const strings = new LocalizedStrings({
     SERVICE_INSTANT_BOOKING: "No waiting around! Once you choose your property and complete your booking, you'll receive an immediate confirmation, ensuring a smooth and hassle-free rental process.",
     SERVICES_SUPPORT_TITLE: '24/7 Customer Support',
     SERVICES_SUPPORT: "Whether you're booking a property, need assistance, or have any questions, our dedicated support team is available around the clock.",
-    CUSTOMER_CARE_TITLE: "Movin' In Customer Care",
+    CUSTOMER_CARE_TITLE: `${env.WEBSITE_NAME} Customer Care`,
     CONTACT_US: 'Contact Us',
     CUSTOMER_CARE_SUBTITLE: 'Always Here to Help',
-    CUSTOMER_CARE_TEXT: "At Movin' In, we're dedicated to providing prompt and reliable support to ensure your property rental experience is smooth and enjoyable from start to finish.",
+    CUSTOMER_CARE_TEXT: `At ${env.WEBSITE_NAME}, we're dedicated to providing prompt and reliable support to ensure your property rental experience is smooth and enjoyable from start to finish.`,
     CUSTOMER_CARE_ASSISTANCE: '24/7 Assistance',
     CUSTOMER_CARE_MODIFICATION: 'Inquiries and Modifications',
     CUSTOMER_CARE_GUIDANCE: 'Property Selection Guidance',

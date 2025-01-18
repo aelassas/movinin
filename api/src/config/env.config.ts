@@ -35,6 +35,13 @@ export const LANGUAGES = [
 ]
 
 /**
+ * Website name.
+ *
+ * @type {string}
+ */
+export const WEBSITE_NAME = __env__('MI_WEBSITE_NAME', false, "Movin' In")
+
+/**
  * Server Port. Default is 4004.
  *
  * @type {number}

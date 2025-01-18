@@ -302,7 +302,7 @@ const Checkout = () => {
           name: `${property.name} 
           - ${daysLabel} 
           - ${location.name}`,
-          description: "Movin' In Web Service",
+          description: `${env.WEBSITE_NAME} Web Service`,
           customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
         }
         const res = await StripeService.createCheckoutSession(payload)

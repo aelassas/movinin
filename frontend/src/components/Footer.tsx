@@ -20,7 +20,7 @@ const Footer = () => {
 
   return (
     <div className="footer">
-      <div className="header">Movin&apos; In</div>
+      <div className="header">{env.WEBSITE_NAME}</div>
       <section className="main">
         <div className="main-section">
           <div className="title">{strings.CORPORATE}</div>

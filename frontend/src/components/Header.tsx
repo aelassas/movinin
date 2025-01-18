@@ -396,7 +396,7 @@ const Header = ({
                   <MenuIcon />
                 </IconButton>
 
-                <Button onClick={() => navigate('/')} className="logo">Movin&#39; In</Button>
+                <Button onClick={() => navigate('/')} className="logo">{env.WEBSITE_NAME}</Button>
               </>
             )}
             <>

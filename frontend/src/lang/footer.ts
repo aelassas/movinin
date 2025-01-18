@@ -1,7 +1,8 @@
 import LocalizedStrings from 'localized-strings'
 import * as langHelper from '@/common/langHelper'
+import env from '@/config/env.config'
 
-const COPYRIGHT_PART1 = `Copyright © ${new Date().getFullYear()} Movin' In`
+const COPYRIGHT_PART1 = `Copyright © ${new Date().getFullYear()} ${env.WEBSITE_NAME}`
 
 const strings = new LocalizedStrings({
   fr: {
@@ -16,7 +17,7 @@ const strings = new LocalizedStrings({
     LOCATIONS: 'Destinations',
     SUPPORT: 'Support',
     CONTACT: 'Contact',
-    SECURE_PAYMENT: "Paiement 100% sécurisé avec Movin' In",
+    SECURE_PAYMENT: `Paiement 100% sécurisé avec ${env.WEBSITE_NAME}`,
   },
   en: {
     COPYRIGHT_PART1,
@@ -30,7 +31,7 @@ const strings = new LocalizedStrings({
     LOCATIONS: 'Destinations',
     SUPPORT: 'Support',
     CONTACT: 'Contact',
-    SECURE_PAYMENT: "100% secure payment with Movin' In",
+    SECURE_PAYMENT: `100% secure payment with ${env.WEBSITE_NAME}`,
   },
 })
 
