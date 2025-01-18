@@ -31,6 +31,7 @@ import {
   Business as AgencyIcon,
   LocationOn as LocationIcon,
   PersonOutline as SignUpIcon,
+  PrivacyTip as PrivacyIcon,
 } from '@mui/icons-material'
 import { toast } from 'react-toastify'
 import { CircleFlag } from 'react-circle-flags'
@@ -448,6 +449,15 @@ const Header = ({
                   >
                     <ListItemIcon><AboutIcon /></ListItemIcon>
                     <ListItemText primary={strings.ABOUT} />
+                  </ListItem>
+                  <ListItem
+                    onClick={() => {
+                      navigate('/privacy')
+                      handleSideMenuClose()
+                    }}
+                  >
+                    <ListItemIcon><PrivacyIcon /></ListItemIcon>
+                    <ListItemText primary={strings.PRIVACY_POLICY} />
                   </ListItem>
                   <ListItem
                     onClick={() => {

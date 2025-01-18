@@ -14,6 +14,7 @@ const strings = new LocalizedStrings({
     SIGN_OUT: 'Déconnexion',
     AGENCIES: 'Agences',
     LOCATIONS: 'Destinations',
+    PRIVACY_POLICY: 'Politique de Confidentialité',
   },
   en: {
     SIGN_IN: 'Sign in',
@@ -27,6 +28,7 @@ const strings = new LocalizedStrings({
     SIGN_OUT: 'Sign out',
     AGENCIES: 'Agencies',
     LOCATIONS: 'Destinations',
+    PRIVACY_POLICY: 'Privacy Policy',
   },
 })
 

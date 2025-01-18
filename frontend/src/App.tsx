@@ -34,6 +34,7 @@ const Contact = lazy(() => import('@/pages/Contact'))
 const NoMatch = lazy(() => import('@/pages/NoMatch'))
 const Agencies = lazy(() => import('@/pages/Agencies'))
 const Locations = lazy(() => import('@/pages/Locations'))
+const Privacy = lazy(() => import('@/pages/Privacy'))
 
 const App = () => (
   <BrowserRouter>
@@ -67,6 +68,7 @@ const App = () => (
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/agencies" element={<Agencies />} />
                 <Route path="/destinations" element={<Locations />} />
+                <Route path="/privacy" element={<Privacy />} />
 
                 <Route path="*" element={<NoMatch />} />
               </Routes>
