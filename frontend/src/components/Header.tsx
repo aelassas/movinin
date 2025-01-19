@@ -32,6 +32,7 @@ import {
   LocationOn as LocationIcon,
   PersonOutline as SignUpIcon,
   PrivacyTip as PrivacyIcon,
+  Cookie as CookiePolicyIcon,
 } from '@mui/icons-material'
 import { toast } from 'react-toastify'
 import { CircleFlag } from 'react-circle-flags'
@@ -449,6 +450,15 @@ const Header = ({
                   >
                     <ListItemIcon><AboutIcon /></ListItemIcon>
                     <ListItemText primary={strings.ABOUT} />
+                  </ListItem>
+                  <ListItem
+                    onClick={() => {
+                      navigate('/cookie-policy')
+                      handleSideMenuClose()
+                    }}
+                  >
+                    <ListItemIcon><CookiePolicyIcon /></ListItemIcon>
+                    <ListItemText primary={strings.COOKIE_POLICY} />
                   </ListItem>
                   <ListItem
                     onClick={() => {
