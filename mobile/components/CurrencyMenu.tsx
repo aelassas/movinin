@@ -73,6 +73,7 @@ const CurrencyMenu = ({
     <>
       <View style={{ ...styles.container, ...style }}>
         <Pressable
+          hitSlop={20}
           onPress={() => setShowMenu((prev) => !prev)}
         >
           <Text style={styles.text}>{value}</Text>
@@ -84,6 +85,7 @@ const CurrencyMenu = ({
             CURRENCIES.map((currency) => (
               <Pressable
                 key={currency.code}
+                hitSlop={20}
                 onPress={async () => {
                   await StripeService.setCurrency(currency.code)
                   helper.navigate(route, navigation, true)

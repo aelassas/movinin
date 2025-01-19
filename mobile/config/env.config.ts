@@ -54,7 +54,11 @@ export const CURRENCIES: Currency[] = [
   {
     code: 'GBP',
     symbol: '£',
-  }
+  },
+  {
+    code: 'AUD',
+    symbol: '$',
+  },
 ]
 
 /**
