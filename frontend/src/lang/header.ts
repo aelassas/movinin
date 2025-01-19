@@ -15,6 +15,7 @@ const strings = new LocalizedStrings({
     AGENCIES: 'Agences',
     LOCATIONS: 'Destinations',
     PRIVACY_POLICY: 'Politique de Confidentialité',
+    COOKIE_POLICY: 'Politique de cookies',
   },
   en: {
     SIGN_IN: 'Sign in',
@@ -29,6 +30,7 @@ const strings = new LocalizedStrings({
     AGENCIES: 'Agencies',
     LOCATIONS: 'Destinations',
     PRIVACY_POLICY: 'Privacy Policy',
+    COOKIE_POLICY: 'Cookie Policy',
   },
 })
 
