@@ -19,6 +19,7 @@ const strings = new LocalizedStrings({
     CONTACT: 'Contact',
     SECURE_PAYMENT: `Paiement 100% sécurisé avec ${env.WEBSITE_NAME}`,
     PRIVACY_POLICY: 'Politique de Confidentialité',
+    COOKIE_POLICY: 'Politique de cookies',
   },
   en: {
     COPYRIGHT_PART1,
@@ -34,6 +35,7 @@ const strings = new LocalizedStrings({
     CONTACT: 'Contact',
     SECURE_PAYMENT: `100% secure payment with ${env.WEBSITE_NAME}`,
     PRIVACY_POLICY: 'Privacy Policy',
+    COOKIE_POLICY: 'Cookie Policy',
   },
 })
 
