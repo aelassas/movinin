@@ -11,6 +11,8 @@
 [![coveralls](https://coveralls.io/repos/github/aelassas/movinin/badge.svg?branch=main)](https://coveralls.io/github/aelassas/movinin?branch=main)
 -->
 
+https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
+
 ## Movin' In
 
 Movin' In is a Rental Property Management Platform designed to streamline property rentals for agencies. It offers an admin dashboard for managing locations, properties, customers, bookings, and payments along with a frontend and mobile app for customer interactions.
