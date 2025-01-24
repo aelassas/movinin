@@ -34,7 +34,7 @@ export const fr = {
   BOOKING_CONFIRMED_PART9: 'Vous devez rendre les clés à notre agence ',
   BOOKING_CONFIRMED_PART10: ' ',
   BOOKING_CONFIRMED_PART11: ' le ',
-  BOOKING_CONFIRMED_PART12: ' (heure locale).',
+  BOOKING_CONFIRMED_PART12: ` (${env.TIMEZONE}).`,
   BOOKING_CONFIRMED_PART13: 'Veuillez respecter les horaires.',
   BOOKING_CONFIRMED_PART14: 'Vous pouvez suivre votre réservation sur : ',
   BOOKING_PAY_LATER_NOTIFICATION: 'a confirmé la réservation',
