@@ -109,6 +109,7 @@ export const confirm = async (user: env.User, booking: env.Booking, payLater: bo
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
+    timeZone: env.TIMEZONE,
   }
   const from = booking.from.toLocaleString(locale, options)
   const to = booking.to.toLocaleString(locale, options)
