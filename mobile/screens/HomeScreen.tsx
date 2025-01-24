@@ -32,7 +32,6 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [minDate, setMinDate] = useState(_minDate)
-  const [maxDate, setMaxDate] = useState<Date>()
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
   const [blur, setBlur] = useState(false)
   const [reload, setReload] = useState(false)
@@ -151,12 +150,11 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
               label={i18n.t('FROM_DATE')}
               value={from}
               minDate={_minDate}
-              maxDate={maxDate}
               onChange={(date: Date | undefined) => {
                 if (date) {
                   date.setHours(12, 0, 0, 0)
 
-                  if (to && to.getTime() <= date.getTime()) {
+                  if (to && ((to.getTime() <= date.getTime()) || (date.getTime() > to.getTime()))) {
                     setTo(undefined)
                   }
 
@@ -182,12 +180,8 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
                 if (date) {
                   date.setHours(12, 0, 0, 0)
                   setTo(date)
-                  const _maxDate = new Date(date)
-                  _maxDate.setDate(_maxDate.getDate() - 1)
-                  setMaxDate(_maxDate)
                 } else {
                   setTo(undefined)
-                  setMaxDate(undefined)
                 }
               }}
               onPress={blurLocations}

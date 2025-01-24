@@ -41,7 +41,7 @@ const DatePicker = ({
   useEffect(() => {
     if (minDateValue) {
       const _minDate = new Date(minDateValue)
-      _minDate.setHours(10, 0, 0, 0)
+      _minDate.setHours(12, 0, 0, 0)
       setMinDate(_minDate)
     } else {
       setMinDate(undefined)
@@ -58,7 +58,7 @@ const DatePicker = ({
         onChange={(_value) => {
           if (_value) {
             const date = _value as Date
-            date.setHours(10, 0, 0, 0)
+            date.setHours(12, 0, 0, 0)
           }
           setValue(_value)
 
