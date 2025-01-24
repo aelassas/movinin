@@ -294,6 +294,15 @@ export const MINIMUM_AGE = Number.parseInt(__env__('MI_MINIMUM_AGE', false, '21'
 export const EXPO_ACCESS_TOKEN = __env__('MI_EXPO_ACCESS_TOKEN', false)
 
 /**
+ * Timezone for cenverting dates from UTC to local time.
+ * Must be a valid TZ idenfidier: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+ * Default is UTC.
+ *
+ * @type {string}
+ */
+export const TIMEZONE = __env__('MI_TIMEZONE', false, 'UTC')
+
+/**
  * Stripe secret key.
  *
  * @type {string}

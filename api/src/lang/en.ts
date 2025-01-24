@@ -25,7 +25,7 @@ export const en = {
   BOOKING_CONFIRMED_PART3: ' Please present yourself to our agency ',
   BOOKING_CONFIRMED_PART4: ' ',
   BOOKING_CONFIRMED_PART5: ' on ',
-  BOOKING_CONFIRMED_PART6: ' (local time) to pick up your keys ',
+  BOOKING_CONFIRMED_PART6: ` (${env.TIMEZONE}) to pick up your keys `,
   BOOKING_CONFIRMED_PART7: '.',
   BOOKING_CONFIRMED_ADDRESS: 'Property Address: ',
   BOOKING_CONFIRMED_MAP_PART1: 'Map Link: ',
