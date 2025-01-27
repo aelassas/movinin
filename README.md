@@ -21,7 +21,7 @@ With Movin' In, you can deploy your own customizable property rental marketplace
 
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the admin dashboard. Movin' In can also work with a single agency and can be used as a property rental aggregator.
 
-From the admin dashboard, administrators can create and manage agencies, properties, countries, locations, customers, bookings and payments.
+From the admin dashboard, admins can create and manage agencies, properties, countries, locations, customers, bookings and payments.
 
 When new agencies are created, they receive an email prompting them to create their account to access the admin dashboard and manage their properties, customers and bookings.
 
