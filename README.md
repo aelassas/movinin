@@ -33,6 +33,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * Ready for one or multiple agencies
 * Property management
 * Booking management
+* [Property Scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
 * Payment management
 * Customer management
 * Multiple login options (Google, Facebook, Apple, Email)
