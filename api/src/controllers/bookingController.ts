@@ -653,6 +653,7 @@ export const getBookings = async (req: Request, res: Response) => {
     } = body
     const location = (body.filter && body.filter.location) || null
     const from = (body.filter && body.filter.from && new Date(body.filter.from)) || null
+    const dateBetween = (body.filter && body.filter.dateBetween && new Date(body.filter.dateBetween)) || null
     const to = (body.filter && body.filter.to && new Date(body.filter.to)) || null
     let keyword = (body.filter && body.filter.keyword) || ''
     const options = 'i'
@@ -676,10 +677,28 @@ export const getBookings = async (req: Request, res: Response) => {
     }
     if (from) {
       $match.$and!.push({ from: { $gte: from } })
-    } // $from > from
+    } // $from >= from
+
+    if (dateBetween) {
+      const dateBetweenStart = new Date(dateBetween)
+      dateBetweenStart.setHours(0, 0, 0, 0)
+      const dateBetweenEnd = new Date(dateBetween)
+      dateBetweenEnd.setHours(23, 59, 59, 999)
+
+      $match.$and!.push({
+        $and: [
+          { from: { $lte: dateBetweenEnd } },
+          { to: { $gte: dateBetweenStart } },
+        ],
+      })
+    } else if (from) {
+      $match.$and!.push({ from: { $gte: from } }) // $from >= from
+    }
+
     if (to) {
       $match.$and!.push({ to: { $lte: to } })
-    } // $to < to
+    } // $to <= to
+
     if (keyword) {
       const isObjectId = helper.isValidObjectId(keyword)
       if (isObjectId) {
