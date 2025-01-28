@@ -4,6 +4,7 @@ import * as langHelper from '@/common/langHelper'
 const strings = new LocalizedStrings({
   fr: {
     DASHBOARD: 'Tableau de bord',
+    SCHEDULER: 'Planificateur',
     HOME: 'Accueil',
     AGENCIES: 'Agencies',
     LOCATIONS: 'Lieux',
@@ -19,6 +20,7 @@ const strings = new LocalizedStrings({
   },
   en: {
     DASHBOARD: 'Dashboard',
+    SCHEDULER: 'Property Scheduler',
     HOME: 'Home',
     AGENCIES: 'Agencies',
     LOCATIONS: 'Locations',
