@@ -4,7 +4,6 @@ title: "Movin' In: A Property Rental Booking System"
 authors:
   - name: "Akram El Assas"
 year: 2025
-version: "4.5.0"
 repository-code: "https://github.com/aelassas/movinin"
 license: "MIT"
 keywords:
