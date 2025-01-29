@@ -31,6 +31,7 @@ import {
   DescriptionTwoTone as TosIcon,
   ExitToApp as SignoutIcon,
   Flag as CountriesIcon,
+  CalendarMonth as SchedulerIcon,
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
@@ -291,6 +292,10 @@ const Header = ({
                 <ListItemLink href="/">
                   <ListItemIcon><DashboardIcon /></ListItemIcon>
                   <ListItemText primary={strings.DASHBOARD} />
+                </ListItemLink>
+                <ListItemLink href="/scheduler">
+                  <ListItemIcon><SchedulerIcon /></ListItemIcon>
+                  <ListItemText primary={strings.SCHEDULER} />
                 </ListItemLink>
                 <ListItemLink href="/agencies">
                   <ListItemIcon><AgenciesIcon /></ListItemIcon>

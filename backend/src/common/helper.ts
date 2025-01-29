@@ -85,6 +85,68 @@ export const admin = (user?: movininTypes.User): boolean =>
   (user && user.type === movininTypes.RecordType.Admin) ?? false
 
 /**
+ * Get booking status background color.
+ *
+ * @param {string} status
+ * @returns {string}
+ */
+export const getBookingStatusBackgroundColor = (status?: movininTypes.BookingStatus) => {
+  switch (status) {
+    case movininTypes.BookingStatus.Void:
+      return '#D9D9D9'
+
+    case movininTypes.BookingStatus.Pending:
+      return '#FBDCC2'
+
+    case movininTypes.BookingStatus.Deposit:
+      return '#CDECDA'
+
+    case movininTypes.BookingStatus.Paid:
+      return '#D1F9D1'
+
+    case movininTypes.BookingStatus.Reserved:
+      return '#D9E7F4'
+
+    case movininTypes.BookingStatus.Cancelled:
+      return '#FBDFDE'
+
+    default:
+      return ''
+  }
+}
+
+/**
+ * Get booking status text color.
+ *
+ * @param {string} status
+ * @returns {string}
+ */
+export const getBookingStatusTextColor = (status?: movininTypes.BookingStatus) => {
+  switch (status) {
+    case movininTypes.BookingStatus.Void:
+      return '#6E7C86'
+
+    case movininTypes.BookingStatus.Pending:
+      return '#EF6C00'
+
+    case movininTypes.BookingStatus.Deposit:
+      return '#3CB371'
+
+    case movininTypes.BookingStatus.Paid:
+      return '#77BC23'
+
+    case movininTypes.BookingStatus.Reserved:
+      return '#1E88E5'
+
+    case movininTypes.BookingStatus.Cancelled:
+      return '#E53935'
+
+    default:
+      return ''
+  }
+}
+
+/**
  * Get booking status label.
  *
  * @param {string} status

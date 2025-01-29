@@ -9,6 +9,8 @@
 [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin)
 [![codecov](https://img.shields.io/codecov/c/github/aelassas/movinin?logo=codecov)](https://codecov.io/gh/aelassas/movinin)
 [![coveralls](https://coveralls.io/repos/github/aelassas/movinin/badge.svg?branch=main)](https://coveralls.io/github/aelassas/movinin?branch=main)
+
+https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 -->
 
 ## Movin' In
@@ -19,7 +21,7 @@ With Movin' In, you can deploy your own customizable property rental marketplace
 
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the admin dashboard. Movin' In can also work with a single agency and can be used as a property rental aggregator.
 
-From the admin dashboard, administrators can create and manage agencies, properties, locations, users and bookings.
+From the admin dashboard, admins can create and manage agencies, properties, countries, locations, customers, bookings and payments.
 
 When new agencies are created, they receive an email prompting them to create their account to access the admin dashboard and manage their properties, customers and bookings.
 
@@ -31,6 +33,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * Ready for one or multiple agencies
 * Property management
 * Booking management
+* [Property Scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
 * Payment management
 * Customer management
 * Multiple login options (Google, Facebook, Apple, Email)
@@ -67,7 +70,7 @@ You can install the Android app on any Android device.
 
 Open the Camera app and point it at this code. Then tap the notification that appears.
 
-![QR](https://movin-in.github.io/content/qr-code-4.3.png)
+![QR](https://movin-in.github.io/content/qr-code-4.4.png)
 
 ### How to install the Mobile App on Android
 
@@ -79,7 +82,7 @@ Open the Camera app and point it at this code. Then tap the notification that ap
 
 You can also install the Android App by downloading the APK and installing it on any Android device.
 
-* [Download APK](https://github.com/aelassas/movinin/releases/download/v4.3/movinin-4.3.apk)
+* [Download APK](https://github.com/aelassas/movinin/releases/download/v4.4/movinin-4.4.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
@@ -107,7 +110,8 @@ You can also install the Android App by downloading the APK and installing it on
 11. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)
 12. [Add New Currency](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 13. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
-14. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
+14. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)
+15. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
 
 ## License
 

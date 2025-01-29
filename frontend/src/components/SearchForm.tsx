@@ -33,7 +33,6 @@ const SearchForm = (
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [minDate, setMinDate] = useState<Date>(_minDate)
-  const [maxDate, setMaxDate] = useState<Date>()
   const [fromError, setFromError] = useState(false)
   const [toError, setToError] = useState(false)
 
@@ -94,7 +93,6 @@ const SearchForm = (
           label={commonStrings.FROM}
           value={from}
           minDate={_minDate}
-          maxDate={maxDate}
           variant="outlined"
           required
           onChange={(date) => {
@@ -104,6 +102,10 @@ const SearchForm = (
               setFrom(date)
               setMinDate(__minDate)
               setFromError(false)
+
+              if (to && (to.getTime() - date.getTime() < 24 * 60 * 60 * 1000)) {
+                setTo(undefined)
+              }
             } else {
               setFrom(undefined)
               setMinDate(_minDate)
@@ -128,14 +130,10 @@ const SearchForm = (
           required
           onChange={(date) => {
             if (date) {
-              const _maxDate = new Date(date)
-              _maxDate.setDate(_maxDate.getDate() - 1)
               setTo(date)
-              setMaxDate(_maxDate)
               setToError(false)
             } else {
               setTo(undefined)
-              setMaxDate(undefined)
             }
           }}
           onError={(err: DateTimeValidationError) => {

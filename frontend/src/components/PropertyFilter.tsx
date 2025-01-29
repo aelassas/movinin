@@ -34,7 +34,6 @@ const PropertyFilter = ({
   const [from, setFrom] = useState<Date | undefined>(filterFrom)
   const [to, setTo] = useState<Date | undefined>(filterTo)
   const [minDate, setMinDate] = useState<Date>()
-  const [maxDate, setMaxDate] = useState<Date>()
   const [location, setLocation] = useState<movininTypes.Location | null | undefined>(filterLocation)
   const [fromError, setFromError] = useState(false)
   const [toError, setToError] = useState(false)
@@ -46,14 +45,6 @@ const PropertyFilter = ({
       setMinDate(__minDate)
     }
   }, [filterFrom])
-
-  useEffect(() => {
-    if (filterTo) {
-      const __maxDate = new Date(filterTo)
-      __maxDate.setDate(__maxDate.getDate() - 1)
-      setMaxDate(__maxDate)
-    }
-  }, [filterTo])
 
   const handleLocationChange = (values: movininTypes.Option[]) => {
     const _location = (values.length > 0 && values[0]) || null
@@ -99,7 +90,6 @@ const PropertyFilter = ({
             label={commonStrings.FROM}
             value={from}
             minDate={_minDate}
-            maxDate={maxDate}
             variant="standard"
             required
             onChange={(date) => {
@@ -109,6 +99,10 @@ const PropertyFilter = ({
                 setFrom(date)
                 setMinDate(__minDate)
                 setFromError(false)
+
+                if (to && (to.getTime() - date.getTime() < 24 * 60 * 60 * 1000)) {
+                  setTo(undefined)
+                }
               } else {
                 setFrom(undefined)
                 setMinDate(_minDate)
@@ -133,14 +127,10 @@ const PropertyFilter = ({
             required
             onChange={(date) => {
               if (date) {
-                const _maxDate = new Date(date)
-                _maxDate.setDate(_maxDate.getDate() - 1)
                 setTo(date)
-                setMaxDate(_maxDate)
                 setToError(false)
               } else {
                 setTo(undefined)
-                setMaxDate(undefined)
               }
             }}
             onError={(err: DateTimeValidationError) => {
