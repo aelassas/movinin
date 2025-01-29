@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use Movin' In in your research or projects, please cite it using the following metadata."
+title: "Movin' In: A Property Rental Booking System"
+authors:
+  - name: "Akram El Assas"
+year: 2025
+version: "4.5.0"
+repository-code: "https://github.com/aelassas/movinin"
+license: "MIT"
+keywords:
+  - property rental
+  - booking system
+  - aggregator
+  - landlord
+  - real estate
+  - web application
+  - mobile app
+  - react
+  - react native
+  - mongodb
+  - stripe
+url: "https://github.com/aelassas/movinin"
+type: software
