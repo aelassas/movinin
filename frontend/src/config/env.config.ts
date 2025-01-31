@@ -45,6 +45,19 @@ const CURRENCIES: Currency[] = [
   },
 ]
 
+const getPaymentGateway = () => {
+  const paymentGateway = String(import.meta.env.VITE_MI_PAYMENT_GATEWAY || 'stripe').toUpperCase()
+
+  if (paymentGateway === 'PAYPAL') {
+    return movininTypes.PaymentGateway.PayPal
+  }
+
+  // Default is Stripe
+  return movininTypes.PaymentGateway.Stripe
+}
+
+const PAYMENT_GATEWAY = getPaymentGateway()
+
 const env = {
   isMobile: window.innerWidth <= 960,
   isProduction: import.meta.env.VITE_NODE_ENV === 'production',
@@ -88,7 +101,9 @@ const env = {
       ? Const.PAGINATION_MODE.INFINITE_SCROLL
       : Const.PAGINATION_MODE.CLASSIC,
   SIZE_UNIT: 'm²',
+  PAYMENT_GATEWAY,
   STRIPE_PUBLISHABLE_KEY: String(import.meta.env.VITE_MI_STRIPE_PUBLISHABLE_KEY),
+  PAYPAL_CLIENT_ID: String(import.meta.env.VITE_MI_PAYPAL_CLIENT_ID),
   SET_LANGUAGE_FROM_IP: (import.meta.env.VITE_MI_SET_LANGUAGE_FROM_IP && import.meta.env.VITE_MI_SET_LANGUAGE_FROM_IP.toLowerCase()) === 'true',
   GOOGLE_ANALYTICS_ENABLED: (import.meta.env.VITE_MI_GOOGLE_ANALYTICS_ENABLED && import.meta.env.VITE_MI_GOOGLE_ANALYTICS_ENABLED.toLowerCase()) === 'true',
   GOOGLE_ANALYTICS_ID: String(import.meta.env.VITE_MI_GOOGLE_ANALYTICS_ID),

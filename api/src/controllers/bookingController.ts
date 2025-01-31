@@ -203,15 +203,15 @@ export const checkout = async (req: Request, res: Response) => {
     }
 
     if (!body.payLater) {
-      const { paymentIntentId, sessionId } = body
+      const { payPal, paymentIntentId, sessionId } = body
 
-      if (!paymentIntentId && !sessionId) {
-        const message = 'Payment intent missing'
-        logger.error(message, body)
-        return res.status(400).send(message)
+      if (!payPal && !paymentIntentId && !sessionId) {
+        throw new Error('paymentIntentId and sessionId not found')
       }
 
-      body.booking.customerId = body.customerId
+      if (!payPal) {
+        body.booking.customerId = body.customerId
+      }
 
       if (paymentIntentId) {
         const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
@@ -231,7 +231,7 @@ export const checkout = async (req: Request, res: Response) => {
         let expireAt = new Date()
         expireAt.setSeconds(expireAt.getSeconds() + env.BOOKING_EXPIRE_AT)
 
-        body.booking.sessionId = body.sessionId
+        body.booking.sessionId = !payPal ? body.sessionId : undefined
         body.booking.status = movininTypes.BookingStatus.Void
         body.booking.expireAt = expireAt
 

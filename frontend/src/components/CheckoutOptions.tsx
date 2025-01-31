@@ -6,7 +6,7 @@ import * as movininHelper from ':movinin-helper'
 import { strings as csStrings } from '@/lang/properties'
 import { strings } from '@/lang/checkout'
 import * as helper from '@/common/helper'
-import * as StripeService from '@/services/StripeService'
+import * as PaymentService from '@/services/PaymentService'
 
 import '@/assets/css/checkout-options.css'
 
@@ -52,7 +52,7 @@ const CheckoutOptions = ({
       const options: movininTypes.PropertyOptions = {
         cancellation: _cancellation
       }
-      const _price = await StripeService.convertPrice(movininHelper.calculateTotalPrice(property, from, to, options))
+      const _price = await PaymentService.convertPrice(movininHelper.calculateTotalPrice(property, from, to, options))
 
       setCancellation(_cancellation)
       onCancellationChange(_cancellation)

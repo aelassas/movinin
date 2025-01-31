@@ -26,6 +26,7 @@ import {
   EmbeddedCheckout,
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
+import { PayPalButtons } from '@paypal/react-paypal-js'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
@@ -36,7 +37,9 @@ import * as helper from '@/common/helper'
 import * as UserService from '@/services/UserService'
 import * as PropertyService from '@/services/PropertyService'
 import * as LocationService from '@/services/LocationService'
+import * as PaymentService from '@/services/PaymentService'
 import * as StripeService from '@/services/StripeService'
+import * as PayPalService from '@/services/PayPalService'
 import { useRecaptchaContext, RecaptchaContextType } from '@/context/RecaptchaContext'
 import PropertyList from '@/components/PropertyList'
 import Layout from '@/components/Layout'
@@ -50,6 +53,7 @@ import Map from '@/components/Map'
 import ViewOnMapButton from '@/components/ViewOnMapButton'
 import MapDialog from '@/components/MapDialog'
 import CheckoutStatus from '@/components/CheckoutStatus'
+import Backdrop from '@/components/SimpleBackdrop'
 
 import '@/assets/css/checkout.css'
 
@@ -57,7 +61,7 @@ import '@/assets/css/checkout.css'
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 //
-const stripePromise = loadStripe(env.STRIPE_PUBLISHABLE_KEY)
+const stripePromise = env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.Stripe ? loadStripe(env.STRIPE_PUBLISHABLE_KEY) : null
 
 const Checkout = () => {
   const reactLocation = useLocation()
@@ -98,6 +102,9 @@ const Checkout = () => {
   const [bookingId, setBookingId] = useState<string>()
   const [sessionId, setSessionId] = useState<string>()
   const [openMapDialog, setOpenMapDialog] = useState(false)
+  const [payPalLoaded, setPayPalLoaded] = useState(false)
+  const [payPalInit, setPayPalInit] = useState(false)
+  const [payPalProcessing, setPayPalProcessing] = useState(false)
 
   const _fr = language === 'fr'
   const _locale = _fr ? fr : enUS
@@ -274,7 +281,7 @@ const Checkout = () => {
         }
       }
 
-      const basePrice = await movininHelper.convertPrice(price, StripeService.getCurrency(), env.BASE_CURRENCY)
+      const basePrice = await movininHelper.convertPrice(price, PaymentService.getCurrency(), env.BASE_CURRENCY)
 
       const booking: movininTypes.Booking = {
         agency: property.agency._id as string,
@@ -294,21 +301,25 @@ const Checkout = () => {
       let _customerId: string | undefined
       let _sessionId: string | undefined
       if (!payLater) {
-        const payload: movininTypes.CreatePaymentPayload = {
-          amount: price,
-          currency: StripeService.getCurrency(),
-          locale: language,
-          receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
-          name: `${property.name} 
+        if (env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.Stripe) {
+          const payload: movininTypes.CreatePaymentPayload = {
+            amount: price,
+            currency: PaymentService.getCurrency(),
+            locale: language,
+            receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
+            name: `${property.name} 
           - ${daysLabel} 
           - ${location.name}`,
-          description: `${env.WEBSITE_NAME} Web Service`,
-          customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
+            description: `${env.WEBSITE_NAME} Web Service`,
+            customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
+          }
+          const res = await StripeService.createCheckoutSession(payload)
+          setClientSecret(res.clientSecret)
+          _sessionId = res.sessionId
+          _customerId = res.customerId
+        } else {
+          setPayPalLoaded(true)
         }
-        const res = await StripeService.createCheckoutSession(payload)
-        setClientSecret(res.clientSecret)
-        _sessionId = res.sessionId
-        _customerId = res.customerId
       }
 
       const payload: movininTypes.CheckoutPayload = {
@@ -316,7 +327,8 @@ const Checkout = () => {
         booking,
         payLater,
         sessionId: _sessionId,
-        customerId: _customerId
+        customerId: _customerId,
+        payPal: env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.PayPal,
       }
 
       const { status, bookingId: _bookingId } = await BookingService.checkout(payload)
@@ -376,7 +388,7 @@ const Checkout = () => {
         return
       }
 
-      const _price = await StripeService.convertPrice(movininHelper.calculateTotalPrice(_property, _from, _to))
+      const _price = await PaymentService.convertPrice(movininHelper.calculateTotalPrice(_property, _from, _to))
 
       const included = (val: number) => val === 0
 
@@ -598,28 +610,71 @@ const Checkout = () => {
                   )}
 
                   {(!property.agency.payLater || !payLater) && (
-                    clientSecret && (
-                      <div className="payment-options-container">
+                    env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.Stripe
+                      ? (clientSecret && (
+                        <div className="payment-options-container">
 
-                        <EmbeddedCheckoutProvider
-                          stripe={stripePromise}
-                          options={{ clientSecret }}
-                        >
-                          <EmbeddedCheckout />
-                        </EmbeddedCheckoutProvider>
-                      </div>
-                    )
+                          <EmbeddedCheckoutProvider
+                            stripe={stripePromise}
+                            options={{ clientSecret }}
+                          >
+                            <EmbeddedCheckout />
+                          </EmbeddedCheckoutProvider>
+                        </div>
+                      )
+                      )
+                      : payPalLoaded ? (
+                        <div className="payment-options-container">
+                          <PayPalButtons
+                            createOrder={async () => {
+                              const name = `${property.name} - ${daysLabel} - ${location.name}`
+                              const orderId = await PayPalService.createOrder(bookingId!, price, PaymentService.getCurrency(), name)
+                              return orderId
+                            }}
+                            onApprove={async (data) => {
+                              try {
+                                setPayPalProcessing(true)
+                                const { orderID } = data
+                                const status = await PayPalService.checkOrder(bookingId!, orderID)
+
+                                if (status === 200) {
+                                  setVisible(false)
+                                  setSuccess(true)
+                                } else {
+                                  setPaymentFailed(true)
+                                }
+                              } catch (err) {
+                                helper.error(err)
+                              } finally {
+                                setPayPalProcessing(false)
+                              }
+                            }}
+                            onInit={() => {
+                              setPayPalInit(true)
+                            }}
+                          />
+                        </div>
+                      ) : null
                   )}
                   <div className="checkout-buttons">
-                    {(!clientSecret || payLater) && (
-                      <Button type="submit" variant="contained" className="btn-checkout btn-margin-bottom" size="small" disabled={loading}>
-                        {
-                          loading
-                            ? <CircularProgress color="inherit" size={24} />
-                            : strings.BOOK
-                        }
-                      </Button>
-                    )}
+                    {(
+                      (env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.Stripe && !clientSecret)
+                      || (env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.PayPal && !payPalInit)
+                      || payLater) && (
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          className="btn-checkout btn-margin-bottom"
+                          size="small"
+                          disabled={loading || (payPalLoaded && !payPalInit)}
+                        >
+                          {
+                            (loading || (payPalLoaded && !payPalInit))
+                              ? <CircularProgress color="inherit" size={24} />
+                              : strings.BOOK
+                          }
+                        </Button>
+                      )}
                     <Button
                       variant="outlined"
                       className="btn-cancel btn-margin-bottom"
@@ -658,6 +713,7 @@ const Checkout = () => {
           <Footer />
         </>
       )}
+
       {noMatch && <NoMatch hideHeader />}
 
       {success && bookingId && (
@@ -669,6 +725,8 @@ const Checkout = () => {
           className="status"
         />
       )}
+
+      {payPalProcessing && <Backdrop text={strings.CHECKING} />}
 
       <MapDialog
         location={location}
