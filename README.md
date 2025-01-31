@@ -17,7 +17,11 @@ https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 
 Movin' In is a Rental Property Management Platform designed to streamline property rentals for agencies. It offers an admin dashboard for managing locations, properties, customers, bookings, and payments along with a frontend and mobile app for customer interactions.
 
+Movin' In integrates Stripe and PayPal [payment gateways](https://github.com/aelassas/movinin/wiki/Supported-Payment-Gateways). You can choose either to use Stripe or PayPal for payments. If your country is not supported by Stripe, you can check if it is supported by PayPal. And if so, you can use PayPal payment gateway instead of Stripe.
+
 With Movin' In, you can deploy your own customizable property rental marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform integrates Stripe for secure payments and can be efficiently hosted on a 1GB RAM droplet, making it an ideal choice for single/multi-agency operations looking for a scalable and cost-effective solution. You can deploy this solution for under $5/month using cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
+
+Movin' In is free and open source. You can customize it as you want and deploy it yourself by following the [documentation](https://github.com/aelassas/movinin/wiki). If you want me to customize it and deploy it for you, contact me by email. You can find my email in my [GitHub profile page](https://github.com/aelassas). You need to be logged in to GitHub to view my email. I can deploy the platform to the cloud for you, configure your DNS, emailing and all related tasks.
 
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the admin dashboard. Movin' In can also work with a single agency and can be used as a property rental aggregator.
 
@@ -41,7 +45,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * Multiple language support (English, French)
 * [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination options (Classic pagination with next and previous buttons, infinite scroll)
-* Operational Stripe Payment Gateway
+* [Multiple Payment Gateways supported](https://github.com/aelassas/movinin/wiki/Supported-Payment-Gateways)
 * Responsive admin dashboard and frontend
 * Native Mobile app for Android and iOS with single codebase
 * Push notifications
@@ -96,6 +100,7 @@ You can also install the Android App by downloading the APK and installing it on
 5. [Installing (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))
    1. [Docker Image](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#docker-image)
    2. [SSL](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#ssl)
+5. [Supported Payment Gateways](https://github.com/aelassas/movinin/wiki/Supported-Payment-Gateways)
 6. [Setup Stripe](https://github.com/aelassas/movinin/wiki/Setup-Stripe)
 7. [Build Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App)
 8. [Demo Database](https://github.com/aelassas/movinin/wiki/Demo-Database)
