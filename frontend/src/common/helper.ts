@@ -6,7 +6,7 @@ import { strings as rtStrings } from '@/lang/rental-term'
 import { strings } from '@/lang/properties'
 import env from '@/config/env.config'
 import * as UserService from '@/services/UserService'
-import * as StripeService from '@/services/StripeService'
+import * as PaymentService from '@/services/PaymentService'
 
 /**
  * Get language.
@@ -214,7 +214,7 @@ export const getCancellation = async (cancellation: number, language: string) =>
   } if (cancellation === 0) {
     return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${strings.INCLUDED}${fr ? 'e' : ''}`
   }
-  const _cancellation = await StripeService.convertPrice(cancellation)
+  const _cancellation = await PaymentService.convertPrice(cancellation)
   return `${strings.CANCELLATION}${fr ? ' : ' : ': '}${movininHelper.formatPrice(_cancellation, commonStrings.CURRENCY, language)}`
 }
 
@@ -234,7 +234,7 @@ export const getCancellationOption = async (cancellation: number, language: stri
   } if (cancellation === 0) {
     return `${strings.INCLUDED}${fr ? 'e' : ''}`
   }
-  const _cancellation = await StripeService.convertPrice(cancellation)
+  const _cancellation = await PaymentService.convertPrice(cancellation)
   return `${hidePlus ? '' : '+ '}${movininHelper.formatPrice(_cancellation, commonStrings.CURRENCY, language)}`
 }
 
@@ -336,7 +336,7 @@ export const rentalTermUnit = (term: movininTypes.RentalTerm): string => {
  * @returns {string}
  */
 export const priceLabel = async (property: movininTypes.Property, language: string): Promise<string> => {
-  const _price = await StripeService.convertPrice(property.price)
+  const _price = await PaymentService.convertPrice(property.price)
   return `${movininHelper.formatPrice(_price, commonStrings.CURRENCY, language)}/${rentalTermUnit(property.rentalTerm)}`
 }
 

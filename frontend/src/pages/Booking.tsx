@@ -16,7 +16,7 @@ import * as helper from '@/common/helper'
 import Layout from '@/components/Layout'
 import * as UserService from '@/services/UserService'
 import * as BookingService from '@/services/BookingService'
-import * as StripeService from '@/services/StripeService'
+import * as PaymentService from '@/services/PaymentService'
 import Backdrop from '@/components/SimpleBackdrop'
 import NoMatch from './NoMatch'
 import Error from './Error'
@@ -60,7 +60,7 @@ const Booking = () => {
 
             if (_booking) {
               setBooking(_booking)
-              setPrice(await StripeService.convertPrice(_booking.price!))
+              setPrice(await PaymentService.convertPrice(_booking.price!))
               setLoading(false)
               setVisible(true)
               setIsAgency(user.type === movininTypes.RecordType.Agency)

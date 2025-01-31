@@ -1,7 +1,7 @@
 import LocalizedStrings from 'localized-strings'
 import env from '@/config/env.config'
 import * as langHelper from '@/common/langHelper'
-import * as StripeService from '@/services/StripeService'
+import * as PaymentService from '@/services/PaymentService'
 
 const strings = new LocalizedStrings({
   fr: {
@@ -31,7 +31,7 @@ const strings = new LocalizedStrings({
     SAVE: 'Sauvegarder',
     CANCEL: 'Annuler',
     RESET_PASSWORD: 'Changer le mot de passe',
-    CURRENCY: StripeService.getCurrencySymbol(),
+    CURRENCY: PaymentService.getCurrencySymbol(),
     DELETE_AVATAR_CONFIRM: 'Êtes-vous sûr de vouloir supprimer la photo ?',
     DELETE_IMAGE: "Supprimer l'image",
     UPLOAD_IMAGE: 'Charger une image',
@@ -106,7 +106,7 @@ const strings = new LocalizedStrings({
     SAVE: 'Save',
     CANCEL: 'Cancel',
     RESET_PASSWORD: 'Change Password',
-    CURRENCY: StripeService.getCurrencySymbol(),
+    CURRENCY: PaymentService.getCurrencySymbol(),
     DELETE_AVATAR_CONFIRM: 'Are you sure you want to delete the picture?',
     UPLOAD_IMAGE: 'Upload image',
     DELETE_IMAGE: 'Delete image',

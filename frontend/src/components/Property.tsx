@@ -5,7 +5,7 @@ import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as UserService from '@/services/UserService'
-import * as StripeService from '@/services/StripeService'
+import * as PaymentService from '@/services/PaymentService'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/properties'
 import * as helper from '@/common/helper'
@@ -49,7 +49,7 @@ const Property = ({
   useEffect(() => {
     const fetchPrice = async () => {
       if (from && to) {
-        const _totalPrice = await StripeService.convertPrice(movininHelper.calculateTotalPrice(property, from as Date, to as Date))
+        const _totalPrice = await PaymentService.convertPrice(movininHelper.calculateTotalPrice(property, from as Date, to as Date))
         setTotalPrice(_totalPrice)
         setDays(movininHelper.days(from, to))
       }

@@ -322,6 +322,20 @@ stripeSessionExpireAt = stripeSessionExpireAt <= 82800 ? stripeSessionExpireAt :
 export const STRIPE_SESSION_EXPIRE_AT = stripeSessionExpireAt
 
 /**
+ * PayPal client ID.
+ *
+ * @type {string}
+ */
+export const PAYPAL_CLIENT_ID = __env__('MI_PAYPAL_CLIENT_ID', false, 'PAYPAL_CLIENT_ID')
+
+/**
+ * PayPal client secret.
+ *
+ * @type {string}
+ */
+export const PAYPAL_CLIENT_SECRET = __env__('MI_PAYPAL_CLIENT_SECRET', false, 'PAYPAL_CLIENT_SECRET')
+
+/**
  * Booking expiration in seconds.
  * Bookings created from checkout with Stripe are temporary and are automatically deleted if the payment checkout session expires.
  *
@@ -433,6 +447,7 @@ export interface Booking extends Document {
   paymentIntentId?: string
   customerId?: string
   expireAt?: Date
+  paypalOrderId?: string
 }
 
 /**

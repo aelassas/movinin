@@ -49,6 +49,11 @@ export enum RentalTerm {
   Yearly = 'YEARLY',
 }
 
+export enum PaymentGateway {
+  PayPal = 'payPal',
+  Stripe = 'stripe',
+}
+
 export interface SignUpPayload {
   email: string
   password: string
@@ -134,6 +139,7 @@ export interface Booking {
   paymentIntentId?: string
   customerId?: string
   expireAt?: Date
+  paypalOrderId?: string
 }
 
 export interface CheckoutPayload {
@@ -143,6 +149,7 @@ export interface CheckoutPayload {
   sessionId?: string
   paymentIntentId?: string
   customerId?: string
+  payPal?: boolean
 }
 
 export interface Filter {
@@ -434,6 +441,13 @@ export interface CreatePaymentPayload {
   customerName: string
   name: string
   description?: string
+}
+
+export interface CreatePayPalOrderPayload {
+  bookingId: string
+  amount: number
+  currency: string
+  name: string
 }
 
 export interface PaymentResult {
