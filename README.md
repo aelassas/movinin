@@ -45,7 +45,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * Multiple language support (English, French)
 * [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination options (Classic pagination with next and previous buttons, infinite scroll)
-* [Multiple Payment Gateways supported](https://github.com/aelassas/movinin/wiki/Supported-Payment-Gateways)
+* [Multiple Payment Gateways supported](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
 * Responsive admin dashboard and frontend
 * Native Mobile app for Android and iOS with single codebase
 * Push notifications
@@ -100,7 +100,7 @@ You can also install the Android App by downloading the APK and installing it on
 5. [Installing (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))
    1. [Docker Image](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#docker-image)
    2. [SSL](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#ssl)
-5. [Supported Payment Gateways](https://github.com/aelassas/movinin/wiki/Supported-Payment-Gateways)
+5. [Payment Gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
 6. [Setup Stripe](https://github.com/aelassas/movinin/wiki/Setup-Stripe)
 7. [Build Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App)
 8. [Demo Database](https://github.com/aelassas/movinin/wiki/Demo-Database)
