@@ -8,6 +8,14 @@ import Booking from '../models/Booking'
 import User from '../models/User'
 import * as bookingController from './bookingController'
 
+/**
+ * Create PayPal order.
+ *
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
 export const createPayPalOrder = async (req: Request, res: Response) => {
   try {
     const { bookingId, amount, currency, name }: movininTypes.CreatePayPalOrderPayload = req.body
