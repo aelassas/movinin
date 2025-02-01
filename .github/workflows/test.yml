@@ -58,6 +58,8 @@ jobs:
            echo MI_MINIMUM_AGE=$MI_MINIMUM_AGE >> .env
            echo MI_EXPO_ACCESS_TOKEN=$MI_EXPO_ACCESS_TOKEN >> .env
            echo MI_STRIPE_SECRET_KEY=$MI_STRIPE_SECRET_KEY >> .env
+           echo MI_PAYPAL_CLIENT_ID=$MI_PAYPAL_CLIENT_ID >> .env
+           echo MI_PAYPAL_CLIENT_SECRET=$MI_PAYPAL_CLIENT_SECRET >> .env
            echo MI_ADMIN_EMAIL=$MI_ADMIN_EMAIL >> .env
            npm install
            npm test
@@ -89,6 +91,8 @@ jobs:
         MI_MINIMUM_AGE: ${{ vars.MI_MINIMUM_AGE }}
         MI_EXPO_ACCESS_TOKEN: ${{ secrets.MI_EXPO_ACCESS_TOKEN }}
         MI_STRIPE_SECRET_KEY: ${{ secrets.MI_STRIPE_SECRET_KEY }}
+        MI_PAYPAL_CLIENT_ID: ${{ secrets.MI_PAYPAL_CLIENT_ID }}
+        MI_PAYPAL_CLIENT_SECRET: ${{ secrets.MI_PAYPAL_CLIENT_SECRET }}
         MI_ADMIN_EMAIL: ${{ vars.MI_ADMIN_EMAIL }}  
 
     - name: Upload coverage reports to Codecov
