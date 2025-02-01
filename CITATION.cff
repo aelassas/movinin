@@ -18,5 +18,6 @@ keywords:
   - react native
   - mongodb
   - stripe
+  - paypal
 url: "https://github.com/aelassas/movinin"
 type: software
