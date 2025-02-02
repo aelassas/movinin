@@ -154,7 +154,7 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
                 if (date) {
                   date.setHours(12, 0, 0, 0)
 
-                  if (to && ((to.getTime() <= date.getTime()) || (date.getTime() > to.getTime()))) {
+                  if (to && date.getTime() >= to.getTime()) {
                     setTo(undefined)
                   }
 
