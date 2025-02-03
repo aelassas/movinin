@@ -117,6 +117,7 @@ You can also install the Android App by downloading the APK and installing it on
 13. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
 14. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)
 15. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
+16. [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)
 
 ## License
 
