@@ -174,7 +174,7 @@ const Property = () => {
                 </div>
 
                 <div className="property-footer">
-                  <AgencyBadge agency={property.agency} />
+                  {env.HIDE_AGENCIES ? <div /> : <AgencyBadge agency={property.agency} />}
 
                   {
                     !hideAction
