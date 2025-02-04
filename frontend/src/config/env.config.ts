@@ -112,6 +112,7 @@ const env = {
   GG_APP_ID: String(import.meta.env.VITE_MI_GG_APP_ID),
   MIN_LOCATIONS: Number.parseInt(String(import.meta.env.VITE_MI_MIN_LOCATIONS), 10) || 4,
   CONTACT_EMAIL: import.meta.env.VITE_MI_CONTACT_EMAIL,
+  HIDE_AGENCIES: (import.meta.env.VITE_MI_HIDE_AGENCIES && import.meta.env.VITE_MI_HIDE_AGENCIES.toLowerCase()) === 'true',
 }
 
 export default env
