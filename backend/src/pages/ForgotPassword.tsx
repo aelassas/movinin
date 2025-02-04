@@ -107,6 +107,7 @@ const ForgotPassword = () => {
   const onLoad = (user?: movininTypes.User) => {
     if (user) {
       setNoMatch(true)
+      setVisible(false)
     } else {
       setVisible(true)
     }
