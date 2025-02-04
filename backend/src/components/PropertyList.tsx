@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   IconButton,
   Button,
@@ -69,6 +70,8 @@ const PropertyList = ({
   onLoad,
   onDelete
 }: PropertyListProps) => {
+  const navigate = useNavigate()
+
   const [user, setUser] = useState<movininTypes.User>()
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -303,7 +306,7 @@ const PropertyList = ({
                       booking={booking}
                       className="property-info"
                       language={language}
-                      // description
+                    // description
                     />
                   </div>
 
@@ -316,19 +319,19 @@ const PropertyList = ({
 
                     <div className="action">
                       <Tooltip title={strings.VIEW_PROPERTY}>
-                        <IconButton href={`/property?p=${property._id}`}>
+                        <IconButton onClick={() => navigate(`/property?p=${property._id}`)}>
                           <ViewIcon />
                         </IconButton>
                       </Tooltip>
                       {edit && (
                         <>
                           <Tooltip title={strings.VIEW_BOOKINGS}>
-                            <IconButton href={`/property-bookings?p=${property._id}`}>
+                            <IconButton onClick={() => navigate(`/property-bookings?p=${property._id}`)}>
                               <BookingsIcon />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title={commonStrings.UPDATE}>
-                            <IconButton href={`/update-property?p=${property._id}`}>
+                            <IconButton onClick={() => navigate(`/update-property?p=${property._id}`)}>
                               <EditIcon />
                             </IconButton>
                           </Tooltip>

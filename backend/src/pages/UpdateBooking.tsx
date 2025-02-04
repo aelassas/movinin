@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   FormControl,
   FormControlLabel,
@@ -13,7 +14,6 @@ import {
   Info as InfoIcon,
 } from '@mui/icons-material'
 import { DateTimeValidationError } from '@mui/x-date-pickers'
-import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '@/lang/common'
@@ -453,10 +453,10 @@ const UpdateBooking = () => {
                   <Button variant="contained" className="btn-primary btn-margin-bottom" size="small" type="submit">
                     {commonStrings.SAVE}
                   </Button>
-                  {/* <Button variant="contained" className="btn-margin-bottom" color="error" size="small" onClick={handleDelete}>
+                  <Button variant="contained" className="btn-margin-bottom" color="error" size="small" onClick={handleDelete}>
                     {commonStrings.DELETE}
-                  </Button> */}
-                  <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" href="/">
+                  </Button>
+                  <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
                     {commonStrings.CANCEL}
                   </Button>
                 </div>

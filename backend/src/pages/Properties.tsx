@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@mui/material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
@@ -19,6 +20,8 @@ import env from '@/config/env.config'
 import '@/assets/css/properties.css'
 
 const Properties = () => {
+  const navigate = useNavigate()
+
   const [user, setUser] = useState<movininTypes.User>()
   const [admin, setAdmin] = useState(false)
   const [allAgencies, setAllAgencies] = useState<movininTypes.User[]>([])
@@ -33,7 +36,7 @@ const Properties = () => {
       movininTypes.Availablity.Available,
       movininTypes.Availablity.Unavailable
     ]
-)
+  )
 
   const handleSearch = (newKeyword: string) => {
     setKeyword(newKeyword)
@@ -83,7 +86,7 @@ const Properties = () => {
             <div className="col-1-container">
               <Search onSubmit={handleSearch} className="search" />
 
-              <Button type="submit" variant="contained" className="btn-primary new-property" size="small" href="/create-property">
+              <Button type="submit" variant="contained" className="btn-primary new-property" size="small" onClick={() => navigate('/create-property')}>
                 {strings.NEW_PROPERTY}
               </Button>
 
@@ -108,11 +111,11 @@ const Properties = () => {
                   {
                     admin
                     && (
-                    <AvailabilityFilter
-                      className="property-filter"
-                      onChange={handleAvailabilityFilterChange}
-                    />
-)
+                      <AvailabilityFilter
+                        className="property-filter"
+                        onChange={handleAvailabilityFilterChange}
+                      />
+                    )
                   }
                 </>
               )}

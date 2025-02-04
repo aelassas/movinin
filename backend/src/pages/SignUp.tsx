@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Input,
   InputLabel,
@@ -8,7 +9,6 @@ import {
   Paper
 } from '@mui/material'
 import validator from 'validator'
-import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/sign-up'
@@ -228,7 +228,7 @@ const SignUp = () => {
                 <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
                   {strings.SIGN_UP}
                 </Button>
-                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" href="/">
+                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
                   {' '}
                   {commonStrings.CANCEL}
                 </Button>

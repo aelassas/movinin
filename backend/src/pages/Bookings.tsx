@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@mui/material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
@@ -15,6 +16,8 @@ import * as AgencyService from '@/services/AgencyService'
 import '@/assets/css/bookings.css'
 
 const Bookings = () => {
+  const navigate = useNavigate()
+
   const [user, setUser] = useState<movininTypes.User>()
   const [leftPanel, setLeftPanel] = useState(false)
   const [admin, setAdmin] = useState(false)
@@ -70,7 +73,7 @@ const Bookings = () => {
           <div className="col-1">
             {leftPanel && (
               <>
-                <Button variant="contained" className="btn-primary cl-new-booking" size="small" href="/create-booking">
+                <Button variant="contained" className="btn-primary cl-new-booking" size="small" onClick={() => navigate('/create-booking')}>
                   {strings.NEW_BOOKING}
                 </Button>
                 {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Input,
   InputLabel,
@@ -6,9 +7,7 @@ import {
   FormHelperText,
   Button,
   Paper,
-  Link
 } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import * as UserService from '@/services/UserService'
 import Layout from '@/components/Layout'
@@ -170,7 +169,7 @@ const Activate = () => {
                 {mStrings.RESEND}
               </Button>
               <p className="go-to-home">
-                <Link href="/">{commonStrings.GO_TO_HOME}</Link>
+                <Button variant="text" onClick={() => navigate('/')} className="btn-lnk">{commonStrings.GO_TO_HOME}</Button>
               </p>
             </div>
           </Paper>
@@ -209,7 +208,7 @@ const Activate = () => {
                 <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
                   {reset ? commonStrings.UPDATE : strings.ACTIVATE}
                 </Button>
-                <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" href="/">
+                <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" onClick={() => navigate('/')}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>

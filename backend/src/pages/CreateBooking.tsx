@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   FormControl,
   Button,
@@ -10,7 +11,6 @@ import {
   Info as InfoIcon
 } from '@mui/icons-material'
 import { DateTimeValidationError } from '@mui/x-date-pickers'
-import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'
@@ -33,6 +33,7 @@ import '@/assets/css/create-booking.css'
 
 const CreateBooking = () => {
   const navigate = useNavigate()
+
   const [isAgency, setIsAgency] = useState(false)
   const [visible, setVisible] = useState(false)
   const [agency, setAgency] = useState('')
@@ -272,7 +273,7 @@ const CreateBooking = () => {
                 <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
                   {commonStrings.CREATE}
                 </Button>
-                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" href="/">
+                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>
