@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@mui/material'
 import * as movininTypes from ':movinin-types'
 import Layout from '@/components/Layout'
@@ -12,6 +13,8 @@ import UserList from '@/components/UserList'
 import '@/assets/css/users.css'
 
 const Users = () => {
+  const navigate = useNavigate()
+
   const [user, setUser] = useState<movininTypes.User>()
   const [admin, setAdmin] = useState(false)
   const [types, setTypes] = useState<movininTypes.UserType[]>([])
@@ -52,7 +55,7 @@ const Users = () => {
                   />
                 )}
 
-              <Button variant="contained" className="btn-primary new-user" size="small" href="/create-user">
+              <Button variant="contained" className="btn-primary new-user" size="small" onClick={() => navigate('/create-user')}>
                 {strings.NEW_USER}
               </Button>
             </div>

@@ -148,18 +148,18 @@ const PropertyBookings = () => {
                 property={property}
                 user={user}
                 language={language}
-                // description
+              // description
               />
             </section>
 
             <div className="action">
               <Tooltip title={strings.VIEW_PROPERTY}>
-                <IconButton href={`/property?p=${property._id}`}>
+                <IconButton onClick={() => navigate(`/property?p=${property._id}`)}>
                   <ViewIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title={commonStrings.UPDATE}>
-                <IconButton href={`/update-property?p=${property._id}`}>
+                <IconButton onClick={() => navigate(`/update-property?p=${property._id}`)}>
                   <EditIcon />
                 </IconButton>
               </Tooltip>

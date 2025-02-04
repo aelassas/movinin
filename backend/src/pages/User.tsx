@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Typography,
   IconButton,
@@ -13,7 +14,6 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon
 } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
@@ -32,6 +32,7 @@ import '@/assets/css/user.css'
 
 const User = () => {
   const navigate = useNavigate()
+
   const statuses = helper.getBookingStatuses().map((status) => status.value)
 
   const [loggedUser, setLoggedUser] = useState<movininTypes.User>()
@@ -194,7 +195,7 @@ const User = () => {
             <div className="user-actions">
               {edit && (
                 <Tooltip title={commonStrings.UPDATE}>
-                  <IconButton href={`/update-user?u=${user._id}`}>
+                  <IconButton onClick={() => navigate(`/update-user?u=${user._id}`)}>
                     <EditIcon />
                   </IconButton>
                 </Tooltip>

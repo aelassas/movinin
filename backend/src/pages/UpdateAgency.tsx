@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Input,
   InputLabel,
@@ -28,6 +29,8 @@ import Avatar from '@/components/Avatar'
 import '@/assets/css/update-agency.css'
 
 const UpdateAgency = () => {
+  const navigate = useNavigate()
+
   const [user, setUser] = useState<movininTypes.User>()
   const [agency, setAgency] = useState<movininTypes.User>()
   const [fullName, setFullName] = useState('')
@@ -337,13 +340,13 @@ const UpdateAgency = () => {
                 </FormControl>
               )}
               <div className="buttons">
-                <Button type="submit" variant="contained" className="btn-primary btn-margin btn-margin-bottom" size="small" href={`/change-password?u=${agency && agency._id}`}>
+                <Button type="submit" variant="contained" className="btn-primary btn-margin btn-margin-bottom" size="small" onClick={() => navigate(`/change-password?u=${agency && agency._id}`)}>
                   {commonStrings.RESET_PASSWORD}
                 </Button>
                 <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
                   {commonStrings.SAVE}
                 </Button>
-                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" href="/agencies">
+                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/agencies')}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>
