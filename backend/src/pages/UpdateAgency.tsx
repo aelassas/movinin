@@ -259,7 +259,7 @@ const UpdateAgency = () => {
   const admin = helper.admin(user)
 
   return (
-    <Layout onLoad={onLoad} strict user={user}>
+    <Layout onLoad={onLoad} strict>
       {visible && (
         <div className="update-agency">
           <Paper className="agency-form-update agency-form-wrapper" elevation={10}>

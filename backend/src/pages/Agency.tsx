@@ -133,7 +133,7 @@ const Agency = () => {
   const edit = user && agency && (user.type === movininTypes.RecordType.Admin || user._id === agency._id)
 
   return (
-    <Layout onLoad={onLoad} user={user} strict>
+    <Layout onLoad={onLoad} strict>
       {visible && agency && agencies && (
         <div className="agency">
           <div className="col-1">

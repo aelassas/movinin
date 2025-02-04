@@ -321,7 +321,7 @@ const UpdateUser = () => {
     || (loggedUser && user && loggedUser.type === movininTypes.RecordType.Agency && user.type === movininTypes.RecordType.User && user.agency as string === loggedUser._id)
 
   return (
-    <Layout onLoad={onLoad} user={loggedUser} strict>
+    <Layout onLoad={onLoad} strict>
       {loggedUser && user && visible && (
         <div className="update-user">
           <Paper className="user-form user-form-wrapper" elevation={10}>
