@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Typography,
   IconButton,
@@ -11,7 +12,6 @@ import {
   Link
 } from '@mui/material'
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
@@ -31,6 +31,7 @@ import '@/assets/css/agency.css'
 
 const Agency = () => {
   const navigate = useNavigate()
+
   const [user, setUser] = useState<movininTypes.User>()
   const [agency, setAgency] = useState<movininTypes.User>()
   const [agencies, setAgencies] = useState<string[]>()
@@ -133,7 +134,7 @@ const Agency = () => {
   const edit = user && agency && (user.type === movininTypes.RecordType.Admin || user._id === agency._id)
 
   return (
-    <Layout onLoad={onLoad} user={user} strict>
+    <Layout onLoad={onLoad} strict>
       {visible && agency && agencies && (
         <div className="agency">
           <div className="col-1">
@@ -167,7 +168,7 @@ const Agency = () => {
             )}
             {agency.bio && (
               helper.isValidURL(agency.bio)
-                ? (<Link href={agency.bio} className="agency-bio-link">{agency.bio}</Link>) : (
+                ? (<Link href={agency.bio} target="_blank" rel="noreferrer" className="agency-bio-link">{agency.bio}</Link>) : (
                   <Typography variant="h6" className="agency-info">
                     {agency.bio}
                   </Typography>
@@ -186,7 +187,7 @@ const Agency = () => {
             <div className="agency-actions">
               {edit && (
                 <Tooltip title={commonStrings.UPDATE}>
-                  <IconButton href={`/update-agency?c=${agency._id}`}>
+                  <IconButton onClick={() => navigate(`/update-agency?c=${agency._id}`)}>
                     <EditIcon />
                   </IconButton>
                 </Tooltip>

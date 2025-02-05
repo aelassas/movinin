@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   DataGrid,
   GridPaginationModel,
@@ -74,6 +75,8 @@ const BookingList = ({
   checkboxSelection,
   onLoad,
 }: BookingListProps) => {
+  const navigate = useNavigate()
+
   const [loggedUser, setLoggedUser] = useState<movininTypes.User>()
   const [user, setUser] = useState<movininTypes.User>()
   const [columns, setColumns] = useState<GridColDef<movininTypes.Booking>[]>([])
@@ -270,7 +273,7 @@ const BookingList = ({
           return (
             <div>
               <Tooltip title={commonStrings.UPDATE}>
-                <IconButton href={`update-booking?b=${row._id}`}>
+                <IconButton onClick={() => navigate(`/update-booking?b=${row._id}`)}>
                   <EditIcon />
                 </IconButton>
               </Tooltip>
@@ -571,7 +574,7 @@ const BookingList = ({
                       variant="contained"
                       className="btn-primary"
                       size="small"
-                      href={`update-booking?b=${booking._id}`}
+                      onClick={() => navigate(`/update-booking?b=${booking._id}`)}
                     >
                       {commonStrings.UPDATE}
                     </Button>

@@ -166,12 +166,12 @@ const Property = () => {
                 {edit && (
                   <div className="action">
                     <Tooltip title={strings.VIEW_BOOKINGS}>
-                      <IconButton href={`/property-bookings?p=${property._id}`}>
+                      <IconButton onClick={() => navigate(`/property-bookings?p=${property._id}`)}>
                         <BookingsIcon />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title={commonStrings.UPDATE}>
-                      <IconButton href={`/update-property?p=${property._id}`}>
+                      <IconButton onClick={() => navigate(`/update-property?p=${property._id}`)}>
                         <EditIcon />
                       </IconButton>
                     </Tooltip>

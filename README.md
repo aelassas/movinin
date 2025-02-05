@@ -17,12 +17,12 @@ https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 
 Movin' In is a Rental Property Management Platform designed to streamline property rentals for agencies. It offers an admin dashboard for managing countries, locations, properties, customers, bookings, and payments along with a frontend and mobile app for customer interactions.
 
-Movin' In integrates Stripe and PayPal [payment gateways](https://github.com/aelassas/movinin/wiki/Supported-Payment-Gateways). If your country is not supported by [Stripe](https://stripe.com/global), you can check if it is supported by [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide). And if so, you can use PayPal payment gateway instead of Stripe.
+Movin' In integrates Stripe and PayPal [payment gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways). If your country is not supported by [Stripe](https://stripe.com/global), you can check if it is supported by [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide). And if so, you can use PayPal payment gateway instead of Stripe.
 
 With Movin' In, you can deploy your own customizable property rental marketplace at minimal cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform integrates Stripe and PayPal for secure payments and can be efficiently hosted on a 1GB RAM droplet, making it an ideal choice for single/multi-agency operations looking for a scalable and cost-effective solution. You can deploy this solution for under $5/month using cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
-
+<!--
 Movin' In is free and open source. You can customize it as you want and deploy it yourself by following the [documentation](https://github.com/aelassas/movinin/wiki). If you want me to customize it and deploy it for you, contact me by email. You can find my email in my [GitHub profile page](https://github.com/aelassas). You need to be logged in to GitHub to view my email. I can deploy the platform to the cloud for you, configure your DNS, emailing, webmail and all related tasks.
-
+-->
 Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the admin dashboard. Movin' In can also work with a single agency and can be used as a property rental aggregator.
 
 From the admin dashboard, admins can create and manage agencies, properties, countries, locations, customers, bookings and payments.
@@ -74,7 +74,7 @@ You can install the Android app on any Android device.
 
 Open the Camera app and point it at this code. Then tap the notification that appears.
 
-![QR](https://movin-in.github.io/content/qr-code-4.4.png)
+![QR](https://movin-in.github.io/content/qr-code-4.5.png)
 
 ### How to install the Mobile App on Android
 
@@ -86,7 +86,7 @@ Open the Camera app and point it at this code. Then tap the notification that ap
 
 You can also install the Android App by downloading the APK and installing it on any Android device.
 
-* [Download APK](https://github.com/aelassas/movinin/releases/download/v4.4/movinin-4.4.apk)
+* [Download APK](https://github.com/aelassas/movinin/releases/download/v4.5/movinin-4.5.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
@@ -117,6 +117,7 @@ You can also install the Android App by downloading the APK and installing it on
 13. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
 14. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)
 15. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
+16. [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)
 
 ## License
 

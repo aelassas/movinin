@@ -15,6 +15,7 @@ import PropertyTypeFilter from '@/components/PropertyTypeFilter'
 import Map from '@/components/Map'
 import ViewOnMapButton from '@/components/ViewOnMapButton'
 import MapDialog from '@/components/MapDialog'
+import env from '@/config/env.config'
 
 import '@/assets/css/search.css'
 
@@ -119,11 +120,13 @@ const Properties = () => {
                   collapse
                   onSubmit={handlePropertyFilterSubmit}
                 />
-                <AgencyFilter
-                  className="filter"
-                  agencies={allAgencies}
-                  onChange={handleAgencyFilterChange}
-                />
+                {!env.HIDE_AGENCIES && (
+                  <AgencyFilter
+                    className="filter"
+                    agencies={allAgencies}
+                    onChange={handleAgencyFilterChange}
+                  />
+                )}
                 <PropertyTypeFilter
                   className="filter"
                   onChange={handlePropertyTypeFilterChange}
@@ -144,6 +147,7 @@ const Properties = () => {
               loading={loading}
               from={from}
               to={to}
+              hideAgency={env.HIDE_AGENCIES}
             />
           </div>
         </div>
