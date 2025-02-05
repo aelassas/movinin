@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   IconButton,
   Button,
@@ -41,6 +42,8 @@ const AgencyList = ({
   onDelete,
   onLoad
 }: AgencyListProps) => {
+  const navigate = useNavigate()
+
   const [keyword, setKeyword] = useState(agencyListKeyword)
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -211,13 +214,13 @@ const AgencyList = ({
                   )} */}
                   {edit && (
                     <Tooltip title={commonStrings.UPDATE}>
-                      <IconButton href={`/update-agency?c=${agency._id}`}>
+                      <IconButton onClick={() => navigate(`/update-agency?c=${agency._id}`)}>
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
                   )}
                   <Tooltip title={strings.VIEW_AGENCY}>
-                    <IconButton href={`/agency?c=${agency._id}`}>
+                    <IconButton onClick={() => navigate(`/agency?c=${agency._id}`)}>
                       <ViewIcon />
                     </IconButton>
                   </Tooltip>

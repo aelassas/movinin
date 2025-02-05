@@ -64,6 +64,7 @@ const Bookings = () => {
               loading={loadingAgencies}
               hideDates={env.isMobile}
               checkboxSelection={false}
+              hideAgencyColumn={env.HIDE_AGENCIES}
             />
           </div>
         </div>

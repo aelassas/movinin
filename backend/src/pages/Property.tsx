@@ -166,16 +166,16 @@ const Property = () => {
                 {edit && (
                   <div className="action">
                     <Tooltip title={strings.VIEW_BOOKINGS}>
-                      <IconButton href={`/property-bookings?p=${property._id}`}>
+                      <IconButton onClick={() => navigate(`/property-bookings?p=${property._id}`)}>
                         <BookingsIcon />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title={commonStrings.UPDATE}>
-                      <IconButton href={`/update-property?p=${property._id}`}>
+                      <IconButton onClick={() => navigate(`/update-property?p=${property._id}`)}>
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
-                    {/* <Tooltip title={commonStrings.DELETE}>
+                    <Tooltip title={commonStrings.DELETE}>
                       <IconButton
                         onClick={async () => {
                           try {
@@ -195,7 +195,7 @@ const Property = () => {
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip> */}
+                    </Tooltip>
                   </div>
                 )}
               </div>

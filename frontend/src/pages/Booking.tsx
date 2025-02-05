@@ -109,7 +109,7 @@ const Booking = () => {
         <div className="booking">
           <div className="col-1">
             <form>
-              {!isAgency && (
+              {!isAgency && !env.HIDE_AGENCIES && (
                 <FormControl fullWidth margin="dense">
                   <AgencySelectList
                     label={blStrings.AGENCY}
@@ -195,6 +195,7 @@ const Booking = () => {
               className="property"
               properties={((property && [booking.property]) as movininTypes.Property[]) || []}
               hidePrice
+              hideAgency={env.HIDE_AGENCIES}
             />
           </div>
         </div>

@@ -434,6 +434,7 @@ const Checkout = () => {
                     hideActions
                     hidePrice
                     sizeAuto
+                    hideAgency={env.HIDE_AGENCIES}
                   />
 
                   <CheckoutOptions
@@ -467,15 +468,17 @@ const Checkout = () => {
                         <span className="checkout-detail-title">{strings.PROPERTY}</span>
                         <div className="checkout-detail-value">{`${property.name} (${helper.priceLabel(property, language)})`}</div>
                       </div>
-                      <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
-                        <span className="checkout-detail-title">{commonStrings.AGENCY}</span>
-                        <div className="checkout-detail-value">
-                          <div className="property-agency">
-                            <img src={movininHelper.joinURL(env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: env.AGENCY_IMAGE_HEIGHT }} />
-                            <span className="property-agency-name">{property.agency.fullName}</span>
+                      {!env.HIDE_AGENCIES && (
+                        <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                          <span className="checkout-detail-title">{commonStrings.AGENCY}</span>
+                          <div className="checkout-detail-value">
+                            <div className="property-agency">
+                              <img src={movininHelper.joinURL(env.CDN_USERS, property.agency.avatar)} alt={property.agency.fullName} style={{ height: env.AGENCY_IMAGE_HEIGHT }} />
+                              <span className="property-agency-name">{property.agency.fullName}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
                       <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
                         <span className="checkout-detail-title">{strings.COST}</span>
                         <div className="checkout-detail-value checkout-price">{movininHelper.formatPrice(price, commonStrings.CURRENCY, language)}</div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@mui/material'
 import * as movininTypes from ':movinin-types'
 import Layout from '@/components/Layout'
@@ -11,6 +12,8 @@ import * as helper from '@/common/helper'
 import '@/assets/css/agencies.css'
 
 const Agencies = () => {
+  const navigate = useNavigate()
+
   const [user, setUser] = useState<movininTypes.User>()
   const [keyword, setKeyword] = useState('')
   const [rowCount, setRowCount] = useState(-1)
@@ -49,18 +52,18 @@ const Agencies = () => {
                   variant="contained"
                   className="btn-primary new-agency"
                   size="small"
-                  href="/create-agency"
+                  onClick={() => navigate('/create-agency')}
                 >
                   {strings.NEW_AGENCY}
                 </Button>
               )}
 
               {rowCount > 0 && (
-              <InfoBox
-                value={`${rowCount} ${rowCount > 1 ? strings.AGENCIES : strings.AGENCY}`}
-                className="agency-count"
-              />
-)}
+                <InfoBox
+                  value={`${rowCount} ${rowCount > 1 ? strings.AGENCIES : strings.AGENCY}`}
+                  className="agency-count"
+                />
+              )}
             </div>
           </div>
           <div className="col-2">
