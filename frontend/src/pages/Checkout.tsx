@@ -111,11 +111,7 @@ const Checkout = () => {
   const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
   const bookingDetailHeight = env.AGENCY_IMAGE_HEIGHT + 10
   const days = movininHelper.days(from, to)
-  const daysLabel = from && to && `
-  ${helper.getDaysShort(days)} (${movininHelper.capitalize(
-    format(from, _format, { locale: _locale }),
-  )} 
-  - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`
+  const daysLabel = from && to && `${helper.getDaysShort(days)} (${movininHelper.capitalize(format(from, _format, { locale: _locale }),)} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`
 
   const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value)
@@ -307,9 +303,7 @@ const Checkout = () => {
             currency: PaymentService.getCurrency(),
             locale: language,
             receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
-            name: `${property.name} 
-          - ${daysLabel} 
-          - ${location.name}`,
+            name: `${property.name} - ${daysLabel} - ${location.name}`,
             description: `${env.WEBSITE_NAME} Web Service`,
             customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
           }
@@ -630,8 +624,10 @@ const Checkout = () => {
                         <div className="payment-options-container">
                           <PayPalButtons
                             createOrder={async () => {
-                              const name = `${property.name} - ${daysLabel} - ${location.name}`
-                              const orderId = await PayPalService.createOrder(bookingId!, price, PaymentService.getCurrency(), name)
+                              const name = movininHelper.truncateString(property.name, PayPalService.ORDER_NAME_MAX_LENGTH)
+                              const _description = `${property.name} - ${daysLabel} - ${location.name}`
+                              const description = movininHelper.truncateString(_description, PayPalService.ORDER_DESCRIPTION_MAX_LENGTH)
+                              const orderId = await PayPalService.createOrder(bookingId!, price, PaymentService.getCurrency(), name, description)
                               return orderId
                             }}
                             onApprove={async (data) => {

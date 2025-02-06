@@ -404,3 +404,21 @@ export const formatPrice = (price: number, currency: string, language: string) =
   return `${formatedPrice} ${currency}`
 }
 
+/**
+ * Truncates a string.
+ *
+ * @param {string} str 
+ * @param {number} maxLength 
+ * @returns {string} 
+ */
+export const truncateString = (str: string, maxLength: number) => {
+  if (str.length <= maxLength) {
+    return str
+  }
+
+  if (maxLength >= 6) {
+    return `${str.slice(0, maxLength - 3)}...`
+  }
+
+  return str.slice(0, maxLength)
+}
