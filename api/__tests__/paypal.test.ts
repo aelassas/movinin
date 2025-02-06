@@ -31,6 +31,7 @@ describe('POST /api/create-paypal-order', () => {
       amount: 234,
       currency: 'USD',
       name: 'Beautiful House in Chicago',
+      description: 'Beautiful House in Chicago',
       bookingId: testHelper.GetRandromObjectIdAsString(),
     }
     let res = await request(app)
@@ -77,6 +78,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
         amount: booking.price,
         currency: 'USD',
         name: 'Beautiful House in Chicago',
+        description: 'Beautiful House in Chicago',
         bookingId: booking.id,
       }
       let res = await request(app)
