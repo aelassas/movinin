@@ -14,7 +14,8 @@ import {
   MI_STRIPE_PUBLISHABLE_KEY,
   MI_STRIPE_MERCHANT_IDENTIFIER,
   MI_STRIPE_COUNTRY_CODE,
-  MI_BASE_CURRENCY
+  MI_BASE_CURRENCY,
+  MI_WEBSITE_NAME,
 } from '@env'
 
 /**
@@ -67,6 +68,13 @@ export const CURRENCIES: Currency[] = [
  * @type {string}
  */
 export const APP_TYPE: string = 'frontend'
+
+/**
+ * API host.
+ *
+ * @type {string}
+ */
+export const WEBSITE_NAME: string = String(MI_WEBSITE_NAME || "Movin' In")
 
 /**
  * API host.

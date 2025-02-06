@@ -298,13 +298,17 @@ const Checkout = () => {
       let _sessionId: string | undefined
       if (!payLater) {
         if (env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.Stripe) {
+          const name = movininHelper.truncateString(`${env.WEBSITE_NAME} - ${property.name}`, StripeService.ORDER_NAME_MAX_LENGTH)
+          const _description = `${env.WEBSITE_NAME} - ${property.name} - ${daysLabel} - ${location.name}`
+          const description = movininHelper.truncateString(_description, StripeService.ORDER_DESCRIPTION_MAX_LENGTH)
+
           const payload: movininTypes.CreatePaymentPayload = {
             amount: price,
             currency: PaymentService.getCurrency(),
             locale: language,
             receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
-            name: `${property.name} - ${daysLabel} - ${location.name}`,
-            description: `${env.WEBSITE_NAME} Web Service`,
+            name,
+            description,
             customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
           }
           const res = await StripeService.createCheckoutSession(payload)

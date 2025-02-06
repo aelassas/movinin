@@ -425,13 +425,20 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       let customerId: string | undefined
       try {
         if (!payLater) {
+          const name = movininHelper.truncateString(`${env.WEBSITE_NAME} - ${property.name}`, StripeService.ORDER_NAME_MAX_LENGTH)
+          const _locale = _fr ? fr : enUS
+          const days = movininHelper.days(from, to)
+          const daysLabel = from && to && `${helper.getDaysShort(days)} (${movininHelper.capitalize(format(from, _format, { locale: _locale }),)} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`
+          const _description = `${env.WEBSITE_NAME} - ${property.name} - ${daysLabel} - ${location.name}`
+          const description = movininHelper.truncateString(_description, StripeService.ORDER_DESCRIPTION_MAX_LENGTH)
+
           const createPaymentIntentPayload: movininTypes.CreatePaymentPayload = {
             amount: price,
             currency,
             locale: language,
             receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
-            name: '',
-            description: "Movin' In Mobile Service",
+            name,
+            description,
             customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
           }
 
