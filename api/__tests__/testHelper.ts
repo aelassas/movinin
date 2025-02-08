@@ -150,7 +150,7 @@ export const deleteLocation = async (id: string) => {
   expect(res.deletedCount).toBe(1)
 }
 
-export const GetRandomEmail = () => `${getName('random')}@test.bookcars.ma`
+export const GetRandomEmail = () => `${getName('random')}@test.movinin.io`
 
 export const GetRandromObjectId = () => new mongoose.Types.ObjectId()
 

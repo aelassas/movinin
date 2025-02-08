@@ -1310,7 +1310,7 @@ describe('POST /api/delete-users', () => {
 describe('POST /api/send-email', () => {
   it('should send an email', async () => {
     const payload = {
-      from: 'no-replay@bookcars.ma',
+      from: 'no-reply@movinin.io',
       to: 'test@test.com',
       subject: 'test',
       message: 'test message',
