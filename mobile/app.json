@@ -1,4 +1,4 @@
-{
+﻿{
   "expo": {
     "jsEngine": "hermes",
     "name": "Movin' In",
@@ -13,15 +13,11 @@
       "image": "./assets/splash.png"
     },
     "android": {
-      "versionCode": 1,
+      "versionCode": 470,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png"
       },
       "icon": "./assets/icon.png",
-      // "splash": {
-      //   "backgroundColor": "#0D63C9",
-      //   "image": "./assets/splash.png"
-      // },
       "googleServicesFile": "./google-services.json",
       "package": "com.movinin"
     },
@@ -29,11 +25,6 @@
       "buildNumber": "4.7.0",
       "supportsTablet": true,
       "icon": "./assets/icon.png",
-      // "splash": {
-      //   "backgroundColor": "#0D63C9",
-      //   "image": "./assets/splash.png",
-      //   "tabletImage": "./assets/splash-tablet.png"
-      // },
       "bundleIdentifier": "com.movinin"
     },
     "plugins": [
@@ -72,3 +63,4 @@
     }
   }
 }
+
