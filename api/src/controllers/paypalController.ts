@@ -23,8 +23,6 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
 
     const clientIp = ipinfoHelper.getClientIp(req)
     const countryCode = await ipinfoHelper.getCountryCode(clientIp)
-    logger.info('clientIp', clientIp)
-    logger.info('countryCode', countryCode)
 
     const orderId = await paypal.createOrder(bookingId, amount, currency, name, description, countryCode)
 
