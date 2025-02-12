@@ -24,28 +24,33 @@ export const getToken = async () => {
   return res.data.access_token
 }
 
-export const createOrder = async (orderId: string, amount: number, currency: string, name: string, description: string) => {
+export const createOrder = async (bookingId: string, amount: number, currency: string, name: string, description: string) => {
   const price = helper.formatPayPalPrice(amount)
   const token = await getToken()
   const res = await axios.post(
     `${PAYPAL_API}/v2/checkout/orders`,
     {
       intent: 'CAPTURE',
+      payer: {
+        address: {
+          country_code: 'US', // Only the country is required, prevents full address collection
+        },
+      },
+      application_context: {
+        brand_name: env.WEBSITE_NAME,
+        locale: 'en-US',
+        shipping_preference: 'NO_SHIPPING', // Removes shipping address
+        user_action: 'PAY_NOW', // Skips review page
+        payment_method_preference: 'IMMEDIATE_PAYMENT_REQUIRED', // Ensures instant payment
+      },
       payment_source: {
-        paypal: {
-          experience_context: {
-            payment_method_preference: 'IMMEDIATE_PAYMENT_REQUIRED',
-            landing_page: 'LOGIN',
-            shipping_preference: 'GET_FROM_FILE',
-            user_action: 'PAY_NOW',
-            // return_url: `${helper.trimEnd(env.FRONTEND_HOST, '/')}/checkout-session/${orderId}`,
-            // cancel_url: env.FRONTEND_HOST,
-          },
+        card: {
+          billing_address: null, // Explicitly disable billing address
         },
       },
       purchase_units: [
         {
-          invoice_id: orderId,
+          invoice_id: bookingId,
           amount: {
             currency_code: currency,
             value: price,
