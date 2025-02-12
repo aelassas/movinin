@@ -374,6 +374,21 @@ export const ADMIN_EMAIL = __env__('MI_ADMIN_EMAIL', false)
 export const RECAPTCHA_SECRET = __env__('MI_RECAPTCHA_SECRET', false)
 
 /**
+ * ipinfo.io API key.
+ * Required for more tha, 1000 requests/day.
+ *
+ * @type {string}
+ */
+export const IPINFO_API_KEY = __env__('MI_IPINFO_API_KEY', false)
+
+/**
+ * Default ISO 2 country code ipinfo.io.
+ *
+ * @type {string}
+ */
+export const IPINFO_DEFAULT_COUNTRY = __env__('MI_IPINFO_DEFAULT_COUNTRY', false, 'US')
+
+/**
  * User Document.
  *
  * @export

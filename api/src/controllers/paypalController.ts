@@ -7,6 +7,7 @@ import * as env from '../config/env.config'
 import Booking from '../models/Booking'
 import User from '../models/User'
 import * as bookingController from './bookingController'
+import * as ipinfoHelper from '../common/ipinfoHelper'
 
 /**
  * Create PayPal order.
@@ -20,7 +21,10 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
   try {
     const { bookingId, amount, currency, name, description }: movininTypes.CreatePayPalOrderPayload = req.body
 
-    const orderId = await paypal.createOrder(bookingId, amount, currency, name, description)
+    const clientIp = ipinfoHelper.getClientIp(req)
+    const countryCode = await ipinfoHelper.getCountryCode(clientIp)
+
+    const orderId = await paypal.createOrder(bookingId, amount, currency, name, description, countryCode)
 
     return res.json(orderId)
   } catch (err) {

@@ -10,6 +10,7 @@ import { frFR as dataGridfrFR, enUS as dataGridenUS } from '@mui/x-data-grid/loc
 import { disableDevTools } from ':disable-react-devtools'
 import * as helper from '@/common/helper'
 import * as UserService from '@/services/UserService'
+import * as IpInfoService from '@/services/IpInfoService'
 import env from '@/config/env.config'
 import App from '@/App'
 
@@ -141,11 +142,12 @@ if (lang) {
   }
 
   if (env.SET_LANGUAGE_FROM_IP && !storedLang) {
-    console.log('::')
-    const country = await UserService.getCountryFromIP()
+    const country = await IpInfoService.getCountryCode()
 
-    if (country === 'France' || country === 'Morocco') {
+    if (['FR', 'MA'].includes(country)) {
       updateLang('fr')
+    } else if (['US', 'GB', 'AU'].includes(country)) {
+      updateLang('en')
     } else {
       updateLang(env.DEFAULT_LANGUAGE)
     }
