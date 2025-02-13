@@ -203,8 +203,8 @@ const Home = () => {
         <div className="home-map">
           <Map
             title={strings.MAP_TITLE}
-            position={new L.LatLng(36.966428, -95.844032)}
-            initialZoom={5}
+            position={new L.LatLng(env.MAP_LATITUDE, env.MAP_LONGITUDE)}
+            initialZoom={env.MAP_ZOOM}
             locations={locations}
             onSelelectLocation={async (locationId) => {
               setLocation(locationId)

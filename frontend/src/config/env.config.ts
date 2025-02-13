@@ -113,6 +113,9 @@ const env = {
   MIN_LOCATIONS: Number.parseInt(String(import.meta.env.VITE_MI_MIN_LOCATIONS), 10) || 4,
   CONTACT_EMAIL: import.meta.env.VITE_MI_CONTACT_EMAIL,
   HIDE_AGENCIES: (import.meta.env.VITE_MI_HIDE_AGENCIES && import.meta.env.VITE_MI_HIDE_AGENCIES.toLowerCase()) === 'true',
+  MAP_LATITUDE: Number(String(import.meta.env.VITE_MI_MAP_LATITUDE || '36.966428')),
+  MAP_LONGITUDE: Number(String(import.meta.env.VITE_MI_MAP_LONGITUDE || '-95.844032')),
+  MAP_ZOOM: Number(String(import.meta.env.VITE_MI_MAP_ZOOM || '5')),
 }
 
 export default env

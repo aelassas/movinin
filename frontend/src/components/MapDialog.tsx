@@ -72,7 +72,7 @@ const MapDialog = ({
       <DialogContent className="map-dialog-content">
         {location && (
           <Map
-            position={[location.latitude || 36.966428, location.longitude || -95.844032]}
+            position={[location.latitude || env.MAP_LATITUDE, location.longitude || env.MAP_LONGITUDE]}
             initialZoom={location.latitude && location.longitude ? 10 : 2.5}
             locations={[location]}
             className="map"
