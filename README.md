@@ -45,7 +45,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * Multiple language support (English, French)
 * [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination options (Classic pagination with next and previous buttons, infinite scroll)
-* [Multiple Payment Gateways supported](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
+* [Multiple Payment Gateways supported (Stripe, PayPal)](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
 * Responsive admin dashboard and frontend
 * Native Mobile app for Android and iOS with single codebase
 * Push notifications
