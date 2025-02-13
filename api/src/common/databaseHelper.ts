@@ -287,7 +287,7 @@ export const initialize = async (): Promise<boolean> => {
     //
     // Initialize collections
     //
-    const res = await initializeLocations() && await initializeCountries()
+    const res = (await initializeLocations()) && (await initializeCountries())
 
     return res
   } catch (err) {
