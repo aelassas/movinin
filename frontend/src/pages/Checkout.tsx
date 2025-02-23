@@ -634,9 +634,10 @@ const Checkout = () => {
                               const orderId = await PayPalService.createOrder(bookingId!, price, PaymentService.getCurrency(), name, description)
                               return orderId
                             }}
-                            onApprove={async (data) => {
+                            onApprove={async (data, actions) => {
                               try {
                                 setPayPalProcessing(true)
+                                await actions.order?.capture()
                                 const { orderID } = data
                                 const status = await PayPalService.checkOrder(bookingId!, orderID)
 

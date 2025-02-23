@@ -72,7 +72,7 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     // 2. Update Booking if the payment succeeded
     // (Set BookingStatus to Paid and remove expireAt TTL index)
     //
-    if (order.status === 'APPROVED') {
+    if (order.status === 'COMPLETED') {
       booking.expireAt = undefined
       booking.status = movininTypes.BookingStatus.Paid
       await booking.save()
