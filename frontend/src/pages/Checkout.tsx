@@ -656,6 +656,12 @@ const Checkout = () => {
                             onInit={() => {
                               setPayPalInit(true)
                             }}
+                            onCancel={() => {
+                              setPayPalProcessing(false)
+                            }}
+                            onError={() => {
+                              setPayPalProcessing(false)
+                            }}
                           />
                         </div>
                       ) : null
