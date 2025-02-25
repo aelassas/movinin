@@ -204,7 +204,7 @@ const NotificationList = ({ user }: NotificationListProps) => {
               </div>
             </div>
             <div ref={notificationsListRef} className="notifications-list">
-              {rows.map((row) => (
+              {rows.map((row, index) => (
                 <div key={row._id} className="notification-container">
                   <div className="notification-checkbox">
                     <Checkbox
@@ -244,8 +244,9 @@ const NotificationList = ({ user }: NotificationListProps) => {
                                     const status = await NotificationService.markAsRead(user._id, [row._id])
 
                                     if (status === 200) {
-                                      row.isRead = true
-                                      setRows(movininHelper.clone(rows))
+                                      const _rows = movininHelper.cloneArray(rows) as movininTypes.Notification[]
+                                      _rows[index].isRead = true
+                                      setRows(_rows)
                                       setNotificationCount((prev) => prev - 1)
                                       __navigate__()
                                     } else {
@@ -276,8 +277,9 @@ const NotificationList = ({ user }: NotificationListProps) => {
                                   const status = await NotificationService.markAsRead(user._id, [row._id])
 
                                   if (status === 200) {
-                                    row.isRead = true
-                                    setRows(movininHelper.clone(rows))
+                                    const _rows = movininHelper.cloneArray(rows) as movininTypes.Notification[]
+                                    _rows[index].isRead = true
+                                    setRows(_rows)
                                     setNotificationCount((prev) => prev - 1)
                                   } else {
                                     helper.error()
@@ -303,8 +305,9 @@ const NotificationList = ({ user }: NotificationListProps) => {
                                   const status = await NotificationService.markAsUnread(user._id, [row._id])
 
                                   if (status === 200) {
-                                    row.isRead = false
-                                    setRows(movininHelper.clone(rows))
+                                    const _rows = movininHelper.cloneArray(rows) as movininTypes.Notification[]
+                                    _rows[index].isRead = false
+                                    setRows(_rows)
                                     setNotificationCount((prev) => prev + 1)
                                   } else {
                                     helper.error()
@@ -397,17 +400,12 @@ const NotificationList = ({ user }: NotificationListProps) => {
                             fetch()
                           }
                         } else {
-                          selectedRows.forEach((row) => {
-                            rows.splice(
-                              rows.findIndex((_row) => _row._id === row._id),
-                              1,
-                            )
-                          })
-                          setRows(movininHelper.clone(rows))
+                          const _rows = movininHelper.clone(rows) as movininTypes.Notification[]
+                          setRows(_rows.filter((row) => !ids.includes(row._id)))
                           setRowCount(rowCount - selectedRows.length)
                           setTotalRecords(totalRecords - selectedRows.length)
                         }
-                        setNotificationCount((prev) => prev - selectedRows.length)
+                        setNotificationCount((prev) => prev - selectedRows.filter((row) => !row.isRead).length)
                         setOpenDeleteDialog(false)
                       } else {
                         helper.error()
