@@ -692,8 +692,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
         dailyPrice:
         {
           $function:
-          {
-            // eslint-disable-next-line func-names, object-shorthand
+          { 
             body: function (price, rentalTerm) {
               let dailyPrice = 0
               const now = new Date()
