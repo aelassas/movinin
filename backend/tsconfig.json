@@ -20,6 +20,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    "typeRoots": ["./node_modules/@types", "./types", "./src/types"],
+
     "paths": {
       "@/*": ["./src/*"],
       ":movinin-types": ["../packages/movinin-types"],

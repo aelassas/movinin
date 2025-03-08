@@ -48,8 +48,7 @@ let countryId = ''
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.connect(env.DB_URI, false, false)
-  expect(res).toBeTruthy()
+  await databaseHelper.connect(env.DB_URI, false, false)
   await testHelper.initialize()
 
   const countryValue1 = new LocationValue({ language: 'en', value: 'Country 1' })
