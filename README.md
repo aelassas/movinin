@@ -74,7 +74,7 @@ You can install the Android app on any Android device.
 
 Open the Camera app and point it at this code. Then tap the notification that appears.
 
-![QR](https://movin-in.github.io/content/qr-code-4.9.png)
+<img alt="" width="130" src="https://movin-in.github.io/content/qr-code-4.9.png">
 
 ### How to install the Mobile App on Android
 
