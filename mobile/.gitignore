@@ -90,3 +90,5 @@ android/
 ios/
 
 %ProgramData%/
+
+# tsconfig.tsbuildinfo
