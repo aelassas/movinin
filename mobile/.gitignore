@@ -91,4 +91,4 @@ ios/
 
 %ProgramData%/
 
-# tsconfig.tsbuildinfo
+*.tsbuildinfo
