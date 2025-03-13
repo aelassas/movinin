@@ -255,62 +255,6 @@ export const getKParkingSpacesTooltip = (parkingSpaces: number, fr?: boolean) =>
     : strings.PARKING_SPACES_TOOLTIP_1 + (parkingSpaces > 1 ? 's' : '')}`
 
 /**
- * Get price.
- *
- * @async
- * @param {movininTypes.Booking} booking
- * @param {(movininTypes.Property | undefined | null)} property
- * @param {(price: number) => void} onSucess
- * @param {(err: unknown) => void} onError
- * @returns {void, onError: (err: unknown) => void) => any}
- */
-export const price = async (
-  booking: movininTypes.Booking,
-  property: movininTypes.Property | undefined | null,
-  onSucess: (_price: number) => void,
-  onError: (err: unknown) => void
-) => {
-  try {
-    if (!property) {
-      property = await PropertyService.getProperty(booking.property as string)
-    }
-
-    if (property) {
-      const from = new Date(booking.from)
-      const to = new Date(booking.to)
-      const days = movininHelper.totalDays(from, to)
-
-      const now = new Date()
-      let _price = 0
-
-      if (property.rentalTerm === movininTypes.RentalTerm.Monthly) {
-        _price = (property.price * days) / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
-      } else if (property.rentalTerm === movininTypes.RentalTerm.Weekly) {
-        _price = (property.price * days) / 7
-      } else if (property.rentalTerm === movininTypes.RentalTerm.Daily) {
-        _price = property.price * days
-      } else if (property.rentalTerm === movininTypes.RentalTerm.Yearly) {
-        _price = (property.price * days) / movininHelper.daysInYear(now.getFullYear())
-      }
-
-      if (booking.cancellation && property.cancellation > 0) {
-        _price += property.cancellation
-      }
-
-      if (onSucess) {
-        onSucess(_price)
-      }
-    } else if (onError) {
-      onError(`Property ${booking.property} not found.`)
-    }
-  } catch (err) {
-    if (onError) {
-      onError(err)
-    }
-  }
-}
-
-/**
  * Get all user types.
  *
  * @returns {{}}
