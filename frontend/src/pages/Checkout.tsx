@@ -441,6 +441,7 @@ const Checkout = () => {
                     to={to}
                     language={language}
                     clientSecret={clientSecret}
+                    payPalLoaded={payPalLoaded}
                     onPriceChange={(value) => setPrice(value)}
                     onCancellationChange={(value) => setCancellation(value)}
                   />
