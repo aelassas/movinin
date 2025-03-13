@@ -12,6 +12,7 @@ import {
 } from '@mui/icons-material'
 import { DateTimeValidationError } from '@mui/x-date-pickers'
 import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as blStrings } from '@/lang/booking-list'
@@ -81,7 +82,7 @@ const CreateBooking = () => {
     setCancellation(e.target.checked)
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!property || !from || !to || !status) {
@@ -106,30 +107,26 @@ const CreateBooking = () => {
       cancellation
     }
 
-    helper.price(
-      booking,
-      null,
-      async (price) => {
-        try {
-          booking.price = price
+    const options: movininTypes.PropertyOptions = {
+      cancellation
+    }
 
-          const _booking = await BookingService.create(booking)
-          if (_booking && _booking._id) {
-            navigate('/')
-          } else {
-            helper.error()
-          }
-        } catch (err) {
-          helper.error(err)
-        } finally {
-          setLoading(false)
-        }
-      },
-      (err) => {
-        helper.error(err)
-        setLoading(false)
-      },
-    )
+    try {
+      const price = await movininHelper.calculateTotalPrice(property, from, to, options)
+      booking.price = price
+
+      const _booking = await BookingService.create(booking)
+      if (_booking && _booking._id) {
+        navigate('/')
+      } else {
+        helper.error()
+      }
+    } catch (err) {
+      helper.error(err)
+    } finally {
+      setLoading(false)
+    }
+
   }
 
   const onLoad = (user?: movininTypes.User) => {
