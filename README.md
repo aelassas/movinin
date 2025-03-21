@@ -127,4 +127,3 @@ If you find this project helpful, consider buying me a coffee.
 ## License
 
 Movin' In is [MIT licensed](https://github.com/aelassas/movinin/blob/main/LICENSE).
-
