@@ -13,7 +13,6 @@ beforeAll(async () => {
   testHelper.initializeLogger()
 
   await databaseHelper.connect(env.DB_URI, false, false)
-  
   testHelper.initializeLogger()
 })
 

@@ -5,7 +5,6 @@ import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as rtStrings } from '@/lang/rental-term'
 import { strings } from '@/lang/properties'
-import * as PropertyService from '@/services/PropertyService'
 import env from '@/config/env.config'
 
 /**

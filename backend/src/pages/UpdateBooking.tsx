@@ -358,7 +358,6 @@ const UpdateBooking = () => {
                       _minDate.setDate(_minDate.getDate() + 1)
                       setMinDate(_minDate)
                       setFromError(false)
-
                     } else {
                       setMinDate(undefined)
                       setFrom(undefined)

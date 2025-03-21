@@ -60,7 +60,7 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
     } else {
       setVisible(false)
     }
-  }, [route.params, isFocused])  
+  }, [route.params, isFocused])
 
   const onLoad = () => {
     setReload(false)

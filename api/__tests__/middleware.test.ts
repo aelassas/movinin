@@ -18,7 +18,6 @@ beforeAll(async () => {
   testHelper.initializeLogger()
 
   await databaseHelper.connect(env.DB_URI, false, false)
-  
   await testHelper.initialize()
   USER_ID = testHelper.getUserId()
 })

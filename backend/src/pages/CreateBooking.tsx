@@ -126,7 +126,6 @@ const CreateBooking = () => {
     } finally {
       setLoading(false)
     }
-
   }
 
   const onLoad = (user?: movininTypes.User) => {
