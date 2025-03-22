@@ -471,7 +471,7 @@ const UpdateProperty = () => {
                 <TextField
                   label={`${strings.PRICE} ${`(${commonStrings.CURRENCY}/${helper.rentalTermUnit(rentalTerm as movininTypes.RentalTerm)})`}`}
                   slotProps={{
-                    htmlInput: { inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }
+                    htmlInput: { inputMode: 'numeric', pattern: '^\\d+(\\.\\d+)?$' }
                   }}
                   onChange={handlePriceChange}
                   required
@@ -579,7 +579,7 @@ const UpdateProperty = () => {
                   value={size}
                   autoComplete="off"
                   onChange={handSizeChange}
-                  inputProps={{ inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }}
+                  inputProps={{ inputMode: 'numeric', pattern: '^\\d+(\\.\\d+)?$' }}
                 />
               </FormControl>
 
@@ -587,7 +587,7 @@ const UpdateProperty = () => {
                 <TextField
                   label={`${csStrings.CANCELLATION} (${commonStrings.CURRENCY})`}
                   slotProps={{
-                    htmlInput: { inputMode: 'numeric', pattern: '^\\d+(.\\d+)?$' }
+                    htmlInput: { inputMode: 'numeric', pattern: '^\\d+(\\.\\d+)?$' }
                   }}
                   onChange={handleCancellationChange}
                   variant="standard"
