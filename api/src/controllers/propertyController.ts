@@ -90,7 +90,7 @@ export const create = async (req: Request, res: Response) => {
       await Property.deleteOne({ _id: property._id })
       const err = 'Image file not found'
       logger.error(i18n.t('ERROR'), err)
-      return res.status(400).send(i18n.t('ERROR') + err)
+      res.status(400).send(i18n.t('ERROR') + err)
     }
 
     // images
@@ -110,7 +110,7 @@ export const create = async (req: Request, res: Response) => {
           await Property.deleteOne({ _id: property._id })
           const err = 'Image file not found'
           logger.error(i18n.t('ERROR'), err)
-          return res.status(400).send(i18n.t('ERROR') + err)
+          res.status(400).send(i18n.t('ERROR') + err)
         }
         i += 1
       }
@@ -118,10 +118,10 @@ export const create = async (req: Request, res: Response) => {
 
     await property.save()
 
-    return res.json(property)
+    res.json(property)
   } catch (err) {
     logger.error(`[property.create] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -254,14 +254,15 @@ export const update = async (req: Request, res: Response) => {
       }
 
       await property.save()
-      return res.json(property)
+      res.json(property)
+      return
     }
 
     logger.error('[property.update] Property not found:', _id)
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[property.update] ${i18n.t('DB_ERROR')} ${_id}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -285,13 +286,14 @@ export const checkProperty = async (req: Request, res: Response) => {
       .countDocuments()
 
     if (count === 1) {
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[property.check] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -330,12 +332,13 @@ export const deleteProperty = async (req: Request, res: Response) => {
 
       await Booking.deleteMany({ property: property._id })
     } else {
-      return res.sendStatus(204)
+      res.sendStatus(204)
+      return
     }
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[property.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -358,10 +361,10 @@ export const uploadImage = async (req: Request, res: Response) => {
     const filepath = path.join(env.CDN_TEMP_PROPERTIES, filename)
 
     await fs.writeFile(filepath, req.file.buffer)
-    return res.json(filename)
+    res.json(filename)
   } catch (err) {
     logger.error(i18n.t('ERROR'), err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -377,16 +380,16 @@ export const uploadImage = async (req: Request, res: Response) => {
 export const deleteTempImage = async (req: Request, res: Response) => {
   try {
     const imageFile = path.join(env.CDN_TEMP_PROPERTIES, req.params.fileName)
-    if (!await helper.exists(imageFile)) {
+    if (!(await helper.exists(imageFile))) {
       throw new Error(`[property.deleteTempImage] temp image ${imageFile} not found`)
     }
 
     await fs.unlink(imageFile)
 
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(i18n.t('ERROR'), err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -415,16 +418,18 @@ export const deleteImage = async (req: Request, res: Response) => {
         }
         property.images.splice(index, 1)
         await property.save()
-        return res.sendStatus(200)
+        res.sendStatus(200)
+        return
       }
 
-      return res.sendStatus(204)
+      res.sendStatus(204)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(i18n.t('ERROR'), err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -468,14 +473,15 @@ export const getProperty = async (req: Request, res: Response) => {
 
       property.location.name = property.location.values.filter((value) => value.language === language)[0].value
 
-      return res.json(property)
+      res.json(property)
+      return
     }
 
     logger.error('[property.getProperty] Property not found:', id)
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[property.getProperty] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -515,7 +521,8 @@ export const getProperties = async (req: Request, res: Response) => {
       } else if (availability.length === 1 && availability[0] === movininTypes.Availablity.Unavailable) {
         $match.$and!.push({ available: false })
       } else if (availability.length === 0) {
-        return res.json([{ resultData: [], pageInfo: [] }])
+        res.json([{ resultData: [], pageInfo: [] }])
+        return
       }
     }
 
@@ -605,10 +612,10 @@ export const getProperties = async (req: Request, res: Response) => {
       property.agency = { _id, fullName, avatar }
     }
 
-    return res.json(data)
+    res.json(data)
   } catch (err) {
     logger.error(`[property.getProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -648,10 +655,10 @@ export const getBookingProperties = async (req: Request, res: Response) => {
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },
     )
 
-    return res.json(properties)
+    res.json(properties)
   } catch (err) {
     logger.error(`[property.getBookingProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -776,9 +783,9 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
       property.agency = { _id, fullName, avatar }
     }
 
-    return res.json(data)
+    res.json(data)
   } catch (err) {
     logger.error(`[property.getFrontendProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

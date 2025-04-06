@@ -34,10 +34,10 @@ export const create = async (req: Request, res: Response) => {
     const booking = new Booking(body)
 
     await booking.save()
-    return res.json(booking)
+    res.json(booking)
   } catch (err) {
     logger.error(`[booking.create] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -199,7 +199,8 @@ export const checkout = async (req: Request, res: Response) => {
 
     if (!user) {
       logger.info('Renter not found', body)
-      return res.sendStatus(204)
+      res.sendStatus(204)
+      return
     }
 
     if (!body.payLater) {
@@ -218,7 +219,8 @@ export const checkout = async (req: Request, res: Response) => {
         if (paymentIntent.status !== 'succeeded') {
           const message = `Payment failed: ${paymentIntent.status}`
           logger.error(message, body)
-          return res.status(400).send(message)
+          res.status(400).send(message)
+          return
         }
 
         body.booking.paymentIntentId = paymentIntentId
@@ -264,15 +266,17 @@ export const checkout = async (req: Request, res: Response) => {
 
     if (body.payLater || (booking.status === movininTypes.BookingStatus.Paid && body.paymentIntentId && body.customerId)) {
       // Send confirmation email
-      if (!await confirm(user, booking, body.payLater!)) {
-        return res.sendStatus(400)
+      if (!(await confirm(user, booking, body.payLater!))) {
+        res.sendStatus(400)
+        return
       }
 
       // Notify agency
       const agency = await User.findById(booking.agency)
       if (!agency) {
         logger.info(`Agency ${booking.agency} not found`)
-        return res.sendStatus(204)
+        res.sendStatus(204)
+        return
       }
       i18n.locale = agency.language
       let message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
@@ -287,10 +291,10 @@ export const checkout = async (req: Request, res: Response) => {
       }
     }
 
-    return res.status(200).send({ bookingId: booking._id })
+    res.status(200).send({ bookingId: booking._id })
   } catch (err) {
     logger.error(`[booking.checkout] ${i18n.t('ERROR')}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -452,14 +456,15 @@ export const update = async (req: Request, res: Response) => {
         await notifyRenter(booking)
       }
 
-      return res.json(booking)
+      res.json(booking)
+      return
     }
 
     logger.error('[booking.update] Booking not found:', body._id)
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[booking.update] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -489,10 +494,10 @@ export const updateStatus = async (req: Request, res: Response) => {
       }
     }
 
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[booking.updateStatus] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -512,10 +517,10 @@ export const deleteBookings = async (req: Request, res: Response) => {
 
     await Booking.deleteMany({ _id: { $in: ids } })
 
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[booking.deleteBookings] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -537,10 +542,10 @@ export const deleteTempBooking = async (req: Request, res: Response) => {
       await user?.deleteOne()
     }
     await booking?.deleteOne()
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[booking.deleteTempBooking] ${i18n.t('DB_ERROR')} ${JSON.stringify({ bookingId, sessionId })}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -594,14 +599,15 @@ export const getBooking = async (req: Request, res: Response) => {
       }
 
       booking.location.name = booking.location.values.filter((value) => value.language === language)[0].value
-      return res.json(booking)
+      res.json(booking)
+      return
     }
 
     logger.error('[booking.getBooking] Booking not found:', id)
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[booking.getBooking] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -622,12 +628,13 @@ export const getBookingId = async (req: Request, res: Response) => {
 
     if (!booking) {
       logger.error('[booking.getBookingId] Booking not found (sessionId):', sessionId)
-      return res.sendStatus(204)
+      res.sendStatus(204)
+      return
     }
-    return res.json(booking?.id)
+    res.json(booking?.id)
   } catch (err) {
     logger.error(`[booking.getBookingId] (sessionId) ${i18n.t('DB_ERROR')} ${sessionId}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -824,10 +831,10 @@ export const getBookings = async (req: Request, res: Response) => {
       booking.agency = { _id, fullName, avatar }
     }
 
-    return res.json(data)
+    res.json(data)
   } catch (err) {
     logger.error(`[booking.getBookings] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -852,13 +859,14 @@ export const hasBookings = async (req: Request, res: Response) => {
       .countDocuments()
 
     if (count === 1) {
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[booking.hasBookings] ${i18n.t('DB_ERROR')} ${renter}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -890,7 +898,8 @@ export const cancelBooking = async (req: Request, res: Response) => {
       const agency = await User.findById(booking.agency)
       if (!agency) {
         logger.info(`Supplier ${booking.agency} not found`)
-        return res.sendStatus(204)
+        res.sendStatus(204)
+        return
       }
       i18n.locale = agency.language
       await notify(booking.renter, booking.id.toString(), agency, i18n.t('CANCEL_BOOKING_NOTIFICATION'))
@@ -902,12 +911,13 @@ export const cancelBooking = async (req: Request, res: Response) => {
         await notify(booking.renter, booking.id.toString(), admin, i18n.t('CANCEL_BOOKING_NOTIFICATION'))
       }
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[booking.cancelBooking] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
