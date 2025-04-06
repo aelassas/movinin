@@ -37,6 +37,7 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [confirmPasswordError, setConfirmPasswordError] = useState(false)
   const [passwordLengthError, setPasswordLengthError] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
@@ -78,6 +79,7 @@ const ResetPassword = () => {
 
         if (signInResult.status === 200) {
           const user = await UserService.getUser(signInResult.data._id)
+          setIsAuthenticated(true)
           setUser(user)
           setUserLoaded(true)
 
@@ -190,7 +192,7 @@ const ResetPassword = () => {
         </>
       )}
       {error && <Error />}
-      {noMatch && <NoMatch hideHeader />}
+      {!isAuthenticated && noMatch && <NoMatch hideHeader />}
     </Layout>
   )
 }
