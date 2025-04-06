@@ -2,6 +2,7 @@ import validator from 'validator'
 import { Schema, model } from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import * as env from '../config/env.config'
+import * as logger from '../common/logger'
 
 export const USER_EXPIRE_AT_INDEX_NAME = 'expireAt'
 
@@ -115,6 +116,15 @@ const userSchema = new Schema<env.User>(
   },
 )
 
+userSchema.index({ type: 1, expireAt: 1, fullName: 1 })
+userSchema.index({ type: 1, expireAt: 1, email: 1 })
+userSchema.index({ type: 1, expireAt: 1, fullName: 1, _id: 1 })
+userSchema.index({ type: 1, expireAt: 1, email: 1, _id: 1 })
+
 const User = model<env.User>('User', userSchema)
+
+User.syncIndexes().catch((err) => {
+  logger.error('Error creating User indexes:', err)
+})
 
 export default User

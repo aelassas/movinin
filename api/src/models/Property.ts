@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import * as env from '../config/env.config'
+import * as logger from '../common/logger'
 
 const propertySchema = new Schema<env.Property>(
   {
@@ -138,6 +139,16 @@ const propertySchema = new Schema<env.Property>(
   },
 )
 
+propertySchema.index({ updatedAt: -1, _id: 1 })
+propertySchema.index({ name: 'text' })
+propertySchema.index({ agency: 1, type: 1, rentalTerm: 1, available: 1, updatedAt: -1, _id: 1 })
+propertySchema.index({ type: 1, rentalTerm: 1, available: 1 })
+propertySchema.index({ location: 1, available: 1 })
+
 const Property = model<env.Property>('Property', propertySchema)
+
+Property.syncIndexes().catch((err) => {
+  logger.error('Error creating Property indexes:', err)
+})
 
 export default Property
