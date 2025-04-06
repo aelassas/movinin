@@ -5,8 +5,8 @@ import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as rtStrings } from '@/lang/rental-term'
 import { strings } from '@/lang/properties'
-import * as PropertyService from '@/services/PropertyService'
 import env from '@/config/env.config'
+import * as UserService from '@/services/UserService'
 
 /**
  * Get language.
@@ -457,3 +457,22 @@ export const priceLabel = (property: movininTypes.Property, language: string): s
  * @returns {boolean}
  */
 export const isValidURL = (url: string) => validator.isURL(url, { protocols: ['http', 'https'] })
+
+/**
+ * Verify reCAPTCHA token.
+ *
+ * @async
+ * @param {string} token
+ * @returns {Promise<boolean>}
+ */
+export const verifyReCaptcha = async (token: string): Promise<boolean> => {
+  try {
+    const ip = await UserService.getIP()
+    const status = await UserService.verifyRecaptcha(token, ip)
+    const valid = status === 200
+    return valid
+  } catch (err) {
+    error(err)
+    return false
+  }
+}
