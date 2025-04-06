@@ -41,5 +41,4 @@ Location.syncIndexes().catch((err) => {
   logger.error('Error creating Location indexes:', err)
 })
 
-
 export default Location
