@@ -70,11 +70,17 @@ const Properties = () => {
 
   const onLoad = async (_user?: movininTypes.User) => {
     setUser(_user)
-    setAdmin(helper.admin(_user))
-    const _allAgencies = await AgencyService.getAllAgencies()
-    const _agencies = movininHelper.flattenAgencies(_allAgencies)
-    setAllAgencies(_allAgencies)
-    setAgencies(_agencies)
+    const _isAdmin = helper.admin(_user)
+    setAdmin(_isAdmin)
+    if (_isAdmin) {
+      const _allAgencies = await AgencyService.getAllAgencies()
+      const _agencies = movininHelper.flattenAgencies(_allAgencies)
+      setAllAgencies(_allAgencies)
+      setAgencies(_agencies)
+    } else {
+      const agencyId = (_user && _user._id) as string
+      setAgencies([agencyId])
+    }
     setLoading(false)
   }
 
@@ -92,11 +98,13 @@ const Properties = () => {
 
               {rowCount > 0 && <InfoBox value={`${rowCount} ${rowCount > 1 ? commonStrings.PROPERTIES : commonStrings.PROPERTY}`} className="property-count" />}
 
-              <AgencyFilter
-                agencies={allAgencies}
-                onChange={handleAgencyFilterChange}
-                className="filter"
-              />
+              {admin && (
+                <AgencyFilter
+                  agencies={allAgencies}
+                  onChange={handleAgencyFilterChange}
+                  className="filter"
+                />
+              )}
 
               {rowCount > -1 && (
                 <>
