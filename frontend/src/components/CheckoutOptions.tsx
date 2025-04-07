@@ -16,6 +16,7 @@ interface CheckoutOptionsProps {
   to: Date
   language: string
   clientSecret: string | null
+  payPalLoaded: boolean
   onPriceChange: (value: number) => void
   onCancellationChange: (value: boolean) => void
 }
@@ -26,6 +27,7 @@ const CheckoutOptions = ({
   to,
   language,
   clientSecret,
+  payPalLoaded,
   onPriceChange,
   onCancellationChange,
 }: CheckoutOptionsProps) => {
@@ -69,7 +71,7 @@ const CheckoutOptions = ({
       <div className="checkout-options">
         <FormControl fullWidth margin="dense">
           <FormControlLabel
-            disabled={property.cancellation === -1 || property.cancellation === 0 || !!clientSecret}
+            disabled={property.cancellation === -1 || property.cancellation === 0 || !!clientSecret || payPalLoaded}
             control={<Switch checked={cancellation} onChange={handleCancellationChange} color="primary" />}
             label={(
               <span>

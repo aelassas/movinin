@@ -441,6 +441,7 @@ const Checkout = () => {
                     to={to}
                     language={language}
                     clientSecret={clientSecret}
+                    payPalLoaded={payPalLoaded}
                     onPriceChange={(value) => setPrice(value)}
                     onCancellationChange={(value) => setCancellation(value)}
                   />
@@ -583,8 +584,8 @@ const Checkout = () => {
                             <FormControlLabel
                               value="payLater"
                               control={<Radio />}
-                              disabled={!!clientSecret}
-                              className={clientSecret ? 'payment-radio-disabled' : ''}
+                              disabled={!!clientSecret || payPalLoaded}
+                              className={clientSecret || payPalLoaded ? 'payment-radio-disabled' : ''}
                               label={(
                                 <span className="payment-button">
                                   <span>{strings.PAY_LATER}</span>
@@ -595,8 +596,8 @@ const Checkout = () => {
                             <FormControlLabel
                               value="payOnline"
                               control={<Radio />}
-                              disabled={!!clientSecret}
-                              className={clientSecret ? 'payment-radio-disabled' : ''}
+                              disabled={!!clientSecret || payPalLoaded}
+                              className={clientSecret || payPalLoaded ? 'payment-radio-disabled' : ''}
                               label={(
                                 <span className="payment-button">
                                   <span>{strings.PAY_ONLINE}</span>

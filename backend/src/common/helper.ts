@@ -5,8 +5,8 @@ import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as rtStrings } from '@/lang/rental-term'
 import { strings } from '@/lang/properties'
-import * as PropertyService from '@/services/PropertyService'
 import env from '@/config/env.config'
+import * as UserService from '@/services/UserService'
 
 /**
  * Get language.
@@ -32,8 +32,8 @@ export const info = (message: string) => {
  * @param {?string} [message]
  */
 export const error = (err?: unknown, message?: string) => {
-  if (err && console && console.error) {
-    console.error(err)
+  if (err && console?.log) {
+    console.log(err)
   }
   if (message) {
     toast.error(message)
@@ -255,62 +255,6 @@ export const getKParkingSpacesTooltip = (parkingSpaces: number, fr?: boolean) =>
     : strings.PARKING_SPACES_TOOLTIP_1 + (parkingSpaces > 1 ? 's' : '')}`
 
 /**
- * Get price.
- *
- * @async
- * @param {movininTypes.Booking} booking
- * @param {(movininTypes.Property | undefined | null)} property
- * @param {(price: number) => void} onSucess
- * @param {(err: unknown) => void} onError
- * @returns {void, onError: (err: unknown) => void) => any}
- */
-export const price = async (
-  booking: movininTypes.Booking,
-  property: movininTypes.Property | undefined | null,
-  onSucess: (_price: number) => void,
-  onError: (err: unknown) => void
-) => {
-  try {
-    if (!property) {
-      property = await PropertyService.getProperty(booking.property as string)
-    }
-
-    if (property) {
-      const from = new Date(booking.from)
-      const to = new Date(booking.to)
-      const days = movininHelper.totalDays(from, to)
-
-      const now = new Date()
-      let _price = 0
-
-      if (property.rentalTerm === movininTypes.RentalTerm.Monthly) {
-        _price = (property.price * days) / movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
-      } else if (property.rentalTerm === movininTypes.RentalTerm.Weekly) {
-        _price = (property.price * days) / 7
-      } else if (property.rentalTerm === movininTypes.RentalTerm.Daily) {
-        _price = property.price * days
-      } else if (property.rentalTerm === movininTypes.RentalTerm.Yearly) {
-        _price = (property.price * days) / movininHelper.daysInYear(now.getFullYear())
-      }
-
-      if (booking.cancellation && property.cancellation > 0) {
-        _price += property.cancellation
-      }
-
-      if (onSucess) {
-        onSucess(_price)
-      }
-    } else if (onError) {
-      onError(`Property ${booking.property} not found.`)
-    }
-  } catch (err) {
-    if (onError) {
-      onError(err)
-    }
-  }
-}
-
-/**
  * Get all user types.
  *
  * @returns {{}}
@@ -513,3 +457,22 @@ export const priceLabel = (property: movininTypes.Property, language: string): s
  * @returns {boolean}
  */
 export const isValidURL = (url: string) => validator.isURL(url, { protocols: ['http', 'https'] })
+
+/**
+ * Verify reCAPTCHA token.
+ *
+ * @async
+ * @param {string} token
+ * @returns {Promise<boolean>}
+ */
+export const verifyReCaptcha = async (token: string): Promise<boolean> => {
+  try {
+    const ip = await UserService.getIP()
+    const status = await UserService.verifyRecaptcha(token, ip)
+    const valid = status === 200
+    return valid
+  } catch (err) {
+    error(err)
+    return false
+  }
+}

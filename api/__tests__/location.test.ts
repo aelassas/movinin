@@ -48,8 +48,7 @@ let countryId = ''
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.connect(env.DB_URI, false, false)
-  expect(res).toBeTruthy()
+  await databaseHelper.connect(env.DB_URI, false, false)
   await testHelper.initialize()
 
   const countryValue1 = new LocationValue({ language: 'en', value: 'Country 1' })
@@ -109,11 +108,19 @@ describe('POST /api/validate-location', () => {
     await locationValue.deleteOne()
     await location.deleteOne()
 
+    // test failure (wrong language)
+    payload.language = 'unknown'
+    res = await request(app)
+      .post('/api/validate-location')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
     // test failure (no payload)
     res = await request(app)
       .post('/api/validate-location')
       .set(env.X_ACCESS_TOKEN, token)
-    expect(res.statusCode).toBe(400)
+    expect(res.statusCode).toBe(500)
 
     await testHelper.signout(token)
   })
@@ -153,7 +160,7 @@ describe('POST /api/create-location', () => {
 
     // image found
     const tempImage = path.join(env.CDN_TEMP_LOCATIONS, IMAGE0)
-    if (!await helper.exists(tempImage)) {
+    if (!(await helper.exists(tempImage))) {
       await fs.copyFile(IMAGE0_PATH, tempImage)
     }
     payload.image = IMAGE0
@@ -172,7 +179,7 @@ describe('POST /api/create-location', () => {
     res = await request(app)
       .post('/api/create-location')
       .set(env.X_ACCESS_TOKEN, token)
-    expect(res.statusCode).toBe(400)
+    expect(res.statusCode).toBe(500)
 
     await testHelper.signout(token)
   })
@@ -242,6 +249,10 @@ describe('GET /api/location-id/:name/:language', () => {
     res = await request(app)
       .get(`/api/location-id/unknown/${language}`)
     expect(res.statusCode).toBe(204)
+
+    res = await request(app)
+      .get('/api/location-id/unknown/unknown')
+    expect(res.statusCode).toBe(400)
   })
 })
 
@@ -347,6 +358,11 @@ describe('POST /api/delete-location-image/:id', () => {
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
+    res = await request(app)
+      .post('/api/delete-location-image/0')
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(400)
+
     await testHelper.signout(token)
   })
 })
@@ -356,7 +372,7 @@ describe('POST /api/delete-temp-location-image/:image', () => {
     const token = await testHelper.signinAsAdmin()
 
     const tempImage = path.join(env.CDN_TEMP_LOCATIONS, IMAGE1)
-    if (!await helper.exists(tempImage)) {
+    if (!(await helper.exists(tempImage))) {
       await fs.copyFile(IMAGE1_PATH, tempImage)
     }
     let res = await request(app)
@@ -429,8 +445,7 @@ describe('GET /api/locations-with-position/:language', () => {
 
     res = await request(app)
       .get('/api/locations-with-position/unknown')
-    expect(res.statusCode).toBe(200)
-    expect(res.body.length).toBe(0)
+    expect(res.statusCode).toBe(400)
   })
 })
 
@@ -496,7 +511,7 @@ describe('DELETE /api/delete-location/:id', () => {
 
     if (!location?.image) {
       const image = path.join(env.CDN_LOCATIONS, IMAGE0)
-      if (!await helper.exists(image)) {
+      if (!(await helper.exists(image))) {
         await fs.copyFile(IMAGE0_PATH, image)
       }
       location!.image = IMAGE0

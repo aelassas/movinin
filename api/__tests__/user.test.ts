@@ -39,8 +39,8 @@ const ADMIN_EMAIL = `${testHelper.getName('admin')}@test.movinin.io`
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.connect(env.DB_URI, false, false)
-  expect(res).toBeTruthy()
+  await databaseHelper.connect(env.DB_URI, false, false)
+
   await testHelper.initialize()
 })
 
@@ -62,7 +62,7 @@ afterAll(async () => {
 describe('POST /api/sign-up', () => {
   it('should create a user', async () => {
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
-    if (!await helper.exists(tempAvatar)) {
+    if (!(await helper.exists(tempAvatar))) {
       await fs.copyFile(AVATAR1_PATH, tempAvatar)
     }
     const payload: movininTypes.SignUpPayload = {
@@ -149,7 +149,7 @@ describe('POST /api/create-user', () => {
     const token = await testHelper.signinAsAdmin()
 
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
-    if (!await helper.exists(tempAvatar)) {
+    if (!(await helper.exists(tempAvatar))) {
       await fs.copyFile(AVATAR1_PATH, tempAvatar)
     }
 
@@ -331,9 +331,16 @@ describe('POST /api/activate', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
+
+    payload.userId = '0'
     res = await request(app)
       .post('/api/activate')
+      .send(payload)
     expect(res.statusCode).toBe(400)
+
+    res = await request(app)
+      .post('/api/activate')
+    expect(res.statusCode).toBe(500)
   })
 })
 
@@ -528,6 +535,102 @@ describe('POST /api/sign-in/:type', () => {
       .post(`/api/sign-in/${movininTypes.AppType.Frontend}`)
       .send(payload)
     expect(res.statusCode).toBe(400)
+
+    payload.email = undefined
+    res = await request(app)
+      .post(`/api/sign-in/${movininTypes.AppType.Frontend}`)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+  })
+})
+
+describe('POST /api/social-sign-in/:type', () => {
+  it('should sign in', async () => {
+    // test failure (google)
+    const payload: movininTypes.SignInPayload = {
+      email: USER1_EMAIL,
+      socialSignInType: movininTypes.SocialSignInType.Google,
+      accessToken: testHelper.GetRandromObjectIdAsString(),
+    }
+    let res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
+    // test failure (facebook)
+    payload.socialSignInType = movininTypes.SocialSignInType.Facebook
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
+    // test failure (apple)
+    payload.socialSignInType = movininTypes.SocialSignInType.Apple
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
+    // test success (mobile)
+    payload.mobile = true
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+
+    // test success (mobile stay connected)
+    payload.mobile = true
+    payload.stayConnected = true
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+
+    // test success (mobile new user)
+    payload.email = testHelper.GetRandomEmail()
+    payload.fullName = 'Random user'
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    await User.deleteOne({ email: payload.email })
+    payload.mobile = false
+
+    // test failure (no email)
+    payload.email = undefined
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
+    // test failure (email not valid)
+    payload.email = 'not-valid-email'
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+    payload.email = USER1_EMAIL
+
+    // test failure (no socialSignInType)
+    payload.socialSignInType = undefined
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+    payload.socialSignInType = movininTypes.SocialSignInType.Google
+
+    // test failure (no accessToken)
+    payload.accessToken = undefined
+    res = await request(app)
+      .post('/api/social-sign-in')
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+    payload.accessToken = testHelper.GetRandromObjectIdAsString()
+
+    // test failure (no payload)
+    res = await request(app)
+      .post('/api/social-sign-in')
+    expect(res.statusCode).toBe(500)
   })
 })
 
@@ -984,7 +1087,7 @@ describe('POST /api/delete-temp-avatar/:avatar', () => {
     const token = await testHelper.signinAsAdmin()
 
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
-    if (!await helper.exists(tempAvatar)) {
+    if (!(await helper.exists(tempAvatar))) {
       await fs.copyFile(AVATAR1_PATH, tempAvatar)
     }
     let res = await request(app)
@@ -1148,6 +1251,32 @@ describe('POST /api/users/:page/:size', () => {
   })
 })
 
+describe('GET /api/has-password/:id', () => {
+  it('should get users', async () => {
+    const token = await testHelper.signinAsAdmin()
+
+    // test success
+    let res = await request(app)
+      .get(`/api/has-password/${ADMIN_ID}`)
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(200)
+
+    // test success (user not found)
+    res = await request(app)
+      .get(`/api/has-password/${testHelper.GetRandromObjectIdAsString()}`)
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(204)
+
+    // test failure (wrong user id)
+    res = await request(app)
+      .get('/api/has-password/wrong-id')
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(400)
+
+    await testHelper.signout(token)
+  })
+})
+
 describe('POST /api/delete-users', () => {
   it('should delete users', async () => {
     const token = await testHelper.signinAsAdmin()
@@ -1179,19 +1308,19 @@ describe('POST /api/delete-users', () => {
     const mainImageName = 'main1.jpg'
     const mainImagePath = path.resolve(__dirname, `./img/${mainImageName}`)
     const mainImage = path.join(env.CDN_PROPERTIES, mainImageName)
-    if (!await helper.exists(mainImage)) {
+    if (!(await helper.exists(mainImage))) {
       await fs.copyFile(mainImagePath, mainImage)
     }
     const additionalImage1Name = 'additional1-1.jpg'
     const additionalImage1Path = path.resolve(__dirname, `./img/${additionalImage1Name}`)
     const additionalImage1 = path.join(env.CDN_PROPERTIES, additionalImage1Name)
-    if (!await helper.exists(additionalImage1)) {
+    if (!(await helper.exists(additionalImage1))) {
       await fs.copyFile(additionalImage1Path, additionalImage1)
     }
     const additionalImage2Name = 'additional1-2.jpg'
     const additionalImage2Path = path.resolve(__dirname, `./img/${additionalImage2Name}`)
     const additionalImage2 = path.join(env.CDN_PROPERTIES, additionalImage2Name)
-    if (!await helper.exists(additionalImage2)) {
+    if (!(await helper.exists(additionalImage2))) {
       await fs.copyFile(additionalImage2Path, additionalImage2)
     }
     let property = new Property({
@@ -1307,17 +1436,54 @@ describe('POST /api/delete-users', () => {
   })
 })
 
+describe('POST /api/verify-recaptcha/:token/:ip', () => {
+  it('should verify reCAPTCHA', async () => {
+    // test success (not valid)
+    const ip = '134.236.60.166'
+    const recaptchaToken = 'XXXXXX'
+    const res = await request(app)
+      .post(`/api/verify-recaptcha/${recaptchaToken}/${ip}`)
+    expect(res.statusCode).toBe(204)
+  })
+})
+
 describe('POST /api/send-email', () => {
   it('should send an email', async () => {
-    const payload = {
-      from: 'no-replay@bookcars.ma',
+    // test success (contact form)
+    const payload: movininTypes.SendEmailPayload = {
+      from: 'no-reply@movinin.ma',
       to: 'test@test.com',
       subject: 'test',
       message: 'test message',
+      isContactForm: true,
     }
-    const res = await request(app)
+    let res = await request(app)
+      .post('/api/send-email')
+      .set('Origin', env.FRONTEND_HOST)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+
+    // test success (newsletter form)
+    payload.isContactForm = false
+    payload.message = ''
+    res = await request(app)
+      .post('/api/send-email')
+      .set('Origin', env.FRONTEND_HOST)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+
+    // test failure (no Origin)
+    res = await request(app)
       .post('/api/send-email')
       .send(payload)
     expect(res.statusCode).toBe(400)
+
+    // test failure (Not allowed by CORS)
+    res = await request(app)
+      .post('/api/send-email')
+      .set('Origin', 'https://unknown.com')
+      .send(payload)
+    expect(res.statusCode).toBe(500)
   })
 })
+

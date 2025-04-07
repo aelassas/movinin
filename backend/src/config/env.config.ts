@@ -18,6 +18,7 @@ const LANGUAGES = [
 
 const env = {
   isMobile: window.innerWidth <= 960,
+  isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
 
   WEBSITE_NAME: String(import.meta.env.VITE_MI_WEBSITE_NAME),
 
@@ -55,6 +56,9 @@ const env = {
       : Const.PAGINATION_MODE.CLASSIC,
   SIZE_UNIT: 'm²',
   CURRENCY: import.meta.env.VITE_MI_CURRENCY || '$',
+  RECAPTCHA_ENABLED: (import.meta.env.VITE_MI_RECAPTCHA_ENABLED && import.meta.env.VITE_MI_RECAPTCHA_ENABLED.toLowerCase()) === 'true',
+  RECAPTCHA_SITE_KEY: String(import.meta.env.VITE_MI_RECAPTCHA_SITE_KEY),
+  CONTACT_EMAIL: import.meta.env.VITE_MI_CONTACT_EMAIL,
 }
 
 export default env

@@ -33,10 +33,14 @@ export const validate = async (req: Request, res: Response) => {
       type: movininTypes.UserType.Agency,
       fullName: { $regex: new RegExp(`^${keyword}$`), $options: options },
     })
-    return user ? res.sendStatus(204) : res.sendStatus(200)
+    if (user) {
+      res.sendStatus(204)
+    } else {
+      res.sendStatus(200)
+    }
   } catch (err) {
     logger.error(`[agency.validate] ${i18n.t('DB_ERROR')} ${fullName}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -74,7 +78,7 @@ export const update = async (req: Request, res: Response) => {
       agency.payLater = payLater
 
       await agency.save()
-      return res.json({
+      res.json({
         _id,
         fullName: agency.fullName,
         phone: agency.phone,
@@ -83,13 +87,14 @@ export const update = async (req: Request, res: Response) => {
         avatar: agency.avatar,
         payLater: agency.payLater,
       })
+      return
     }
 
     logger.error('[agency.update] Agency not found:', _id)
-    return res.sendStatus(204)
+    res.sendStatus(204)
   } catch (err) {
     logger.error(`[agency.update] ${i18n.t('DB_ERROR')} ${_id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -140,12 +145,13 @@ export const deleteAgency = async (req: Request, res: Response) => {
         }
       }
     } else {
-      return res.sendStatus(204)
+      res.sendStatus(204)
+      return
     }
-    return res.sendStatus(200)
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[agency.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -166,7 +172,8 @@ export const getAgency = async (req: Request, res: Response) => {
 
     if (!user) {
       logger.error('[agency.getAgency] Agency not found:', id)
-      return res.sendStatus(204)
+      res.sendStatus(204)
+      return
     }
 
     const {
@@ -180,7 +187,7 @@ export const getAgency = async (req: Request, res: Response) => {
       payLater,
     } = user
 
-    return res.json({
+    res.json({
       _id,
       email,
       fullName,
@@ -192,7 +199,7 @@ export const getAgency = async (req: Request, res: Response) => {
     })
   } catch (err) {
     logger.error(`[agency.getAgency] ${i18n.t('DB_ERROR')} ${id}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -240,10 +247,10 @@ export const getAgencies = async (req: Request, res: Response) => {
       return { _id, fullName, avatar }
     })
 
-    return res.json(data)
+    res.json(data)
   } catch (err) {
     logger.error(`[agency.getAgencies] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }
 
@@ -271,9 +278,9 @@ export const getAllAgencies = async (req: Request, res: Response) => {
       return { _id, fullName, avatar }
     })
 
-    return res.json(data)
+    res.json(data)
   } catch (err) {
     logger.error(`[agency.getAllAgencies] ${i18n.t('DB_ERROR')}`, err)
-    return res.status(400).send(i18n.t('DB_ERROR') + err)
+    res.status(400).send(i18n.t('DB_ERROR') + err)
   }
 }

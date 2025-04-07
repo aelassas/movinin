@@ -26,8 +26,7 @@ let AGENCY1_NAME: string
 beforeAll(async () => {
   testHelper.initializeLogger()
 
-  const res = await databaseHelper.connect(env.DB_URI, false, false)
-  expect(res).toBeTruthy()
+  await databaseHelper.connect(env.DB_URI, false, false)
 
   await testHelper.initialize()
 
@@ -66,7 +65,7 @@ describe('POST /api/validate-agency', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
-    payload = { fullName: testHelper.getAgencyName() }
+    payload.fullName = testHelper.getAgencyName()
     res = await request(app)
       .post('/api/validate-agency')
       .set(env.X_ACCESS_TOKEN, token)
@@ -76,7 +75,7 @@ describe('POST /api/validate-agency', () => {
     res = await request(app)
       .post('/api/validate-agency')
       .set(env.X_ACCESS_TOKEN, token)
-    expect(res.statusCode).toBe(400)
+    expect(res.statusCode).toBe(500)
 
     await testHelper.signout(token)
   })
@@ -119,10 +118,18 @@ describe('PUT /api/update-agency', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
+    // test failure (invalid id
+    payload._id = '0'
     res = await request(app)
       .put('/api/update-agency')
       .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
     expect(res.statusCode).toBe(400)
+
+    res = await request(app)
+      .put('/api/update-agency')
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(500)
 
     await testHelper.signout(token)
   })
@@ -203,7 +210,7 @@ describe('DELETE /api/delete-agency/:id', () => {
     let avatarName = 'avatar1.jpg'
     let avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
     let avatar = path.join(env.CDN_USERS, avatarName)
-    if (!await helper.exists(avatar)) {
+    if (!(await helper.exists(avatar))) {
       await fs.copyFile(avatarPath, avatar)
     }
     agency!.avatar = avatarName
@@ -238,11 +245,11 @@ describe('DELETE /api/delete-agency/:id', () => {
       rentalTerm: movininTypes.RentalTerm.Monthly,
     })
     const propertyImage = path.join(env.CDN_PROPERTIES, propertyImageName)
-    if (!await helper.exists(propertyImage)) {
+    if (!(await helper.exists(propertyImage))) {
       await fs.copyFile(propertyImagePath, propertyImage)
     }
     const additionalImage = path.join(env.CDN_PROPERTIES, additionalImageName)
-    if (!await helper.exists(propertyImage)) {
+    if (!(await helper.exists(propertyImage))) {
       await fs.copyFile(additionalImagePath, additionalImage)
     }
     await property.save()
@@ -325,7 +332,7 @@ describe('DELETE /api/delete-agency/:id', () => {
     avatarName = 'avatar1.jpg'
     avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
     avatar = path.join(env.CDN_USERS, avatarName)
-    if (!await helper.exists(avatar)) {
+    if (!(await helper.exists(avatar))) {
       await fs.copyFile(avatarPath, avatar)
     }
     agency!.avatar = avatarName

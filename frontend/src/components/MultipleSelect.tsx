@@ -51,7 +51,6 @@ const ListBox: React.ComponentType<React.HTMLAttributes<HTMLElement>> = forwardR
   useImperativeHandle(ref, () => innerRef.current)
 
   return (
-    // eslint-disable-next-line
     <ul {...rest} ref={innerRef} role="list-box">
       {children}
     </ul>
@@ -319,7 +318,10 @@ const MultipleSelect = ({
           <Chip {...getTagProps({ index })} key={option._id} label={option.name} />
         ))}
         renderOption={(props, option) => {
-          if ('key' in props) delete props.key
+          if ('key' in props) {
+            delete props.key
+          }
+
           if (type === movininTypes.RecordType.User) {
             return (
               <li {...props} key={option._id} className={`${props.className} ms-option`}>

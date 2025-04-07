@@ -26,10 +26,10 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
 
     const orderId = await paypal.createOrder(bookingId, amount, currency, name, description, countryCode)
 
-    return res.json(orderId)
+    res.json(orderId)
   } catch (err) {
     logger.error(`[paypal.createPayPalOrder] ${i18n.t('ERROR')}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -52,7 +52,8 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     if (!booking) {
       const msg = `Booking with id ${bookingId} not found`
       logger.info(`[paypal.checkPayPalOrder] ${msg}`)
-      return res.status(204).send(msg)
+      res.status(204).send(msg)
+      return
     }
 
     let order
@@ -65,7 +66,8 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
     if (!order) {
       const msg = `Order ${order} not found`
       logger.info(`[paypal.checkPayPalOrder] ${msg}`)
-      return res.status(204).send(msg)
+      res.status(204).send(msg)
+      return
     }
 
     //
@@ -84,21 +86,24 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
       const user = await User.findById(booking.renter)
       if (!user) {
         logger.info(`Renter ${booking.renter} not found`)
-        return res.sendStatus(204)
+        res.sendStatus(204)
+        return
       }
 
       user.expireAt = undefined
       await user.save()
 
-      if (!await bookingController.confirm(user, booking, false)) {
-        return res.sendStatus(400)
+      if (!(await bookingController.confirm(user, booking, false))) {
+        res.sendStatus(400)
+        return
       }
 
       // Notify agency
       const agency = await User.findById(booking.agency)
       if (!agency) {
         logger.info(`Agency ${booking.agency} not found`)
-        return res.sendStatus(204)
+        res.sendStatus(204)
+        return
       }
       i18n.locale = agency.language
       let message = i18n.t('BOOKING_PAID_NOTIFICATION')
@@ -112,16 +117,17 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
         await bookingController.notify(user, booking.id, admin, message)
       }
 
-      return res.sendStatus(200)
+      res.sendStatus(200)
+      return
     }
 
     //
     // 3. Delete Booking if the payment didn't succeed
     //
     await booking.deleteOne()
-    return res.status(400).send(order.status)
+    res.status(400).send(order.status)
   } catch (err) {
     logger.error(`[paypal.checkPayPalOrder] ${i18n.t('ERROR')}`, err)
-    return res.status(400).send(i18n.t('ERROR') + err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }

@@ -90,16 +90,12 @@ const UpdateBooking = () => {
           if (_property) {
             const _booking = movininHelper.clone(booking)
             _booking.property = _property
-            helper.price(
-              _booking,
-              _property,
-              (_price) => {
-                setPrice(_price)
-              },
-              (err) => {
-                helper.error(err)
-              },
-            )
+
+            const options: movininTypes.PropertyOptions = {
+              cancellation
+            }
+            const _price = await movininHelper.calculateTotalPrice(_property, from!, to!, options)
+            setPrice(_price)
 
             setBooking(_booking)
             setProperty(newProperty)
@@ -116,30 +112,26 @@ const UpdateBooking = () => {
         helper.error(err)
       }
     },
-    [property, booking],
+    [property, booking, cancellation, from, to],
   )
 
   const handleStatusChange = (value: movininTypes.BookingStatus) => {
     setStatus(value)
   }
 
-  const handleCancellationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCancellationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (booking) {
       const _booking = movininHelper.clone(booking) as movininTypes.Booking
       _booking.cancellation = e.target.checked
 
-      helper.price(
-        _booking,
-        _booking.property as movininTypes.Property,
-        (_price) => {
-          setBooking(_booking)
-          setPrice(_price)
-          setCancellation(_booking.cancellation || false)
-        },
-        (err) => {
-          helper.error(err)
-        },
-      )
+      const options: movininTypes.PropertyOptions = {
+        cancellation: _booking.cancellation
+      }
+      const _price = await movininHelper.calculateTotalPrice(property!, from!, to!, options)
+      setPrice(_price)
+      setBooking(_booking)
+      setPrice(_price)
+      setCancellation(_booking.cancellation || false)
     }
   }
 
@@ -349,28 +341,24 @@ const UpdateBooking = () => {
                   value={from}
                   maxDate={maxDate}
                   required
-                  onChange={(date) => {
+                  onChange={async (date) => {
                     if (date) {
                       const _booking = movininHelper.clone(booking) as movininTypes.Booking
                       _booking.from = date
 
-                      helper.price(
-                        _booking,
-                        _booking.property as movininTypes.Property,
-                        (_price) => {
-                          setBooking(_booking)
-                          setPrice(_price)
-                          setFrom(date)
+                      const options: movininTypes.PropertyOptions = {
+                        cancellation
+                      }
+                      const _price = await movininHelper.calculateTotalPrice(property!, date, to!, options)
+                      setBooking(_booking)
+                      setPrice(_price)
+                      setFrom(date)
 
-                          const _minDate = new Date(date)
-                          _minDate.setDate(_minDate.getDate() + 1)
-                          setMinDate(_minDate)
-                          setFromError(false)
-                        },
-                        (err) => {
-                          toastErr(err)
-                        },
-                      )
+                      const _minDate = new Date(date)
+                      _minDate.setDate(_minDate.getDate() + 1)
+                      setMinDate(_minDate)
+                      setFromError(false)
+
                     } else {
                       setMinDate(undefined)
                       setFrom(undefined)
@@ -392,28 +380,23 @@ const UpdateBooking = () => {
                   value={to}
                   minDate={minDate}
                   required
-                  onChange={(date) => {
+                  onChange={async (date) => {
                     if (date) {
                       const _booking = movininHelper.clone(booking) as movininTypes.Booking
                       _booking.to = date
 
-                      helper.price(
-                        _booking,
-                        _booking.property as movininTypes.Property,
-                        (_price) => {
-                          setBooking(_booking)
-                          setPrice(_price)
-                          setTo(date)
+                      const options: movininTypes.PropertyOptions = {
+                        cancellation
+                      }
+                      const _price = await movininHelper.calculateTotalPrice(property!, from!, date, options)
+                      setBooking(_booking)
+                      setPrice(_price)
+                      setTo(date)
 
-                          const _maxDate = new Date(date)
-                          _maxDate.setDate(_maxDate.getDate() - 1)
-                          setMaxDate(_maxDate)
-                          setToError(false)
-                        },
-                        (err) => {
-                          toastErr(err)
-                        },
-                      )
+                      const _maxDate = new Date(date)
+                      _maxDate.setDate(_maxDate.getDate() - 1)
+                      setMaxDate(_maxDate)
+                      setToError(false)
                     } else {
                       setTo(undefined)
                       setMaxDate(undefined)
@@ -468,7 +451,7 @@ const UpdateBooking = () => {
               <div className="price">
                 <span className="price-days">{helper.getDays(days)}</span>
                 <span className="price-main">{`${movininHelper.formatPrice(price as number, commonStrings.CURRENCY, language)}`}</span>
-                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatPrice(Math.floor((price as number) / days), commonStrings.CURRENCY, language)}`}</span>
+                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatPrice((price as number) / days, commonStrings.CURRENCY, language)}`}</span>
               </div>
             </div>
             <PropertyList
