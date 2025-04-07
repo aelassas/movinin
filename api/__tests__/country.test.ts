@@ -76,6 +76,14 @@ describe('POST /api/validate-country', () => {
     await countryValue.deleteOne()
     await country.deleteOne()
 
+    // test failure (wrong language)
+    payload.language = 'unknown'
+    res = await request(app)
+      .post('/api/validate-country')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
     // test failure (no payload)
     res = await request(app)
       .post('/api/validate-country')
@@ -251,6 +259,11 @@ describe('GET /api/countries-with-locations/:language/:imageRequired/:minLocatio
       .get(`/api/countries-with-locations/${language}/false/1`)
     expect(res.statusCode).toBe(200)
     expect(res.body.find((country: movininTypes.Country) => country._id === COUNTRY_ID)).toBeUndefined()
+
+    // test failure (wrong language)
+    res = await request(app)
+      .get('/api/countries-with-locations/unknoaw/false/1')
+    expect(res.statusCode).toBe(400)
   })
 })
 
@@ -264,6 +277,12 @@ describe('GET /api/country-id/:name/:language', () => {
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
     expect(res.body).toBe(COUNTRY_ID)
+
+    // test failure (wrong language)
+    res = await request(app)
+      .get('/api/country-id/unknown/unknown')
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(400)
 
     res = await request(app)
       .get(`/api/country-id/unknown/${language}`)

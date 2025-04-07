@@ -69,7 +69,7 @@ const Scheduler = () => {
                     <AgencyFilter
                       agencies={allAgencies}
                       onChange={handleAgencyFilterChange}
-                      className="cl-supplier-filter"
+                      className="cl-agency-filter"
                     />
                   )}
                 <StatusFilter

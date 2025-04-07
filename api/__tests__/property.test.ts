@@ -344,6 +344,13 @@ describe('PUT /api/update-property', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
+    payload._id = '0'
+    res = await request(app)
+      .put('/api/update-property')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
     res = await request(app)
       .put('/api/update-property')
       .set(env.X_ACCESS_TOKEN, token)

@@ -65,7 +65,7 @@ describe('POST /api/validate-agency', () => {
       .send(payload)
     expect(res.statusCode).toBe(204)
 
-    payload = { fullName: testHelper.getAgencyName() }
+    payload.fullName = testHelper.getAgencyName()
     res = await request(app)
       .post('/api/validate-agency')
       .set(env.X_ACCESS_TOKEN, token)
@@ -117,6 +117,14 @@ describe('PUT /api/update-agency', () => {
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(204)
+
+    // test failure (invalid id
+    payload._id = '0'
+    res = await request(app)
+      .put('/api/update-agency')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
 
     res = await request(app)
       .put('/api/update-agency')

@@ -24,6 +24,9 @@ export const validate = async (req: Request, res: Response) => {
   const { language, name } = body
 
   try {
+    if (language.length !== 2) {
+      throw new Error('Invalid language code')
+    }
     const keyword = escapeStringRegexp(name)
     const options = 'i'
 
@@ -271,6 +274,11 @@ export const getCountries = async (req: Request, res: Response) => {
 export const getCountriesWithLocations = async (req: Request, res: Response) => {
   try {
     const { language, imageRequired: _imageRequired, minLocations: _minLocations } = req.params
+
+    if (language.length !== 2) {
+      throw new Error('Invalid language code')
+    }
+
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
 
@@ -410,6 +418,9 @@ export const getCountryId = async (req: Request, res: Response) => {
   const { name, language } = req.params
 
   try {
+    if (language.length !== 2) {
+      throw new Error('Invalid language code')
+    }
     const lv = await LocationValue.findOne({ language, value: { $regex: new RegExp(`^${escapeStringRegexp(helper.trim(name, ' '))}$`, 'i') } })
     if (lv) {
       const country = await Country.findOne({ values: lv.id })

@@ -27,6 +27,9 @@ export const validate = async (req: Request, res: Response) => {
   const { language, name } = body
 
   try {
+    if (language.length !== 2) {
+      throw new Error('Invalid language code')
+    }
     const keyword = escapeStringRegexp(name)
     const options = 'i'
 
@@ -373,6 +376,11 @@ export const getLocations = async (req: Request, res: Response) => {
 export const getLocationsWithPosition = async (req: Request, res: Response) => {
   try {
     const { language } = req.params
+
+    if (language.length !== 2) {
+      throw new Error('Invalid language code')
+    }
+
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
 
@@ -460,6 +468,9 @@ export const getLocationId = async (req: Request, res: Response) => {
   const { name, language } = req.params
 
   try {
+    if (language.length !== 2) {
+      throw new Error('Invalid language code')
+    }
     const lv = await LocationValue.findOne({ language, value: { $regex: new RegExp(`^${escapeStringRegexp(helper.trim(name, ' '))}$`, 'i') } })
     if (lv) {
       const location = await Location.findOne({ values: lv.id })
@@ -562,6 +573,9 @@ export const deleteImage = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
+    if (!helper.isValidObjectId(id)) {
+      throw new Error(`Invalid ObjectId ${id}`)
+    }
     const location = await Location.findById(id)
 
     if (location) {

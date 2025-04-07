@@ -108,6 +108,14 @@ describe('POST /api/validate-location', () => {
     await locationValue.deleteOne()
     await location.deleteOne()
 
+    // test failure (wrong language)
+    payload.language = 'unknown'
+    res = await request(app)
+      .post('/api/validate-location')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+
     // test failure (no payload)
     res = await request(app)
       .post('/api/validate-location')
@@ -241,6 +249,10 @@ describe('GET /api/location-id/:name/:language', () => {
     res = await request(app)
       .get(`/api/location-id/unknown/${language}`)
     expect(res.statusCode).toBe(204)
+
+    res = await request(app)
+      .get('/api/location-id/unknown/unknown')
+    expect(res.statusCode).toBe(400)
   })
 })
 
@@ -346,6 +358,11 @@ describe('POST /api/delete-location-image/:id', () => {
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
+    res = await request(app)
+      .post('/api/delete-location-image/0')
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(400)
+
     await testHelper.signout(token)
   })
 })
@@ -428,8 +445,7 @@ describe('GET /api/locations-with-position/:language', () => {
 
     res = await request(app)
       .get('/api/locations-with-position/unknown')
-    expect(res.statusCode).toBe(200)
-    expect(res.body.length).toBe(0)
+    expect(res.statusCode).toBe(400)
   })
 })
 
