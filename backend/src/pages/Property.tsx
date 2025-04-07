@@ -175,7 +175,7 @@ const Property = () => {
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title={commonStrings.DELETE}>
+                    {/* <Tooltip title={commonStrings.DELETE}>
                       <IconButton
                         onClick={async () => {
                           try {
@@ -195,7 +195,7 @@ const Property = () => {
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                   </div>
                 )}
               </div>

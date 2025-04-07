@@ -163,11 +163,11 @@ const PropertyBookings = () => {
                   <EditIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title={commonStrings.DELETE}>
+              {/* <Tooltip title={commonStrings.DELETE}>
                 <IconButton onClick={handleDelete}>
                   <DeleteIcon />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
             </div>
 
           </div>
