@@ -126,7 +126,7 @@ describe('POST /api/create-booking', () => {
       renter: RENTER1_ID,
       location: LOCATION_ID,
       from: new Date(2024, 2, 1),
-      to: new Date(1990, 2, 4),
+      to: new Date(2024, 2, 4),
       status: movininTypes.BookingStatus.Pending,
       cancellation: true,
       price: 4000,
@@ -159,7 +159,7 @@ describe('POST /api/checkout', () => {
         renter: RENTER1_ID,
         location: LOCATION_ID,
         from: new Date(2024, 3, 1),
-        to: new Date(1990, 3, 4),
+        to: new Date(2024, 3, 4),
         status: movininTypes.BookingStatus.Pending,
         cancellation: true,
         price: 4000,
@@ -311,7 +311,7 @@ describe('POST /api/update-booking', () => {
       renter: RENTER1_ID,
       location: LOCATION_ID,
       from: new Date(2024, 2, 1),
-      to: new Date(1990, 2, 4),
+      to: new Date(2024, 2, 4),
       status: movininTypes.BookingStatus.Paid,
       cancellation: true,
       price: 4800,
@@ -381,6 +381,14 @@ describe('POST /api/update-booking', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     await PushToken.deleteOne({ _id: pushToken._id })
+
+    // test failure (missing booking id)
+    payload._id = undefined
+    res = await request(app)
+      .put('/api/update-booking')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
 
     res = await request(app)
       .put('/api/update-booking')
@@ -485,7 +493,7 @@ describe('POST /api/bookings/:page/:size/:language', () => {
       filter: {
         location: LOCATION_ID,
         from: new Date(2024, 2, 1),
-        to: new Date(1990, 2, 4),
+        to: new Date(2024, 2, 4),
         keyword: RENTER1_NAME,
       },
       user: RENTER1_ID,
@@ -512,6 +520,14 @@ describe('POST /api/bookings/:page/:size/:language', () => {
     expect(res.body[0].resultData.length).toBe(1)
 
     payload.filter!.keyword = BOOKING_ID
+    res = await request(app)
+      .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    expect(res.body[0].resultData.length).toBe(1)
+
+    payload.filter!.dateBetween = new Date(2024, 2, 2)
     res = await request(app)
       .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
       .set(env.X_ACCESS_TOKEN, token)
@@ -630,7 +646,7 @@ describe('DELETE /api/delete-temp-booking', () => {
       renter: renter.id,
       location: LOCATION_ID,
       from: new Date(2024, 2, 1),
-      to: new Date(1990, 2, 4),
+      to: new Date(2024, 2, 4),
       status: movininTypes.BookingStatus.Void,
       sessionId,
       expireAt,

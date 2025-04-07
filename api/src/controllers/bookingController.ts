@@ -897,7 +897,7 @@ export const cancelBooking = async (req: Request, res: Response) => {
       // Notify agency
       const agency = await User.findById(booking.agency)
       if (!agency) {
-        logger.info(`Supplier ${booking.agency} not found`)
+        logger.info(`Agency ${booking.agency} not found`)
         res.sendStatus(204)
         return
       }
