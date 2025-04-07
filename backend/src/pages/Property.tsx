@@ -104,11 +104,10 @@ const Property = () => {
   return (
     <Layout onLoad={onLoad} strict>
       {
-        property
-        && (
+        property && image && (
           <>
             <div className="main">
-              <div className="property">
+              <div className="property-card">
                 <div className="images-container">
                   {/* Main image */}
                   <div className="main-image">

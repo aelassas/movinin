@@ -1,5 +1,5 @@
 @media only screen and (width <=960px) {
-  div.main div.property {
+  div.main div.property-card {
     display: flex;
     flex-direction: column;
   }
@@ -14,7 +14,7 @@
     padding-bottom: 30px;
   }
 
-  div.main div.property {
+  div.main div.property-card {
     display: flex;
     flex-direction: row;
   }
@@ -29,7 +29,7 @@ div.main {
   /* transform: translate3d(0, 0, 0); */
 }
 
-div.main div.property div.images-container {
+div.main div.property-card div.images-container {
   width: 350px;
   display: flex;
   flex-direction: column;
@@ -37,7 +37,7 @@ div.main div.property div.images-container {
   margin-right: 15px;
 }
 
-div.main div.property div.main-image {
+div.main div.property-card div.main-image {
   width: 100%;
   height: 350px;
   padding: 5px;
@@ -48,18 +48,18 @@ div.main div.property div.main-image {
   justify-content: center;
 }
 
-div.main div.property img.main-image {
+div.main div.property-card img.main-image {
   max-width: 100%;
   max-height: 100%;
 }
 
-div.main div.property div.images {
+div.main div.property-card div.images {
   display: flex;
   flex-flow: row wrap;
   overflow-x: auto;
 }
 
-div.main div.property div.images div.image {
+div.main div.property-card div.images div.image {
   width: 60px;
   height: 60px;
   border: 2px solid #D5DBDB;
@@ -72,33 +72,33 @@ div.main div.property div.images div.image {
   margin: 5px;
 }
 
-div.main div.property div.images div.image:hover {
+div.main div.property-card div.images div.image:hover {
   border: 2px solid #004b91;
 }
 
-div.main div.property div.images div.selected,
-div.main div.property div.images div.selected:hover {
+div.main div.property-card div.images div.selected,
+div.main div.property-card div.images div.selected:hover {
   border: 2px solid #FF8F00;
 }
 
-div.main div.property div.images img.image {
+div.main div.property-card div.images img.image {
   max-width: 100%;
   max-height: 100%;
 }
 
-div.main div.property div.right-panel {
+div.main div.property-card div.right-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-div.main div.property div.right-panel div.right-panel-header {
+div.main div.property-card div.right-panel div.right-panel-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-div.main div.property div.right-panel div.name h2 {
+div.main div.property-card div.right-panel div.name h2 {
   font-size: 1.8em;
   font-weight: 700;
   text-size-adjust: none;
@@ -112,7 +112,7 @@ div.main div.property div.right-panel div.name h2 {
   text-overflow: ellipsis;
 }
 
-div.main div.property div.right-panel div.price {
+div.main div.property-card div.right-panel div.price {
   color: #383838;
   font-size: 1.5em;
   font-weight: 700;
