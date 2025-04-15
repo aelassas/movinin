@@ -389,13 +389,6 @@ export const IPINFO_API_KEY = __env__('MI_IPINFO_API_KEY', false)
 export const IPINFO_DEFAULT_COUNTRY = __env__('MI_IPINFO_DEFAULT_COUNTRY', false, 'US')
 
 /**
- * Indicates whether to mark property as unavailable after checkout (stripe, paypal, pay later)
- *
- * @type {boolean}
- */
-export const MARK_PROPERTY_AS_UNAVAILABLE_ON_CHECKOUT = helper.StringToBoolean(__env__('MI_MARK_PROPERTY_AS_UNAVAILABLE_ON_CHECKOUT', false, 'true'))
-
-/**
  * User Document.
  *
  * @export
