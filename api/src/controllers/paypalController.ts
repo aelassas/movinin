@@ -6,6 +6,7 @@ import * as movininTypes from ':movinin-types'
 import * as env from '../config/env.config'
 import Booking from '../models/Booking'
 import User from '../models/User'
+import Property from '../models/Property'
 import * as bookingController from './bookingController'
 import * as ipinfoHelper from '../common/ipinfoHelper'
 
@@ -80,7 +81,9 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
       await booking.save()
 
       // Mark property as unavailable
-      // await Property.updateOne({ _id: booking.property }, { available: false })
+      if (env.MARK_PROPERTY_AS_UNAVAILABLE_ON_CHECKOUT) {
+        await Property.updateOne({ _id: booking.property }, { available: false })
+      }
 
       // Send confirmation email
       const user = await User.findById(booking.renter)

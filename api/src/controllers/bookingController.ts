@@ -265,6 +265,11 @@ export const checkout = async (req: Request, res: Response) => {
     await booking.save()
 
     if (body.payLater || (booking.status === movininTypes.BookingStatus.Paid && body.paymentIntentId && body.customerId)) {
+      // Mark property as unavailable
+      if (env.MARK_PROPERTY_AS_UNAVAILABLE_ON_CHECKOUT) {
+        await Property.updateOne({ _id: booking.property }, { available: false })
+      }
+
       // Send confirmation email
       if (!(await confirm(user, booking, body.payLater!))) {
         res.sendStatus(400)
