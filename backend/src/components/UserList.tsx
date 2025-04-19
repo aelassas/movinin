@@ -367,7 +367,7 @@ const UserList = ({
           paginationModel={paginationModel}
           onPaginationModelChange={setPaginationModel}
           onRowSelectionModelChange={(_selectedIds) => {
-            setSelectedIds(Array.from(new Set(_selectedIds)).map((id) => id.toString()))
+            setSelectedIds(Array.from(new Set(_selectedIds.ids)).map((id) => id.toString()))
             setReloadColumns(true)
           }}
           getRowClassName={(params: any) => (params.row.blacklisted ? 'us-blacklisted' : '')}

@@ -70,6 +70,13 @@ const isFr = language === 'fr'
 
 const theme = createTheme(
   {
+    palette: {
+      primary: {
+        main: '#1a1a1a',
+        // contrastText: '#003B95',
+        // dark: '#003B95',
+      },
+    },
     typography: {
       fontFamily: [
         '-apple-system',

@@ -15,9 +15,6 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Card,
-  CardContent,
-  Typography,
   Stack,
   CircularProgress
 } from '@mui/material'
@@ -65,7 +62,6 @@ const BookingList = ({
   hidePropertyColumn,
   hideAgencyColumn,
   language,
-  loading: bookingLoading,
   checkboxSelection,
   onLoad,
 }: BookingListProps) => {
@@ -86,8 +82,7 @@ const BookingList = ({
   })
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(env.isMobile ? env.BOOKINGS_MOBILE_PAGE_SIZE : env.BOOKINGS_PAGE_SIZE)
-  const [init, setInit] = useState(true)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [openCancelDialog, setOpenCancelDialog] = useState(false)
   const [cancelRequestSent, setCancelRequestSent] = useState(false)
   const [cancelRequestProcessing, setCancelRequestProcessing] = useState(false)
@@ -157,7 +152,6 @@ const BookingList = ({
       helper.error(err)
     } finally {
       setLoading(false)
-      setInit(false)
     }
   }
 
@@ -395,108 +389,98 @@ const BookingList = ({
   return (
     <div className="bs-list">
       {user
-        && (rows.length === 0 ? (
-          !loading
-          && !init
-          && !bookingLoading
-          && (
-            <Card variant="outlined" className="empty-list">
-              <CardContent>
-                <Typography color="textSecondary">{strings.EMPTY_LIST}</Typography>
-              </CardContent>
-            </Card>
-          )
-        ) : env.isMobile ? (
-          <>
-            {rows.map((booking) => {
-              const from = new Date(booking.from)
-              const to = new Date(booking.to)
+        && (
+          env.isMobile ? (
+            <>
+              {rows.map((booking) => {
+                const from = new Date(booking.from)
+                const to = new Date(booking.to)
 
-              return (
-                <div key={booking._id} className="booking-details">
-                  <div className={`bs bs-${booking.status.toLowerCase()}`}>
-                    <span>{helper.getBookingStatus(booking.status)}</span>
-                  </div>
-                  <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <span className="booking-detail-title">{strings.PROPERTY}</span>
-                    <div className="booking-detail-value">
-                      <Link href={`property/?p=${(booking.property as movininTypes.Property)._id}`}>{(booking.property as movininTypes.Property).name}</Link>
+                return (
+                  <div key={booking._id} className="booking-details">
+                    <div className={`bs bs-${booking.status.toLowerCase()}`}>
+                      <span>{helper.getBookingStatus(booking.status)}</span>
                     </div>
-                  </div>
-                  <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <span className="booking-detail-title">{strings.DAYS}</span>
-                    <div className="booking-detail-value">
-                      {`${helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
-                        format(from, _format, { locale: _locale }),
-                      )} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`}
-                    </div>
-                  </div>
-                  <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <span className="booking-detail-title">{commonStrings.LOCATION}</span>
-                    <div className="booking-detail-value">{((booking.property as movininTypes.Property).location as movininTypes.Location).name}</div>
-                  </div>
-                  <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <span className="booking-detail-title">{commonStrings.AGENCY}</span>
-                    <div className="booking-detail-value">
-                      <div className="property-agency">
-                        <img src={movininHelper.joinURL(env.CDN_USERS, (booking.agency as movininTypes.User).avatar)} alt={(booking.agency as movininTypes.User).fullName} />
-                        <span className="property-agency-name">{(booking.agency as movininTypes.User).fullName}</span>
+                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="booking-detail-title">{strings.PROPERTY}</span>
+                      <div className="booking-detail-value">
+                        <Link href={`property/?p=${(booking.property as movininTypes.Property)._id}`}>{(booking.property as movininTypes.Property).name}</Link>
                       </div>
                     </div>
-                  </div>
+                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="booking-detail-title">{strings.DAYS}</span>
+                      <div className="booking-detail-value">
+                        {`${helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(
+                          format(from, _format, { locale: _locale }),
+                        )} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`}
+                      </div>
+                    </div>
+                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="booking-detail-title">{commonStrings.LOCATION}</span>
+                      <div className="booking-detail-value">{((booking.property as movininTypes.Property).location as movininTypes.Location).name}</div>
+                    </div>
+                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="booking-detail-title">{commonStrings.AGENCY}</span>
+                      <div className="booking-detail-value">
+                        <div className="property-agency">
+                          <img src={movininHelper.joinURL(env.CDN_USERS, (booking.agency as movininTypes.User).avatar)} alt={(booking.agency as movininTypes.User).fullName} />
+                          <span className="property-agency-name">{(booking.agency as movininTypes.User).fullName}</span>
+                        </div>
+                      </div>
+                    </div>
 
-                  {booking.cancellation && <Extras booking={booking} />}
+                    {booking.cancellation && <Extras booking={booking} />}
 
-                  <div className="booking-detail" style={{ height: bookingDetailHeight }}>
-                    <span className="booking-detail-title">{strings.COST}</span>
-                    <div className="booking-detail-value booking-price">{movininHelper.formatPrice(booking.price as number, commonStrings.CURRENCY, language as string)}</div>
-                  </div>
+                    <div className="booking-detail" style={{ height: bookingDetailHeight }}>
+                      <span className="booking-detail-title">{strings.COST}</span>
+                      <div className="booking-detail-value booking-price">{movininHelper.formatPrice(booking.price as number, commonStrings.CURRENCY, language as string)}</div>
+                    </div>
 
-                  <div className="bs-buttons">
-                    {booking.cancellation
-                      && !booking.cancelRequest
-                      && booking.status !== movininTypes.BookingStatus.Cancelled
-                      && new Date(booking.from) > new Date() && (
-                        <Button
-                          variant="outlined"
-                          onClick={() => {
-                            setSelectedId(booking._id as string)
-                            setOpenCancelDialog(true)
-                          }}
-                        >
-                          {strings.CANCEL}
-                        </Button>
-                      )}
+                    <div className="bs-buttons">
+                      {booking.cancellation
+                        && !booking.cancelRequest
+                        && booking.status !== movininTypes.BookingStatus.Cancelled
+                        && new Date(booking.from) > new Date() && (
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              setSelectedId(booking._id as string)
+                              setOpenCancelDialog(true)
+                            }}
+                          >
+                            {strings.CANCEL}
+                          </Button>
+                        )}
+                    </div>
                   </div>
-                </div>
-              )
-            })}
-          </>
-        ) : (
-          <DataGrid
-            className="data-grid"
-            checkboxSelection={checkboxSelection}
-            getRowId={(row: movininTypes.Booking): GridRowId => row._id as GridRowId}
-            columns={columns}
-            rows={rows}
-            rowCount={rowCount}
-            loading={loading}
-            initialState={{
-              pagination: {
-                paginationModel: { pageSize: env.BOOKINGS_PAGE_SIZE },
-              },
-            }}
-            pageSizeOptions={[env.BOOKINGS_PAGE_SIZE, 50, 100]}
-            pagination
-            paginationMode="server"
-            paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
-            onRowSelectionModelChange={(_selectedIds) => {
-              setSelectedIds(Array.from(new Set(_selectedIds)).map((id) => id.toString()))
-            }}
-            disableRowSelectionOnClick
-          />
-        ))}
+                )
+              })}
+            </>
+          ) : (
+            <DataGrid
+              className="data-grid"
+              checkboxSelection={checkboxSelection}
+              getRowId={(row: movininTypes.Booking): GridRowId => row._id as GridRowId}
+              columns={columns}
+              rows={rows}
+              rowCount={rowCount}
+              loading={loading}
+              initialState={{
+                pagination: {
+                  paginationModel: { pageSize: env.BOOKINGS_PAGE_SIZE },
+                },
+              }}
+              pageSizeOptions={[env.BOOKINGS_PAGE_SIZE, 50, 100]}
+              pagination
+              paginationMode="server"
+              paginationModel={paginationModel}
+              onPaginationModelChange={setPaginationModel}
+              onRowSelectionModelChange={(_selectedIds) => {
+                setSelectedIds(Array.from(new Set(_selectedIds.ids)).map((id) => id.toString()))
+              }}
+              disableRowSelectionOnClick
+            />
+          ))}
 
       <Dialog disableEscapeKeyDown maxWidth="xs" open={openCancelDialog}>
         <DialogTitle className="dialog-header">{!cancelRequestSent && !cancelRequestProcessing && commonStrings.CONFIRM_TITLE}</DialogTitle>
