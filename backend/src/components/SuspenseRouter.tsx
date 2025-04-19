@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useLayoutEffect, useRef, useState, useTransition } from 'react'
 import { Router } from 'react-router-dom'
 import { BrowserHistory, createBrowserHistory, Update } from 'history'
