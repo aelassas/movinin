@@ -169,7 +169,8 @@ const Settings = () => {
                 mode="update"
                 record={user}
                 size="large"
-                readonly={false}
+                readonly
+                // readonly={false}
                 onBeforeUpload={onBeforeUpload}
                 onChange={onAvatarChange}
                 hideDelete={!admin}
