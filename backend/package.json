@@ -8,6 +8,8 @@
     "ts:build": "npm run install:dependencies && tsc --build --verbose",
     "build": "npm run ts:build && cross-env NODE_OPTIONS=--max-old-space-size=1024 vite build",
     "dev": "npm run ts:build && vite",
+    "ts:docker-build": "tsc --build --verbose",
+    "dev:docker": "npm run ts:docker-build && vite",
     "preview": "vite preview",
     "fix": "eslint --fix .",
     "lint": "eslint .",
@@ -23,8 +25,6 @@
     "@mui/material": "^7.0.2",
     "@mui/x-data-grid": "^8.0.0",
     "@mui/x-date-pickers": "^8.0.0",
-    "@types/draftjs-to-html": "^0.8.4",
-    "@types/html-to-draftjs": "^1.5.0",
     "@types/node": "^22.14.1",
     "@types/nprogress": "^0.2.3",
     "@types/react": "^19.1.2",
@@ -53,6 +53,9 @@
     "vite": "^6.3.2"
   },
   "devDependencies": {
+    "@types/draft-js": "^0.11.18",
+    "@types/draftjs-to-html": "^0.8.4",
+    "@types/html-to-draftjs": "^1.5.0",
     "@typescript-eslint/eslint-plugin": "^8.30.1",
     "@typescript-eslint/parser": "^8.30.1",
     "babel-plugin-react-compiler": "^19.0.0-beta-ebf51a3-20250411",

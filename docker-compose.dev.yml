@@ -1,11 +1,9 @@
-version: "3.8"
 services:
   mongo:
     image: mongo:latest
     command: mongod --quiet --logpath /dev/null
     restart: always
     environment:
-      # Provide your credentials here
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
     ports:
@@ -31,7 +29,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./api/Dockerfile
+      dockerfile: ./api/Dockerfile.dev
     env_file: ./api/.env.docker
     restart: always
     ports:
@@ -40,29 +38,48 @@ services:
       - mongo
     volumes:
       - cdn:/var/www/cdn/movinin
+      - ./api:/movinin/api
+      - api_node_modules:/movinin/api/node_modules
 
   backend:
     build:
       context: .
-      dockerfile: ./backend/Dockerfile
+      dockerfile: ./backend/Dockerfile.dev
+    env_file: ./backend/.env.docker
+    restart: always
     depends_on:
       - api
     ports:
       - 3003:3003
+    volumes:
+      - ./backend:/movinin/backend
+      - backend_node_modules:/movinin/backend/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
 
   frontend:
     build:
       context: .
-      dockerfile: ./frontend/Dockerfile
+      dockerfile: ./frontend/Dockerfile.dev
+    env_file: ./frontend/.env.docker
+    restart: always
     depends_on:
       - api
     ports:
-      - 8080:80
+      - 8080:8080
       - 8443:443
     volumes:
-      - cdn:/var/www/cdn/movinin
+      - ./frontend:/movinin/frontend
+      - frontend_node_modules:/movinin/frontend/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
 
 volumes:
   cdn:
+  api_node_modules:
+  backend_node_modules:
+  frontend_node_modules:
   mongodb_data:
   mongodb_config:

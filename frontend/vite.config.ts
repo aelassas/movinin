@@ -41,6 +41,16 @@ export default ({ mode }: { mode: string }) => {
     server: {
       host: '0.0.0.0',
       port: Number.parseInt(process.env.VITE_PORT || '3004', 10),
+      watch: {
+        usePolling: true,
+        interval: 500,
+      },
+      hmr: {
+        protocol: 'ws',
+        host: process.env.VITE_HMR_HOST || 'localhost',
+        port: Number.parseInt(process.env.VITE_HMR_PORT || '8080', 10),
+        clientPort: Number.parseInt(process.env.VITE_HMR_CLIENT_PORT || '8080', 10),
+      },
     },
 
     build: {
