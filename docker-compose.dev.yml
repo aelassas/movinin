@@ -1,5 +1,5 @@
 services:
-  mongo:
+  mi-mongo:
     image: mongo:latest
     command: mongod --quiet --logpath /dev/null
     restart: always
@@ -12,7 +12,7 @@ services:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
 
-  mongo-express:
+  mi-mongo-express:
     image: mongo-express:latest
     restart: always
     ports:
@@ -20,13 +20,13 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin
-      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_SERVER: mi-mongo
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      - mi-mongo
 
-  api:
+  mi-dev-api:
     build:
       context: .
       dockerfile: ./api/Dockerfile.dev
@@ -35,20 +35,20 @@ services:
     ports:
       - 4004:4004
     depends_on:
-      - mongo
+      - mi-mongo
     volumes:
       - cdn:/var/www/cdn/movinin
       - ./api:/movinin/api
       - api_node_modules:/movinin/api/node_modules
 
-  backend:
+  mi-dev-backend:
     build:
       context: .
       dockerfile: ./backend/Dockerfile.dev
     env_file: ./backend/.env.docker
     restart: always
     depends_on:
-      - api
+      - mi-dev-api
     ports:
       - 3003:3003
     volumes:
@@ -58,14 +58,14 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
 
-  frontend:
+  mi-dev-frontend:
     build:
       context: .
       dockerfile: ./frontend/Dockerfile.dev
     env_file: ./frontend/.env.docker
     restart: always
     depends_on:
-      - api
+      - mi-dev-api
     ports:
       - 8080:8080
       - 8443:443

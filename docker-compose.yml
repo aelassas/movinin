@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  mongo:
+  mi-mongo:
     image: mongo:latest
     command: mongod --quiet --logpath /dev/null
     restart: always
@@ -14,7 +14,7 @@ services:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
 
-  mongo-express:
+  mi-mongo-express:
     image: mongo-express:latest
     restart: always
     ports:
@@ -22,13 +22,13 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin
-      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_SERVER: mi-mongo
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      - mi-mongo
 
-  api:
+  mi-api:
     build:
       context: .
       dockerfile: ./api/Dockerfile
@@ -37,25 +37,25 @@ services:
     ports:
       - 4004:4004
     depends_on:
-      - mongo
+      - mi-mongo
     volumes:
       - cdn:/var/www/cdn/movinin
 
-  backend:
+  mi-backend:
     build:
       context: .
       dockerfile: ./backend/Dockerfile
     depends_on:
-      - api
+      - mi-api
     ports:
       - 3003:3003
 
-  frontend:
+  mi-frontend:
     build:
       context: .
       dockerfile: ./frontend/Dockerfile
     depends_on:
-      - api
+      - mi-api
     ports:
       - 8080:80
       - 8443:443
