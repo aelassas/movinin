@@ -25,3 +25,5 @@ npm-debug.log*
 
 # logs
 /logs
+
+.eslintcache

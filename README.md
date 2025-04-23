@@ -74,7 +74,7 @@ You can install the Android app on any Android device.
 
 Open the Camera app and point it at this code. Then tap the notification that appears.
 
-<img alt="" width="120" src="https://movin-in.github.io/content/qr-code-5.3.png">
+<img alt="" width="120" src="https://movin-in.github.io/content/qr-code-5.4.png">
 
 ### How to install the Mobile App on Android
 
@@ -86,7 +86,7 @@ Open the Camera app and point it at this code. Then tap the notification that ap
 
 You can also install the Android App by downloading the APK and installing it on any Android device.
 
-* [Download APK](https://github.com/aelassas/movinin/releases/download/v5.3/movinin-5.3.apk)
+* [Download APK](https://github.com/aelassas/movinin/releases/download/v5.4/movinin-5.4.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
@@ -106,6 +106,7 @@ You can also install the Android App by downloading the APK and installing it on
    1. [Windows, Linux and macOS](https://github.com/aelassas/movinin/wiki/Demo-Database#windows-linux-and-macos)
    2. [Docker](https://github.com/aelassas/movinin/wiki/Demo-Database#docker)
 9. [Run from Source](https://github.com/aelassas/movinin/wiki/Run-from-Source)
+10. [Run from Source (Docker)](https://github.com/aelassas/movinin/wiki/Run-from-Source-(Docker))
 10. [Run Mobile App](https://github.com/aelassas/movinin/wiki/Run-Mobile-App)
     1. [Prerequisites](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#prerequisites)
     2. [Instructions](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#instructions)
