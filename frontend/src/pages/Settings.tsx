@@ -188,7 +188,8 @@ const Settings = () => {
                   loggedUser={user}
                   user={user}
                   size="large"
-                  readonly={false}
+                  // readonly={false}
+                  readonly
                   onBeforeUpload={onBeforeUpload}
                   onChange={onAvatarChange}
                   color="disabled"
