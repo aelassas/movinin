@@ -1,0 +1,37 @@
+{
+  "name": "movinin",
+  "version": "5.5.0",
+  "description": "Rental Property Booking System",
+  "keywords": [
+    "react",
+    "property-management",
+    "real-estate",
+    "paypal",
+    "react-native",
+    "mongodb",
+    "stripe",
+    "landlord",
+    "property-rental",
+    "movinin"
+  ],
+  "homepage": "https://github.com/aelassas/movinin#readme",
+  "bugs": {
+    "url": "https://github.com/aelassas/movinin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aelassas/movinin.git"
+  },
+  "license": "MIT",
+  "author": "Akram El Assas",
+  "type": "module",
+  "main": "pre-commit.js",
+  "scripts": {
+    "pre-commit": "node pre-commit.js",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "chalk": "^5.4.1",
+    "husky": "^8.0.0"
+  }
+}

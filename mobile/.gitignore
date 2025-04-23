@@ -92,3 +92,5 @@ ios/
 %ProgramData%/
 
 *.tsbuildinfo
+
+.eslintcache
