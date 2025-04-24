@@ -4,14 +4,14 @@
   "description": "Rental Property Booking System",
   "keywords": [
     "react",
-    "property-management",
-    "real-estate",
-    "paypal",
     "react-native",
     "mongodb",
     "stripe",
-    "landlord",
+    "paypal",
     "property-rental",
+    "property-management",
+    "real-estate",
+    "landlord",
     "movinin"
   ],
   "homepage": "https://github.com/aelassas/movinin#readme",
