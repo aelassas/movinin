@@ -22,6 +22,7 @@
     "type": "git",
     "url": "git+https://github.com/aelassas/movinin.git"
   },
+  "funding": "https://github.com/sponsors/aelassas",
   "license": "MIT",
   "author": "Akram El Assas",
   "type": "module",
@@ -32,6 +33,6 @@
   },
   "devDependencies": {
     "chalk": "^5.4.1",
-    "husky": "^8.0.0"
+    "husky": "^9.1.7"
   }
 }
