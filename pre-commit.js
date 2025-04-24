@@ -59,7 +59,6 @@ try {
   console.log(chalk.greenBright('\n✅ All checks passed. Proceeding with commit.'))
   console.timeEnd(label)
   process.exit(0)
-
 } catch (err) {
   console.log(chalk.redBright('\n🚫 Commit aborted due to pre-commit errors.'))
   console.timeEnd(label)
