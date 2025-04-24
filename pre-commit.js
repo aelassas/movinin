@@ -26,11 +26,14 @@ const runStep = (folder, step) => {
     console.log(chalk.blue(getMessage(folder, `🔍 Running ${step.name}...`)))
 
     exec(step.command, { cwd: folder, stdio: 'pipe' }, (error, stdout, stderr) => {
-      if (stdout) {
-        console.log(stdout) // print stdout to console
+       // Handling stdout
+       if (stdout) {
+        process.stdout.write(stdout) // Ensure stdout is printed to console in real-time
       }
+      
+      // Handling stderr
       if (stderr) {
-        console.log(stderr) // print stderr to console
+        process.stderr.write(stderr) // Ensure stderr is printed to console in real-time
       }
 
       if (error) {
