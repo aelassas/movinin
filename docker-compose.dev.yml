@@ -38,7 +38,7 @@ services:
       - cdn:/var/www/cdn/movinin
       - ./api:/movinin/api
       - /movinin/api/node_modules
-      - api_logs:/wexcommerce/api/logs
+      - api_logs:/movinin/api/logs
 
   mi-dev-backend:
     build:

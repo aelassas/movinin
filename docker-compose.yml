@@ -38,7 +38,7 @@ services:
       - mongo
     volumes:
       - cdn:/var/www/cdn/movinin
-      - api_logs:/wexcommerce/api/logs
+      - api_logs:/movinin/api/logs
 
   mi-backend:
     build:
