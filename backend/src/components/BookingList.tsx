@@ -105,7 +105,7 @@ const BookingList = ({
     }
   }, [paginationModel])
 
-  const fetchData = async (_page: number, _user?: movininTypes.User) => {
+  const fetchData = async (_page: number, _user?: movininTypes.User, _property?: string) => {
     try {
       const _pageSize = env.isMobile ? env.BOOKINGS_MOBILE_PAGE_SIZE : pageSize
 
@@ -116,7 +116,7 @@ const BookingList = ({
           agencies,
           statuses,
           filter: filter || undefined,
-          property,
+          property: _property || property,
           user: (_user && _user._id) || undefined,
         }
 
@@ -176,7 +176,10 @@ const BookingList = ({
 
   useEffect(() => {
     setProperty(bookingProperty || '')
-  }, [bookingProperty])
+    if (property) {
+      fetchData(page, user, bookingProperty)
+    }
+  }, [bookingProperty]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setOffset(bookingOffset || 0)
@@ -184,7 +187,10 @@ const BookingList = ({
 
   useEffect(() => {
     setUser(bookingUser)
-  }, [bookingUser])
+    if (bookingUser) {
+      fetchData(page, bookingUser, property)
+    }
+  }, [bookingUser]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (agencies && statuses && loggedUser) {
