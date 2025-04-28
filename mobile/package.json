@@ -61,7 +61,11 @@
     "react-native-feather": "^1.1.2",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-modal-datetime-picker": "^18.0.0",
+<<<<<<< HEAD
     "react-native-paper": "^5.13.5",
+=======
+    "react-native-paper": "^5.13.4",
+>>>>>>> a3af105331578fd5c290050655d57c61b56e3917
     "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
@@ -80,7 +84,11 @@
     "eslint": "^9.25.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+<<<<<<< HEAD
     "npm-check-updates": "^18.0.1",
+=======
+    "npm-check-updates": "^18.0.0",
+>>>>>>> a3af105331578fd5c290050655d57c61b56e3917
     "typescript": "~5.8.3"
   },
   "private": true
