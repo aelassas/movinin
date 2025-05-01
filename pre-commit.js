@@ -271,7 +271,7 @@ const main = async () => {
         continue
       }
 
-      // Run lint and type-check in parallel per folder
+      // Run checks in parallel per folder
       tasks.push(
         Promise.all([
           lint(folder, files, runInDocker),
