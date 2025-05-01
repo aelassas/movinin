@@ -1,5 +1,5 @@
 import path from 'node:path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import escapeStringRegexp from 'escape-string-regexp'
 import { Request, Response } from 'express'
 import * as movininTypes from ':movinin-types'
@@ -118,8 +118,8 @@ export const deleteAgency = async (req: Request, res: Response) => {
 
       if (agency.avatar) {
         const avatar = path.join(env.CDN_USERS, agency.avatar)
-        if (await helper.exists(avatar)) {
-          await fs.unlink(avatar)
+        if (await helper.pathExists(avatar)) {
+          await asyncFs.unlink(avatar)
         }
 
         await NotificationCounter.deleteMany({ user: id })
@@ -130,15 +130,15 @@ export const deleteAgency = async (req: Request, res: Response) => {
         for (const property of properties) {
           if (property.image) {
             const image = path.join(env.CDN_PROPERTIES, property.image)
-            if (await helper.exists(image)) {
-              await fs.unlink(image)
+            if (await helper.pathExists(image)) {
+              await asyncFs.unlink(image)
             }
           }
           if (property.images) {
             for (const imageFile of property.images) {
               const additionalImage = path.join(env.CDN_PROPERTIES, imageFile)
-              if (await helper.exists(additionalImage)) {
-                await fs.unlink(additionalImage)
+              if (await helper.pathExists(additionalImage)) {
+                await asyncFs.unlink(additionalImage)
               }
             }
           }

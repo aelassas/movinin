@@ -2,7 +2,7 @@ import 'dotenv/config'
 import request from 'supertest'
 import url from 'url'
 import path from 'path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import { nanoid } from 'nanoid'
 import * as movininTypes from ':movinin-types'
 import app from '../src/app'
@@ -62,8 +62,8 @@ afterAll(async () => {
 describe('POST /api/sign-up', () => {
   it('should create a user', async () => {
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
-    if (!(await helper.exists(tempAvatar))) {
-      await fs.copyFile(AVATAR1_PATH, tempAvatar)
+    if (!(await helper.pathExists(tempAvatar))) {
+      await asyncFs.copyFile(AVATAR1_PATH, tempAvatar)
     }
     const payload: movininTypes.SignUpPayload = {
       email: USER1_EMAIL,
@@ -149,8 +149,8 @@ describe('POST /api/create-user', () => {
     const token = await testHelper.signinAsAdmin()
 
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
-    if (!(await helper.exists(tempAvatar))) {
-      await fs.copyFile(AVATAR1_PATH, tempAvatar)
+    if (!(await helper.pathExists(tempAvatar))) {
+      await asyncFs.copyFile(AVATAR1_PATH, tempAvatar)
     }
 
     let payload: movininTypes.CreateUserPayload = {
@@ -962,9 +962,9 @@ describe('POST /api/create-avatar', () => {
     expect(res.statusCode).toBe(200)
     const filename = res.body as string
     const filePath = path.resolve(env.CDN_TEMP_USERS, filename)
-    const avatarExists = await helper.exists(filePath)
+    const avatarExists = await helper.pathExists(filePath)
     expect(avatarExists).toBeTruthy()
-    await fs.unlink(filePath)
+    await asyncFs.unlink(filePath)
 
     res = await request(app)
       .post('/api/create-avatar')
@@ -985,7 +985,7 @@ describe('POST /api/update-avatar/:userId', () => {
       .attach('image', AVATAR2_PATH)
     expect(res.statusCode).toBe(200)
     const filename = res.body as string
-    let avatarExists = await helper.exists(path.resolve(env.CDN_USERS, filename))
+    let avatarExists = await helper.pathExists(path.resolve(env.CDN_USERS, filename))
     expect(avatarExists).toBeTruthy()
     const user = await User.findById(USER1_ID)
     expect(user).not.toBeNull()
@@ -999,7 +999,7 @@ describe('POST /api/update-avatar/:userId', () => {
       .set(env.X_ACCESS_TOKEN, token)
       .attach('image', AVATAR2_PATH)
     expect(res.statusCode).toBe(200)
-    avatarExists = await helper.exists(path.resolve(env.CDN_USERS, filename))
+    avatarExists = await helper.pathExists(path.resolve(env.CDN_USERS, filename))
     expect(avatarExists).toBeTruthy()
 
     user!.avatar = `${nanoid()}.jpg`
@@ -1009,7 +1009,7 @@ describe('POST /api/update-avatar/:userId', () => {
       .set(env.X_ACCESS_TOKEN, token)
       .attach('image', AVATAR2_PATH)
     expect(res.statusCode).toBe(200)
-    avatarExists = await helper.exists(path.resolve(env.CDN_USERS, filename))
+    avatarExists = await helper.pathExists(path.resolve(env.CDN_USERS, filename))
     expect(avatarExists).toBeTruthy()
 
     res = await request(app)
@@ -1042,13 +1042,13 @@ describe('POST /api/delete-avatar/:userId', () => {
     expect(user?.avatar).toBeDefined()
     expect(user?.avatar).not.toBeNull()
     const filePath = path.join(env.CDN_USERS, user?.avatar as string)
-    let avatarExists = await helper.exists(filePath)
+    let avatarExists = await helper.pathExists(filePath)
     expect(avatarExists).toBeTruthy()
     let res = await request(app)
       .post(`/api/delete-avatar/${USER1_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    avatarExists = await helper.exists(filePath)
+    avatarExists = await helper.pathExists(filePath)
     expect(avatarExists).toBeFalsy()
     user = await User.findById(USER1_ID)
     expect(user).not.toBeNull()
@@ -1087,14 +1087,14 @@ describe('POST /api/delete-temp-avatar/:avatar', () => {
     const token = await testHelper.signinAsAdmin()
 
     const tempAvatar = path.join(env.CDN_TEMP_USERS, AVATAR1)
-    if (!(await helper.exists(tempAvatar))) {
-      await fs.copyFile(AVATAR1_PATH, tempAvatar)
+    if (!(await helper.pathExists(tempAvatar))) {
+      await asyncFs.copyFile(AVATAR1_PATH, tempAvatar)
     }
     let res = await request(app)
       .post(`/api/delete-temp-avatar/${AVATAR1}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    const tempImageExists = await helper.exists(tempAvatar)
+    const tempImageExists = await helper.pathExists(tempAvatar)
     expect(tempImageExists).toBeFalsy()
 
     res = await request(app)
@@ -1308,20 +1308,20 @@ describe('POST /api/delete-users', () => {
     const mainImageName = 'main1.jpg'
     const mainImagePath = path.resolve(__dirname, `./img/${mainImageName}`)
     const mainImage = path.join(env.CDN_PROPERTIES, mainImageName)
-    if (!(await helper.exists(mainImage))) {
-      await fs.copyFile(mainImagePath, mainImage)
+    if (!(await helper.pathExists(mainImage))) {
+      await asyncFs.copyFile(mainImagePath, mainImage)
     }
     const additionalImage1Name = 'additional1-1.jpg'
     const additionalImage1Path = path.resolve(__dirname, `./img/${additionalImage1Name}`)
     const additionalImage1 = path.join(env.CDN_PROPERTIES, additionalImage1Name)
-    if (!(await helper.exists(additionalImage1))) {
-      await fs.copyFile(additionalImage1Path, additionalImage1)
+    if (!(await helper.pathExists(additionalImage1))) {
+      await asyncFs.copyFile(additionalImage1Path, additionalImage1)
     }
     const additionalImage2Name = 'additional1-2.jpg'
     const additionalImage2Path = path.resolve(__dirname, `./img/${additionalImage2Name}`)
     const additionalImage2 = path.join(env.CDN_PROPERTIES, additionalImage2Name)
-    if (!(await helper.exists(additionalImage2))) {
-      await fs.copyFile(additionalImage2Path, additionalImage2)
+    if (!(await helper.pathExists(additionalImage2))) {
+      await asyncFs.copyFile(additionalImage2Path, additionalImage2)
     }
     let property = new Property({
       name: 'Beautiful House in Detroit',
@@ -1422,9 +1422,9 @@ describe('POST /api/delete-users', () => {
     expect(c).toBeNull()
     const s = await User.findById(agencyId)
     expect(s).toBeNull()
-    expect(await helper.exists(mainImage)).toBeFalsy()
-    expect(await helper.exists(additionalImage1)).toBeFalsy()
-    expect(await helper.exists(additionalImage2)).toBeFalsy()
+    expect(await helper.pathExists(mainImage)).toBeFalsy()
+    expect(await helper.pathExists(additionalImage1)).toBeFalsy()
+    expect(await helper.pathExists(additionalImage2)).toBeFalsy()
     testHelper.deleteLocation(locationId)
 
     res = await request(app)
