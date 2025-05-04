@@ -58,6 +58,7 @@ const AppLayout = () => (
 
 const routes = createBrowserRouter([
   {
+    path: '/',
     element: <AppLayout />,
     children: [
       { index: true, element: <Home /> },
