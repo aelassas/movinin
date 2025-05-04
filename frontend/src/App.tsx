@@ -56,7 +56,7 @@ const AppLayout = () => (
   </GlobalProvider>
 )
 
-const routes = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
@@ -88,6 +88,6 @@ const routes = createBrowserRouter([
   }
 ])
 
-const App = () => <RouterProvider router={routes} />
+const App = () => <RouterProvider router={router} />
 
 export default App
