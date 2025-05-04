@@ -148,7 +148,8 @@ const Agency = () => {
                   hideDelete
                   onBeforeUpload={onBeforeUpload}
                   onChange={onAvatarChange}
-                  readonly={!edit}
+                  // readonly={!edit}
+                  readonly
                   color="disabled"
                   className="agency-avatar"
                 />

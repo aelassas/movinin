@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
 import { GlobalProvider } from '@/context/GlobalContext'
 import { UserProvider } from '@/context/UserContext'
 import { RecaptchaProvider } from '@/context/RecaptchaContext'
@@ -43,61 +43,65 @@ const CreateCountry = lazy(() => import('@/pages/CreateCountry'))
 const UpdateCountry = lazy(() => import('@/pages/UpdateCountry'))
 const Scheduler = lazy(() => import('@/pages/Scheduler'))
 
-const App = () => (
-  <BrowserRouter>
-    <GlobalProvider>
-      <UserProvider>
-        <RecaptchaProvider>
-          <ScrollToTop />
-
-          <div className="app">
-            <Suspense fallback={<NProgressIndicator />}>
-              <Header />
-
-              <Routes>
-                <Route path="/sign-in" element={<SignIn />} />
-                <Route path="/activate" element={<Activate />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                {/* <Route path="/sign-up" element={<SignUp />} /> */}
-                <Route path="/" element={<Bookings />} />
-                <Route path="/agencies" element={<Agencies />} />
-                <Route path="/agency" element={<Agency />} />
-                {/* <Route path="/create-agency" element={<CreateAgency />} /> */}
-                {/* <Route path="/update-agency" element={<UpdateAgency />} /> */}
-                <Route path="/locations" element={<Locations />} />
-                {/* <Route path="/create-location" element={<CreateLocation />} /> */}
-                {/* <Route path="/update-location" element={<UpdateLocation />} /> */}
-                <Route path="/properties" element={<Properties />} />
-                <Route path="/property" element={<Property />} />
-                <Route path="/property-bookings" element={<PropertyBookings />} />
-                {/* <Route path="/create-property" element={<CreateProperty />} /> */}
-                {/* <Route path="/update-property" element={<UpdateProperty />} /> */}
-                <Route path="/update-booking" element={<UpdateBooking />} />
-                <Route path="/create-booking" element={<CreateBooking />} />
-                <Route path="/users" element={<Users />} />
-                <Route path="/user" element={<User />} />
-                {/* <Route path="/create-user" element={<CreateUser />} /> */}
-                {/* <Route path="/update-user" element={<UpdateUser />} /> */}
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/notifications" element={<Notifications />} />
-                {/* <Route path="/change-password" element={<ChangePassword />} /> */}
-                <Route path="/about" element={<About />} />
-                <Route path="/tos" element={<ToS />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/countries" element={<Countries />} />
-                {/* <Route path="/create-country" element={<CreateCountry />} /> */}
-                {/* <Route path="/update-country" element={<UpdateCountry />} /> */}
-                <Route path="/scheduler" element={<Scheduler />} />
-
-                <Route path="*" element={<NoMatch />} />
-              </Routes>
-            </Suspense>
-          </div>
-        </RecaptchaProvider>
-      </UserProvider>
-    </GlobalProvider>
-  </BrowserRouter>
+const AppLayout = () => (
+  <GlobalProvider>
+    <UserProvider>
+      <RecaptchaProvider>
+        <ScrollToTop />
+        <div className="app">
+          <Suspense fallback={<NProgressIndicator />}>
+            <Header />
+            <Outlet />
+          </Suspense>
+        </div>
+      </RecaptchaProvider>
+    </UserProvider>
+  </GlobalProvider>
 )
+
+const routes = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      { index: true, element: <Bookings /> },
+      { path: '/sign-in', element: <SignIn /> },
+      { path: '/activate', element: <Activate /> },
+      { path: '/forgot-password', element: <ForgotPassword /> },
+      { path: '/reset-password', element: <ResetPassword /> },
+      // { path: '/sign-up', element: <SignUp /> },
+      { path: '/agencies', element: <Agencies /> },
+      { path: '/agency', element: <Agency /> },
+      // { path: '/create-agency', element: <CreateAgency /> },
+      // { path: '/update-agency', element: <UpdateAgency /> },
+      { path: '/locations', element: <Locations /> },
+      // { path: '/create-location', element: <CreateLocation /> },
+      // { path: '/update-location', element: <UpdateLocation /> },
+      { path: '/properties', element: <Properties /> },
+      { path: '/property', element: <Property /> },
+      { path: '/property-bookings', element: <PropertyBookings /> },
+      // { path: '/create-property', element: <CreateProperty /> },
+      // { path: '/update-property', element: <UpdateProperty /> },
+      { path: '/update-booking', element: <UpdateBooking /> },
+      { path: '/create-booking', element: <CreateBooking /> },
+      { path: '/users', element: <Users /> },
+      { path: '/user', element: <User /> },
+      // { path: '/create-user', element: <CreateUser /> },
+      // { path: '/update-user', element: <UpdateUser /> },
+      { path: '/settings', element: <Settings /> },
+      { path: '/notifications', element: <Notifications /> },
+      // { path: '/change-password', element: <ChangePassword /> },
+      { path: '/about', element: <About /> },
+      { path: '/tos', element: <ToS /> },
+      { path: '/contact', element: <Contact /> },
+      { path: '/countries', element: <Countries /> },
+      // { path: '/create-country', element: <CreateCountry /> },
+      // { path: '/update-country', element: <UpdateCountry /> },
+      { path: '/scheduler', element: <Scheduler /> },
+      { path: '*', element: <NoMatch /> }
+    ]
+  }
+])
+
+const App = () => <RouterProvider router={routes} />
 
 export default App
