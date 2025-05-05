@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,7 @@
     "dev:docker": "npm run ts:docker-build && vite",
     "preview": "vite preview",
     "fix": "eslint --fix .",
-      "lint": "eslint . --cache --cache-location .eslintcache",
+    "lint": "eslint . --cache --cache-location .eslintcache",
     "ncu": "ncu -u",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix"
