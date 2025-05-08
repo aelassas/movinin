@@ -124,6 +124,7 @@ export const createAgency = async (email: string, fullName: string) => {
     password: passwordHash,
     type: movininTypes.UserType.Agency,
     avatar: 'avatar.jpg',
+    blacklisted: false,
   }
   const agency = new User(body)
   await agency.save()
