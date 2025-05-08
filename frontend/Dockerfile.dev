@@ -26,5 +26,5 @@ COPY ./frontend/.env.docker .env
 # Copy preinstalled internal packages
 COPY --from=packages /movinin/packages /movinin/packages
 
-EXPOSE 8080
+EXPOSE 8081
 CMD ["npm", "run", "dev:docker"]

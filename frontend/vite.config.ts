@@ -48,8 +48,8 @@ export default ({ mode }: { mode: string }) => {
       hmr: {
         protocol: 'ws',
         host: process.env.VITE_HMR_HOST || 'localhost',
-        port: Number.parseInt(process.env.VITE_HMR_PORT || '8080', 10),
-        clientPort: Number.parseInt(process.env.VITE_HMR_CLIENT_PORT || '8080', 10),
+        port: Number.parseInt(process.env.VITE_HMR_PORT || '8081', 10),
+        clientPort: Number.parseInt(process.env.VITE_HMR_CLIENT_PORT || '8081', 10),
       },
     },
 

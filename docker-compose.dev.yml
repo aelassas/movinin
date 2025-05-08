@@ -66,8 +66,8 @@ services:
     depends_on:
       - mi-dev-api
     ports:
-      - 8080:8080
-      - 8443:443
+      - 8081:8081
+      - 8444:443
     volumes:
       - ./frontend:/movinin/frontend
       - /movinin/frontend/node_modules
