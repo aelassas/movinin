@@ -78,6 +78,8 @@ const strings = new LocalizedStrings({
     NAME: 'Nom',
     LONGITUDE: 'Longitude',
     LATITUDE: 'Latitude',
+    BLACKLISTED: 'Liste noire',
+    BLACKLISTED_TOOLTIP: "Les utilisateurs mis sur liste noire n'ont plus accès à la plateforme.",
   },
   en: {
     GENERIC_ERROR: 'An unhandled error occurred.',
@@ -154,6 +156,8 @@ const strings = new LocalizedStrings({
     NAME: 'Name',
     LONGITUDE: 'Longitude',
     LATITUDE: 'Latitude',
+    BLACKLISTED: 'Blacklisted',
+    BLACKLISTED_TOOLTIP: 'Users who are blacklisted no longer have access to the platform.',
   },
 })
 

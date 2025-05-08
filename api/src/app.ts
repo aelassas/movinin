@@ -46,6 +46,9 @@ app.use(cors())
 app.use(cookieParser(env.COOKIE_SECRET))
 app.use(allowedMethods)
 
+// Serve static files from the CDN directory
+app.use('/cdn', express.static(env.CDN_ROOT))
+
 app.use('/', agencyRoutes)
 app.use('/', bookingRoutes)
 app.use('/', locationRoutes)

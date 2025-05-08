@@ -1,5 +1,5 @@
 import path from 'node:path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import escapeStringRegexp from 'escape-string-regexp'
 import { Request, Response } from 'express'
 import * as movininTypes from ':movinin-types'
@@ -70,12 +70,14 @@ export const update = async (req: Request, res: Response) => {
         location,
         bio,
         payLater,
+        blacklisted,
       } = body
       agency.fullName = fullName
       agency.phone = phone
       agency.location = location
       agency.bio = bio
       agency.payLater = payLater
+      agency.blacklisted = blacklisted
 
       await agency.save()
       res.json({
@@ -86,6 +88,7 @@ export const update = async (req: Request, res: Response) => {
         bio: agency.bio,
         avatar: agency.avatar,
         payLater: agency.payLater,
+        blacklisted: agency.blacklisted,
       })
       return
     }
@@ -118,8 +121,8 @@ export const deleteAgency = async (req: Request, res: Response) => {
 
       if (agency.avatar) {
         const avatar = path.join(env.CDN_USERS, agency.avatar)
-        if (await helper.exists(avatar)) {
-          await fs.unlink(avatar)
+        if (await helper.pathExists(avatar)) {
+          await asyncFs.unlink(avatar)
         }
 
         await NotificationCounter.deleteMany({ user: id })
@@ -130,15 +133,15 @@ export const deleteAgency = async (req: Request, res: Response) => {
         for (const property of properties) {
           if (property.image) {
             const image = path.join(env.CDN_PROPERTIES, property.image)
-            if (await helper.exists(image)) {
-              await fs.unlink(image)
+            if (await helper.pathExists(image)) {
+              await asyncFs.unlink(image)
             }
           }
           if (property.images) {
             for (const imageFile of property.images) {
               const additionalImage = path.join(env.CDN_PROPERTIES, imageFile)
-              if (await helper.exists(additionalImage)) {
-                await fs.unlink(additionalImage)
+              if (await helper.pathExists(additionalImage)) {
+                await asyncFs.unlink(additionalImage)
               }
             }
           }
@@ -185,6 +188,7 @@ export const getAgency = async (req: Request, res: Response) => {
       location,
       bio,
       payLater,
+      blacklisted,
     } = user
 
     res.json({
@@ -196,6 +200,7 @@ export const getAgency = async (req: Request, res: Response) => {
       location,
       bio,
       payLater,
+      blacklisted,
     })
   } catch (err) {
     logger.error(`[agency.getAgency] ${i18n.t('DB_ERROR')} ${id}`, err)
@@ -267,7 +272,13 @@ export const getAllAgencies = async (req: Request, res: Response) => {
   try {
     let data = await User.aggregate(
       [
-        { $match: { type: movininTypes.UserType.Agency, avatar: { $ne: null } } },
+        {
+          $match: {
+            type: movininTypes.UserType.Agency,
+            avatar: { $ne: null },
+            blacklisted: false,
+          },
+        },
         { $sort: { fullName: 1, _id: 1 } },
       ],
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },

@@ -2,7 +2,7 @@ import 'dotenv/config'
 import request from 'supertest'
 import url from 'url'
 import path from 'path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import { nanoid } from 'nanoid'
 import * as movininTypes from ':movinin-types'
 import * as databaseHelper from '../src/common/databaseHelper'
@@ -210,8 +210,8 @@ describe('DELETE /api/delete-agency/:id', () => {
     let avatarName = 'avatar1.jpg'
     let avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
     let avatar = path.join(env.CDN_USERS, avatarName)
-    if (!(await helper.exists(avatar))) {
-      await fs.copyFile(avatarPath, avatar)
+    if (!(await helper.pathExists(avatar))) {
+      await asyncFs.copyFile(avatarPath, avatar)
     }
     agency!.avatar = avatarName
     await agency?.save()
@@ -245,12 +245,12 @@ describe('DELETE /api/delete-agency/:id', () => {
       rentalTerm: movininTypes.RentalTerm.Monthly,
     })
     const propertyImage = path.join(env.CDN_PROPERTIES, propertyImageName)
-    if (!(await helper.exists(propertyImage))) {
-      await fs.copyFile(propertyImagePath, propertyImage)
+    if (!(await helper.pathExists(propertyImage))) {
+      await asyncFs.copyFile(propertyImagePath, propertyImage)
     }
     const additionalImage = path.join(env.CDN_PROPERTIES, additionalImageName)
-    if (!(await helper.exists(propertyImage))) {
-      await fs.copyFile(additionalImagePath, additionalImage)
+    if (!(await helper.pathExists(propertyImage))) {
+      await asyncFs.copyFile(additionalImagePath, additionalImage)
     }
     await property.save()
     let res = await request(app)
@@ -260,8 +260,8 @@ describe('DELETE /api/delete-agency/:id', () => {
     agency = await User.findById(agencyId)
     expect(agency).toBeNull()
     await testHelper.deleteLocation(locationId)
-    expect(await helper.exists(propertyImage)).toBeFalsy()
-    expect(await helper.exists(additionalImage)).toBeFalsy()
+    expect(await helper.pathExists(propertyImage)).toBeFalsy()
+    expect(await helper.pathExists(additionalImage)).toBeFalsy()
 
     res = await request(app)
       .delete(`/api/delete-agency/${testHelper.GetRandromObjectIdAsString()}`)
@@ -332,8 +332,8 @@ describe('DELETE /api/delete-agency/:id', () => {
     avatarName = 'avatar1.jpg'
     avatarPath = path.resolve(__dirname, `./img/${avatarName}`)
     avatar = path.join(env.CDN_USERS, avatarName)
-    if (!(await helper.exists(avatar))) {
-      await fs.copyFile(avatarPath, avatar)
+    if (!(await helper.pathExists(avatar))) {
+      await asyncFs.copyFile(avatarPath, avatar)
     }
     agency!.avatar = avatarName
     await agency?.save()

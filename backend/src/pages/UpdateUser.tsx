@@ -58,6 +58,7 @@ const UpdateUser = () => {
   const [birthDateValid, setBirthDateValid] = useState(true)
   const [phoneValid, setPhoneValid] = useState(true)
   const [payLater, setPayLater] = useState(true)
+  const [blacklisted, setBlacklisted] = useState(false)
 
   const validateFullName = async (_fullName: string, strict = true) => {
     const __fullName = _fullName || fullName
@@ -224,6 +225,7 @@ const UpdateUser = () => {
               setBio(_user.bio || '')
               setBirthDate(_user && _user.birthDate ? new Date(_user.birthDate) : undefined)
               setPayLater(_user.payLater || false)
+              setBlacklisted(!!_user.blacklisted)
               setVisible(true)
               setLoading(false)
             } else {
@@ -292,6 +294,7 @@ const UpdateUser = () => {
         type,
         avatar,
         birthDate,
+        blacklisted,
       }
 
       if (type === movininTypes.RecordType.Agency) {
@@ -372,6 +375,22 @@ const UpdateUser = () => {
               <FormControl fullWidth margin="dense">
                 <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
                 <Input id="email" type="text" value={email} disabled />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      checked={blacklisted}
+                      onChange={(e) => {
+                        setBlacklisted(e.target.checked)
+                      }}
+                      color="primary"
+                    />
+                  )}
+                  label={commonStrings.BLACKLISTED}
+                  title={commonStrings.BLACKLISTED_TOOLTIP}
+                />
               </FormControl>
 
               {renter && (

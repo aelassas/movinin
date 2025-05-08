@@ -1,4 +1,4 @@
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import path from 'node:path'
 import { nanoid } from 'nanoid'
 import escapeStringRegexp from 'escape-string-regexp'
@@ -80,11 +80,11 @@ export const create = async (req: Request, res: Response) => {
 
     // image
     const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
-    if (await helper.exists(_image)) {
+    if (await helper.pathExists(_image)) {
       const filename = `${property._id}_${Date.now()}${path.extname(imageFile)}`
       const newPath = path.join(env.CDN_PROPERTIES, filename)
 
-      await fs.rename(_image, newPath)
+      await asyncFs.rename(_image, newPath)
       property.image = filename
     } else {
       await Property.deleteOne({ _id: property._id })
@@ -100,11 +100,11 @@ export const create = async (req: Request, res: Response) => {
       for (const img of images) {
         const _img = path.join(env.CDN_TEMP_PROPERTIES, img)
 
-        if (await helper.exists(_img)) {
+        if (await helper.pathExists(_img)) {
           const filename = `${property._id}_${nanoid()}_${Date.now()}_${i}${path.extname(img)}`
           const newPath = path.join(env.CDN_PROPERTIES, filename)
 
-          await fs.rename(_img, newPath)
+          await asyncFs.rename(_img, newPath)
           property.images.push(filename)
         } else {
           await Property.deleteOne({ _id: property._id })
@@ -197,15 +197,15 @@ export const update = async (req: Request, res: Response) => {
 
       if (image && image !== property.image) {
         const oldImage = path.join(env.CDN_PROPERTIES, property.image)
-        if (await helper.exists(oldImage)) {
-          await fs.unlink(oldImage)
+        if (await helper.pathExists(oldImage)) {
+          await asyncFs.unlink(oldImage)
         }
 
         const filename = `${property._id}_${Date.now()}${path.extname(image)}`
         const filepath = path.join(env.CDN_PROPERTIES, filename)
 
         const tempImagePath = path.join(env.CDN_TEMP_PROPERTIES, image)
-        await fs.rename(tempImagePath, filepath)
+        await asyncFs.rename(tempImagePath, filepath)
         property.image = filename
       }
 
@@ -215,16 +215,16 @@ export const update = async (req: Request, res: Response) => {
         if (images.length === 0) {
           for (const img of property.images) {
             const _image = path.join(env.CDN_PROPERTIES, img)
-            if (await helper.exists(_image)) {
-              await fs.unlink(_image)
+            if (await helper.pathExists(_image)) {
+              await asyncFs.unlink(_image)
             }
           }
         } else {
           for (const img of property.images) {
             if (!images.includes(img)) {
               const _image = path.join(env.CDN_PROPERTIES, img)
-              if (await helper.exists(_image)) {
-                await fs.unlink(_image)
+              if (await helper.pathExists(_image)) {
+                await asyncFs.unlink(_image)
               }
             } else {
               _images.push(img)
@@ -241,11 +241,11 @@ export const update = async (req: Request, res: Response) => {
           if (!property.images.includes(img)) {
             const _image = path.join(env.CDN_TEMP_PROPERTIES, img)
 
-            if (await helper.exists(_image)) {
+            if (await helper.pathExists(_image)) {
               const filename = `${property._id}_${nanoid()}_${Date.now()}_${i}${path.extname(img)}`
               const newPath = path.join(env.CDN_PROPERTIES, filename)
 
-              await fs.rename(_image, newPath)
+              await asyncFs.rename(_image, newPath)
               property.images.push(filename)
             }
           }
@@ -316,16 +316,16 @@ export const deleteProperty = async (req: Request, res: Response) => {
 
       if (property.image) {
         const image = path.join(env.CDN_PROPERTIES, property.image)
-        if (await helper.exists(image)) {
-          await fs.unlink(image)
+        if (await helper.pathExists(image)) {
+          await asyncFs.unlink(image)
         }
       }
 
       if (Array.isArray(property.images)) {
         for (const imageName of property.images) {
           const image = path.join(env.CDN_PROPERTIES, imageName)
-          if (await helper.exists(image)) {
-            await fs.unlink(image)
+          if (await helper.pathExists(image)) {
+            await asyncFs.unlink(image)
           }
         }
       }
@@ -360,7 +360,7 @@ export const uploadImage = async (req: Request, res: Response) => {
     const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_PROPERTIES, filename)
 
-    await fs.writeFile(filepath, req.file.buffer)
+    await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
   } catch (err) {
     logger.error(i18n.t('ERROR'), err)
@@ -380,11 +380,11 @@ export const uploadImage = async (req: Request, res: Response) => {
 export const deleteTempImage = async (req: Request, res: Response) => {
   try {
     const imageFile = path.join(env.CDN_TEMP_PROPERTIES, req.params.fileName)
-    if (!(await helper.exists(imageFile))) {
+    if (!(await helper.pathExists(imageFile))) {
       throw new Error(`[property.deleteTempImage] temp image ${imageFile} not found`)
     }
 
-    await fs.unlink(imageFile)
+    await asyncFs.unlink(imageFile)
 
     res.sendStatus(200)
   } catch (err) {
@@ -413,8 +413,8 @@ export const deleteImage = async (req: Request, res: Response) => {
 
       if (index > -1) {
         const _image = path.join(env.CDN_PROPERTIES, imageFileName)
-        if (await helper.exists(_image)) {
-          await fs.unlink(_image)
+        if (await helper.pathExists(_image)) {
+          await asyncFs.unlink(_image)
         }
         property.images.splice(index, 1)
         await property.save()
@@ -739,7 +739,8 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
             pipeline: [
               {
                 $match: {
-                  $expr: { $eq: ['$_id', '$$userId'] },
+                  // $expr: { $eq: ['$_id', '$$userId'] },
+                  $and: [{ $expr: { $eq: ['$_id', '$$userId'] } }, { blacklisted: false }]
                 },
               },
             ],

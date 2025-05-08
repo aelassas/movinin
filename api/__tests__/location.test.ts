@@ -2,7 +2,7 @@ import 'dotenv/config'
 import request from 'supertest'
 import url from 'url'
 import path from 'path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import { nanoid } from 'nanoid'
 import * as movininTypes from ':movinin-types'
 import app from '../src/app'
@@ -160,8 +160,8 @@ describe('POST /api/create-location', () => {
 
     // image found
     const tempImage = path.join(env.CDN_TEMP_LOCATIONS, IMAGE0)
-    if (!(await helper.exists(tempImage))) {
-      await fs.copyFile(IMAGE0_PATH, tempImage)
+    if (!(await helper.pathExists(tempImage))) {
+      await asyncFs.copyFile(IMAGE0_PATH, tempImage)
     }
     payload.image = IMAGE0
     res = await request(app)
@@ -267,9 +267,9 @@ describe('POST /api/create-location-image', () => {
     expect(res.statusCode).toBe(200)
     const filename = res.body as string
     const filePath = path.resolve(env.CDN_TEMP_LOCATIONS, filename)
-    const imageExists = await helper.exists(filePath)
+    const imageExists = await helper.pathExists(filePath)
     expect(imageExists).toBeTruthy()
-    await fs.unlink(filePath)
+    await asyncFs.unlink(filePath)
 
     res = await request(app)
       .post('/api/create-location-image')
@@ -290,7 +290,7 @@ describe('POST /api/update-location-image/:id', () => {
       .attach('image', IMAGE2_PATH)
     expect(res.statusCode).toBe(200)
     const filename = res.body as string
-    const imageExists = await helper.exists(path.resolve(env.CDN_LOCATIONS, filename))
+    const imageExists = await helper.pathExists(path.resolve(env.CDN_LOCATIONS, filename))
     expect(imageExists).toBeTruthy()
     const location = await Location.findById(LOCATION_ID)
     expect(location).not.toBeNull()
@@ -341,14 +341,14 @@ describe('POST /api/delete-location-image/:id', () => {
     expect(location).not.toBeNull()
     expect(location?.image).toBeDefined()
     const filename = location?.image as string
-    let imageExists = await helper.exists(path.resolve(env.CDN_LOCATIONS, filename))
+    let imageExists = await helper.pathExists(path.resolve(env.CDN_LOCATIONS, filename))
     expect(imageExists).toBeTruthy()
 
     let res = await request(app)
       .post(`/api/delete-location-image/${LOCATION_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    imageExists = await helper.exists(path.resolve(env.CDN_LOCATIONS, filename))
+    imageExists = await helper.pathExists(path.resolve(env.CDN_LOCATIONS, filename))
     expect(imageExists).toBeFalsy()
     location = await Location.findById(LOCATION_ID)
     expect(location?.image).toBeNull()
@@ -372,14 +372,14 @@ describe('POST /api/delete-temp-location-image/:image', () => {
     const token = await testHelper.signinAsAdmin()
 
     const tempImage = path.join(env.CDN_TEMP_LOCATIONS, IMAGE1)
-    if (!(await helper.exists(tempImage))) {
-      await fs.copyFile(IMAGE1_PATH, tempImage)
+    if (!(await helper.pathExists(tempImage))) {
+      await asyncFs.copyFile(IMAGE1_PATH, tempImage)
     }
     let res = await request(app)
       .post(`/api/delete-temp-location-image/${IMAGE1}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
-    const tempImageExists = await helper.exists(tempImage)
+    const tempImageExists = await helper.pathExists(tempImage)
     expect(tempImageExists).toBeFalsy()
 
     res = await request(app)
@@ -511,8 +511,8 @@ describe('DELETE /api/delete-location/:id', () => {
 
     if (!location?.image) {
       const image = path.join(env.CDN_LOCATIONS, IMAGE0)
-      if (!(await helper.exists(image))) {
-        await fs.copyFile(IMAGE0_PATH, image)
+      if (!(await helper.pathExists(image))) {
+        await asyncFs.copyFile(IMAGE0_PATH, image)
       }
       location!.image = IMAGE0
       await location!.save()

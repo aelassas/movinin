@@ -47,6 +47,7 @@ const UpdateAgency = () => {
   const [email, setEmail] = useState('')
   const [phoneValid, setPhoneValid] = useState(true)
   const [payLater, setPayLater] = useState(true)
+  const [blacklisted, setBlacklisted] = useState(false)
 
   const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value)
@@ -187,6 +188,7 @@ const UpdateAgency = () => {
               setLocation(_agency.location || '')
               setBio(_agency.bio || '')
               setPayLater(_agency.payLater || false)
+              setBlacklisted(!!_agency.blacklisted)
               setVisible(true)
               setLoading(false)
             } else {
@@ -242,6 +244,7 @@ const UpdateAgency = () => {
         location,
         bio,
         payLater,
+        blacklisted,
       }
 
       const status = await AgencyService.update(data)
@@ -294,6 +297,22 @@ const UpdateAgency = () => {
               <FormControl fullWidth margin="dense">
                 <InputLabel className="required">{commonStrings.EMAIL}</InputLabel>
                 <Input id="email" type="text" value={email} disabled />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      checked={blacklisted}
+                      onChange={(e) => {
+                        setBlacklisted(e.target.checked)
+                      }}
+                      color="primary"
+                    />
+                  )}
+                  label={commonStrings.BLACKLISTED}
+                  title={commonStrings.BLACKLISTED_TOOLTIP}
+                />
               </FormControl>
 
               <FormControl component="fieldset" style={{ marginTop: 15 }}>

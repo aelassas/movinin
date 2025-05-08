@@ -1,5 +1,5 @@
 import path from 'node:path'
-import fs from 'node:fs/promises'
+import asyncFs from 'node:fs/promises'
 import bcrypt from 'bcrypt'
 import { nanoid } from 'nanoid'
 import escapeStringRegexp from 'escape-string-regexp'
@@ -64,11 +64,11 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
 
     if (body.avatar) {
       const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
-      if (await helper.exists(avatar)) {
+      if (await helper.pathExists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
         const newPath = path.join(env.CDN_USERS, filename)
 
-        await fs.rename(avatar, newPath)
+        await asyncFs.rename(avatar, newPath)
         user.avatar = filename
         await user.save()
       }
@@ -174,11 +174,11 @@ export const create = async (req: Request, res: Response) => {
     // avatar
     if (body.avatar) {
       const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
-      if (await helper.exists(avatar)) {
+      if (await helper.pathExists(avatar)) {
         const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
         const newPath = path.join(env.CDN_USERS, filename)
 
-        await fs.rename(avatar, newPath)
+        await asyncFs.rename(avatar, newPath)
         user.avatar = filename
         await user.save()
       }
@@ -944,6 +944,7 @@ export const update = async (req: Request, res: Response) => {
       birthDate,
       enableEmailNotifications,
       payLater,
+      blacklisted,
     } = body
 
     if (fullName) {
@@ -953,6 +954,7 @@ export const update = async (req: Request, res: Response) => {
     user.location = location
     user.bio = bio
     user.birthDate = birthDate ? new Date(birthDate) : undefined
+    user.blacklisted = blacklisted
     if (type) {
       user.type = type as movininTypes.UserType
     }
@@ -1109,7 +1111,7 @@ export const createAvatar = async (req: Request, res: Response) => {
     const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
-    await fs.writeFile(filepath, req.file.buffer)
+    await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
   } catch (err) {
     logger.error(`[user.createAvatar] ${i18n.t('DB_ERROR')}`, err)
@@ -1143,15 +1145,15 @@ export const updateAvatar = async (req: Request, res: Response) => {
       if (user.avatar && !user.avatar.startsWith('http')) {
         const avatar = path.join(env.CDN_USERS, user.avatar)
 
-        if (await helper.exists(avatar)) {
-          await fs.unlink(avatar)
+        if (await helper.pathExists(avatar)) {
+          await asyncFs.unlink(avatar)
         }
       }
 
       const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
       const filepath = path.join(env.CDN_USERS, filename)
 
-      await fs.writeFile(filepath, req.file.buffer)
+      await asyncFs.writeFile(filepath, req.file.buffer)
       user.avatar = filename
       await user.save()
       res.json(filename)
@@ -1184,8 +1186,8 @@ export const deleteAvatar = async (req: Request, res: Response) => {
     if (user) {
       if (user.avatar && !user.avatar.startsWith('http')) {
         const avatar = path.join(env.CDN_USERS, user.avatar)
-        if (await helper.exists(avatar)) {
-          await fs.unlink(avatar)
+        if (await helper.pathExists(avatar)) {
+          await asyncFs.unlink(avatar)
         }
       }
       user.avatar = undefined
@@ -1217,11 +1219,11 @@ export const deleteTempAvatar = async (req: Request, res: Response) => {
 
   try {
     const avatarFile = path.join(env.CDN_TEMP_USERS, avatar)
-    if (!(await helper.exists(avatarFile))) {
+    if (!(await helper.pathExists(avatarFile))) {
       throw new Error(`[user.deleteTempAvatar] temp avatar ${avatarFile} not found`)
     }
 
-    await fs.unlink(avatarFile)
+    await asyncFs.unlink(avatarFile)
 
     res.sendStatus(200)
   } catch (err) {
@@ -1442,8 +1444,8 @@ export const deleteUsers = async (req: Request, res: Response) => {
 
         if (user.avatar) {
           const avatar = path.join(env.CDN_USERS, user.avatar)
-          if (await helper.exists(avatar)) {
-            await fs.unlink(avatar)
+          if (await helper.pathExists(avatar)) {
+            await asyncFs.unlink(avatar)
           }
         }
 
@@ -1455,16 +1457,16 @@ export const deleteUsers = async (req: Request, res: Response) => {
             // delete main image
             if (property.image) {
               const image = path.join(env.CDN_PROPERTIES, property.image)
-              if (await helper.exists(image)) {
-                await fs.unlink(image)
+              if (await helper.pathExists(image)) {
+                await asyncFs.unlink(image)
               }
             }
             // delete additional images
             if (Array.isArray(property.images)) {
               for (const additionalImageName of property.images) {
                 const additionalImage = path.join(env.CDN_PROPERTIES, additionalImageName)
-                if (await helper.exists(additionalImage)) {
-                  await fs.unlink(additionalImage)
+                if (await helper.pathExists(additionalImage)) {
+                  await asyncFs.unlink(additionalImage)
                 }
               }
             }

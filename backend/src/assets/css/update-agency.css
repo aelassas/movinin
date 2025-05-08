@@ -17,7 +17,6 @@ div.update-agency .resend-activation-link {
 @media only screen and (width <=960px) {
   .agency-form-update {
     width: 360px;
-    height: 920px;
     padding: 30px;
   }
 }
@@ -27,7 +26,6 @@ div.update-agency .resend-activation-link {
 @media only screen and (width >=960px) {
   .agency-form-update {
     width: 600px;
-    height: 850px;
     padding: 30px;
   }
 }
