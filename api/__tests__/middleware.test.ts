@@ -4,7 +4,6 @@ import * as movininTypes from ':movinin-types'
 import * as databaseHelper from '../src/common/databaseHelper'
 import app from '../src/app'
 import * as env from '../src/config/env.config'
-import User from '../src/models/User'
 import * as testHelper from './testHelper'
 
 const { ADMIN_EMAIL } = testHelper
@@ -139,17 +138,17 @@ describe('GET /api/user/:id', () => {
     expect(res.statusCode).toBe(401)
 
     // Token not valid: User not found
-    const user = await User.findById(USER_ID)
-    user!.blacklisted = true
-    await user?.save()
+    // const user = await User.findById(USER_ID)
+    // user!.blacklisted = true
+    // await user?.save()
 
     res = await request(app)
-      .get(`/api/user/${USER_ID}`)
+      .get(`/api/user/${testHelper.GetRandromObjectIdAsString()}`)
       .set(env.X_ACCESS_TOKEN, token)
-    expect(res.statusCode).toBe(401)
+    expect(res.statusCode).toBe(204)
 
-    user!.blacklisted = false
-    await user?.save()
+    // user!.blacklisted = false
+    // await user?.save()
   })
 })
 

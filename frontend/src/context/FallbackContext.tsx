@@ -6,6 +6,7 @@ export interface FallbackContextType {
   updateFallback: (fallback: FallbackType) => void
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const FallbackContext = React.createContext<FallbackContextType>({
   updateFallback: () => { },
 })
