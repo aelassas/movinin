@@ -77,7 +77,7 @@ export const update = async (req: Request, res: Response) => {
       agency.location = location
       agency.bio = bio
       agency.payLater = payLater
-      agency.blacklisted = blacklisted
+      agency.blacklisted = !!blacklisted
 
       await agency.save()
       res.json({
