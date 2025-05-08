@@ -70,12 +70,14 @@ export const update = async (req: Request, res: Response) => {
         location,
         bio,
         payLater,
+        blacklisted,
       } = body
       agency.fullName = fullName
       agency.phone = phone
       agency.location = location
       agency.bio = bio
       agency.payLater = payLater
+      agency.blacklisted = blacklisted
 
       await agency.save()
       res.json({
@@ -86,6 +88,7 @@ export const update = async (req: Request, res: Response) => {
         bio: agency.bio,
         avatar: agency.avatar,
         payLater: agency.payLater,
+        blacklisted: agency.blacklisted,
       })
       return
     }
@@ -185,6 +188,7 @@ export const getAgency = async (req: Request, res: Response) => {
       location,
       bio,
       payLater,
+      blacklisted,
     } = user
 
     res.json({
@@ -196,6 +200,7 @@ export const getAgency = async (req: Request, res: Response) => {
       location,
       bio,
       payLater,
+      blacklisted,
     })
   } catch (err) {
     logger.error(`[agency.getAgency] ${i18n.t('DB_ERROR')} ${id}`, err)
@@ -267,7 +272,13 @@ export const getAllAgencies = async (req: Request, res: Response) => {
   try {
     let data = await User.aggregate(
       [
-        { $match: { type: movininTypes.UserType.Agency, avatar: { $ne: null } } },
+        {
+          $match: {
+            type: movininTypes.UserType.Agency,
+            avatar: { $ne: null },
+            blacklisted: false,
+          },
+        },
         { $sort: { fullName: 1, _id: 1 } },
       ],
       { collation: { locale: env.DEFAULT_LANGUAGE, strength: 2 } },

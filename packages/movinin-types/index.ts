@@ -105,6 +105,7 @@ export interface UpdateAgencyPayload {
   location: string
   bio: string
   payLater: boolean
+  blacklisted?: boolean
 }
 
 export interface UpdateStatusPayload {

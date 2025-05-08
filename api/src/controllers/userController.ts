@@ -944,6 +944,7 @@ export const update = async (req: Request, res: Response) => {
       birthDate,
       enableEmailNotifications,
       payLater,
+      blacklisted,
     } = body
 
     if (fullName) {
@@ -953,6 +954,7 @@ export const update = async (req: Request, res: Response) => {
     user.location = location
     user.bio = bio
     user.birthDate = birthDate ? new Date(birthDate) : undefined
+    user.blacklisted = blacklisted
     if (type) {
       user.type = type as movininTypes.UserType
     }
