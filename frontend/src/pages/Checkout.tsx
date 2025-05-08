@@ -54,6 +54,7 @@ import ViewOnMapButton from '@/components/ViewOnMapButton'
 import MapDialog from '@/components/MapDialog'
 import CheckoutStatus from '@/components/CheckoutStatus'
 import Backdrop from '@/components/SimpleBackdrop'
+import Unauthorized from '@/components/Unauthorized'
 
 import '@/assets/css/checkout.css'
 
@@ -404,7 +405,7 @@ const Checkout = () => {
 
   return (
     <Layout onLoad={onLoad} strict={false}>
-      {visible && property && from && to && location && (
+      {!user?.blacklisted && visible && property && from && to && location && (
         <>
           <div className="checkout">
             <Paper className="checkout-form" elevation={10}>
@@ -724,6 +725,8 @@ const Checkout = () => {
           <Footer />
         </>
       )}
+
+      {user?.blacklisted && <Unauthorized />}
 
       {noMatch && <NoMatch hideHeader />}
 
