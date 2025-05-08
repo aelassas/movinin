@@ -43,13 +43,11 @@ import { strings as suStrings } from '@/lang/sign-up'
 import { strings } from '@/lang/header'
 import * as UserService from '@/services/UserService'
 import * as PaymentService from '@/services/PaymentService'
-import * as NotificationService from '@/services/NotificationService'
 import Avatar from './Avatar'
 import * as langHelper from '@/common/langHelper'
 import * as helper from '@/common/helper'
-import { useGlobalContext, GlobalContextType } from '@/context/GlobalContext'
+import { useNotificationContext, NotificationContextType } from '@/context/NotificationContext'
 import { useUserContext, UserContextType } from '@/context/UserContext'
-import { useInit } from '@/common/customHooks'
 
 import '@/assets/css/header.css'
 
@@ -66,8 +64,8 @@ const Header = ({
 }: HeaderProps) => {
   const navigate = useNavigate()
 
-  const { user, setUser, setUserLoaded } = useUserContext() as UserContextType
-  const { notificationCount, setNotificationCount } = useGlobalContext() as GlobalContextType
+  const { user } = useUserContext() as UserContextType
+  const { notificationCount } = useNotificationContext() as NotificationContextType
 
   const [currentUser, setCurrentUser] = useState<movininTypes.User>()
 
@@ -78,7 +76,6 @@ const Header = ({
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<HTMLElement | null>(null)
   const [sideAnchorEl, setSideAnchorEl] = useState<HTMLElement | null>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
-  const [loading, setLoading] = useState(true)
   const [isLoaded, setIsLoaded] = useState(false)
 
   const isMenuOpen = Boolean(anchorEl)
@@ -107,47 +104,6 @@ const Header = ({
     },
   }
 
-  const exit = async () => {
-    setLoading(false)
-    setUserLoaded(true)
-
-    await UserService.signout(false, false)
-  }
-
-  useInit(async () => {
-    const _currentUser = UserService.getCurrentUser()
-
-    if (_currentUser) {
-      try {
-        const status = await UserService.validateAccessToken()
-
-        if (status === 200) {
-          const _user = await UserService.getUser(_currentUser._id)
-
-          if (_user) {
-            if (_user.blacklisted) {
-              await exit()
-              return
-            }
-            setUser(_user)
-            setCurrentUser(_user)
-            setIsSignedIn(true)
-            setLoading(false)
-            setUserLoaded(true)
-          } else {
-            await exit()
-          }
-        } else {
-          await exit()
-        }
-      } catch {
-        await exit()
-      }
-    } else {
-      await exit()
-    }
-  }, [])
-
   useEffect(() => {
     const language = langHelper.getLanguage()
     setLang(helper.getLanguage(language))
@@ -157,25 +113,13 @@ const Header = ({
   useEffect(() => {
     if (user) {
       setCurrentUser(user)
+      setIsSignedIn(true)
+    } else {
+      setCurrentUser(undefined)
+      setIsSignedIn(false)
     }
+    setIsLoaded(true)
   }, [user])
-
-  useEffect(() => {
-    const init = async () => {
-      if (!hidden) {
-        if (currentUser) {
-          const notificationCounter = await NotificationService.getNotificationCounter(currentUser._id as string)
-          setIsSignedIn(true)
-          setNotificationCount(notificationCounter.count)
-          setIsLoaded(true)
-        } else {
-          setIsLoaded(true)
-        }
-      }
-    }
-
-    init()
-  }, [hidden, currentUser]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAccountMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -392,7 +336,7 @@ const Header = ({
       <div style={classes.grow} className="header">
         <AppBar position="relative" sx={{ bgcolor: '#fff', boxShadow: 'none', borderBottom: '1px solid #ddd' }}>
           <Toolbar className="toolbar">
-            {isLoaded && !loading && (
+            {isLoaded && (
               <>
                 <IconButton edge="start" sx={classes.menuButton} color="inherit" aria-label="open drawer" onClick={handleSideMenuOpen}>
                   <MenuIcon />
@@ -487,7 +431,7 @@ const Header = ({
                     <ListItemIcon><MailIcon /></ListItemIcon>
                     <ListItemText primary={strings.CONTACT} />
                   </ListItem>
-                  {env.isMobile && !hideSignin && !isSignedIn && isLoaded && !loading && (
+                  {env.isMobile && !hideSignin && !isSignedIn && isLoaded && (
                     <>
                       <ListItem
                         onClick={() => {
@@ -514,23 +458,23 @@ const Header = ({
             </>
             <div style={classes.grow} />
             <div className="header-desktop">
-              {isLoaded && !loading && (
+              {isLoaded && (
                 <Button variant="contained" onClick={handleCurrencyMenuOpen} disableElevation className="btn bold">
                   {PaymentService.getCurrency()}
                 </Button>
               )}
-              {isLoaded && !loading && (
+              {isLoaded && (
                 <Button variant="contained" onClick={handleLangMenuOpen} disableElevation fullWidth className="btn">
                   {/* {lang?.label} */}
                   <CircleFlag countryCode={lang?.countryCode as string} height={flagHeight} className="flag" title={lang?.label} />
                 </Button>
               )}
-              {!hideSignin && !isSignedIn && isLoaded && !loading && (
+              {!hideSignin && !isSignedIn && isLoaded && (
                 <Button variant="contained" size="medium" startIcon={<SignUpIcon />} onClick={() => navigate('/sign-up')} disableElevation className="btn btn-auth" aria-label="Sign in">
                   <span className="btn-auth-txt">{suStrings.SIGN_UP}</span>
                 </Button>
               )}
-              {!hideSignin && !isSignedIn && isLoaded && !loading && (
+              {!hideSignin && !isSignedIn && isLoaded && (
                 <Button variant="contained" startIcon={<LoginIcon />} href="/sign-in" disableElevation fullWidth className="btn btn-auth">
                   <span className="btn-auth-txt">{strings.SIGN_IN}</span>
                 </Button>
@@ -549,12 +493,10 @@ const Header = ({
               )}
             </div>
             <div className="header-mobile">
-              {!loading && (
-                <Button variant="contained" onClick={handleCurrencyMenuOpen} disableElevation fullWidth className="btn bold">
-                  {PaymentService.getCurrency()}
-                </Button>
-              )}
-              {!isSignedIn && !loading && (
+              <Button variant="contained" onClick={handleCurrencyMenuOpen} disableElevation fullWidth className="btn bold">
+                {PaymentService.getCurrency()}
+              </Button>
+              {!isSignedIn && (
                 <Button variant="contained" onClick={handleLangMenuOpen} disableElevation fullWidth className="btn">
                   {/* {lang?.label} */}
                   <CircleFlag countryCode={lang?.countryCode as string} height={flagHeight} className="flag" title={lang?.label} />
