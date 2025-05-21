@@ -191,7 +191,7 @@ const PropertyList = ({
           ListFooterComponent={
             footerComponent || (fetch
               ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
-              : <></>)
+              : null)
           }
           ListEmptyComponent={
             !loading ? (
@@ -199,7 +199,7 @@ const PropertyList = ({
                 <Text>{i18n.t('EMPTY_PROPERTY_LIST')}</Text>
               </View>
             )
-              : <></>
+              : null
           }
           refreshing={loading}
           refreshControl={
