@@ -11,7 +11,7 @@ chmod +x -R /opt/movinin/__scripts
 
 cd /opt/movinin/api
 
-npm install --omit=dev
+npm install
 
 sudo systemctl restart movinin
 sudo systemctl status movinin --no-pager
