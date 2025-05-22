@@ -52,12 +52,13 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * Secure against XSS, XST, CSR, MITM and DDoS
 * Supported Platforms: iOS, Android, Web, Docker
 
-
 ## Support
 
 If this project has been valuable in your work or research, consider supporting its ongoing development and maintenance. You can contribute through [GitHub Sponsorship](https://github.com/sponsors/aelassas) (one-time or monthly), [PayPal](https://www.paypal.me/aelassaspp), or [Buy Me a Coffee](https://buymeacoffee.com/aelassas). Even a simple star on the GitHub repository helps spread the word, increases visibility and is greatly appreciated.
 
-<a href="https://www.buymeacoffee.com/aelassas" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+<a href="https://github.com/sponsors/aelassas" target="_blank"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="190"></a>
+<a href="https://www.paypal.me/aelassaspp" target="_blank"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="188"></a>
+<a href="https://www.buymeacoffee.com/aelassas" target="_blank"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" height="34"></a>
 
 ## Live Demo
 
