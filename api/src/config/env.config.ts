@@ -42,6 +42,13 @@ export const LANGUAGES = [
 export const WEBSITE_NAME = __env__('MI_WEBSITE_NAME', false, "Movin' In")
 
 /**
+ * Indicate whether we are in CI environment or not.
+ *
+ * @type {string}
+ */
+export const CI = helper.StringToBoolean(__env__('MI_CI', false, 'false'))
+
+/**
  * Server Port. Default is 4004.
  *
  * @type {number}
