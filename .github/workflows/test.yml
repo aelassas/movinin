@@ -33,6 +33,7 @@ jobs:
            cd ./api
            touch .env
            echo NODE_ENV=$NODE_ENV >> .env
+           echo MI_CI=$MI_CI >> .env
            echo MI_HTTPS=$MI_HTTPS >> .env
            echo MI_DB_URI=$MI_DB_URI >> .env
            echo MI_DB_SSL=$MI_DB_SSL >> .env
@@ -65,6 +66,7 @@ jobs:
            npm test
       env:
         NODE_ENV: ${{ vars.NODE_ENV }}
+        MI_CI: ${{ vars.MI_CI }}
         MI_HTTPS: ${{ vars.MI_HTTPS }}
         MI_DB_URI: ${{ secrets.MI_DB_URI }}
         MI_DB_SSL: ${{ vars.MI_DB_SSL }}
