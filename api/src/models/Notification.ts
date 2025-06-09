@@ -34,7 +34,7 @@ notificationSchema.index({ user: 1, createdAt: -1, _id: 1 })
 
 const Notification = model<env.Notification>('Notification', notificationSchema)
 
-Notification.syncIndexes().catch((err) => {
+Notification.createIndexes().catch((err) => {
   logger.error('Error creating Notification indexes:', err)
 })
 
