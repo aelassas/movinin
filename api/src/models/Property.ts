@@ -143,6 +143,14 @@ propertySchema.index({ updatedAt: -1, _id: 1 })
 propertySchema.index({ agency: 1, type: 1, rentalTerm: 1, available: 1, updatedAt: -1, _id: 1 })
 propertySchema.index({ type: 1, rentalTerm: 1, available: 1 })
 propertySchema.index({ location: 1, available: 1 })
+propertySchema.index(
+  { name: 'text' },
+  {
+    default_language: 'none', // This disables stemming
+    language_override: '_none', // Prevent MongoDB from expecting a language field
+    background: true,
+  },
+)
 
 const Property = model<env.Property>('Property', propertySchema)
 
