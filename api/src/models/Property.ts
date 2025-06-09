@@ -140,7 +140,6 @@ const propertySchema = new Schema<env.Property>(
 )
 
 propertySchema.index({ updatedAt: -1, _id: 1 })
-propertySchema.index({ name: 'text' })
 propertySchema.index({ agency: 1, type: 1, rentalTerm: 1, available: 1, updatedAt: -1, _id: 1 })
 propertySchema.index({ type: 1, rentalTerm: 1, available: 1 })
 propertySchema.index({ location: 1, available: 1 })

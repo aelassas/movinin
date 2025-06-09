@@ -28,7 +28,6 @@ const locationValueSchema = new Schema<env.LocationValue>(
 )
 
 locationValueSchema.index({ language: 1, value: 1 })
-locationValueSchema.index({ value: 'text' })
 
 const LocationValue = model<env.LocationValue>('LocationValue', locationValueSchema)
 
