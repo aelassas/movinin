@@ -26,7 +26,6 @@ export default async function globalSetup() {
         logger.info('globalSetup: Admin user created:', admin.id)
       }
       await databaseHelper.close()
-      logger.info('Database connection closed')
     }
   } catch (err) {
     logger.error('Error while running global setup', err)
