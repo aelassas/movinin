@@ -146,7 +146,7 @@ propertySchema.index({ location: 1, available: 1 })
 
 const Property = model<env.Property>('Property', propertySchema)
 
-Property.syncIndexes().catch((err) => {
+Property.createIndexes().catch((err) => {
   logger.error('Error creating Property indexes:', err)
 })
 

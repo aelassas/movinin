@@ -37,7 +37,7 @@ locationSchema.index({ values: 1 })
 
 const Location = model<env.Location>('Location', locationSchema)
 
-Location.syncIndexes().catch((err) => {
+Location.createIndexes().catch((err) => {
   logger.error('Error creating Location indexes:', err)
 })
 
