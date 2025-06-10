@@ -12,7 +12,10 @@ beforeAll(() => {
 
 describe('Test database connection', () => {
   it('should connect to database', async () => {
-    const res = await databaseHelper.connect(env.DB_URI, false, false)
+    let res = await databaseHelper.connect(env.DB_URI, false, false)
+    expect(res).toBeTruthy()
+    // test success (already connected)
+    res = await databaseHelper.connect(env.DB_URI, false, false)
     expect(res).toBeTruthy()
     await databaseHelper.close()
   })
@@ -39,6 +42,12 @@ describe('Test database initialization', () => {
     const l2 = new Location({ country: testHelper.GetRandromObjectIdAsString(), values: [lv2.id] })
     await l2.save()
 
+    // test batch deletion pf unsupported languages
+    for (let i = 0; i < 1001; i++) {
+      const lv2 = new LocationValue({ language: 'pt', value: 'localização' })
+      await lv2.save()
+    }
+
     const cv1 = new LocationValue({ language: 'en', value: 'country' })
     await cv1.save()
     const cv2 = new LocationValue({ language: 'es', value: 'país' })
@@ -63,6 +72,10 @@ describe('Test database initialization', () => {
     await LocationValue.deleteMany({ _id: { $in: [...country1!.values, ...country2!.values] } })
     await country1?.deleteOne()
     await country2?.deleteOne()
+
+    // test success (initialization again)
+    res = await databaseHelper.initialize()
+    expect(res).toBeTruthy()
 
     await databaseHelper.close()
   })
