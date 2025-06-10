@@ -87,7 +87,7 @@ describe('Test database initialization', () => {
       await delay()
     }
 
-    // test success (text index)Add commentMore actions
+    // test success (text index)
     const indexName = 'value_text'
     const opts = {
       name: indexName,
