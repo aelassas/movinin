@@ -29,7 +29,8 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/countries'
 import * as CountryService from '@/services/CountryService'
 import * as helper from '@/common/helper'
-import Pager from './Pager'
+import Pager from '@/components/Pager'
+import Progress from '@/components/Progress'
 
 import '@/assets/css/country-list.css'
 
@@ -243,6 +244,9 @@ const CountryList = ({
             ))}
           </List>
         )}
+
+        {loading && <Progress />}
+
         <Dialog disableEscapeKeyDown maxWidth="xs" open={openInfoDialog}>
           <DialogTitle className="dialog-header">{commonStrings.INFO}</DialogTitle>
           <DialogContent>{strings.CANNOT_DELETE_COUNTRY}</DialogContent>
