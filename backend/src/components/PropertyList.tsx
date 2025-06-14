@@ -29,7 +29,7 @@ import * as PropertyService from '@/services/PropertyService'
 import Pager from './Pager'
 import PropertyInfo from './PropertyInfo'
 import AgencyBadge from './AgencyBadge'
-import SimpleBackdrop from './SimpleBackdrop'
+import Progress from './Progress'
 
 import '@/assets/css/property-list.css'
 
@@ -348,6 +348,9 @@ const PropertyList = ({
                 </article>
               )
             })}
+
+          {loading && <Progress />}
+
           <Dialog disableEscapeKeyDown maxWidth="xs" open={openInfoDialog}>
             <DialogTitle className="dialog-header">{commonStrings.INFO}</DialogTitle>
             <DialogContent>{strings.CANNOT_DELETE_PROPERTY}</DialogContent>
@@ -381,7 +384,6 @@ const PropertyList = ({
             onPrevious={() => setPage(page - 1)}
           />
         )}
-        {loading && <SimpleBackdrop text={commonStrings.LOADING} />}
       </>
     )) || <></>
   )
