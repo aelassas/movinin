@@ -27,10 +27,11 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/locations'
 import * as LocationService from '@/services/LocationService'
 import * as helper from '@/common/helper'
-import Pager from './Pager'
+import Avatar from '@/components/Avatar'
+import Pager from '@/components/Pager'
+import Progress from '@/components/Progress'
 
 import '@/assets/css/location-list.css'
-import Avatar from './Avatar'
 
 interface LocationListProps {
   keyword?: string
@@ -253,6 +254,9 @@ const LocationList = ({
             ))}
           </List>
         )}
+
+        {loading && <Progress />}
+
         <Dialog disableEscapeKeyDown maxWidth="xs" open={openInfoDialog}>
           <DialogTitle className="dialog-header">{commonStrings.INFO}</DialogTitle>
           <DialogContent>{strings.CANNOT_DELETE_LOCATION}</DialogContent>

@@ -25,7 +25,8 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/agency-list'
 import * as AgencyService from '@/services/AgencyService'
 import * as helper from '@/common/helper'
-import Pager from './Pager'
+import Pager from '@/components/Pager'
+import Progress from '@/components/Progress'
 
 import '@/assets/css/agency-list.css'
 
@@ -59,6 +60,7 @@ const AgencyList = ({
   const fetchData = async (_page: number, _keyword?: string) => {
     try {
       setLoading(true)
+
       const data = await AgencyService.getAgencies(_keyword || '', _page, env.PAGE_SIZE)
       const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
       if (!_data) {
@@ -228,6 +230,9 @@ const AgencyList = ({
               </article>
             )
           })}
+
+        {loading && <Progress />}
+
         <Dialog disableEscapeKeyDown maxWidth="xs" open={openDeleteDialog}>
           <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
           <DialogContent>{strings.DELETE_AGENCY}</DialogContent>
