@@ -1,5 +1,6 @@
 {
-  "name": "frontend",
+  "name": "movinin-frontend",
+  "description": "Public web frontend for Movin' In (customer-facing website)",
   "private": true,
   "version": "5.9.0",
   "type": "module",

@@ -1,5 +1,6 @@
 {
-  "name": "movinin",
+  "name": "movinin-mobile",
+  "description": "Mobile app for Movin' In (customer app)",
   "version": "5.9.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
