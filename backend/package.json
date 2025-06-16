@@ -1,5 +1,6 @@
 {
-  "name": "backend",
+  "name": "movinin-admin-panel",
+  "description": "Admin panel for managing Movin' In",
   "version": "5.9.0",
   "private": true,
   "type": "module",
