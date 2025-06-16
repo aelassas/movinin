@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 
 ## Movin' In
 
-Movin' In is a Rental Property Management Platform designed to streamline property rentals for agencies. It offers an admin dashboard for managing countries, locations, properties, customers, bookings, and payments along with a frontend and mobile app for customer interactions.
+Movin' In is a Rental Property Management Platform designed to streamline property rentals for agencies. It offers an admin panel for managing countries, locations, properties, customers, bookings, and payments along with a frontend and mobile app for customer interactions.
 
 Movin' In integrates Stripe and PayPal [payment gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways). If [Stripe](https://stripe.com/global) isn't available in your country, simply check if [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) is supported and use it as an alternative for smooth and secure payments.
 
@@ -24,11 +24,11 @@ With Movin' In, you can deploy your own customizable property rental marketplace
 <!--
 Movin' In is free and open source. You can customize it as you want and deploy it yourself by following the [documentation](https://github.com/aelassas/movinin/wiki). If you want me to customize it and deploy it for you, contact me by email. You can find my email in my [GitHub profile page](https://github.com/aelassas). You need to be logged in to GitHub to view my email. I can deploy the platform to the cloud for you, configure your DNS, emailing, webmail and all related tasks.
 -->
-Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the admin dashboard. Movin' In can also work with a single agency and can be used as a property rental aggregator.
+Movin' In is designed to work with multiple agencies. Agencies can manage their properties and bookings from the admin panel. Movin' In can also work with a single agency and can be used as a property rental aggregator.
 
-From the admin dashboard, admins can create and manage agencies, properties, countries, locations, customers, bookings and payments.
+From the admin panel, admins can create and manage agencies, properties, countries, locations, customers, bookings and payments.
 
-When new agencies are created, they receive an email prompting them to create their account to access the admin dashboard and manage their properties, customers and bookings.
+When new agencies are created, they receive an email prompting them to create their account to access the admin panel and manage their properties, customers and bookings.
 
 Customers can sign up from the frontend or the mobile app, search for available properties based on location point and time, choose a property and complete the checkout process.
 
@@ -47,7 +47,7 @@ Customers can sign up from the frontend or the mobile app, search for available 
 * [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination options (Classic pagination with next and previous buttons, infinite scroll)
 * [Multiple Payment Gateways supported (Stripe, PayPal)](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
-* Responsive admin dashboard and frontend
+* Responsive admin panel and frontend
 * Native Mobile app for Android and iOS with single codebase
 * Push notifications
 * Secure against XSS, XST, CSR, MITM and DDoS
@@ -69,7 +69,7 @@ If this project has been valuable in your work or research, consider supporting 
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
-### Admin Dashboard
+### Admin panel
 
 * URL: https://movinin.dynv6.net:3003/
 * Login: admin@movinin.io
