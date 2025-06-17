@@ -22,7 +22,7 @@ const env = {
 
   WEBSITE_NAME: String(import.meta.env.VITE_MI_WEBSITE_NAME),
 
-  APP_TYPE: movininTypes.AppType.Backend,
+  APP_TYPE: movininTypes.AppType.Admin,
   API_HOST: String(import.meta.env.VITE_MI_API_HOST),
   LANGUAGES: LANGUAGES.map((l) => l.code),
   _LANGUAGES: LANGUAGES,

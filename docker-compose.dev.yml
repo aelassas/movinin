@@ -40,19 +40,19 @@ services:
       - /movinin/api/node_modules
       - api_logs:/movinin/api/logs
 
-  mi-dev-backend:
+  mi-dev-admin:
     build:
       context: .
-      dockerfile: ./backend/Dockerfile.dev
-    env_file: ./backend/.env.docker
+      dockerfile: ./admin/Dockerfile.dev
+    env_file: ./admin/.env.docker
     restart: always
     depends_on:
       - mi-dev-api
     ports:
       - 3003:3003
     volumes:
-      - ./backend:/movinin/backend
-      - /movinin/backend/node_modules
+      - ./admin:/movinin/admin
+      - /movinin/admin/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true

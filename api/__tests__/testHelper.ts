@@ -99,7 +99,7 @@ const signin = async (appType: movininTypes.AppType, email: string) => {
   return token
 }
 
-export const signinAsAdmin = () => signin(movininTypes.AppType.Backend, ADMIN_EMAIL)
+export const signinAsAdmin = () => signin(movininTypes.AppType.Admin, ADMIN_EMAIL)
 
 export const signinAsUser = () => signin(movininTypes.AppType.Frontend, USER_EMAIL)
 

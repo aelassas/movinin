@@ -54,7 +54,7 @@ jobs:
            echo MI_CDN_TEMP_PROPERTIES=$MI_CDN_TEMP_PROPERTIES >> .env
            echo MI_CDN_PROPERTIES=$MI_CDN_LOCATIONS >> .env
            echo MI_CDN_TEMP_PROPERTIES=$MI_CDN_TEMP_LOCATIONS >> .env
-           echo MI_BACKEND_HOST=$MI_BACKEND_HOST >> .env
+           echo MI_ADMIN_HOST=$MI_ADMIN_HOST >> .env
            echo MI_FRONTEND_HOST=$MI_FRONTEND_HOST >> .env
            echo MI_MINIMUM_AGE=$MI_MINIMUM_AGE >> .env
            echo MI_EXPO_ACCESS_TOKEN=$MI_EXPO_ACCESS_TOKEN >> .env
@@ -88,7 +88,7 @@ jobs:
         MI_CDN_TEMP_PROPERTIES: ${{ vars.MI_CDN_TEMP_PROPERTIES }}
         MI_CDN_LOCATIONS: ${{ vars.MI_CDN_LOCATIONS }}
         MI_CDN_TEMP_LOCATIONS: ${{ vars.MI_CDN_TEMP_LOCATIONS }}
-        MI_BACKEND_HOST: ${{ vars.MI_BACKEND_HOST }}
+        MI_ADMIN_HOST: ${{ vars.MI_ADMIN_HOST }}
         MI_FRONTEND_HOST: ${{ vars.MI_FRONTEND_HOST }}
         MI_MINIMUM_AGE: ${{ vars.MI_MINIMUM_AGE }}
         MI_EXPO_ACCESS_TOKEN: ${{ secrets.MI_EXPO_ACCESS_TOKEN }}

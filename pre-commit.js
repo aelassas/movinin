@@ -24,9 +24,9 @@ const config = {
       container: 'mi-dev-api',
       checks: [checkTypes.lint, checkTypes.typeCheck, checkTypes.sizeCheck],
     },
-    backend: {
-      folder: 'backend',
-      container: 'mi-dev-backend',
+    admin: {
+      folder: 'admin',
+      container: 'mi-dev-admin',
       checks: [checkTypes.lint, checkTypes.typeCheck, checkTypes.sizeCheck],
     },
     frontend: {
