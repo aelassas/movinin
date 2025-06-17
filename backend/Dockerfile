@@ -8,6 +8,6 @@ RUN mkdir -p /var/www/cdn/movinin/users
 RUN mkdir -p /var/www/cdn/movinin/temp/users
 RUN mkdir -p /var/www/cdn/movinin/properties
 RUN mkdir -p /var/www/cdn/movinin/temp/properties
-RUN npm install --omit=dev
+RUN npm install
 CMD [ "npm", "start"]
 EXPOSE 4004
