@@ -1,11 +1,11 @@
 [Unit]
-Description=Movin' In API
+Description=Movin' In backend server
 Wants=mongod.service
 After=mongod.service
 
 [Service]
 ExecStart=/usr/bin/npm start
-WorkingDirectory=/opt/movinin/api
+WorkingDirectory=/opt/movinin/backend
 Type=simple
 Restart=always
 StandardOutput=append:/var/log/movinin.log

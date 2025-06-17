@@ -1,7 +1,7 @@
 #!/bin/bash
 
 start_time=$(date +%s)
-echo "Deploying Movin' In API..."
+echo "Deploying Movin' In backend server..."
 
 cd /opt/movinin
 git pull
@@ -9,7 +9,7 @@ chmod +x -R /opt/movinin/__scripts
 
 /bin/bash /opt/movinin/__scripts/free-mem.sh
 
-cd /opt/movinin/api
+cd /opt/movinin/backend
 
 npm install
 
