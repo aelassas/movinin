@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 
 FROM node:lts-alpine
-WORKDIR /movinin/api
-COPY ./api ./
+WORKDIR /movinin/backend
+COPY ./backend ./
 COPY ./packages /movinin/packages
 RUN mkdir -p /var/www/cdn/movinin/users
 RUN mkdir -p /var/www/cdn/movinin/temp/users
