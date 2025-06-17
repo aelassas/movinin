@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-tail -f /opt/movinin/api/logs/all.log
+tail -f /opt/movinin/backend/logs/all.log
