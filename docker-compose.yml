@@ -26,11 +26,11 @@ services:
     depends_on:
       - mongo
 
-  mi-api:
+  mi-backend:
     build:
       context: .
-      dockerfile: ./api/Dockerfile
-    env_file: ./api/.env.docker
+      dockerfile: ./backend/Dockerfile
+    env_file: ./backend/.env.docker
     restart: always
     ports:
       - 4004:4004
@@ -38,14 +38,14 @@ services:
       - mongo
     volumes:
       - cdn:/var/www/cdn/movinin
-      - api_logs:/movinin/api/logs
+      - backend_logs:/movinin/backend/logs
 
   mi-admin:
     build:
       context: .
       dockerfile: ./admin/Dockerfile
     depends_on:
-      - mi-api
+      - mi-backend
     ports:
       - 3003:3003
 
@@ -54,7 +54,7 @@ services:
       context: .
       dockerfile: ./frontend/Dockerfile
     depends_on:
-      - mi-api
+      - mi-backend
     ports:
       - 8080:80
       - 8443:443
@@ -65,4 +65,4 @@ volumes:
   cdn:
   mongodb_data:
   mongodb_config:
-  api_logs:
+  backend_logs:

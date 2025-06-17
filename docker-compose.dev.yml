@@ -24,11 +24,11 @@ services:
     depends_on:
       - mongo
 
-  mi-dev-api:
+  mi-dev-backend:
     build:
       context: .
-      dockerfile: ./api/Dockerfile.dev
-    env_file: ./api/.env.docker
+      dockerfile: ./backend/Dockerfile.dev
+    env_file: ./backend/.env.docker
     restart: always
     ports:
       - 4004:4004
@@ -36,9 +36,9 @@ services:
       - mongo
     volumes:
       - cdn:/var/www/cdn/movinin
-      - ./api:/movinin/api
-      - /movinin/api/node_modules
-      - api_logs:/movinin/api/logs
+      - ./backend:/movinin/backend
+      - /movinin/backend/node_modules
+      - backend_logs:/movinin/backend/logs
 
   mi-dev-admin:
     build:
@@ -47,7 +47,7 @@ services:
     env_file: ./admin/.env.docker
     restart: always
     depends_on:
-      - mi-dev-api
+      - mi-dev-backend
     ports:
       - 3003:3003
     volumes:
@@ -64,7 +64,7 @@ services:
     env_file: ./frontend/.env.docker
     restart: always
     depends_on:
-      - mi-dev-api
+      - mi-dev-backend
     ports:
       - 8081:8081
       - 8444:443
@@ -79,4 +79,4 @@ volumes:
   cdn:
   mongodb_data:
   mongodb_config:
-  api_logs:
+  backend_logs:
