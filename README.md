@@ -103,7 +103,7 @@ You can also install the Android App by downloading the APK and installing it on
 
 1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)
 2. [Why Use Movin' In](https://github.com/aelassas/movinin/wiki/Why-Use-Movin'-In)
-2. [Architecture](https://github.com/aelassas/movinin/wiki/Architecture)
+2. [Software Architecture](https://github.com/aelassas/movinin/wiki/Architecture)
 3. [Installing (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))
 5. [Installing (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))
    1. [Docker Image](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#docker-image)
