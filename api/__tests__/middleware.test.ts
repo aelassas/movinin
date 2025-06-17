@@ -29,37 +29,37 @@ afterAll(async () => {
   await databaseHelper.close()
 })
 
-describe('POST /api/sign-in/backend', () => {
-  it('should authenticate through backend HttpOnly cookie', async () => {
+describe('POST /api/sign-in/admin', () => {
+  it('should authenticate through admin HttpOnly cookie', async () => {
     const payload: movininTypes.SignInPayload = {
       email: ADMIN_EMAIL,
       password: testHelper.PASSWORD,
     }
 
     let res = await request(app)
-      .post(`/api/sign-in/${movininTypes.AppType.Backend}`)
+      .post(`/api/sign-in/${movininTypes.AppType.Admin}`)
       .send(payload)
     expect(res.statusCode).toBe(200)
     const cookies = res.headers['set-cookie'] as unknown as string[]
     expect(cookies.length).toBeGreaterThan(1)
-    const cookie = cookies[1].replace(env.X_ACCESS_TOKEN, env.BACKEND_AUTH_COOKIE_NAME)
+    const cookie = cookies[1].replace(env.X_ACCESS_TOKEN, env.ADMIN_AUTH_COOKIE_NAME)
 
     res = await request(app)
-      .post(`/api/sign-in/${movininTypes.AppType.Backend}`)
-      .set('Origin', env.BACKEND_HOST)
+      .post(`/api/sign-in/${movininTypes.AppType.Admin}`)
+      .set('Origin', env.ADMIN_HOST)
       .send(payload)
     expect(res.statusCode).toBe(200)
 
     res = await request(app)
       .get(`/api/user/${USER_ID}`)
-      .set('Origin', env.BACKEND_HOST)
+      .set('Origin', env.ADMIN_HOST)
       .set('Cookie', cookie)
     expect(res.statusCode).toBe(200)
     expect(res.body.email).toBe(USER_EMAIL)
 
     // Not allowed by CORS
     res = await request(app)
-      .post(`/api/sign-in/${movininTypes.AppType.Backend}`)
+      .post(`/api/sign-in/${movininTypes.AppType.Admin}`)
       .set('Origin', 'http://unknow/')
       .send(payload)
     expect(res.statusCode).toBe(500)

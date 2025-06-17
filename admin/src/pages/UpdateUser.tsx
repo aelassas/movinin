@@ -189,7 +189,7 @@ const UpdateUser = () => {
 
   const handleResendActivationLink = async () => {
     try {
-      const status = await UserService.resend(email, false, type === movininTypes.RecordType.User ? 'frontend' : 'backend')
+      const status = await UserService.resend(email, false, type === movininTypes.RecordType.User ? 'frontend' : 'admin')
 
       if (status === 200) {
         helper.info(commonStrings.ACTIVATION_EMAIL_SENT)

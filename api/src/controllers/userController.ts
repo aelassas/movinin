@@ -133,7 +133,7 @@ export const signup = async (req: Request, res: Response) => {
 }
 
 /**
- * Backend Sign Up.
+ * Admin Sign Up.
  *
  * @export
  * @async
@@ -204,7 +204,7 @@ export const create = async (req: Request, res: Response) => {
         `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
         ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
         ${helper.joinURL(
-          user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.BACKEND_HOST,
+          user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.ADMIN_HOST,
           'activate',
         )}/?u=${encodeURIComponent(user.id)}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${i18n.t('REGARDS')}<br></p>`,
@@ -240,8 +240,8 @@ export const checkToken = async (req: Request, res: Response) => {
       const type = req.params.type.toUpperCase() as movininTypes.AppType
 
       if (
-        ![movininTypes.AppType.Frontend, movininTypes.AppType.Backend].includes(type)
-        || (type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User)
+        ![movininTypes.AppType.Frontend, movininTypes.AppType.Admin].includes(type)
+        || (type === movininTypes.AppType.Admin && user.type === movininTypes.UserType.User)
         || (type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User)
         || user.active
       ) {
@@ -322,8 +322,8 @@ export const resend = async (req: Request, res: Response) => {
       const type = req.params.type.toUpperCase() as movininTypes.AppType
 
       if (
-        ![movininTypes.AppType.Frontend.toString(), movininTypes.AppType.Backend.toString()].includes(type)
-        || (type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User)
+        ![movininTypes.AppType.Frontend.toString(), movininTypes.AppType.Admin.toString()].includes(type)
+        || (type === movininTypes.AppType.Admin && user.type === movininTypes.UserType.User)
         || (type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User)
       ) {
         res.sendStatus(403)
@@ -350,7 +350,7 @@ export const resend = async (req: Request, res: Response) => {
           `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
             ${reset ? i18n.t('PASSWORD_RESET_LINK') : i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
             ${helper.joinURL(
-            user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.BACKEND_HOST,
+            user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.ADMIN_HOST,
             reset ? 'reset-password' : 'activate',
           )}/?u=${encodeURIComponent(user.id)}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
             ${i18n.t('REGARDS')}<br></p>`,
@@ -445,8 +445,8 @@ export const signin = async (req: Request, res: Response) => {
       !password
       || !user
       || !user.password
-      || ![movininTypes.AppType.Frontend, movininTypes.AppType.Backend].includes(type)
-      || (type === movininTypes.AppType.Backend && user.type === movininTypes.UserType.User)
+      || ![movininTypes.AppType.Frontend, movininTypes.AppType.Admin].includes(type)
+      || (type === movininTypes.AppType.Admin && user.type === movininTypes.UserType.User)
       || (type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User)
     ) {
       res.sendStatus(204)
@@ -1525,7 +1525,7 @@ export const verifyRecaptcha = async (req: Request, res: Response) => {
 export const sendEmail = async (req: Request, res: Response) => {
   try {
     const whitelist = [
-      helper.trimEnd(env.BACKEND_HOST, '/'),
+      helper.trimEnd(env.ADMIN_HOST, '/'),
       helper.trimEnd(env.FRONTEND_HOST, '/'),
     ]
     const { origin } = req.headers

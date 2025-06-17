@@ -65,10 +65,10 @@ export const deleteTokens = (userId: string): Promise<number> =>
  *
  * @param {?string} [email]
  * @param {boolean} [reset=false]
- * @param {string} [appType=movininTypes.AppType.Backend]
+ * @param {string} [appType=movininTypes.AppType.Admin]
  * @returns {Promise<number>}
  */
-export const resend = (email?: string, reset = false, appType: string = movininTypes.AppType.Backend): Promise<number> =>
+export const resend = (email?: string, reset = false, appType: string = movininTypes.AppType.Admin): Promise<number> =>
   axiosInstance
     .post(
       `/api/resend/${appType}/${encodeURIComponent(email || '')}/${reset}`

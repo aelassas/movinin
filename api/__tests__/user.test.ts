@@ -278,7 +278,7 @@ describe('GET /api/check-token/:type/:userId/:email/:token', () => {
     expect(res.statusCode).toBe(200)
 
     res = await request(app)
-      .get(`/api/check-token/${movininTypes.AppType.Backend}/${USER1_ID}/${USER1_EMAIL}/${token}`)
+      .get(`/api/check-token/${movininTypes.AppType.Admin}/${USER1_ID}/${USER1_EMAIL}/${token}`)
     expect(res.statusCode).toBe(204)
 
     res = await request(app)
@@ -392,7 +392,7 @@ describe('POST /api/resend/:type/:email/:reset', () => {
 
     reset = false
     res = await request(app)
-      .post(`/api/resend/${movininTypes.AppType.Backend}/${ADMIN_EMAIL}/${reset}`)
+      .post(`/api/resend/${movininTypes.AppType.Admin}/${ADMIN_EMAIL}/${reset}`)
     expect(res.statusCode).toBe(200)
     user = await User.findById(ADMIN_ID)
     expect(user).not.toBeNull()
@@ -403,7 +403,7 @@ describe('POST /api/resend/:type/:email/:reset', () => {
     expect(user?.active).toBeFalsy()
 
     res = await request(app)
-      .post(`/api/resend/${movininTypes.AppType.Backend}/${USER1_EMAIL}/${reset}`)
+      .post(`/api/resend/${movininTypes.AppType.Admin}/${USER1_EMAIL}/${reset}`)
     expect(res.statusCode).toBe(403)
 
     res = await request(app)
@@ -513,7 +513,7 @@ describe('POST /api/sign-in/:type', () => {
 
     payload.password = USER1_PASSWORD
     res = await request(app)
-      .post(`/api/sign-in/${movininTypes.AppType.Backend}`)
+      .post(`/api/sign-in/${movininTypes.AppType.Admin}`)
       .send(payload)
     expect(res.statusCode).toBe(204)
 
@@ -1486,4 +1486,3 @@ describe('POST /api/send-email', () => {
     expect(res.statusCode).toBe(500)
   })
 })
-

@@ -172,11 +172,11 @@ export const COOKIE_OPTIONS: CookieOptions = { httpOnly: true, secure: HTTPS, si
 export const FRONTEND_AUTH_COOKIE_NAME = 'mi-x-access-token-frontend'
 
 /**
- * Backend authentication cookie name.
+ * Admin authentication cookie name.
  *
  * @type {"mi-x-access-token-frontend"}
  */
-export const BACKEND_AUTH_COOKIE_NAME = 'mi-x-access-token-backend'
+export const ADMIN_AUTH_COOKIE_NAME = 'mi-x-access-token-admin'
 
 /**
  * Mobile App and unit tests authentication header name.
@@ -291,11 +291,11 @@ export const CDN_LOCATIONS = __env__('MI_CDN_LOCATIONS', true)
 export const CDN_TEMP_LOCATIONS = __env__('MI_CDN_TEMP_LOCATIONS', true)
 
 /**
- * Backend host.
+ * Admin host.
  *
  * @type {string}
  */
-export const BACKEND_HOST = __env__('MI_BACKEND_HOST', true)
+export const ADMIN_HOST = __env__('MI_ADMIN_HOST', true)
 
 /**
  * Frontend host.
