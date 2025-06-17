@@ -19,9 +19,9 @@ const checkTypes = Object.freeze({
 // Configuration for the pre-commit checks
 const config = {
   projects: {
-    api: {
-      folder: 'api',
-      container: 'mi-dev-api',
+    backend: {
+      folder: 'backend',
+      container: 'mi-dev-backend',
       checks: [checkTypes.lint, checkTypes.typeCheck, checkTypes.sizeCheck],
     },
     admin: {

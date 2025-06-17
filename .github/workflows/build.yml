@@ -29,7 +29,7 @@ jobs:
         
     - name: Build backend server
       run: |
-           cd ./api
+           cd ./backend
            npm install
            npm run lint
            npm run build
