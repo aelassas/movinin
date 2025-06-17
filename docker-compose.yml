@@ -56,7 +56,7 @@ services:
     depends_on:
       - mi-backend
     ports:
-      - 8080:80
+      - 8081:80
       - 8443:443
     volumes:
       - cdn:/var/www/cdn/movinin
