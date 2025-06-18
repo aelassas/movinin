@@ -682,7 +682,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
     const types = body.types || []
     const rentalTerms = body.rentalTerms || []
 
-    // include pickup locations and pickup locations whose parent is equal to pickupLocation
+    // include location and child locations are included in search results
     const locIds = await Location.find({
       $or: [
         { _id: location },
