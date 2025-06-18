@@ -20,6 +20,7 @@ import CountrySelectList from '@/components/CountrySelectList'
 import Avatar from '@/components/Avatar'
 import Backdrop from '@/components/SimpleBackdrop'
 import PositionInput from '@/components/PositionInput'
+import LocationSelectList from '@/components/LocationSelectList'
 
 import '@/assets/css/create-location.css'
 
@@ -34,6 +35,7 @@ const CreateLocation = () => {
   const [image, setImage] = useState<string>()
   const [longitude, setLongitude] = useState('')
   const [latitude, setLatitude] = useState('')
+  const [parentLocation, setParentLocation] = useState<movininTypes.Location>()
 
   const handleBeforeUpload = () => {
     setLoading(true)
@@ -78,6 +80,7 @@ const CreateLocation = () => {
           longitude: longitude ? Number(longitude) : undefined,
           names,
           image,
+          parentLocation: parentLocation?._id || undefined,
         }
         const status = await LocationService.create(payload)
 
@@ -91,6 +94,7 @@ const CreateLocation = () => {
           setCountry(null)
           setLongitude('')
           setLatitude('')
+          setParentLocation(undefined)
           helper.info(strings.LOCATION_CREATED)
         } else {
           helper.error()
@@ -139,6 +143,15 @@ const CreateLocation = () => {
                 required
               />
             </FormControl>
+
+            <LocationSelectList
+              label={strings.PARENT_LOCATION}
+              variant="standard"
+              value={parentLocation}
+              onChange={(locations: movininTypes.Option[]) => {
+                setParentLocation(locations.length > 0 ? locations[0] : undefined)
+              }}
+            />
 
             {env._LANGUAGES.map((language, index) => (
               <FormControl key={language.code} fullWidth margin="dense">

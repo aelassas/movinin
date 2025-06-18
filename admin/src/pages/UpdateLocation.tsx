@@ -23,6 +23,7 @@ import env from '@/config/env.config'
 import CountrySelectList from '@/components/CountrySelectList'
 import Avatar from '@/components/Avatar'
 import PositionInput from '@/components/PositionInput'
+import LocationSelectList from '@/components/LocationSelectList'
 
 import '@/assets/css/update-location.css'
 
@@ -40,6 +41,7 @@ const UpdateLocation = () => {
   const [image, setImage] = useState('')
   const [longitude, setLongitude] = useState('')
   const [latitude, setLatitude] = useState('')
+  const [parentLocation, setParentLocation] = useState<movininTypes.Location>()
 
   const handleBeforeUpload = () => {
     setLoading(true)
@@ -110,6 +112,7 @@ const UpdateLocation = () => {
           longitude: longitude ? Number(longitude) : undefined,
           names,
           image,
+          parentLocation: parentLocation?._id || undefined,
         }
         const { status, data } = await LocationService.update(location._id, payload)
 
@@ -158,6 +161,7 @@ const UpdateLocation = () => {
               setNames(_names)
               setLongitude((_location.longitude && _location.longitude.toString()) || '')
               setLatitude((_location.latitude && _location.latitude.toString()) || '')
+              setParentLocation(_location.parentLocation)
               setVisible(true)
               setLoading(false)
             } else {
@@ -221,6 +225,16 @@ const UpdateLocation = () => {
                   required
                 />
               </FormControl>
+
+              <LocationSelectList
+                label={clStrings.PARENT_LOCATION}
+                variant="standard"
+                value={parentLocation}
+                excludeId={location._id}
+                onChange={(locations: movininTypes.Option[]) => {
+                  setParentLocation(locations.length > 0 ? locations[0] : undefined)
+                }}
+              />
 
               {location.values.map((value, index) => (
                 <FormControl key={value.language} fullWidth margin="dense">

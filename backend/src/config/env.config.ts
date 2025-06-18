@@ -578,6 +578,7 @@ export interface Location extends Document {
   values: Types.ObjectId[]
   name?: string
   image?: string | null
+  parentLocation?: Types.ObjectId
 }
 
 /**
@@ -594,6 +595,7 @@ export interface LocationInfo {
   name?: string
   image?: string | null
   values: LocationValue[]
+  parentLocation?: Types.ObjectId
 }
 
 /**

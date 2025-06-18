@@ -186,6 +186,7 @@ export interface UpsertLocationPayload {
   latitude?: number
   names: LocationName[]
   image?: string | null
+  parentLocation?: string
 }
 
 
@@ -288,6 +289,7 @@ export interface Location {
   name?: string
   values?: LocationValue[]
   image?: string
+  parentLocation?: Location
 }
 
 export interface Country {

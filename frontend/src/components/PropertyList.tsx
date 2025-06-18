@@ -11,9 +11,10 @@ import { strings } from '@/lang/properties'
 import * as helper from '@/common/helper'
 import * as PropertyService from '@/services/PropertyService'
 import Pager from './Pager'
+import Property from './Property'
+import Progress from './Progress'
 
 import '@/assets/css/property-list.css'
-import Property from './Property'
 
 interface PropertyListProps {
   agencies?: string[]
@@ -193,6 +194,8 @@ const PropertyList = ({
               hideActions={hideActions}
             />
           ))}
+
+        {loading && <Progress />}
       </section>
 
       {env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !env.isMobile && (
