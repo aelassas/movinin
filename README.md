@@ -34,24 +34,42 @@ Customers can sign up from the frontend or the mobile app, search for available 
 
 ## Features
 
+### 🏢 Agency & Property Management
 * Agency management
-* Ready for one or multiple agencies
+* Ready for single or multiple agencies
 * Property management
 * Booking management
-* [Property Scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
+* [Property scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
+
+### 💳 Pricing & Payments
 * Payment management
+* [Multiple payment gateways supported (Stripe, PayPal)](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
+* Multiple payment methods: Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later
+
+### 🌍 Locations & Mapping
+* [Hierarchical locations with country and map integration](https://github.com/aelassas/movinin/wiki/Locations)
+* Location-based search with nested location support
+* Map display for locations
+
+### 👥 User Experience
 * Customer management
-* Multiple login options (Google, Facebook, Apple, Email)
-* Multiple payment methods (Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later)
-* Multiple language support (English, French)
+* Multiple login options: Google, Facebook, Apple, Email
+* Multiple language support: English, French
 * [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
-* Multiple pagination options (Classic pagination with next and previous buttons, infinite scroll)
-* [Multiple Payment Gateways supported (Stripe, PayPal)](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
-* Responsive admin panel and frontend
-* Native Mobile app for Android and iOS with single codebase
+* Multiple pagination styles: classic (next/previous), infinite scroll
 * Push notifications
-* Secure against XSS, XST, CSR, MITM and DDoS
-* Supported Platforms: iOS, Android, Web, Docker
+
+### 🛡️ Security & Accessibility
+* Secure against XSS, XST, CSRF, MITM, and DDoS attacks
+* Responsive admin panel and frontend
+* Native mobile app for Android and iOS (single codebase)
+* [Docker](https://www.docker.com/) support for deployment
+
+### 🖥️ Supported Platforms
+* iOS
+* Android
+* Web
+* Docker
 
 ## Support
 
@@ -121,11 +139,12 @@ You can also install the Android App by downloading the APK and installing it on
     2. [Instructions](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#instructions)
     3. [Push Notifications](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#push-notifications)
     4. [Run iOS App](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#run-ios-app)
+11. [Locations](https://github.com/aelassas/movinin/wiki/Locations)
 11. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)
 12. [Add New Currency](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
+15. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
 13. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
 14. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)
-15. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
 16. [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)
 
 ## License
