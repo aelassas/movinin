@@ -11,6 +11,7 @@ import i18n from '../lang/i18n'
 import * as env from '../config/env.config'
 import * as helper from '../common/helper'
 import * as logger from '../common/logger'
+import Location from '../models/Location'
 
 /**
  * Create a Property.
@@ -681,10 +682,21 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
     const types = body.types || []
     const rentalTerms = body.rentalTerms || []
 
+    // include pickup locations and pickup locations whose parent is equal to pickupLocation
+    const locIds = await Location.find({
+      $or: [
+        { _id: location },
+        { parentLocation: location },
+      ],
+    }).select('_id').lean()
+
+    const locationIds = locIds.map((loc) => loc._id)
+
     const $match: mongoose.FilterQuery<movininTypes.Property> = {
       $and: [
         { agency: { $in: agencies } },
-        { location },
+        // { location },
+        { location: { $in: locationIds } },
         { type: { $in: types } },
         { rentalTerm: { $in: rentalTerms } },
         { available: true },

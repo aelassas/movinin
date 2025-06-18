@@ -8,6 +8,7 @@ const strings = new LocalizedStrings({
     INVALID_LOCATION: 'Ce lieu existe déjà.',
     LOCATION_CREATED: 'Lieu créé avec succès.',
     COUNTRY: 'Pays',
+    PARENT_LOCATION: 'Lieu Parent',
   },
   en: {
     NEW_LOCATION_HEADING: 'New location',
@@ -15,6 +16,7 @@ const strings = new LocalizedStrings({
     INVALID_LOCATION: 'This location already exists.',
     LOCATION_CREATED: 'Location created successfully.',
     COUNTRY: 'Country',
+    PARENT_LOCATION: 'Parent Location',
   },
 })
 

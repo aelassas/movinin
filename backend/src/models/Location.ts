@@ -25,6 +25,10 @@ const locationSchema = new Schema<env.Location>(
     image: {
       type: String,
     },
+    parentLocation: {
+      type: Schema.Types.ObjectId,
+      ref: 'Location',
+    },
   },
   {
     timestamps: true,
