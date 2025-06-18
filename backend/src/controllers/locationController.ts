@@ -465,7 +465,7 @@ export const checkLocation = async (req: Request, res: Response) => {
     const _id = new mongoose.Types.ObjectId(id)
 
     const propertyCount = await Property
-      .find({ locations: _id })
+      .find({ location: _id })
       .limit(1)
       .countDocuments()
 
