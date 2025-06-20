@@ -57,7 +57,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 
 ### 👥 User Experience
 * Customer management
-* Multiple login options: Google, Facebook, Apple, Email
+* [Multiple login options](https://github.com/aelassas/movinin/wiki/Social-Login-Setup): Google, Facebook, Apple, Email
 * Multiple language support: English, French
 * [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination styles: classic (next/previous), infinite scroll
@@ -144,6 +144,7 @@ You can also install the Android App by downloading the APK and installing it on
    2. [SSL](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#ssl)
 5. [Payment Gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
 6. [Setup Stripe](https://github.com/aelassas/movinin/wiki/Setup-Stripe)
+7. [Social Login Setup](https://github.com/aelassas/movinin/wiki/Social-Login-Setup)
 7. [Build Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App)
 8. [Demo Database](https://github.com/aelassas/movinin/wiki/Demo-Database)
    1. [Windows, Linux and macOS](https://github.com/aelassas/movinin/wiki/Demo-Database#windows-linux-and-macos)
