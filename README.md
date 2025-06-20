@@ -43,6 +43,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Property management
 * Booking management
 * [Property scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
+* [Auto-Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)
 
 ### 💳 Pricing & Payments
 * Payment management
