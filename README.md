@@ -156,6 +156,7 @@ You can also install the Android App by downloading the APK and installing it on
     3. [Push Notifications](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#push-notifications)
     4. [Run iOS App](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#run-ios-app)
 11. [Locations](https://github.com/aelassas/movinin/wiki/Locations)
+12. [Auto‐Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)
 11. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)
 12. [Add New Currency](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 15. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
