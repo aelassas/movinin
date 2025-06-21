@@ -22,7 +22,7 @@ The platform supports [Stripe](https://stripe.com/global) and [PayPal](https://w
 
 You can deploy Movin' In with minimal effort and cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform runs efficiently on a 1GB RAM droplet, making it a great choice for both single-agency and multi-agency operations. Hosting can be as affordable as $5/month on providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
-Movin' In supports both **single-agency** and **multi-agency** modes. Agencies have access to an admin panel to manage their properties, customers, and bookings. Each newly created agency receives an email invitation to register and access the admin interface.
+Movin' In supports both single-agency** and multi-agency modes. Agencies have access to an admin panel to manage their properties, customers, and bookings. Each newly created agency receives an email invitation to register and access the admin interface.
 
 The admin panel allows admins to manage agencies, properties, countries, locations, customers, bookings and payments.
 
