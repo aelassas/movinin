@@ -24,16 +24,11 @@ You can deploy Movin' In with minimal effort and cost using the [Docker-based se
 
 Movin' In supports both **single-agency** and **multi-agency** modes. Agencies have access to an admin panel to manage their properties, customers, and bookings. Each newly created agency receives an email invitation to register and access the admin interface.
 
-The admin panel allows administrators to manage:
-- Agencies  
-- Properties  
-- Countries & locations  
-- Customers  
-- Bookings & payments  
+The admin panel allows admins to manage agencies, properties, countries, locations, customers, bookings and payments.
 
 Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly.
 
-> Movin' In is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/movinin/wiki). If you’d like help with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is available on my GitHub profile (requires login).
+Movin' In is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/movinin/wiki). If you’d like help with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is available on my GitHub profile (requires login).
 
 ## Features
 
