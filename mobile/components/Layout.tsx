@@ -9,6 +9,7 @@ import Button from './Button'
 import i18n from '@/lang/i18n'
 import * as helper from '@/common/helper'
 import Header from './Header'
+import { useAuth } from '@/context/AuthContext'
 
 interface LayoutProps {
   navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
@@ -37,7 +38,7 @@ const Layout = ({
 }: LayoutProps) => {
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<movininTypes.User | null>(null)
-  const [loggedIn, setLoggedIn] = useState(false)
+  const { loggedIn, refresh } = useAuth()
 
   const exit = async (_reload = false) => {
     if (strict) {
@@ -48,7 +49,7 @@ const Layout = ({
       }
     } else {
       await UserService.signout(navigation, false, false)
-      setLoggedIn(false)
+      refresh()
 
       if (onLoad) {
         onLoad()
@@ -83,7 +84,7 @@ const Layout = ({
               return
             }
 
-            setLoggedIn(true)
+            refresh()
             setUser(_user)
             setLoading(false)
 
