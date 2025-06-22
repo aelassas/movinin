@@ -14,6 +14,7 @@ import LocationValue from '../src/models/LocationValue'
 import Location from '../src/models/Location'
 import Country from '../src/models/Country'
 import Property from '../src/models/Property'
+import mongoose from 'mongoose'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -26,6 +27,7 @@ const IMAGE2 = 'location2.jpg'
 const IMAGE2_PATH = path.resolve(__dirname, `./img/${IMAGE2}`)
 
 let LOCATION_ID: string
+let PARENT_LOCATION_ID: string
 
 let LOCATION_NAMES: movininTypes.LocationName[] = [
   {
@@ -60,6 +62,7 @@ beforeAll(async () => {
   const country = new Country({ values: [countryValue1.id, countryValue2.id] })
   await country.save()
   countryId = country.id
+  PARENT_LOCATION_ID = await testHelper.createLocation('parent-loc-name', 'parent-loc-fr', countryId)
 })
 
 //
@@ -68,6 +71,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await LocationValue.deleteMany({ _id: { $in: [countryValue1Id, countryValue2Id] } })
   await Country.deleteOne({ _id: countryId })
+  await testHelper.deleteLocation(PARENT_LOCATION_ID)
 
   await testHelper.close()
   await databaseHelper.close()
@@ -209,9 +213,21 @@ describe('PUT /api/update-location/:id', () => {
       names: LOCATION_NAMES,
       latitude: 29.0268755,
       longitude: 2.6528399999999976,
+      parentLocation: PARENT_LOCATION_ID,
     }
 
     let res = await request(app)
+      .put(`/api/update-location/${LOCATION_ID}`)
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    expect(res.body?.country).toBe(payload.country)
+    expect(res.body.values?.length).toBe(3)
+    expect(res.body?.latitude).toBe(payload.latitude)
+    expect(res.body?.longitude).toBe(payload.longitude)
+
+    payload.parentLocation = undefined
+    res = await request(app)
       .put(`/api/update-location/${LOCATION_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
@@ -400,6 +416,17 @@ describe('GET /api/location/:id/:language', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body?.name).toBe(LOCATION_NAMES.filter((v) => v.language === language)[0].name)
 
+    // test success (parent location)
+    const loc = await Location.findById(LOCATION_ID)
+    loc!.parentLocation = new mongoose.Types.ObjectId(PARENT_LOCATION_ID)
+    await loc!.save()
+    res = await request(app)
+      .get(`/api/location/${LOCATION_ID}/${language}`)
+    expect(res.statusCode).toBe(200)
+    expect(res.body?.name).toBe(LOCATION_NAMES.filter((v) => v.language === language)[0].name)
+    loc!.parentLocation = undefined
+    await loc!.save()
+
     const locationId = await testHelper.createLocation('loc1-en', 'loc1-fr')
     res = await request(app)
       .get(`/api/location/${locationId}/${language}`)
@@ -492,6 +519,19 @@ describe('GET /api/check-location/:id', () => {
       .get(`/api/check-location/${LOCATION_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
+
+    // test success (location related to a child location)
+    const childLocation = new Location({
+      country: countryId,
+      parentLocation: LOCATION_ID,
+      values: [testHelper.GetRandromObjectIdAsString(), testHelper.GetRandromObjectIdAsString()]
+    })
+    await childLocation.save()
+    res = await request(app)
+      .get(`/api/check-location/${LOCATION_ID}`)
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(200)
+    await childLocation.deleteOne()
 
     res = await request(app)
       .get(`/api/check-location/${nanoid()}`)
