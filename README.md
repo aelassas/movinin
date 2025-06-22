@@ -22,18 +22,13 @@ The platform supports [Stripe](https://stripe.com/global) and [PayPal](https://w
 
 You can deploy Movin' In with minimal effort and cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform runs efficiently on a 1GB RAM droplet, making it a great choice for both single-agency and multi-agency operations. Hosting can be as affordable as $5/month on providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
-Movin' In supports both **single-agency** and **multi-agency** modes. Agencies have access to an admin panel to manage their properties, customers, and bookings. Each newly created agency receives an email invitation to register and access the admin interface.
+Movin' In supports both single-agency** and multi-agency modes. Agencies have access to an admin panel to manage their properties, customers, and bookings. Each newly created agency receives an email invitation to register and access the admin interface.
 
-The admin panel allows administrators to manage:
-- Agencies  
-- Properties  
-- Countries & locations  
-- Customers  
-- Bookings & payments  
+The admin panel allows admins to manage agencies, properties, countries, locations, customers, bookings and payments.
 
 Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly.
 
-> Movin' In is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/movinin/wiki). If you’d like help with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is available on my GitHub profile (requires login).
+Movin' In is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/movinin/wiki). If you’d like help with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is available on my GitHub profile (requires login).
 
 ## Features
 
@@ -43,6 +38,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Property management
 * Booking management
 * [Property scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
+* [Auto-Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)
 
 ### 💳 Pricing & Payments
 * Payment management
@@ -56,7 +52,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 
 ### 👥 User Experience
 * Customer management
-* Multiple login options: Google, Facebook, Apple, Email
+* [Multiple login options](https://github.com/aelassas/movinin/wiki/Social-Login-Setup): Google, Facebook, Apple, Email
 * Multiple language support: English, French
 * [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination styles: classic (next/previous), infinite scroll
@@ -76,21 +72,9 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 
 ## Support
 
-If this project helped you in your work, saved you time, or inspired you in any way, please consider supporting its ongoing development. Open-source software requires time, effort, and resources to maintain—your support helps keep this project alive, up-to-date, and accessible to everyone.
+If this project helped you, saved you time, or inspired you in any way, please consider supporting its future growth and maintenance. You can show your support by starring the repository (it helps increase visibility and shows your appreciation), sharing the project (recommend it to colleagues, communities, or on social media), or making a donation (if you'd like to financially support the development) via [GitHub Sponsors](https://github.com/sponsors/aelassas) (one-time or monthly), [PayPal](https://www.paypal.me/aelassaspp), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas). Open-source software requires time, effort, and resources to maintain—your support helps keep this project alive, up-to-date, and accessible to everyone. Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
 
-You can contribute in several ways:
-
-- **⭐ Star the repository** – It helps increase visibility and shows your appreciation.
-- **💬 Share the project** – Recommend it to colleagues, communities, or on social media.
-- **☕ Donate or sponsor** – If you'd like to financially support the development, you can do so via:
-
-  - [GitHub Sponsors](https://github.com/sponsors/aelassas) (one-time or monthly)
-  - [PayPal](https://www.paypal.me/aelassaspp)
-  - [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas)
-
-Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
-
-<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>
+<!--<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>-->
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
 <a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" height="38"></a>
 
@@ -143,6 +127,7 @@ You can also install the Android App by downloading the APK and installing it on
    2. [SSL](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#ssl)
 5. [Payment Gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
 6. [Setup Stripe](https://github.com/aelassas/movinin/wiki/Setup-Stripe)
+7. [Social Login Setup](https://github.com/aelassas/movinin/wiki/Social-Login-Setup)
 7. [Build Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App)
 8. [Demo Database](https://github.com/aelassas/movinin/wiki/Demo-Database)
    1. [Windows, Linux and macOS](https://github.com/aelassas/movinin/wiki/Demo-Database#windows-linux-and-macos)
@@ -155,6 +140,7 @@ You can also install the Android App by downloading the APK and installing it on
     3. [Push Notifications](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#push-notifications)
     4. [Run iOS App](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#run-ios-app)
 11. [Locations](https://github.com/aelassas/movinin/wiki/Locations)
+12. [Auto‐Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)
 11. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)
 12. [Add New Currency](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 15. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
