@@ -279,8 +279,13 @@ export const getLanguage = async () => {
     return lang
   }
 
+  lang = getDefaultLanguage()
+  return lang
+}
+
+export const getDefaultLanguage = () => {
   const locales = Localization.getLocales()
-  lang = locales.length > 0 && locales[0].languageCode === 'fr' ? 'fr' : env.DEFAULT_LANGUAGE
+  const lang = locales.length > 0 && locales[0].languageCode === 'fr' ? 'fr' : env.DEFAULT_LANGUAGE
   return lang
 }
 
