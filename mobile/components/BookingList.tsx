@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import {
-  Paragraph,
+  Text as RNPText,
   Dialog,
   Portal,
   Button as NativeButton
@@ -236,10 +236,10 @@ const BookingList = ({
           <Dialog.Content style={styles.dialogContent}>
             {cancelRequestProcessing ? (
               <ActivityIndicator size="large" color="#0D63C9" />
-            ) : cancelRequestSent ? (
-              <Paragraph>{i18n.t('CANCEL_BOOKING_REQUEST_SENT')}</Paragraph>
+              ) : cancelRequestSent ? (
+              <RNPText variant="bodyMedium">{i18n.t('CANCEL_BOOKING_REQUEST_SENT')}</RNPText>
             ) : (
-              <Paragraph>{i18n.t('CANCEL_BOOKING')}</Paragraph>
+              <RNPText variant="bodyMedium">{i18n.t('CANCEL_BOOKING')}</RNPText>
             )}
           </Dialog.Content>
           <Dialog.Actions style={styles.dialogActions}>
