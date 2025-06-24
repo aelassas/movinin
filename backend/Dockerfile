@@ -9,5 +9,6 @@ RUN mkdir -p /var/www/cdn/movinin/temp/users
 RUN mkdir -p /var/www/cdn/movinin/properties
 RUN mkdir -p /var/www/cdn/movinin/temp/properties
 RUN npm install
+RUN npm run setup
 CMD [ "npm", "start"]
 EXPOSE 4004
