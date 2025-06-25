@@ -55,7 +55,7 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
     body.type = userType
 
     const { password } = body
-    const passwordHash = await helper.hashPassword(password)
+    const passwordHash = await authHelper.hashPassword(password)
     body.password = passwordHash
 
     user = new User(body)
@@ -162,7 +162,7 @@ export const create = async (req: Request, res: Response) => {
 
     if (body.password) {
       const { password } = body
-      const passwordHash = await helper.hashPassword(password)
+      const passwordHash = await authHelper.hashPassword(password)
       body.password = passwordHash
     }
 
@@ -391,7 +391,7 @@ export const activate = async (req: Request, res: Response) => {
 
       if (token) {
         const { password } = body
-        const passwordHash = await helper.hashPassword(password)
+        const passwordHash = await authHelper.hashPassword(password)
         user.password = passwordHash
 
         user.active = true
@@ -1267,7 +1267,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
     const _changePassword = async () => {
       const password = newPassword
-      const passwordHash = await helper.hashPassword(password)
+      const passwordHash = await authHelper.hashPassword(password)
       user.password = passwordHash
       await user.save()
       res.sendStatus(200)
