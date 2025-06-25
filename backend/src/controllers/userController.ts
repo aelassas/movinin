@@ -54,9 +54,8 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
     body.blacklisted = false
     body.type = userType
 
-    const salt = await bcrypt.genSalt(10)
     const { password } = body
-    const passwordHash = await bcrypt.hash(password, salt)
+    const passwordHash = await helper.hashPassword(password)
     body.password = passwordHash
 
     user = new User(body)
@@ -162,9 +161,8 @@ export const create = async (req: Request, res: Response) => {
     body.blacklisted = false
 
     if (body.password) {
-      const salt = await bcrypt.genSalt(10)
       const { password } = body
-      const passwordHash = await bcrypt.hash(password, salt)
+      const passwordHash = await helper.hashPassword(password)
       body.password = passwordHash
     }
 
@@ -392,9 +390,8 @@ export const activate = async (req: Request, res: Response) => {
       const token = await Token.findOne({ user: userId, token: body.token })
 
       if (token) {
-        const salt = await bcrypt.genSalt(10)
         const { password } = body
-        const passwordHash = await bcrypt.hash(password, salt)
+        const passwordHash = await helper.hashPassword(password)
         user.password = passwordHash
 
         user.active = true
@@ -1269,9 +1266,8 @@ export const changePassword = async (req: Request, res: Response) => {
     }
 
     const _changePassword = async () => {
-      const salt = await bcrypt.genSalt(10)
       const password = newPassword
-      const passwordHash = await bcrypt.hash(password, salt)
+      const passwordHash = await helper.hashPassword(password)
       user.password = passwordHash
       await user.save()
       res.sendStatus(200)

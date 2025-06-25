@@ -1,6 +1,5 @@
 import request from 'supertest'
 import cookieParser from 'cookie-parser'
-import bcrypt from 'bcrypt'
 import { nanoid } from 'nanoid'
 import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
@@ -12,6 +11,7 @@ import Location from '../src/models/Location'
 import Notification from '../src/models/Notification'
 import NotificationCounter from '../src/models/NotificationCounter'
 import * as logger from '../src/common/logger'
+import * as helper from '../src/common/helper'
 
 export const getName = (prefix: string) => {
   expect(prefix.length).toBeGreaterThan(1)
@@ -36,8 +36,7 @@ export const initializeLogger = () => {
 }
 
 export const initialize = async () => {
-  const salt = await bcrypt.genSalt(10)
-  const passwordHash = await bcrypt.hash(PASSWORD, salt)
+  const passwordHash = await helper.hashPassword(PASSWORD)
 
   // admin
   const admin = new User({
@@ -115,8 +114,7 @@ export const signout = async (token: string) => {
 }
 
 export const createAgency = async (email: string, fullName: string) => {
-  const salt = await bcrypt.genSalt(10)
-  const passwordHash = await bcrypt.hash(PASSWORD, salt)
+  const passwordHash = await helper.hashPassword(PASSWORD)
   const body = {
     email,
     fullName,

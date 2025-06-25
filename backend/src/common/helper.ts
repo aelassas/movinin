@@ -1,6 +1,7 @@
 import { constants } from 'node:fs'
 import asyncFs from 'node:fs/promises'
 import path from 'node:path'
+import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 import validator from 'validator'
 import Stripe from 'stripe'
@@ -300,4 +301,16 @@ export const safeStringify = (obj: any) => {
   } catch {
     return '[Unserializable object]'
   }
+}
+
+/**
+ * Hash password using bcrypt.
+ *
+ * @async
+ * @param {string} password 
+ * @returns {Promise<string>} 
+ */
+export const hashPassword = async (password: string): Promise<string> => {
+  const salt = await bcrypt.genSalt(10)
+  return bcrypt.hash(password, salt)
 }
