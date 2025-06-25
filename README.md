@@ -119,6 +119,9 @@ You can also install the Android App by downloading the APK and installing it on
 ## Documentation
 
 1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)
+   1. [Frontend](https://github.com/aelassas/movinin/wiki/Overview#frontend)
+   2. [Admin Panel](https://github.com/aelassas/movinin/wiki/Overview#admin-panel)
+   3. [Mobile App](https://github.com/aelassas/movinin/wiki/Overview#mobile-app)
 2. [Why Use Movin' In](https://github.com/aelassas/movinin/wiki/Why-Use-Movin'-In)
 2. [Software Architecture](https://github.com/aelassas/movinin/wiki/Architecture)
    1. [Technologies Overview](https://github.com/aelassas/movinin/wiki/Architecture#technologies-overview)
