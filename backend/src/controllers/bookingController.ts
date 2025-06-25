@@ -17,7 +17,7 @@ import * as env from '../config/env.config'
 import * as mailHelper from '../common/mailHelper'
 import * as helper from '../common/helper'
 import * as logger from '../common/logger'
-import stripeAPI from '../stripe'
+import stripeAPI from '../payment/stripe'
 
 /**
  * Create a Booking.

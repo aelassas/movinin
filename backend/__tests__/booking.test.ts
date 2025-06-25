@@ -11,7 +11,7 @@ import User from '../src/models/User'
 import PushToken from '../src/models/PushToken'
 import Token from '../src/models/Token'
 import * as env from '../src/config/env.config'
-import stripeAPI from '../src/stripe'
+import stripeAPI from '../src/payment/stripe'
 import Notification from '../src/models/Notification'
 import NotificationCounter from '../src/models/NotificationCounter'
 
