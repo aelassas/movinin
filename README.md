@@ -135,6 +135,7 @@ You can also install the Android App by downloading the APK and installing it on
    8. [Architecture Principles](https://github.com/aelassas/movinin/wiki/Architecture#architecture-principles)
    9. [Docker & Development Environment](https://github.com/aelassas/movinin/wiki/Architecture#docker--development-environment)
    10. [Codebase Overview](https://github.com/aelassas/movinin/wiki/Architecture#codebase-overview)
+   11. [Production Readiness](https://github.com/aelassas/movinin/wiki/Architecture#-production-readiness)
    10. [Git Pre-commit Checks with Husky](https://github.com/aelassas/movinin/wiki/Architecture#git-pre-commit-checks-with-husky)
    11. [Continuous Integration (CI)](https://github.com/aelassas/movinin/wiki/Architecture#continuous-integration-ci)
 3. [Installing (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))
