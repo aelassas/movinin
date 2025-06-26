@@ -176,6 +176,8 @@ You can also install the Android App by downloading the APK and installing it on
     1. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)
 21. [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)
 22. [Release Notes](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md)
+23. [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md)
+24. [Code of Conduct](https://github.com/aelassas/movinin/blob/main/.github/CODE_OF_CONDUCT.md)
 
 ## License
 
