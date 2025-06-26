@@ -41,17 +41,17 @@ Movin' In is free and open source. You can customize and deploy it yourself by f
 * [Property scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
 * [Auto-Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)
 
-### 💳 Pricing & Payments
+### Pricing & Payments
 * Payment management
 * [Multiple payment gateways supported (Stripe, PayPal)](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
 * Multiple payment methods: Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later
 
-### 🌍 Locations & Mapping
+### Locations & Mapping
 * [Hierarchical locations with country and map integration](https://github.com/aelassas/movinin/wiki/Locations)
 * Location-based search with nested location support
 * Map display for locations
 
-### 👥 User Experience
+### User Experience
 * Customer management
 * [Multiple login options](https://github.com/aelassas/movinin/wiki/Social-Login-Setup): Google, Facebook, Apple, Email
 * Multiple language support: English, French
@@ -59,13 +59,13 @@ Movin' In is free and open source. You can customize and deploy it yourself by f
 * Multiple pagination styles: classic (next/previous), infinite scroll
 * Push notifications
 
-### 🛡️ Security & Accessibility
+### Security & Accessibility
 * Secure against XSS, XST, CSRF, MITM, and DDoS attacks
 * Responsive admin panel and frontend
 * Native mobile app for Android and iOS (single codebase)
 * [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
 
-### 🖥️ Supported Platforms
+### Supported Platforms
 * iOS
 * Android
 * Web
