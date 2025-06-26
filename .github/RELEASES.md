@@ -13,8 +13,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v5.9...v6.0
 
 ### Assets
-- [movinin-6.0.apk](https://github.com/aelassas/movinin/releases/download/v6.0/movinin-6.0.apk) (94682.73 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v6.0/movinin-db.zip) (4850.00 KB)
+- [movinin-6.0.apk](https://github.com/aelassas/movinin/releases/download/v6.0/movinin-6.0.apk) (92.46 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v6.0/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.0)
@@ -37,8 +37,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v5.8...v5.9
 
 ### Assets
-- [movinin-5.9.apk](https://github.com/aelassas/movinin/releases/download/v5.9/movinin-5.9.apk) (94683.08 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.9/movinin-db.zip) (4850.00 KB)
+- [movinin-5.9.apk](https://github.com/aelassas/movinin/releases/download/v5.9/movinin-5.9.apk) (92.46 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.9/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.9)
@@ -66,8 +66,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v5.7...v5.8
 
 ### Assets
-- [movinin-5.8.apk](https://github.com/aelassas/movinin/releases/download/v5.8/movinin-5.8.apk) (94690.21 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.8/movinin-db.zip) (4850.00 KB)
+- [movinin-5.8.apk](https://github.com/aelassas/movinin/releases/download/v5.8/movinin-5.8.apk) (92.47 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.8/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.8)
@@ -88,8 +88,8 @@
 * fix(mobile): add custom resolver for axios in Metro configuration
 
 ### Assets
-- [movinin-5.7.apk](https://github.com/aelassas/movinin/releases/download/v5.7/movinin-5.7.apk) (94669.25 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.7/movinin-db.zip) (4850.00 KB)
+- [movinin-5.7.apk](https://github.com/aelassas/movinin/releases/download/v5.7/movinin-5.7.apk) (92.45 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.7/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.7)
@@ -107,8 +107,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v5.5...v5.6
 
 ### Assets
-- [movinin-5.6.apk](https://github.com/aelassas/movinin/releases/download/v5.6/movinin-5.6.apk) (80863.55 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.6/movinin-db.zip) (4850.00 KB)
+- [movinin-5.6.apk](https://github.com/aelassas/movinin/releases/download/v5.6/movinin-5.6.apk) (78.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.6/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.6)
@@ -129,8 +129,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v5.4...v5.5
 
 ### Assets
-- [movinin-5.5.apk](https://github.com/aelassas/movinin/releases/download/v5.5/movinin-5.5.apk) (80863.55 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.5/movinin-db.zip) (4850.00 KB)
+- [movinin-5.5.apk](https://github.com/aelassas/movinin/releases/download/v5.5/movinin-5.5.apk) (78.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.5/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.5)
@@ -152,8 +152,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v5.3...v5.4
 
 ### Assets
-- [movinin-5.4.apk](https://github.com/aelassas/movinin/releases/download/v5.4/movinin-5.4.apk) (80861.43 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.4/movinin-db.zip) (4850.00 KB)
+- [movinin-5.4.apk](https://github.com/aelassas/movinin/releases/download/v5.4/movinin-5.4.apk) (78.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.4/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.4)
@@ -177,8 +177,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v5.2...v5.3
 
 ### Assets
-- [movinin-5.3.apk](https://github.com/aelassas/movinin/releases/download/v5.3/movinin-5.3.apk) (80862.32 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.3/movinin-db.zip) (4850.00 KB)
+- [movinin-5.3.apk](https://github.com/aelassas/movinin/releases/download/v5.3/movinin-5.3.apk) (78.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.3/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.3)
@@ -193,8 +193,8 @@
 * Updated dependencies
 
 ### Assets
-- [movinin-5.2.apk](https://github.com/aelassas/movinin/releases/download/v5.2/movinin-5.2.apk) (80526.35 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.2/movinin-db.zip) (4850.00 KB)
+- [movinin-5.2.apk](https://github.com/aelassas/movinin/releases/download/v5.2/movinin-5.2.apk) (78.64 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.2/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.2)
@@ -209,8 +209,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v5.0...v5.1
 
 ### Assets
-- [movinin-5.1.apk](https://github.com/aelassas/movinin/releases/download/v5.1/movinin-5.1.apk) (80519.46 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.1/movinin-db.zip) (4850.00 KB)
+- [movinin-5.1.apk](https://github.com/aelassas/movinin/releases/download/v5.1/movinin-5.1.apk) (78.63 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.1/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.1)
@@ -227,8 +227,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.9...v5.0
 
 ### Assets
-- [movinin-5.0.apk](https://github.com/aelassas/movinin/releases/download/v5.0/movinin-5.0.apk) (80519.28 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.0/movinin-db.zip) (4850.00 KB)
+- [movinin-5.0.apk](https://github.com/aelassas/movinin/releases/download/v5.0/movinin-5.0.apk) (78.63 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v5.0/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v5.0)
@@ -247,8 +247,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.8...v4.9
 
 ### Assets
-- [movinin-4.9.apk](https://github.com/aelassas/movinin/releases/download/v4.9/movinin-4.9.apk) (80518.80 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.9/movinin-db.zip) (4850.00 KB)
+- [movinin-4.9.apk](https://github.com/aelassas/movinin/releases/download/v4.9/movinin-4.9.apk) (78.63 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.9/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.9)
@@ -264,8 +264,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.7...v4.8
 
 ### Assets
-- [movinin-4.8.apk](https://github.com/aelassas/movinin/releases/download/v4.8/movinin-4.8.apk) (80518.77 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.8/movinin-db.zip) (4850.00 KB)
+- [movinin-4.8.apk](https://github.com/aelassas/movinin/releases/download/v4.8/movinin-4.8.apk) (78.63 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.8/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.8)
@@ -284,8 +284,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.6...v4.7
 
 ### Assets
-- [movinin-4.7.apk](https://github.com/aelassas/movinin/releases/download/v4.7/movinin-4.7.apk) (80517.56 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.7/movinin-db.zip) (4850.00 KB)
+- [movinin-4.7.apk](https://github.com/aelassas/movinin/releases/download/v4.7/movinin-4.7.apk) (78.63 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.7/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.7)
@@ -305,8 +305,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.5...v4.6
 
 ### Assets
-- [movinin-4.6.apk](https://github.com/aelassas/movinin/releases/download/v4.6/movinin-4.6.apk) (80517.55 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.6/movinin-db.zip) (4850.00 KB)
+- [movinin-4.6.apk](https://github.com/aelassas/movinin/releases/download/v4.6/movinin-4.6.apk) (78.63 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.6/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.6)
@@ -325,8 +325,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.4...v4.5
 
 ### Assets
-- [movinin-4.5.apk](https://github.com/aelassas/movinin/releases/download/v4.5/movinin-4.5.apk) (80612.63 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.5/movinin-db.zip) (4850.00 KB)
+- [movinin-4.5.apk](https://github.com/aelassas/movinin/releases/download/v4.5/movinin-4.5.apk) (78.72 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.5/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.5)
@@ -347,8 +347,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.3...v4.4
 
 ### Assets
-- [movinin-4.4.apk](https://github.com/aelassas/movinin/releases/download/v4.4/movinin-4.4.apk) (79686.82 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.4/movinin-db.zip) (4850.00 KB)
+- [movinin-4.4.apk](https://github.com/aelassas/movinin/releases/download/v4.4/movinin-4.4.apk) (77.82 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.4/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.4)
@@ -373,8 +373,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.2...v4.3
 
 ### Assets
-- [movinin-4.3.apk](https://github.com/aelassas/movinin/releases/download/v4.3/movinin-4.3.apk) (79687.17 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.3/movinin-db.zip) (4850.00 KB)
+- [movinin-4.3.apk](https://github.com/aelassas/movinin/releases/download/v4.3/movinin-4.3.apk) (77.82 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.3/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.3)
@@ -395,8 +395,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.1...v4.2
 
 ### Assets
-- [movinin-4.2.apk](https://github.com/aelassas/movinin/releases/download/v4.2/movinin-4.2.apk) (79687.17 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.2/movinin-db.zip) (4850.00 KB)
+- [movinin-4.2.apk](https://github.com/aelassas/movinin/releases/download/v4.2/movinin-4.2.apk) (77.82 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.2/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.2)
@@ -414,8 +414,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v4.0...v4.1
 
 ### Assets
-- [movinin-4.1.apk](https://github.com/aelassas/movinin/releases/download/v4.1/movinin-4.1.apk) (79687.20 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.1/movinin-db.zip) (4850.00 KB)
+- [movinin-4.1.apk](https://github.com/aelassas/movinin/releases/download/v4.1/movinin-4.1.apk) (77.82 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.1/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.1)
@@ -435,8 +435,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.9...v4.0
 
 ### Assets
-- [movinin-4.0.apk](https://github.com/aelassas/movinin/releases/download/v4.0/movinin-4.0.apk) (79687.20 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.0/movinin-db.zip) (4850.00 KB)
+- [movinin-4.0.apk](https://github.com/aelassas/movinin/releases/download/v4.0/movinin-4.0.apk) (77.82 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v4.0/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v4.0)
@@ -458,8 +458,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.8...v3.9
 
 ### Assets
-- [movinin-3.9.apk](https://github.com/aelassas/movinin/releases/download/v3.9/movinin-3.9.apk) (79687.20 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.9/movinin-db.zip) (4850.00 KB)
+- [movinin-3.9.apk](https://github.com/aelassas/movinin/releases/download/v3.9/movinin-3.9.apk) (77.82 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.9/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.9)
@@ -486,8 +486,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.7...v3.8
 
 ### Assets
-- [movinin-3.8.apk](https://github.com/aelassas/movinin/releases/download/v3.8/movinin-3.8.apk) (79657.78 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.8/movinin-db.zip) (4850.00 KB)
+- [movinin-3.8.apk](https://github.com/aelassas/movinin/releases/download/v3.8/movinin-3.8.apk) (77.79 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.8/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.8)
@@ -512,8 +512,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.6...v3.7
 
 ### Assets
-- [movinin-3.7.apk](https://github.com/aelassas/movinin/releases/download/v3.7/movinin-3.7.apk) (82285.15 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.7/movinin-db.zip) (4850.00 KB)
+- [movinin-3.7.apk](https://github.com/aelassas/movinin/releases/download/v3.7/movinin-3.7.apk) (80.36 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.7/movinin-db.zip) (4.74 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.7)
@@ -535,8 +535,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.5...v3.6
 
 ### Assets
-- [movinin-3.6.apk](https://github.com/aelassas/movinin/releases/download/v3.6/movinin-3.6.apk) (82188.75 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.6/movinin-db.zip) (4113.13 KB)
+- [movinin-3.6.apk](https://github.com/aelassas/movinin/releases/download/v3.6/movinin-3.6.apk) (80.26 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.6/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.6)
@@ -604,8 +604,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.4...v3.5
 
 ### Assets
-- [movinin-3.5.apk](https://github.com/aelassas/movinin/releases/download/v3.5/movinin-3.5.apk) (82177.71 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.5/movinin-db.zip) (4113.13 KB)
+- [movinin-3.5.apk](https://github.com/aelassas/movinin/releases/download/v3.5/movinin-3.5.apk) (80.25 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.5/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.5)
@@ -655,8 +655,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.3...v3.4
 
 ### Assets
-- [movinin-3.4.apk](https://github.com/aelassas/movinin/releases/download/v3.4/movinin-3.4.apk) (82125.25 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.4/movinin-db.zip) (4113.13 KB)
+- [movinin-3.4.apk](https://github.com/aelassas/movinin/releases/download/v3.4/movinin-3.4.apk) (80.20 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.4/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.4)
@@ -701,8 +701,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.2...v3.3
 
 ### Assets
-- [movinin-3.3.apk](https://github.com/aelassas/movinin/releases/download/v3.3/movinin-3.3.apk) (82116.79 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.3/movinin-db.zip) (4113.13 KB)
+- [movinin-3.3.apk](https://github.com/aelassas/movinin/releases/download/v3.3/movinin-3.3.apk) (80.19 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.3/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.3)
@@ -752,8 +752,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.1...v3.2
 
 ### Assets
-- [movinin-3.2.apk](https://github.com/aelassas/movinin/releases/download/v3.2/movinin-3.2.apk) (82223.42 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.2/movinin-db.zip) (4113.13 KB)
+- [movinin-3.2.apk](https://github.com/aelassas/movinin/releases/download/v3.2/movinin-3.2.apk) (80.30 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.2/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.2)
@@ -775,8 +775,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v3.0...v3.1
 
 ### Assets
-- [movinin-3.1.apk](https://github.com/aelassas/movinin/releases/download/v3.1/movinin-3.1.apk) (80381.60 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.1/movinin-db.zip) (4113.13 KB)
+- [movinin-3.1.apk](https://github.com/aelassas/movinin/releases/download/v3.1/movinin-3.1.apk) (78.50 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.1/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.1)
@@ -812,8 +812,8 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.9...v3.0
 
 ### Assets
-- [movinin-3.0.apk](https://github.com/aelassas/movinin/releases/download/v3.0/movinin-3.0.apk) (80381.38 KB)
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.0/movinin-db.zip) (4113.13 KB)
+- [movinin-3.0.apk](https://github.com/aelassas/movinin/releases/download/v3.0/movinin-3.0.apk) (78.50 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v3.0/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v3.0)
@@ -838,7 +838,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.8...v2.9
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.9/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.9/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.9)
@@ -866,7 +866,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.7...v2.8
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.8/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.8/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.8)
@@ -890,7 +890,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.6...v2.7
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.7/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.7/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.7)
@@ -925,7 +925,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.5...v2.6
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.6/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.6/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.6)
@@ -959,7 +959,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.4...v2.5
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.5/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.5/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.5)
@@ -1016,7 +1016,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.3...v2.4
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.4/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.4/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.4)
@@ -1069,7 +1069,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.2...v2.3
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.3/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.3/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.3)
@@ -1135,7 +1135,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.1...v2.2
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.2/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.2/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.2)
@@ -1197,7 +1197,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v2.0...v2.1
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.1/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.1/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.1)
@@ -1249,7 +1249,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.9...v2.0
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.0/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v2.0/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v2.0)
@@ -1290,7 +1290,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.8...v1.9
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.9/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.9/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.9)
@@ -1340,7 +1340,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.7...v1.8
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.8/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.8/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.8)
@@ -1403,7 +1403,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.6...v1.7
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.7/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.7/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.7)
@@ -1471,7 +1471,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.5...v1.6
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.6/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.6/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.6)
@@ -1510,7 +1510,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.4...v1.5
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.5/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.5/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.5)
@@ -1539,7 +1539,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.3...v1.4
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.4/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.4/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.4)
@@ -1568,7 +1568,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.2...v1.3
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.3/movinin-db.zip) (4113.13 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.3/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.3)
@@ -1609,7 +1609,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.1...v1.2
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.2/movinin-db.zip) (4112.87 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.2/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.2)
@@ -1659,7 +1659,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v1.0...v1.1
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.1/movinin-db.zip) (4112.87 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.1/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.1)
@@ -1670,7 +1670,7 @@
 Initial release
 
 ### Assets
-- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.0/movinin-db.zip) (4112.87 KB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v1.0/movinin-db.zip) (4.02 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v1.0)
