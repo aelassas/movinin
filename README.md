@@ -33,7 +33,7 @@ Movin' In is free and open source. You can customize and deploy it yourself by f
 
 ## Features
 
-### 🏢 Agency & Property Management
+### Agency & Property Management
 * Agency management
 * Ready for single or multiple agencies
 * Property management
