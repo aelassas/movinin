@@ -78,7 +78,7 @@ If this project helped you, saved you time, or inspired you in any way, please c
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
 <a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" height="38"></a>
 
-To contribute code or report issues, please read our [Contribution Guide](https://github.com/aelassas/movinin/wiki/Contribution-Guide) to learn about the process, coding standards, and how to submit pull requests.
+To contribute code or report issues, please read our [Contribution Guide](https://github.com/aelassas/movinin/blob/main/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
 
 We appreciate your help in making Movin' In better!
 
@@ -175,7 +175,6 @@ You can also install the Android App by downloading the APK and installing it on
     1. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
     1. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)
 21. [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)
-22. [Contribution Guide](https://github.com/aelassas/movinin/wiki/Contribution-Guide)
 
 ## License
 
