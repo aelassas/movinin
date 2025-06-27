@@ -19,17 +19,15 @@ https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 
 Movin' In is an open-source rental property management platform built to streamline operations for real estate agencies. It offers a powerful admin panel for managing countries, locations, properties, customers, bookings, and payments—paired with a responsive web frontend and mobile app for customer interactions.
 
-The platform supports [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) [payment gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways). If Stripe isn't available in your region, PayPal serves as a secure and convenient alternative for accepting payments.
+The platform supports [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) payment gateways. If Stripe isn't available in your region, PayPal serves as a secure and convenient alternative for accepting payments.
 
-You can deploy Movin' In with minimal effort and cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform runs efficiently on a 1GB RAM droplet, making it a great choice for both single-agency and multi-agency operations. Hosting can be as affordable as $5/month on providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
+You can deploy Movin' In with minimal effort and cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform runs efficiently on a 1GB RAM droplet, making it a great choice for both single-agency and multi-agency operations. Hosting can cost around $5/month on cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
-Movin' In supports both single-agency** and multi-agency modes. Agencies have access to an admin panel to manage their properties, customers, and bookings. Each newly created agency receives an email invitation to register and access the admin interface.
+Movin' In supports both single-agency** and multi-agency modes. Agencies have access to an admin panel to manage their properties, customers, and bookings. Each newly created agency receives an email prompting them to register and access the system.
 
 The admin panel allows admins to manage agencies, properties, countries, locations, customers, bookings and payments.
 
 Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly.
-
-Movin' In is free and open source. You can customize and deploy it yourself by following the [documentation](https://github.com/aelassas/movinin/wiki). If you’d like help with customization or deployment, feel free to [contact me](https://github.com/aelassas). My email is available on my GitHub profile (requires login).
 
 ## Features
 
@@ -79,9 +77,7 @@ If this project helped you, saved you time, or inspired you in any way, please c
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>
 <a href="https://www.buymeacoffee.com/aelassas"><img src="https://aelassas.github.io/content/bmc-button.png" alt="Buy Me A Coffee" height="38"></a>
 
-To contribute code or report issues, please read our [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
-
-We appreciate your help in making Movin' In better!
+To contribute code or report issues, please read the [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
 
 ## Live Demo
 
