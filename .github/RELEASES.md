@@ -1,5 +1,30 @@
 # Releases
 
+## [Movin' In 6.1](https://github.com/aelassas/movinin/releases/tag/v6.1) – 2025-06-28
+
+* feat(backend): add setup script to create admin user
+* feat(backend): add reset script to delete admin user
+* feat: add [Code of Conduct](https://github.com/aelassas/movinin/blob/main/.github/CODE_OF_CONDUCT.md) to promote a respectful and inclusive community
+* feat: add comprehensive[ Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md) to assist new contributors
+* feat: add GitHub Actions workflow to automatically update [RELEASES.md](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md) on new releases
+* fix(tests): add parent location tests
+* fix(mobile): auth issues when jwt token expires
+* fix(mobile): replace Paragraph with RNPText in BookingList cancellation dialog
+* refactor(backend): move Stripe and PayPal integrations to a dedicated payment directory
+* refactor(backend): replace bcrypt password hashing with helper function
+* docs: add new sections to [software architecture](https://github.com/aelassas/movinin/wiki/Architecture)
+* chore: update dependencies
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v6.0...v6.1
+
+### Assets
+- [movinin-6.1.apk](https://github.com/aelassas/movinin/releases/download/v6.1/movinin-6.1.apk) (92.46 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v6.1/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.1)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v6.1)
+
 ## [Movin' In 6.0](https://github.com/aelassas/movinin/releases/tag/v6.0) – 2025-06-22
 
 * feat: add [parent locations](https://github.com/aelassas/movinin/wiki/Locations) and include child locations in search results
