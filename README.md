@@ -57,11 +57,12 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Multiple pagination styles: classic (next/previous), infinite scroll
 * Push notifications
 
-### Security & Accessibility
+### Security & Performance
 * Secure against XSS, XST, CSRF, MITM, and DDoS attacks
 * Responsive admin panel and frontend
 * Native mobile app for Android and iOS (single codebase)
 * [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
+* Error monitoring and performance tracing with Sentry
 
 ### Supported Platforms
 * iOS
