@@ -57,11 +57,12 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Multiple pagination styles: classic (next/previous), infinite scroll
 * Push notifications
 
-### Security & Accessibility
+### Security & Performance
 * Secure against XSS, XST, CSRF, MITM, and DDoS attacks
 * Responsive admin panel and frontend
 * Native mobile app for Android and iOS (single codebase)
 * [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
+* Error monitoring and performance tracing with Sentry
 
 ### Supported Platforms
 * iOS
@@ -130,6 +131,7 @@ You can also install the Android App by downloading the APK and installing it on
 6. [Installing (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))
    1. [Docker Image](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#docker-image)
    1. [SSL](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#ssl)
+7. [Setup Sentry](https://github.com/aelassas/movinin/wiki/Setup-Sentry)
 7. [Payment Gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
 8. [Setup Stripe](https://github.com/aelassas/movinin/wiki/Setup-Stripe)
 9. [Social Login Setup](https://github.com/aelassas/movinin/wiki/Social-Login-Setup)
@@ -156,6 +158,7 @@ You can also install the Android App by downloading the APK and installing it on
 22. [Release Notes](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md)
 23. [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md)
 24. [Code of Conduct](https://github.com/aelassas/movinin/blob/main/.github/CODE_OF_CONDUCT.md)
+
 
 ## License
 
