@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose'
 import * as env from '../config/env.config'
-import * as logger from '../common/logger'
 
 const countrySchema = new Schema<env.Country>(
   {
@@ -21,9 +20,5 @@ const countrySchema = new Schema<env.Country>(
 countrySchema.index({ values: 1 })
 
 const Country = model<env.Country>('Country', countrySchema)
-
-Country.createIndexes().catch((err) => {
-  logger.error('Error creating Country indexes:', err)
-})
 
 export default Country
