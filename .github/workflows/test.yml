@@ -5,9 +5,9 @@ name: test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ demo ]
   # pull_request:
-  #   branches: [ main ]
+  #   branches: [ demo ]
 
 jobs:
   test:
@@ -95,67 +95,5 @@ jobs:
         MI_STRIPE_SECRET_KEY: ${{ secrets.MI_STRIPE_SECRET_KEY }}
         MI_PAYPAL_CLIENT_ID: ${{ secrets.MI_PAYPAL_CLIENT_ID }}
         MI_PAYPAL_CLIENT_SECRET: ${{ secrets.MI_PAYPAL_CLIENT_SECRET }}
-        MI_ADMIN_EMAIL: ${{ vars.MI_ADMIN_EMAIL }}  
-
-    - name: Upload coverage reports to Codecov
-      id: codecov
-      continue-on-error: true
-      uses: codecov/codecov-action@v5
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./cobertura-coverage.xml
-        directory: ./backend/coverage
-        # fail_ci_if_error: true
-        # verbose: true
-
-    - name: Notify Codecov Status in case of failure
-      if: steps.codecov.outcome != 'success'
-      uses: actions/github-script@v7
-      with:
-          script: |
-            const issues = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: 'codecov-tracking',
-              state: 'closed'
-            });
-            
-            for (const issue of issues.data) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.number,
-                body: '⚠️ Codecov upload failed in workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
-              });
-            }
-          
-    - name: Upload coverage reports to Coveralls
-      id: coveralls
-      continue-on-error: true
-      uses: coverallsapp/github-action@v2
-      with:
-        file: ./backend/coverage/cobertura-coverage.xml
-        base-path: backend
-        # fail-on-error: true
-        measure: true
-
-    - name: Notify Coveralls Status in case of failure
-      if: steps.coveralls.outcome != 'success'
-      uses: actions/github-script@v7
-      with:
-        script: |
-            const issues = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: 'coveralls-tracking',
-              state: 'closed'
-            });
-            
-            for (const issue of issues.data) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.number,
-                body: '⚠️ Coveralls upload failed in workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
-              });
-            }
+        MI_ADMIN_EMAIL: ${{ vars.MI_ADMIN_EMAIL }}
+        
