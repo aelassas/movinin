@@ -22,8 +22,6 @@ const {
   CDN_TEMP_LOCATIONS,
   DEFAULT_LANGUAGE,
 } = env
-console.log('process.env.BC_DB_URI =', process.env.BC_DB_URI)
-console.log('DB_URI', env.DB_URI)
 
 describe('instrument.ts ESM', () => {
   beforeEach(() => {
