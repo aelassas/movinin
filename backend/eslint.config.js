@@ -31,6 +31,12 @@ const config = [
       'jest': jestPlugin
     },
     rules: {
+      // Include rules from preset configurations
+      ...eslint.configs.recommended.rules,
+      ...tseslint.configs['eslint-recommended'].rules,
+      ...tseslint.configs.recommended.rules,
+      ...jestPlugin.configs.recommended.rules,
+
       // ESLint core rules
       'linebreak-style': 'off',
       'no-underscore-dangle': 'off',
@@ -44,6 +50,10 @@ const config = [
       'brace-style': ['error', '1tbs'],
       'curly': 'error',
       'quotes': ['error', 'single', { 'avoidEscape': true }],
+      'no-multiple-empty-lines': 'error',
+      'no-multi-spaces': 'error',
+      'padded-blocks': ['error', 'never'],
+      'no-irregular-whitespace': 'error',
 
       // Import plugin rules
       'import/no-unresolved': 'off',
@@ -51,14 +61,9 @@ const config = [
       'import/no-extraneous-dependencies': 'off',
       'import/prefer-default-export': 'off',
 
-      // Include rules from preset configurations
-      ...eslint.configs.recommended.rules,
-      ...tseslint.configs['eslint-recommended'].rules,
-      ...tseslint.configs.recommended.rules,
-      ...jestPlugin.configs.recommended.rules,
-
       // TypeScript rules
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
 
       // jest rules
       'jest/no-conditional-expect': 'off',

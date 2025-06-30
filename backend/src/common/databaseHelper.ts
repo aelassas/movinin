@@ -44,6 +44,7 @@ export const connect = async (uri: string, ssl: boolean, debug: boolean): Promis
     : {}
 
   mongoose.set('debug', debug)
+  mongoose.set('autoIndex', process.env.NODE_ENV !== 'production')
   mongoose.Promise = globalThis.Promise
 
   try {
@@ -281,9 +282,11 @@ const createCollection = async <T>(model: Model<T>): Promise<void> => {
   const exists = collections.some((col) => col.name === modelName)
   if (!exists) {
     await model.createCollection()
-    await model.createIndexes()
     logger.success(`Created collection: ${modelName}`) // Optionally log success
   }
+
+  await model.createIndexes()
+  logger.success(`Indexes created for collection: ${modelName}`)
 }
 
 /**
