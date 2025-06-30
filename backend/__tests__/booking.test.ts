@@ -506,12 +506,24 @@ describe('POST /api/bookings/:page/:size/:language', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body[0].resultData.length).toBe(1)
 
+    // test success (dateBetween)
+    payload.filter!.from = undefined
+    payload.filter!.to = undefined
+    payload.filter!.dateBetween = new Date(2024, 2, 1)
+    res = await request(app)
+      .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
+      .set(env.X_ACCESS_TOKEN, token)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    expect(res.body[0].resultData.length).toBe(1)
+
     payload.user = undefined
     payload.property = undefined
     payload.filter!.from = undefined
     payload.filter!.to = undefined
     payload.filter!.location = undefined
     payload.filter!.keyword = undefined
+    payload.filter!.dateBetween = undefined
     res = await request(app)
       .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
       .set(env.X_ACCESS_TOKEN, token)
