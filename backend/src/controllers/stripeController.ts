@@ -7,7 +7,7 @@ import * as env from '../config/env.config'
 import * as helper from '../common/helper'
 import Booking from '../models/Booking'
 import User from '../models/User'
-// import Property from '../models/Property'
+import Property from '../models/Property'
 import * as bookingController from './bookingController'
 
 /**
@@ -134,34 +134,37 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
       booking.status = movininTypes.BookingStatus.Paid
       await booking.save()
 
+      const property = await Property.findById(booking.property)
+      if (!property) {
+        throw new Error(`Property ${booking.property} not found`)
+      }
+
       // Mark property as unavailable
       // if (env.MARK_PROPERTY_AS_UNAVAILABLE_ON_CHECKOUT) {
       //   await Property.updateOne({ _id: booking.property }, { available: false })
       // }
 
-      // Send confirmation email
+      const agency = await User.findById(booking.agency)
+      if (!agency) {
+        throw new Error(`Supplier ${booking.agency} not found`)
+      }
+
+      // Send confirmation email to customer
       const user = await User.findById(booking.renter)
       if (!user) {
-        logger.info(`Renter ${booking.renter} not found`)
-        res.sendStatus(204)
-        return
+        throw new Error(`Driver ${booking.renter} not found`)
       }
 
       user.expireAt = undefined
       await user.save()
 
+      // Notify renter
       if (!(await bookingController.confirm(user, booking, false))) {
         res.sendStatus(400)
         return
       }
 
       // Notify agency
-      const agency = await User.findById(booking.agency)
-      if (!agency) {
-        logger.info(`Agency ${booking.agency} not found`)
-        res.sendStatus(204)
-        return
-      }
       i18n.locale = agency.language
       let message = i18n.t('BOOKING_PAID_NOTIFICATION')
       await bookingController.notify(user, booking.id, agency, message)
