@@ -1,8 +1,10 @@
 import { Request } from 'express'
 import { jwtVerify, SignJWT } from 'jose'
 import bcrypt from 'bcrypt'
+import axios from 'axios'
 import * as helper from './helper'
 import * as env from '../config/env.config'
+import * as movininTypes from ':movinin-types'
 
 const jwtSecret = new TextEncoder().encode(env.JWT_SECRET)
 const jwtAlg = 'HS256'
@@ -94,4 +96,54 @@ export const getAuthCookieName = (req: Request): string => {
 export const hashPassword = async (password: string): Promise<string> => {
   const salt = await bcrypt.genSalt(10)
   return bcrypt.hash(password, salt)
+}
+
+/**
+ * Parse JWT token.
+ *
+ * @param {string} token
+ * @returns {any}
+ */
+export const parseJwt = (token: string) => JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString())
+
+/**
+ * Validate JWT token structure.
+ *
+ * @param {string} token
+ * @returns {boolean}
+ */
+export const validateAccessToken = async (socialSignInType: movininTypes.SocialSignInType, token: string, email: string) => {
+  if (socialSignInType === movininTypes.SocialSignInType.Facebook) {
+    try {
+      parseJwt(token)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  if (socialSignInType === movininTypes.SocialSignInType.Apple) {
+    try {
+      const res = parseJwt(token)
+      return res.email === email
+    } catch {
+      return false
+    }
+  }
+
+  if (socialSignInType === movininTypes.SocialSignInType.Google) {
+    try {
+      const res = await axios.get(
+        'https://www.googleapis.com/oauth2/v3/tokeninfo',
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
+      return res.data.email === email
+    } catch {
+      return false
+    }
+  }
+
+  return false
 }
