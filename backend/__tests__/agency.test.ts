@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { jest } from '@jest/globals'
 import request from 'supertest'
 import url from 'url'
 import path from 'path'
@@ -10,6 +11,7 @@ import * as testHelper from './testHelper'
 import app from '../src/app'
 import * as env from '../src/config/env.config'
 import * as helper from '../src/common/helper'
+import * as authHelper from '../src/common/authHelper'
 import User from '../src/models/User'
 import Property from '../src/models/Property'
 
@@ -78,6 +80,50 @@ describe('POST /api/validate-agency', () => {
     expect(res.statusCode).toBe(500)
 
     await testHelper.signout(token)
+
+    // test failure (error)
+    // Mock escape-string-regexp to simulate an error
+    jest.unstable_mockModule('escape-string-regexp', () => ({
+      default: () => {
+        throw new Error('Mocked error from escape-string-regexp')
+      },
+    }))
+
+    jest.resetModules()
+
+    await jest.isolateModulesAsync(async () => {
+      const env = await import('../src/config/env.config.js')
+      const newApp = (await import('../src/app.js')).default
+      const testHelper = await import('./testHelper.js')
+      const { default: User } = await import('../src/models/User.js')
+
+      const dbh = await import('../src/common/databaseHelper.js')
+      await dbh.close()
+      await dbh.connect(env.DB_URI, false, false)
+
+      let user
+      const existingAdmin = await User.findOne({ email: testHelper.ADMIN_EMAIL })
+
+      if (!existingAdmin) {
+        user = await User.create({
+          email: testHelper.ADMIN_EMAIL,
+          fullName: 'admin',
+          language: 'en',
+          password: (await authHelper.hashPassword(testHelper.PASSWORD)),
+          type: movininTypes.UserType.Admin,
+        })
+      }
+
+      const newToken = await testHelper.signinAsAdmin()
+      res = await request(newApp)
+        .post('/api/validate-agency')
+        .set(env.X_ACCESS_TOKEN, newToken)
+        .send(payload)
+      expect(res.statusCode).toBe(400)
+      await testHelper.signout(newToken)
+      await user?.deleteOne()
+      await dbh.close()
+    })
   })
 })
 
@@ -249,7 +295,7 @@ describe('DELETE /api/delete-agency/:id', () => {
       await asyncFs.copyFile(propertyImagePath, propertyImage)
     }
     const additionalImage = path.join(env.CDN_PROPERTIES, additionalImageName)
-    if (!(await helper.pathExists(propertyImage))) {
+    if (!(await helper.pathExists(additionalImage))) {
       await asyncFs.copyFile(additionalImagePath, additionalImage)
     }
     await property.save()

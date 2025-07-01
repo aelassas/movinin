@@ -1,5 +1,7 @@
 import 'dotenv/config'
+import { jest } from '@jest/globals'
 import request from 'supertest'
+import mongoose from 'mongoose'
 import url from 'url'
 import path from 'path'
 import asyncFs from 'node:fs/promises'
@@ -70,6 +72,11 @@ afterAll(async () => {
   await testHelper.deleteLocation(LOCATION2_ID)
 
   await databaseHelper.close()
+})
+
+afterEach(() => {
+  jest.clearAllMocks()
+  jest.resetModules()
 })
 
 //
@@ -585,6 +592,68 @@ describe('POST /api/frontend-properties/:page/:size', () => {
     res = await request(app)
       .post(`/api/frontend-properties/${testHelper.PAGE}/${testHelper.SIZE}`)
     expect(res.statusCode).toBe(400)
+
+    const env = await import('../src/config/env.config.js')
+    jest.unstable_mockModule('../src/config/env.config.js', () => ({
+      ADMIN_HOST: 'http://localhost:3003',
+      FRONTEND_HOST: 'http://localhost:3004',
+      STRIPE_SECRET_KEY: 'xxxxxxxxxxxx',
+      DB_SERVER_SIDE_JAVASCRIPT: true,
+      DEFAULT_LANGUAGE: 'en',
+      CDN_ROOT: env.CDN_ROOT,
+      CDN_USERS: env.CDN_USERS,
+      CDN_TEMP_USERS: env.CDN_TEMP_USERS,
+      CDN_LOCATIONS: env.CDN_LOCATIONS,
+      CDN_TEMP_LOCATIONS: env.CDN_TEMP_LOCATIONS,
+      CDN_PROPERTIES: env.CDN_PROPERTIES,
+      CDN_TEMP_PROPERTIES: env.CDN_TEMP_PROPERTIES,
+    }))
+
+    jest.unstable_mockModule('../src/models/Location.js', () => ({
+      default: {
+        find: jest.fn(() => ({
+          select: () => ({
+            lean: () => Promise.resolve([
+              { _id: new mongoose.Types.ObjectId('64a6f7a739a67a2f1c3c1234') },
+              { _id: new mongoose.Types.ObjectId('64a6f7a739a67a2f1c3c5678') },
+            ]),
+          }),
+        })),
+      },
+    }))
+
+    jest.unstable_mockModule('../src/models/Property.js', () => ({
+      default: {
+        aggregate: jest.fn(() => Promise.resolve([
+          {
+            resultData: [
+              {
+                _id: new mongoose.Types.ObjectId(),
+                name: 'Mocked Property',
+                rentalTerm: 'Weekly',
+                dailyPrice: 100,
+                agency: {
+                  _id: '64a6f7a739a67a2f1c3b4567',
+                  fullName: 'Test Agency',
+                  avatar: 'avatar.png',
+                },
+              },
+            ],
+            pageInfo: [{ totalRecords: 1 }],
+          },
+        ])),
+      },
+    }))
+
+    jest.resetModules()
+    await jest.isolateModulesAsync(async () => {
+      const newApp = (await import('../src/app.js')).default
+      res = await request(newApp)
+        .post(`/api/frontend-properties/${testHelper.PAGE}/${testHelper.SIZE}`)
+        .send(payload)
+      expect(res.statusCode).toBe(200)
+      expect(res.body[0].resultData.length).toBe(1)
+    })
   })
 })
 
