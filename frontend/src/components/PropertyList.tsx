@@ -86,6 +86,8 @@ const PropertyList = ({
         types,
         rentalTerms,
         location,
+        from,
+        to,
       }
       const data = await PropertyService.getProperties(payload, _page, env.PROPERTIES_PAGE_SIZE)
 
@@ -106,7 +108,6 @@ const PropertyList = ({
       setRows(_rows)
       setRowCount((_page - 1) * env.PROPERTIES_PAGE_SIZE + _rows.length)
       setTotalRecords(_totalRecords)
-      setFetch(_data.resultData.length > 0)
 
       if (((env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || env.isMobile) && _page === 1) || (env.PAGINATION_MODE === Const.PAGINATION_MODE.CLASSIC && !env.isMobile)) {
         window.scrollTo(0, 0)
@@ -137,7 +138,7 @@ const PropertyList = ({
         setInit(false)
       }
     }
-  }, [page, agencies, types, rentalTerms, location]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, agencies, types, rentalTerms, location, from, to]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (properties) {
@@ -157,7 +158,9 @@ const PropertyList = ({
     agencies,
     types,
     rentalTerms,
-    location
+    location,
+    from,
+    to,
   ])
 
   useEffect(() => {

@@ -687,6 +687,7 @@ export interface Property extends Document {
   aircon?: boolean
   available?: boolean
   rentalTerm: movininTypes.RentalTerm
+  blockOnPay?: boolean
 }
 
 /**

@@ -128,7 +128,9 @@ describe('POST /api/create-property', () => {
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(200)
-    PROPERTY_ID = res.body._id
+    const property = res.body
+    expect(property.blockOnPay).toBe(true)
+    PROPERTY_ID = property._id
 
     if (!(await helper.pathExists(mainImage))) {
       await asyncFs.copyFile(MAIN_IMAGE1_PATH, mainImage)
@@ -226,6 +228,7 @@ describe('PUT /api/update-property', () => {
       cancellation: 50,
       available: true,
       rentalTerm: movininTypes.RentalTerm.Weekly,
+      blockOnPay: false,
     }
     let res = await request(app)
       .put('/api/update-property')
@@ -255,6 +258,7 @@ describe('PUT /api/update-property', () => {
     expect(property.cancellation).toBe(50)
     expect(property.available).toBeTruthy()
     expect(property.rentalTerm).toBe(movininTypes.RentalTerm.Weekly)
+    expect(property.blockOnPay).toBe(false)
 
     payload.image = ''
     payload.images = undefined
@@ -574,6 +578,8 @@ describe('POST /api/frontend-properties/:page/:size', () => {
       types: [movininTypes.PropertyType.Townhouse],
       rentalTerms: [movininTypes.RentalTerm.Weekly],
       location: LOCATION2_ID,
+      from: new Date(2024, 0, 1),
+      to: new Date(2024, 1, 1),
     }
     let res = await request(app)
       .post(`/api/frontend-properties/${testHelper.PAGE}/${testHelper.SIZE}`)
@@ -588,6 +594,22 @@ describe('POST /api/frontend-properties/:page/:size', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body[0].resultData.length).toBe(0)
+
+    // test failure (from missing)
+    payload.from = undefined
+    res = await request(app)
+      .post(`/api/frontend-properties/${testHelper.PAGE}/${testHelper.SIZE}`)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+    payload.from = new Date(2024, 0, 1)
+
+    // test failure (to missing)
+    payload.to = undefined
+    res = await request(app)
+      .post(`/api/frontend-properties/${testHelper.PAGE}/${testHelper.SIZE}`)
+      .send(payload)
+    expect(res.statusCode).toBe(400)
+    payload.to = new Date(2024, 1, 1)
 
     res = await request(app)
       .post(`/api/frontend-properties/${testHelper.PAGE}/${testHelper.SIZE}`)

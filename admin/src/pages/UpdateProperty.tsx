@@ -78,6 +78,7 @@ const UpdateProperty = () => {
   const [rentalTerm, setRentalTerm] = useState('')
   const [latitude, setLatitude] = useState('')
   const [longitude, setLongitude] = useState('')
+  const [blockOnPay, setBlockOnPay] = useState(true)
 
   const createPropertyRef = useRef<HTMLDivElement>(null)
 
@@ -200,6 +201,11 @@ const UpdateProperty = () => {
     setHidden(e.target.checked)
   }
 
+  const handleBlockOnPayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBlockOnPay(e.target.checked)
+  }
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault()
@@ -253,7 +259,8 @@ const UpdateProperty = () => {
         hidden,
         cancellation: movininHelper.extraToNumber(cancellation),
         available,
-        rentalTerm
+        rentalTerm,
+        blockOnPay,
       }
 
       const status = await PropertyService.update(data)
@@ -324,6 +331,7 @@ const UpdateProperty = () => {
               setHidden(_property.hidden)
               setCancellation(movininHelper.extraToString(_property.cancellation))
               setAvailable(_property.available)
+              setBlockOnPay(_property.blockOnPay || false)
 
               setVisible(true)
               setLoading(false)
@@ -507,6 +515,20 @@ const UpdateProperty = () => {
                     />
                   )}
                   label={strings.AVAILABLE}
+                  className="checkbox-fcl"
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense" className="checkbox-fc">
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      checked={blockOnPay}
+                      onChange={handleBlockOnPayChange}
+                      color="primary"
+                    />
+                  )}
+                  label={strings.BLOCK_ON_PAY}
                   className="checkbox-fcl"
                 />
               </FormControl>
