@@ -17,7 +17,7 @@ https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 
 ## Movin' In
 
-Movin' In is a rental property management platform built to streamline operations for real estate agencies. It offers a powerful admin panel for managing countries, locations, properties, customers, bookings, and payments—paired with a responsive web frontend and a mobile app for customer interactions.
+Movin' In is an open-source and cross-platform Rental Property Management Platform with an admin panel for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
 Movin' In is designed for startups looking to launch a single-agency property rental business, companies that need a multi-agency rental solution, developers who want to study a full-stack codebase for learning, and anyone looking for a solid foundation to build a custom property rental platform.
 
