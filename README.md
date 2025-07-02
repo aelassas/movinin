@@ -19,11 +19,7 @@ https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 
 Movin' In is an open-source and cross-platform Rental Property Management Platform with an admin panel for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
-Movin' In is designed for startups looking to launch a single-agency property rental business, companies that need a multi-agency rental solution, developers who want to study a full-stack codebase for learning, and anyone looking for a solid foundation to build a custom property rental platform.
-
 The platform supports [Stripe](https://stripe.com/global) and [PayPal](https://www.paypal.com/us/webapps/mpp/country-worldwide) payment gateways, allowing you to choose the one best suited for your country or business model. If Stripe isn't available in your region, PayPal serves as a secure and convenient alternative for accepting payments.
-
-You can deploy Movin' In with minimal effort and cost using the [Docker-based setup](https://github.com/aelassas/movinin/wiki/Installing-(Docker)). The platform runs efficiently on a 1GB RAM droplet, making it a great choice for both single-agency and multi-agency operations. Hosting can cost around $5/month on cloud providers like [Hetzner](https://www.hetzner.com/cloud/) or [DigitalOcean](https://www.digitalocean.com/pricing/droplets).
 
 Movin' In supports both single-agency and multi-agency modes. Agencies have access to an admin panel to manage their properties, customers, and bookings. Each newly created agency receives an email prompting them to register and access the system.
 
