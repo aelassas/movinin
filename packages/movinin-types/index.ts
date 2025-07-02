@@ -328,6 +328,7 @@ export interface Property {
   hidden: boolean
   cancellation: number
   rentalTerm: RentalTerm
+  blockOnPay?: boolean
   [propKey: string]: any
 }
 
@@ -356,6 +357,7 @@ export interface CreatePropertyPayload {
   hidden: boolean
   cancellation: number
   rentalTerm: string
+  blockOnPay?: boolean
 }
 
 export interface UpdatePropertyPayload extends CreatePropertyPayload {
@@ -409,6 +411,8 @@ export interface GetPropertiesPayload {
   availability?: Availablity[]
   location?: string
   language?: string
+  from?: Date
+  to?: Date
 }
 
 export interface UpdateLanguagePayload {

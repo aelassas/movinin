@@ -139,11 +139,6 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
         throw new Error(`Property ${booking.property} not found`)
       }
 
-      // Mark property as unavailable
-      // if (env.MARK_PROPERTY_AS_UNAVAILABLE_ON_CHECKOUT) {
-      //   await Property.updateOne({ _id: booking.property }, { available: false })
-      // }
-
       const agency = await User.findById(booking.agency)
       if (!agency) {
         throw new Error(`Supplier ${booking.agency} not found`)

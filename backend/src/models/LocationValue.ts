@@ -39,5 +39,4 @@ locationValueSchema.index(
 
 const LocationValue = model<env.LocationValue>('LocationValue', locationValueSchema)
 
-
 export default LocationValue

@@ -53,7 +53,7 @@ const CreateProperty = () => {
   const [price, setPrice] = useState('')
   const [minimumAge, setMinimumAge] = useState(String(env.MINIMUM_AGE))
   const [minimumAgeValid, setMinimumAgeValid] = useState(true)
-  const [available, setAvailable] = useState(false)
+  const [available, setAvailable] = useState(true)
   const [description, setDescription] = useState('')
   const [descriptionError, setDescriptionError] = useState(false)
   const [bedrooms, setBedrooms] = useState('1')
@@ -73,6 +73,7 @@ const CreateProperty = () => {
   const [latitude, setLatitude] = useState('')
   const [longitude, setLongitude] = useState('')
   const [loading, setLoading] = useState(false)
+  const [blockOnPay, setBlockOnPay] = useState(true)
 
   const createPropertyRef = useRef<HTMLDivElement>(null)
 
@@ -202,6 +203,10 @@ const CreateProperty = () => {
     setHidden(e.target.checked)
   }
 
+  const handleBlockOnPayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBlockOnPay(e.target.checked)
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault()
@@ -253,7 +258,8 @@ const CreateProperty = () => {
         hidden,
         cancellation: movininHelper.extraToNumber(cancellation),
         available,
-        rentalTerm
+        rentalTerm,
+        blockOnPay,
       }
 
       const property = await PropertyService.create(data)
@@ -437,6 +443,20 @@ const CreateProperty = () => {
                   />
                 )}
                 label={strings.AVAILABLE}
+                className="checkbox-fcl"
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="dense" className="checkbox-fc">
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={blockOnPay}
+                    onChange={handleBlockOnPayChange}
+                    color="primary"
+                  />
+                )}
+                label={strings.BLOCK_ON_PAY}
                 className="checkbox-fcl"
               />
             </FormControl>

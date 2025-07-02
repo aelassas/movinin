@@ -171,6 +171,7 @@ export const update = async (req: Request, res: Response) => {
         cancellation,
         aircon,
         rentalTerm,
+        blockOnPay,
       } = body
 
       property.name = name
@@ -195,6 +196,7 @@ export const update = async (req: Request, res: Response) => {
       property.cancellation = cancellation
       property.aircon = aircon
       property.rentalTerm = rentalTerm as movininTypes.RentalTerm
+      property.blockOnPay = blockOnPay
 
       if (image && image !== property.image) {
         const oldImage = path.join(env.CDN_PROPERTIES, property.image)
@@ -681,6 +683,15 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
     const location = new mongoose.Types.ObjectId(body.location)
     const types = body.types || []
     const rentalTerms = body.rentalTerms || []
+    const { from, to } = body
+
+    if (!from) {
+      throw new Error('from date is required')
+    }
+
+    if (!to) {
+      throw new Error('to date is required')
+    }
 
     // Include location and child locations are included in search results
     const locIds = await Location.find({
@@ -760,6 +771,66 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
           },
         },
         { $unwind: { path: '$agency', preserveNullAndEmptyArrays: false } },
+
+        // begining of booking overlap check -----------------------------------
+        // if property.blockOnPay is true and (from, to) overlaps with paid, confirmed or deposit bookings of the property the property will
+        // not be included in search results
+        // ----------------------------------------------------------------------
+        {
+          $lookup: {
+            from: 'Booking',
+            let: { propertyId: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$property', '$$propertyId'] },
+                      {
+                        // Match only bookings that overlap with the requested rental period
+                        // (i.e., NOT completely before or after the requested time range)
+                        $not: [
+                          {
+                            $or: [
+                              // Booking ends before the requested rental period starts → no overlap
+                              { $lt: ['$to', new Date(from)] },
+                              // Booking starts after the requested rental period ends → no overlap
+                              { $gt: ['$from', new Date(to)] }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        // include Paid, Reserved and Deposit bookings
+                        $in: ['$status', [
+                          movininTypes.BookingStatus.Paid,
+                          movininTypes.BookingStatus.Reserved,
+                          movininTypes.BookingStatus.Deposit,
+                        ]]
+                      },
+                      { $ne: ['$status', movininTypes.BookingStatus.Cancelled] } // exclude cancelled bookings
+                    ]
+                  }
+                }
+              }
+            ],
+            as: 'overlappingBookings'
+          }
+        },
+        {
+          $match: {
+            $expr: {
+              $or: [
+                { $eq: ['$blockOnPay', false] },
+                { $eq: ['$blockOnPay', null] },
+                { $eq: ['$blockOnPay', undefined] },
+                { $eq: [{ $size: '$overlappingBookings' }, 0] }
+              ]
+            }
+          }
+        },
+        // end of booking overlap check -----------------------------------
+
         // {
         //   $lookup: {
         //     from: 'Location',

@@ -130,6 +130,10 @@ const propertySchema = new Schema<env.Property>(
       ],
       required: [true, "can't be blank"],
     },
+    blockOnPay: {
+      type: Boolean,
+      default: true,
+    }
   },
   {
     timestamps: true,

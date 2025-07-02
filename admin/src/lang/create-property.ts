@@ -29,7 +29,8 @@ const strings = new LocalizedStrings({
     HIDDEN: 'Cachée',
     IMAGES: 'Images',
     DESCRIPTION_REQUIRED: 'Le champ description est requis',
-    RENTAL_TERM: 'Durée de location'
+    RENTAL_TERM: 'Durée de location',
+    BLOCK_ON_PAY: 'Bloquer la propriété après un paiement réussi',
   },
   en: {
     NEW_PROPERTY_HEADING: 'New property',
@@ -58,6 +59,7 @@ const strings = new LocalizedStrings({
     IMAGES: 'Images',
     DESCRIPTION_REQUIRED: 'Description is required',
     RENTAL_TERM: 'Rental term',
+    BLOCK_ON_PAY: 'Block Property On Successful Payment',
   },
 })
 

@@ -91,6 +91,8 @@ const PropertyList = ({
           agencies: _agencies,
           types: _types,
           rentalTerms: _rentalTerms,
+          from,
+          to,
         }
 
         const data = await PropertyService.getProperties(payload, _page, env.PROPERTIES_PAGE_SIZE)
