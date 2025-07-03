@@ -15,6 +15,8 @@
 https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 -->
 
+[![](https://movin-in.github.io/content/cover-1.png)](https://movinin.dynv6.net:3004/)
+
 ## Movin' In
 
 Movin' In is an open-source and cross-platform Rental Property Management Platform with an admin panel for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
