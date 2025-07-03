@@ -94,8 +94,7 @@ export const create = async (req: Request, res: Response) => {
       const _image = path.join(env.CDN_TEMP_LOCATIONS, image)
 
       if (!(await helper.pathExists(_image))) {
-        logger.error(i18n.t('LOCATION_IMAGE_NOT_FOUND'), body)
-        res.status(400).send(i18n.t('LOCATION_IMAGE_NOT_FOUND'))
+        throw new Error(`Location image not found: ${_image}`)
       }
     }
 
