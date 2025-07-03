@@ -151,7 +151,7 @@ You can also install the Android App by downloading the APK and installing it on
 18. [Add New Currency](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 19. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
 20. [Testing](https://github.com/aelassas/movinin/wiki/Testing)
-    1. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
+    1. [Integration Tests and Coverage](https://github.com/aelassas/movinin/wiki/Integration-Tests-and-Coverage)
     1. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)
 21. [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)
 22. [Release Notes](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md)
