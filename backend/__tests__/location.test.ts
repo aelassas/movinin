@@ -134,22 +134,21 @@ describe('POST /api/create-location', () => {
   it('should create a location', async () => {
     const token = await testHelper.signinAsAdmin()
 
+    // test failure (image not found)
     const payload: movininTypes.UpsertLocationPayload = {
       country: countryId,
       names: LOCATION_NAMES,
       latitude: 28.0268755,
       longitude: 1.6528399999999976,
-      image: 'unknown.jpg',
+      image: `${nanoid()}.jpg`,
     }
-
-    // image not found
     let res = await request(app)
       .post('/api/create-location')
       .set(env.X_ACCESS_TOKEN, token)
       .send(payload)
     expect(res.statusCode).toBe(400)
 
-    // no image
+    // test success (no image)
     payload.image = undefined
     res = await request(app)
       .post('/api/create-location')
@@ -162,7 +161,7 @@ describe('POST /api/create-location', () => {
     expect((await LocationValue.find({ _id: { $in: location!.values } })).length).toBe(2)
     await LocationValue.deleteMany({ _id: { $in: location!.values } })
 
-    // image found
+    // test success (image)
     const tempImage = path.join(env.CDN_TEMP_LOCATIONS, IMAGE0)
     if (!(await helper.pathExists(tempImage))) {
       await asyncFs.copyFile(IMAGE0_PATH, tempImage)
@@ -179,7 +178,14 @@ describe('POST /api/create-location', () => {
     expect(res.body?.longitude).toBe(payload.longitude)
     LOCATION_ID = res.body?._id
 
-    // no payload
+    // test failure (wrong payload)
+    res = await request(app)
+      .post('/api/create-location')
+      .set(env.X_ACCESS_TOKEN, token)
+      .send({})
+    expect(res.statusCode).toBe(400)
+
+    // test failure (no payload)
     res = await request(app)
       .post('/api/create-location')
       .set(env.X_ACCESS_TOKEN, token)
@@ -411,6 +417,7 @@ describe('GET /api/location/:id/:language', () => {
   it('should get a location', async () => {
     const language = 'en'
 
+    // test success (LOCATION_ID)
     let res = await request(app)
       .get(`/api/location/${LOCATION_ID}/${language}`)
     expect(res.statusCode).toBe(200)
@@ -427,6 +434,7 @@ describe('GET /api/location/:id/:language', () => {
     loc!.parentLocation = undefined
     await loc!.save()
 
+    // test success (new location)
     const locationId = await testHelper.createLocation('loc1-en', 'loc1-fr')
     res = await request(app)
       .get(`/api/location/${locationId}/${language}`)
@@ -436,10 +444,12 @@ describe('GET /api/location/:id/:language', () => {
     expect(location).toBeTruthy()
     await LocationValue.deleteMany({ _id: { $in: location!.values } })
 
+    // test success (location not found)
     res = await request(app)
       .get(`/api/location/${testHelper.GetRandromObjectIdAsString()}/${language}`)
     expect(res.statusCode).toBe(204)
 
+    // test failure (language not found)
     res = await request(app)
       .get(`/api/location/${LOCATION_ID}/zh`)
     expect(res.statusCode).toBe(400)
@@ -533,6 +543,7 @@ describe('GET /api/check-location/:id', () => {
     expect(res.statusCode).toBe(200)
     await childLocation.deleteOne()
 
+    // test failure (wrong location id)
     res = await request(app)
       .get(`/api/check-location/${nanoid()}`)
       .set(env.X_ACCESS_TOKEN, token)
@@ -546,6 +557,7 @@ describe('DELETE /api/delete-location/:id', () => {
   it('should delete a location', async () => {
     const token = await testHelper.signinAsAdmin()
 
+    // test success (LOCATION_ID)
     let location = await Location.findById(LOCATION_ID)
     expect(location).not.toBeNull()
 
@@ -557,7 +569,6 @@ describe('DELETE /api/delete-location/:id', () => {
       location!.image = IMAGE0
       await location!.save()
     }
-
     let res = await request(app)
       .delete(`/api/delete-location/${LOCATION_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
@@ -565,11 +576,30 @@ describe('DELETE /api/delete-location/:id', () => {
     location = await Location.findById(LOCATION_ID)
     expect(location).toBeNull()
 
+    // test success (new location)
+    let locationId = await testHelper.createLocation('loc1-en', 'loc1-fr')
+    res = await request(app)
+      .delete(`/api/delete-location/${locationId}`)
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(200)
+
+    // test success (image not found)
+    locationId = await testHelper.createLocation('loc2-en', 'loc2-fr')
+    location = await Location.findById(locationId)
+    location!.image = `${nanoid()}.jpg`
+    await location!.save()
+    res = await request(app)
+      .delete(`/api/delete-location/${locationId}`)
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(200)
+
+    // test success (location not found)
     res = await request(app)
       .delete(`/api/delete-location/${LOCATION_ID}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
+    // test failure (wrong location id)
     res = await request(app)
       .delete('/api/delete-location/0')
       .set(env.X_ACCESS_TOKEN, token)
