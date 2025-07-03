@@ -15,6 +15,8 @@
 https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 -->
 
+[![](https://movin-in.github.io/content/cover-1.png)](https://movinin.dynv6.net:3004/)
+
 ## Movin' In
 
 Movin' In is an open-source and cross-platform Rental Property Management Platform with an admin panel for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
@@ -33,6 +35,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Agency management
 * Ready for single or multiple agencies
 * Property management
+* [Flexible Time-Based Car Availability](https://github.com/aelassas/movinin/wiki/FAQ#how-to-automatically-prevent-a-property-from-being-booked-multiple-times-when-its-already-booked)
 * Booking management
 * [Property scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
 * [Auto-Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)
@@ -60,7 +63,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Responsive admin panel and frontend
 * Native mobile app for Android and iOS (single codebase)
 * [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
-* Error monitoring and performance tracing with Sentry
+* Error monitoring and performance tracing with [Sentry](https://github.com/aelassas/movinin/wiki/Setup-Sentry)
 
 ### Supported Platforms
 * iOS
@@ -150,7 +153,7 @@ You can also install the Android App by downloading the APK and installing it on
 18. [Add New Currency](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 19. [Logs](https://github.com/aelassas/movinin/wiki/Logs)
 20. [Testing](https://github.com/aelassas/movinin/wiki/Testing)
-    1. [Unit Tests and Coverage](https://github.com/aelassas/movinin/wiki/Unit-Tests-and-Coverage)
+    1. [Integration Tests and Coverage](https://github.com/aelassas/movinin/wiki/Integration-Tests-and-Coverage)
     1. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)
 21. [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)
 22. [Release Notes](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md)

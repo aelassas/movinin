@@ -74,6 +74,18 @@ export const close = async () => {
   await NotificationCounter.deleteMany({ user: { $in: [ADMIN_USER_ID, USER_ID] } })
 }
 
+export const deleteNotifications = async (bookingId: string) => {
+  const notifications = await Notification.find({ booking: bookingId })
+  for (const notification of notifications) {
+    const nc = await NotificationCounter.findOne({ user: notification.user })
+    if (nc?.count) {
+      nc.count -= 1
+      await nc.save()
+    }
+    await notification.deleteOne()
+  }
+}
+
 export const getToken = (cookie: string) => {
   const signedCookie = decodeURIComponent(cookie)
   const token = cookieParser.signedCookie((signedCookie.match(`${env.X_ACCESS_TOKEN}=(s:.*?);`) ?? [])[1], env.COOKIE_SECRET) as string
