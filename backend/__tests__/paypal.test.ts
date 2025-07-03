@@ -10,6 +10,8 @@ import Booking from '../src/models/Booking'
 import app from '../src/app'
 import Property from '../src/models/Property'
 import User from '../src/models/User'
+import Notification from '../src/models/Notification'
+import NotificationCounter from '../src/models/NotificationCounter'
 
 //
 // Connecting and initializing the database before running the test suite
@@ -29,7 +31,7 @@ afterAll(async () => {
 
 describe('POST /api/create-paypal-order', () => {
   it('should create paypal order', async () => {
-    await jest.resetModules()
+    jest.resetModules()
 
     await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
       getOrder: jest.fn(),
@@ -64,7 +66,7 @@ describe('POST /api/create-paypal-order', () => {
     expect(res.body.length).toBeGreaterThan(0)
 
     // test failure (create paypal order failure)
-    await jest.resetModules()
+    jest.resetModules()
 
     await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
       getOrder: jest.fn(),
@@ -155,7 +157,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       const orderId = nanoid()
 
       // test success
-      await jest.resetModules()
+      jest.resetModules()
       await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
         getOrder: jest.fn(() => Promise.resolve({ status: 'COMPLETED' })),
         getToken: jest.fn(() => Promise.resolve('fake-token')),
@@ -170,6 +172,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       let res = await request(app)
         .post(`/api/check-paypal-order/${booking.id}/${orderId}`)
       expect(res.statusCode).toBe(200)
+      await testHelper.deleteNotifications(booking.id)
 
       // test success (deposit)
       await booking.deleteOne()
@@ -194,6 +197,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       res = await request(app)
         .post(`/api/check-paypal-order/${booking.id}/${orderId}`)
       expect(res.statusCode).toBe(200)
+      await testHelper.deleteNotifications(booking.id)
 
       // test failure (paypal order error)
       await booking.deleteOne()
@@ -215,7 +219,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
         additionalDriver: true,
       })
       await booking.save()
-      await jest.resetModules()
+      jest.resetModules()
       await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
         getOrder: jest.fn(() => Promise.reject(new Error('Simulated error'))),
         getToken: jest.fn(() => Promise.resolve('fake-token')),
@@ -230,7 +234,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       res = await request(app)
         .post(`/api/check-paypal-order/${booking.id}/${orderId}`)
       expect(res.statusCode).toBe(204)
-      await jest.resetModules()
+      jest.resetModules()
 
       // test failure (booking exists, order does not exist)
       res = await request(app)
@@ -256,7 +260,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
         additionalDriver: true,
       })
       await booking2.save()
-      await jest.resetModules()
+      jest.resetModules()
       await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
         getOrder: jest.fn(() => Promise.resolve({ status: 'EXPIRED' })),
         getToken: jest.fn(() => Promise.resolve('fake-token')),
@@ -274,7 +278,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       const b = await Booking.findById(booking2.id)
       expect(b).toBeFalsy()
       booking2 = undefined
-      await jest.resetModules()
+      jest.resetModules()
 
       // test failure (missing members)
       booking3 = new Booking({
@@ -295,7 +299,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
         additionalDriver: true,
       })
       await booking3.save()
-      await jest.resetModules()
+      jest.resetModules()
       await jest.unstable_mockModule('../src/payment/paypal.js', () => ({
         getOrder: jest.fn(() => Promise.resolve({ status: 'COMPLETED' })),
         getToken: jest.fn(() => Promise.resolve('fake-token')),
@@ -380,7 +384,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       res = await request(app)
         .post(`/api/check-paypal-order/${booking3.id}/${orderId}`)
       expect(res.statusCode).toBe(400)
-      await jest.resetModules()
+      jest.resetModules()
     } catch (err) {
       console.error(err)
       throw new Error(`Error during /api/check-paypal-order/: ${err}`)
@@ -394,6 +398,8 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       }
       await property.deleteOne()
       await renter.deleteOne()
+      await Notification.deleteMany({ user: renter.id })
+      await NotificationCounter.deleteMany({ user: renter.id })
       await testHelper.deleteLocation(locationId)
       await testHelper.deleteAgency(agencyId)
     }

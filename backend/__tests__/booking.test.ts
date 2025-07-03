@@ -170,6 +170,8 @@ describe('POST /api/checkout', () => {
       .post('/api/checkout')
       .send(payload)
     expect(res.statusCode).toBe(200)
+    expect(res.body.bookingId).toBeTruthy()
+    await testHelper.deleteNotifications(res.body.bookingId)
     bookings = await Booking.find({ renter: RENTER1_ID })
     expect(bookings.length).toBeGreaterThan(1)
 
@@ -214,6 +216,8 @@ describe('POST /api/checkout', () => {
       expect(res.statusCode).toBe(200)
       bookings = await Booking.find({ renter: RENTER1_ID })
       expect(bookings.length).toBeGreaterThan(2)
+      expect(res.body.bookingId).toBeTruthy()
+      await testHelper.deleteNotifications(res.body.bookingId)
     } catch (err) {
       console.error(err)
     } finally {
@@ -232,6 +236,7 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     const { bookingId } = res.body
     expect(bookingId).toBeTruthy()
+    await testHelper.deleteNotifications(bookingId)
     const booking = await Booking.findById(bookingId)
     expect(booking?.status).toBe(movininTypes.BookingStatus.Void)
     expect(booking?.sessionId).toBe(payload.sessionId)
@@ -253,6 +258,8 @@ describe('POST /api/checkout', () => {
       .post('/api/checkout')
       .send(payload)
     expect(res.statusCode).toBe(200)
+    expect(res.body.bookingId).toBeTruthy()
+    await testHelper.deleteNotifications(res.body.bookingId)
     const renter2 = await User.findOne({ email: payload.renter.email })
     expect(renter2).not.toBeNull()
     RENTER2_ID = renter2?.id
@@ -266,6 +273,8 @@ describe('POST /api/checkout', () => {
       .post('/api/checkout')
       .send(payload)
     expect(res.statusCode).toBe(200)
+    expect(res.body.bookingId).toBeTruthy()
+    await testHelper.deleteNotifications(res.body.bookingId)
 
     payload.booking!.property = testHelper.GetRandromObjectIdAsString()
     res = await request(app)
@@ -593,6 +602,7 @@ describe('POST /api/cancel-booking/:id', () => {
     expect(res.statusCode).toBe(200)
     booking = await Booking.findById(BOOKING_ID)
     expect(booking?.cancelRequest).toBeTruthy()
+    await testHelper.deleteNotifications(BOOKING_ID)
 
     // test failure (agency not found)
     booking = await Booking.findById(BOOKING_ID)
