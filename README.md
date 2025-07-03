@@ -61,7 +61,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Responsive admin panel and frontend
 * Native mobile app for Android and iOS (single codebase)
 * [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
-* Error monitoring and performance tracing with Sentry
+* Error monitoring and performance tracing with [Sentry](https://github.com/aelassas/movinin/wiki/Setup-Sentry)
 
 ### Supported Platforms
 * iOS
