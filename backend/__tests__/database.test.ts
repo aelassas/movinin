@@ -46,7 +46,7 @@ describe('Test database initialization', () => {
     await l2.save()
 
     // test batch deletion pf unsupported languages
-    for (let i = 0; i < 1001; i++) {
+    for (let i = 0; i < 1050; i++) {
       const lv2 = new LocationValue({ language: 'pt', value: 'localização' })
       await lv2.save()
     }
