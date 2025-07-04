@@ -14,7 +14,7 @@ import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/create-country'
 import * as CountryService from '@/services/CountryService'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import env from '@/config/env.config'
 
 import '@/assets/css/create-country.css'

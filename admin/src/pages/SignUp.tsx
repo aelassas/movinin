@@ -16,7 +16,7 @@ import * as UserService from '@/services/UserService'
 import Layout from '@/components/Layout'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 
 import '@/assets/css/signup.css'

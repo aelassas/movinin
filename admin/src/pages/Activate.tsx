@@ -17,7 +17,7 @@ import { strings as rpStrings } from '@/lang/reset-password'
 import { strings as mStrings } from '@/lang/master'
 import { strings } from '@/lang/activate'
 import NoMatch from './NoMatch'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 
 import '@/assets/css/activate.css'

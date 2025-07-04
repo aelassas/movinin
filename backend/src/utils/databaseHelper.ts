@@ -11,8 +11,8 @@ import Token, { TOKEN_EXPIRE_AT_INDEX_NAME } from '../models/Token'
 import User, { USER_EXPIRE_AT_INDEX_NAME } from '../models/User'
 import Country from '../models/Country'
 import Property from '../models/Property'
-import * as databaseTTLHelper from '../common/databaseTTLHelper'
-import * as databaseLangHelper from '../common/databaseLangHelper'
+import * as databaseTTLHelper from './databaseTTLHelper'
+import * as databaseLangHelper from './databaseLangHelper'
 
 /**
  * Tracks the current database connection status to prevent redundant connections.

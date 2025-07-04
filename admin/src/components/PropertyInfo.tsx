@@ -21,7 +21,7 @@ import {
 } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { strings } from '@/lang/properties'
 import { strings as cpStrings } from '@/lang/create-property'
 import Hidden from './Hidden'

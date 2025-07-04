@@ -8,7 +8,7 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/image-editor'
 import ImageViewer from './ImageViewer'
 import env from '@/config/env.config'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import * as PropertyService from '@/services/PropertyService'
 
 import Property from '@/assets/img/property.png'

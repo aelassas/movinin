@@ -2,7 +2,7 @@ import process from 'node:process'
 import { Document, Types } from 'mongoose'
 import { CookieOptions } from 'express'
 import * as movininTypes from ':movinin-types'
-import * as helper from '../common/helper'
+import * as helper from '../utils/helper'
 
 /**
  * Get environment variable value.

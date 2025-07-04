@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import { enUS, fr, es } from 'date-fns/locale'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as movininHelper from ':movinin-helper'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 interface DateTimePickerProps {
   value?: Date

@@ -21,7 +21,7 @@ import { useNavigation, RouteProp } from '@react-navigation/native'
 
 import i18n from '@/lang/i18n'
 import * as env from '@/config/env.config'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
 import * as movininTypes from ':movinin-types'
 

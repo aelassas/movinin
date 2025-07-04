@@ -4,7 +4,7 @@ import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as AgencyService from '@/services/AgencyService'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import MultipleSelect from './MultipleSelect'
 
 interface AgencySelectListProps {

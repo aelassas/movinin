@@ -14,13 +14,13 @@ import User from '../models/User'
 import Booking from '../models/Booking'
 import Token from '../models/Token'
 import PushToken from '../models/PushToken'
-import * as helper from '../common/helper'
-import * as authHelper from '../common/authHelper'
-import * as mailHelper from '../common/mailHelper'
+import * as helper from '../utils/helper'
+import * as authHelper from '../utils/authHelper'
+import * as mailHelper from '../utils/mailHelper'
 import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Property from '../models/Property'
-import * as logger from '../common/logger'
+import * as logger from '../utils/logger'
 
 /**
  * Get status message as HTML.

@@ -12,7 +12,7 @@ import * as movininHelper from ':movinin-helper'
 
 import BookingStatus from './BookingStatus'
 import Button from './Button'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import * as env from '@/config/env.config'
 import i18n from '@/lang/i18n'
 import * as StripeService from '@/services/StripeService'

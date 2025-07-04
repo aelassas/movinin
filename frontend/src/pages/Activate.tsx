@@ -18,7 +18,7 @@ import { strings as mStrings } from '@/lang/master'
 import { strings } from '@/lang/activate'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 import NoMatch from './NoMatch'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import Footer from '@/components/Footer'
 
 import '@/assets/css/activate.css'

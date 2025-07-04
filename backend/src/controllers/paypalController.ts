@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import i18n from '../lang/i18n'
-import * as logger from '../common/logger'
+import * as logger from '../utils/logger'
 import * as movininTypes from ':movinin-types'
 import * as env from '../config/env.config'
 import Booking from '../models/Booking'
 import User from '../models/User'
 import Property from '../models/Property'
 import * as bookingController from './bookingController'
-import * as ipinfoHelper from '../common/ipinfoHelper'
+import * as ipinfoHelper from '../utils/ipinfoHelper'
 
 /**
  * Create PayPal order.

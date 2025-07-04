@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import i18n from '@/lang/i18n'
 import Accordion from './Accordion'
 import BookingStatus from './BookingStatus'

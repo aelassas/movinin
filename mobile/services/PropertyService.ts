@@ -1,6 +1,6 @@
 import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
-import * as axiosHelper from '@/common/axiosHelper'
+import * as axiosHelper from '@/utils/axiosHelper'
 import * as movininTypes from ':movinin-types'
 
 axiosHelper.init(axiosInstance)

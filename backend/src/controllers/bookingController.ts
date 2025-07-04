@@ -14,9 +14,9 @@ import NotificationCounter from '../models/NotificationCounter'
 import PushToken from '../models/PushToken'
 import Location from '../models/Location'
 import * as env from '../config/env.config'
-import * as mailHelper from '../common/mailHelper'
-import * as helper from '../common/helper'
-import * as logger from '../common/logger'
+import * as mailHelper from '../utils/mailHelper'
+import * as helper from '../utils/helper'
+import * as logger from '../utils/logger'
 import stripeAPI from '../payment/stripe'
 
 /**
