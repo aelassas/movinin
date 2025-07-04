@@ -21,7 +21,7 @@ import * as AgencyService from '@/services/AgencyService'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
 import Avatar from '@/components/Avatar'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 import '@/assets/css/create-agency.css'
 

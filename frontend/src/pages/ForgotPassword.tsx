@@ -11,7 +11,7 @@ import {
 import validator from 'validator'
 import * as movininTypes from ':movinin-types'
 import * as UserService from '@/services/UserService'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/reset-password'

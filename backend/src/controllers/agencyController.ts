@@ -10,8 +10,8 @@ import NotificationCounter from '../models/NotificationCounter'
 import Notification from '../models/Notification'
 import Booking from '../models/Booking'
 import Property from '../models/Property'
-import * as helper from '../common/helper'
-import * as logger from '../common/logger'
+import * as helper from '../utils/helper'
+import * as logger from '../utils/logger'
 
 /**
  * Validate Agency fullname.

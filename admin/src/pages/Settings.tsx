@@ -19,7 +19,7 @@ import { strings } from '@/lang/settings'
 import * as UserService from '@/services/UserService'
 import Backdrop from '@/components/SimpleBackdrop'
 import Avatar from '@/components/Avatar'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 
 import '@/assets/css/settings.css'

@@ -8,7 +8,7 @@ import * as UserService from '@/services/UserService'
 import * as PaymentService from '@/services/PaymentService'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/properties'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import PropertyInfo from '@/components/PropertyInfo'
 import AgencyBadge from '@/components/AgencyBadge'
 

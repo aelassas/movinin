@@ -3,7 +3,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import * as env from '@/config/env.config'
 import i18n from '@/lang/i18n'
 import * as AgencyService from '@/services/AgencyService'

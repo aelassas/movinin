@@ -24,7 +24,7 @@ import Const from '@/config/const'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/agency-list'
 import * as AgencyService from '@/services/AgencyService'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import Pager from '@/components/Pager'
 import Progress from '@/components/Progress'
 

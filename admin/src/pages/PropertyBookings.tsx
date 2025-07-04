@@ -26,7 +26,7 @@ import Backdrop from '@/components/SimpleBackdrop'
 import NoMatch from './NoMatch'
 import Error from './Error'
 import BookingList from '@/components/BookingList'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import PropertyInfo from '@/components/PropertyInfo'
 
 import '@/assets/css/property-bookings.css'

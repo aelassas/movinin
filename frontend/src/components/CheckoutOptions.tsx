@@ -5,7 +5,7 @@ import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import { strings as csStrings } from '@/lang/properties'
 import { strings } from '@/lang/checkout'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import * as PaymentService from '@/services/PaymentService'
 
 import '@/assets/css/checkout-options.css'

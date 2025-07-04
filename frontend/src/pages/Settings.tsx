@@ -23,7 +23,7 @@ import { useUserContext, UserContextType } from '@/context/UserContext'
 import Backdrop from '@/components/SimpleBackdrop'
 import DatePicker from '@/components/DatePicker'
 import Avatar from '@/components/Avatar'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import Footer from '@/components/Footer'
 
 import '@/assets/css/settings.css'

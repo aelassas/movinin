@@ -18,7 +18,7 @@ import * as CountryService from '@/services/CountryService'
 import NoMatch from './NoMatch'
 import Error from './Error'
 import Backdrop from '@/components/SimpleBackdrop'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import env from '@/config/env.config'
 
 import '@/assets/css/update-country.css'

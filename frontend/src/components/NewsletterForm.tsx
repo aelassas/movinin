@@ -12,7 +12,7 @@ import * as movininTypes from ':movinin-types'
 import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/newsletter-form'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
 import { useRecaptchaContext, RecaptchaContextType } from '@/context/RecaptchaContext'
 

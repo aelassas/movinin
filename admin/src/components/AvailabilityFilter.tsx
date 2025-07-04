@@ -4,7 +4,7 @@ import * as movininHelper from ':movinin-helper'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/properties'
 import Accordion from './Accordion'
-import * as helper from '@/common/helper'
+import * as helper from '@/utils/helper'
 
 import '@/assets/css/availability-filter.css'
 
