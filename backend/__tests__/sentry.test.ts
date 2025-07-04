@@ -44,7 +44,7 @@ describe('instrument.ts ESM', () => {
     await jest.isolateModulesAsync(async () => {
       // Import Sentry AFTER mocks applied
       const Sentry = await import('@sentry/node')
-      await import('../src/instrument.js')
+      await import('../src/monitoring/instrument.js')
 
       expect(Sentry.init).toHaveBeenCalledWith(expect.objectContaining({
         dsn: 'https://example@dsn.io/123',
@@ -68,7 +68,7 @@ describe('instrument.ts ESM', () => {
 
     await jest.isolateModulesAsync(async () => {
       const Sentry = await import('@sentry/node')
-      await import('../src/instrument.js')
+      await import('../src/monitoring/instrument.js')
 
       expect(Sentry.init).toHaveBeenCalledWith(expect.objectContaining({
         dsn: 'https://example@dsn.io/123',
@@ -95,7 +95,7 @@ describe('instrument.ts ESM', () => {
 
     await jest.isolateModulesAsync(async () => {
       const Sentry = await import('@sentry/node')
-      await import('../src/instrument.js')
+      await import('../src/monitoring/instrument.js')
 
       expect(Sentry.init).toHaveBeenCalledWith(expect.objectContaining({
         environment: 'production',
@@ -120,7 +120,7 @@ describe('instrument.ts ESM', () => {
 
     await jest.isolateModulesAsync(async () => {
       const Sentry = await import('@sentry/node')
-      await import('../src/instrument.js')
+      await import('../src/monitoring/instrument.js')
 
       expect(Sentry.init).toHaveBeenCalledWith(expect.objectContaining({
         environment: 'development',
@@ -145,7 +145,7 @@ describe('instrument.ts ESM', () => {
 
     await jest.isolateModulesAsync(async () => {
       const Sentry = await import('@sentry/node')
-      await import('../src/instrument.js')
+      await import('../src/monitoring/instrument.js')
 
       expect(Sentry.init).toHaveBeenCalledWith(expect.objectContaining({
         environment: 'development',
@@ -167,7 +167,7 @@ describe('instrument.ts ESM', () => {
     jest.unstable_mockModule('../src/utils/logger.js', () => logger)
 
     await jest.isolateModulesAsync(async () => {
-      await import('../src/instrument.js')
+      await import('../src/monitoring/instrument.js')
       expect(logger.info).toHaveBeenCalledWith('[Sentry] Skipped: Disabled or missing DSN.')
     })
   })
@@ -204,7 +204,7 @@ describe('Sentry initialization in app.ts', () => {
 
     await jest.isolateModulesAsync(async () => {
       const Sentry = await import('@sentry/node')
-      await import('../src/instrument.js')
+      await import('../src/monitoring/instrument.js')
 
       expect(Sentry.init).toHaveBeenCalledWith(expect.objectContaining({
         dsn: 'https://example@dsn.io/123',
