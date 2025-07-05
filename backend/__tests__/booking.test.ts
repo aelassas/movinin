@@ -171,7 +171,7 @@ describe('POST /api/checkout', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body.bookingId).toBeTruthy()
-    await testHelper.deleteNotifications(res.body.bookingId)
+    
     bookings = await Booking.find({ renter: RENTER1_ID })
     expect(bookings.length).toBeGreaterThan(1)
 
@@ -217,7 +217,6 @@ describe('POST /api/checkout', () => {
       bookings = await Booking.find({ renter: RENTER1_ID })
       expect(bookings.length).toBeGreaterThan(2)
       expect(res.body.bookingId).toBeTruthy()
-      await testHelper.deleteNotifications(res.body.bookingId)
     } catch (err) {
       console.error(err)
     } finally {
@@ -260,6 +259,7 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.bookingId).toBeTruthy()
     await testHelper.deleteNotifications(res.body.bookingId)
+    
     const renter2 = await User.findOne({ email: payload.renter.email })
     expect(renter2).not.toBeNull()
     RENTER2_ID = renter2?.id
@@ -274,7 +274,7 @@ describe('POST /api/checkout', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body.bookingId).toBeTruthy()
-    await testHelper.deleteNotifications(res.body.bookingId)
+    
 
     payload.booking!.property = testHelper.GetRandromObjectIdAsString()
     res = await request(app)
@@ -306,6 +306,12 @@ describe('POST /api/checkout', () => {
       .post('/api/checkout')
       .send(payload)
     expect(res.statusCode).toBe(400)
+
+    // cleanup notifications
+    bookings = await Booking.find({ renter: { $in: [RENTER1_ID, RENTER2_ID] } })
+    for (const booking of bookings) {
+      await testHelper.deleteNotifications(booking.id)
+    }
   })
 })
 
