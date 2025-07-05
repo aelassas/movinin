@@ -89,7 +89,7 @@ To contribute code or report issues, please read the [Contribution Guide](https:
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
-### Admin panel
+### Admin Panel
 
 * URL: https://movinin.dynv6.net:3003/
 * Login: admin@movinin.io
