@@ -35,7 +35,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Agency management
 * Ready for single or multiple agencies
 * Property management
-* [Flexible Time-Based Car Availability](https://github.com/aelassas/movinin/wiki/FAQ#how-to-automatically-prevent-a-property-from-being-booked-multiple-times-when-its-already-booked)
+* [Flexible Time-Based Property Availability](https://github.com/aelassas/movinin/wiki/FAQ#how-to-automatically-prevent-a-property-from-being-booked-multiple-times-when-its-already-booked)
 * Booking management
 * [Property scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
 * [Auto-Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)
