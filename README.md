@@ -119,7 +119,7 @@ You can also install the Android App by downloading the APK and installing it on
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
-### Website Source Code (movin-in.github.io)
+## Website Source Code (movin-in.github.io)
 
 The source code for the official Movin' In website is available here:
 
