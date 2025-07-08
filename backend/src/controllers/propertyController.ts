@@ -808,7 +808,6 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
                           movininTypes.BookingStatus.Deposit,
                         ]]
                       },
-                      { $ne: ['$status', movininTypes.BookingStatus.Cancelled] } // exclude cancelled bookings
                     ]
                   }
                 }
@@ -821,9 +820,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
           $match: {
             $expr: {
               $or: [
-                { $eq: ['$blockOnPay', false] },
-                { $eq: ['$blockOnPay', null] },
-                { $eq: ['$blockOnPay', undefined] },
+                { $eq: [{ $ifNull: ['$blockOnPay', false] }, false] },
                 { $eq: [{ $size: '$overlappingBookings' }, 0] }
               ]
             }
