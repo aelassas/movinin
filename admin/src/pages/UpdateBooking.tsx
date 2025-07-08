@@ -339,7 +339,7 @@ const UpdateBooking = () => {
                 <DatePicker
                   label={commonStrings.FROM}
                   value={from}
-                  maxDate={maxDate}
+                  // maxDate={maxDate}
                   required
                   onChange={async (date) => {
                     if (date) {
