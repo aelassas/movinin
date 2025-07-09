@@ -44,7 +44,6 @@ const CreateBooking = () => {
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [minDate, setMinDate] = useState<Date>()
-  const [maxDate, setMaxDate] = useState<Date>()
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [cancellation, setCancellation] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -188,7 +187,6 @@ const CreateBooking = () => {
               <DatePicker
                 label={commonStrings.FROM}
                 value={from}
-                maxDate={maxDate}
                 required
                 onChange={(date) => {
                   if (date) {
@@ -197,6 +195,9 @@ const CreateBooking = () => {
                     setFrom(date)
                     setMinDate(_minDate)
                     setFromError(false)
+                    if (to && date > to) {
+                      setTo(undefined)
+                    }
                   } else {
                     setFrom(undefined)
                     setMinDate(undefined)
@@ -224,11 +225,9 @@ const CreateBooking = () => {
                     const _maxDate = new Date(date)
                     _maxDate.setDate(_maxDate.getDate() - 1)
                     setTo(date)
-                    setMaxDate(_maxDate)
                     setToError(false)
                   } else {
                     setTo(undefined)
-                    setMaxDate(undefined)
                   }
                 }}
                 onError={(err: DateTimeValidationError) => {
