@@ -30,7 +30,7 @@
   "scripts": {
     "pre-commit": "node pre-commit.js",
     "releases": "node releases.js",
-    "prepare": "husky",
+    "prepare": "husky install",
     "lint": "eslint . --cache --cache-location .eslintcache"
   },
   "devDependencies": {
