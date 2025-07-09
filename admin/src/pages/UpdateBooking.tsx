@@ -58,7 +58,6 @@ const UpdateBooking = () => {
   const [from, setFrom] = useState<Date>()
   const [to, setTo] = useState<Date>()
   const [minDate, setMinDate] = useState<Date>()
-  const [maxDate, setMaxDate] = useState<Date>()
   const [status, setStatus] = useState<movininTypes.BookingStatus>()
   const [cancellation, setCancellation] = useState(false)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
@@ -264,7 +263,6 @@ const UpdateBooking = () => {
               setTo(new Date(_booking.to))
               const _maxDate = new Date(_booking.to)
               _maxDate.setDate(_maxDate.getDate() - 1)
-              setMaxDate(_maxDate)
               setStatus(_booking.status)
               setCancellation(_booking.cancellation || false)
             } else {
@@ -339,19 +337,13 @@ const UpdateBooking = () => {
                 <DatePicker
                   label={commonStrings.FROM}
                   value={from}
-                  // maxDate={maxDate}
                   required
                   onChange={async (date) => {
                     if (date) {
                       const _booking = movininHelper.clone(booking) as movininTypes.Booking
                       _booking.from = date
 
-                      const options: movininTypes.PropertyOptions = {
-                        cancellation
-                      }
-                      const _price = await movininHelper.calculateTotalPrice(property!, date, to!, options)
                       setBooking(_booking)
-                      setPrice(_price)
                       setFrom(date)
 
                       const _minDate = new Date(date)
@@ -359,6 +351,17 @@ const UpdateBooking = () => {
                       setMinDate(_minDate)
                       setFromError(false)
 
+                      if (to && date > to) {
+                        setTo(undefined)
+                        setPrice(0)
+                      } else {
+                        const options: movininTypes.PropertyOptions = {
+                          cancellation
+                        }
+                        const _price = await movininHelper.calculateTotalPrice(property!, date, to!, options)
+                        setBooking(_booking)
+                        setPrice(_price)
+                      }
                     } else {
                       setMinDate(undefined)
                       setFrom(undefined)
@@ -395,11 +398,9 @@ const UpdateBooking = () => {
 
                       const _maxDate = new Date(date)
                       _maxDate.setDate(_maxDate.getDate() - 1)
-                      setMaxDate(_maxDate)
                       setToError(false)
                     } else {
                       setTo(undefined)
-                      setMaxDate(undefined)
                     }
                   }}
                   onError={(err: DateTimeValidationError) => {
@@ -451,7 +452,7 @@ const UpdateBooking = () => {
               <div className="price">
                 <span className="price-days">{helper.getDays(days)}</span>
                 <span className="price-main">{`${movininHelper.formatPrice(price as number, commonStrings.CURRENCY, language)}`}</span>
-                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${movininHelper.formatPrice((price as number) / days, commonStrings.CURRENCY, language)}`}</span>
+                <span className="price-day">{`${csStrings.PRICE_PER_DAY} ${days === 0 ? 0 : movininHelper.formatPrice((price as number) / days, commonStrings.CURRENCY, language)}`}</span>
               </div>
             </div>
             <PropertyList
