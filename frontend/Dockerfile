@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:lts-alpine as build
+FROM node:lts-alpine AS build
 WORKDIR /movinin/frontend
 COPY ./frontend ./
 COPY ./frontend/.env.docker .env
@@ -15,3 +15,4 @@ COPY --from=build /movinin/frontend/build .
 COPY ./frontend/nginx.conf /etc/nginx/conf.d/default.conf
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80
+EXPOSE 443
