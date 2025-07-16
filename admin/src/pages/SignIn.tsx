@@ -15,6 +15,7 @@ import Header from '@/components/Header'
 import Error from '@/components/Error'
 import * as langHelper from '@/utils/langHelper'
 import { useUserContext, UserContextType } from '@/context/UserContext'
+import PasswordInput from '@/components/PasswordInput'
 
 import '@/assets/css/signin.css'
 
@@ -134,10 +135,15 @@ const SignIn = () => {
                 <InputLabel htmlFor="email">{commonStrings.EMAIL}</InputLabel>
                 <Input id="email" type="text" name="Email" onChange={handleEmailChange} autoComplete="email" required />
               </FormControl>
-              <FormControl fullWidth margin="dense">
-                <InputLabel htmlFor="password">{commonStrings.PASSWORD}</InputLabel>
-                <Input id="password" name="Password" onChange={handlePasswordChange} onKeyDown={handlePasswordKeyDown} autoComplete="password" type="password" required />
-              </FormControl>
+
+              <PasswordInput
+                label={commonStrings.PASSWORD}
+                variant="standard"
+                onChange={handlePasswordChange}
+                onKeyDown={handlePasswordKeyDown}
+                required
+                autoComplete="password"
+              />
 
               <div className="stay-connected">
                 <input

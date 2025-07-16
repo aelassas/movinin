@@ -27,6 +27,7 @@ import Backdrop from '@/components/SimpleBackdrop'
 import DatePicker from '@/components/DatePicker'
 import SocialLogin from '@/components/SocialLogin'
 import Footer from '@/components/Footer'
+import PasswordInput from '@/components/PasswordInput'
 
 import '@/assets/css/signup.css'
 
@@ -344,38 +345,34 @@ const SignUp = () => {
                     />
                     <FormHelperText error={!birthDateValid}>{(!birthDateValid && commonStrings.BIRTH_DATE_NOT_VALID) || ''}</FormHelperText>
                   </FormControl>
-                  <FormControl fullWidth margin="dense">
-                    <InputLabel className="required">{commonStrings.PASSWORD}</InputLabel>
-                    <OutlinedInput
-                      label={commonStrings.PASSWORD}
-                      value={password}
-                      onChange={handlePasswordChange}
-                      required
-                      type="password"
-                      inputProps={{
-                        autoComplete: 'new-password',
-                        form: {
-                          autoComplete: 'off',
-                        },
-                      }}
-                    />
-                  </FormControl>
-                  <FormControl fullWidth margin="dense">
-                    <InputLabel className="required">{commonStrings.CONFIRM_PASSWORD}</InputLabel>
-                    <OutlinedInput
-                      label={commonStrings.CONFIRM_PASSWORD}
-                      value={confirmPassword}
-                      onChange={handleConfirmPasswordChange}
-                      required
-                      type="password"
-                      inputProps={{
-                        autoComplete: 'new-password',
-                        form: {
-                          autoComplete: 'off',
-                        },
-                      }}
-                    />
-                  </FormControl>
+
+                  <PasswordInput
+                    label={commonStrings.PASSWORD}
+                    variant="outlined"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    required
+                    inputProps={{
+                      autoComplete: 'new-password',
+                      form: {
+                        autoComplete: 'off',
+                      },
+                    }}
+                  />
+
+                  <PasswordInput
+                    label={commonStrings.CONFIRM_PASSWORD}
+                    variant="outlined"
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
+                    required
+                    inputProps={{
+                      autoComplete: 'new-password',
+                      form: {
+                        autoComplete: 'off',
+                      },
+                    }}
+                  />
 
                   <div className="signup-tos">
                     <table>

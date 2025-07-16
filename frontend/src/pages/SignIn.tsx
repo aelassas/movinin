@@ -17,6 +17,7 @@ import Error from '@/components/Error'
 import Layout from '@/components/Layout'
 import SocialLogin from '@/components/SocialLogin'
 import Footer from '@/components/Footer'
+import PasswordInput from '@/components/PasswordInput'
 
 import '@/assets/css/signin.css'
 
@@ -118,10 +119,15 @@ const SignIn = () => {
                   <InputLabel>{commonStrings.EMAIL}</InputLabel>
                   <Input type="text" onChange={handleEmailChange} autoComplete="email" required />
                 </FormControl>
-                <FormControl fullWidth margin="dense">
-                  <InputLabel>{commonStrings.PASSWORD}</InputLabel>
-                  <Input onChange={handlePasswordChange} onKeyDown={handlePasswordKeyDown} autoComplete="password" type="password" required />
-                </FormControl>
+
+                <PasswordInput
+                  label={commonStrings.PASSWORD}
+                  variant="standard"
+                  onChange={handlePasswordChange}
+                  onKeyDown={handlePasswordKeyDown}
+                  required
+                  autoComplete="password"
+                />
 
                 <div className="stay-connected">
                   <input
