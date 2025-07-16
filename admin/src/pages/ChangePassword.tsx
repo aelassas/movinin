@@ -2,10 +2,6 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Paper,
-  Input,
-  InputLabel,
-  FormControl,
-  FormHelperText,
   Button
 } from '@mui/material'
 import * as movininTypes from ':movinin-types'
@@ -15,6 +11,7 @@ import { strings } from '@/lang/change-password'
 import * as UserService from '@/services/UserService'
 import Backdrop from '@/components/SimpleBackdrop'
 import * as helper from '@/utils/helper'
+import PasswordInput from '@/components/PasswordInput'
 
 import '@/assets/css/change-password.css'
 
@@ -138,37 +135,39 @@ const ChangePassword = () => {
             {' '}
           </h1>
           <form className="form" onSubmit={handleSubmit}>
-            <FormControl fullWidth margin="dense">
-              <InputLabel error={currentPasswordError} className="required">
-                {strings.CURRENT_PASSWORD}
-              </InputLabel>
-              <Input id="password-current" onChange={handleCurrentPasswordChange} value={currentPassword} error={currentPasswordError} type="password" required />
-              <FormHelperText error={currentPasswordError}>{(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}</FormHelperText>
-            </FormControl>
-            <FormControl fullWidth margin="dense">
-              <InputLabel className="required" error={newPasswordError}>
-                {strings.NEW_PASSWORD}
-              </InputLabel>
-              <Input id="password-new" onChange={handleNewPasswordChange} type="password" value={newPassword} error={newPasswordError || passwordLengthError} required />
-              <FormHelperText error={newPasswordError || passwordLengthError}>
-                {(newPasswordError && strings.NEW_PASSWORD_ERROR) || (passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
-              </FormHelperText>
-            </FormControl>
-            <FormControl fullWidth margin="dense" error={confirmPasswordError}>
-              <InputLabel error={confirmPasswordError} className="required">
-                {commonStrings.CONFIRM_PASSWORD}
-              </InputLabel>
-              <Input
-                id="password-confirm"
-                onChange={handleConfirmPasswordChange}
-                onKeyDown={handleConfirmPasswordKeyDown}
-                error={confirmPasswordError}
-                type="password"
-                value={confirmPassword}
-                required
-              />
-              <FormHelperText error={confirmPasswordError}>{confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH}</FormHelperText>
-            </FormControl>
+
+
+            <PasswordInput
+              label={strings.CURRENT_PASSWORD}
+              variant="standard"
+              value={currentPassword}
+              onChange={handleCurrentPasswordChange}
+              error={currentPasswordError}
+              required
+              helperText={(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}
+            />
+
+            <PasswordInput
+              label={strings.NEW_PASSWORD}
+              variant="standard"
+              value={newPassword}
+              onChange={handleNewPasswordChange}
+              error={newPasswordError || passwordLengthError}
+              required
+              helperText={(newPasswordError && strings.NEW_PASSWORD_ERROR) || (passwordLengthError && commonStrings.PASSWORD_ERROR) || ''}
+            />
+
+            <PasswordInput
+              label={commonStrings.CONFIRM_PASSWORD}
+              variant="standard"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              onKeyDown={handleConfirmPasswordKeyDown}
+              error={confirmPasswordError}
+              required
+              helperText={(confirmPasswordError && commonStrings.PASSWORDS_DONT_MATCH) || ''}
+            />
+
             <div className="buttons">
               <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
                 {commonStrings.RESET_PASSWORD}
