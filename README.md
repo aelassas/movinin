@@ -148,6 +148,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Installing (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))  
    1. [Docker Image](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#docker-image)  
    1. [SSL](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#ssl)  
+1. [Free SSL Setup Guide](https://github.com/aelassas/movinin/wiki/Free-SSL-Setup-Guide)
 1. [Setup Sentry](https://github.com/aelassas/movinin/wiki/Setup-Sentry)  
 1. [Payment Gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways)  
 1. [Setup Stripe](https://github.com/aelassas/movinin/wiki/Setup-Stripe)  
@@ -175,6 +176,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Release Notes](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md)  
 1. [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md)  
 1. [Code of Conduct](https://github.com/aelassas/movinin/blob/main/.github/CODE_OF_CONDUCT.md)
+
 
 ## License
 
