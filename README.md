@@ -81,6 +81,8 @@ If this project helped you, saved you time, or inspired you in any way, please c
 
 To contribute code or report issues, please read the [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
 
+If you want to customize Movin' In while keeping your fork up to date with the latest changes, check out the [Fork, Customize, and Sync](https://github.com/aelassas/movinin/wiki/Fork,-Customize,-and-Sync) guide in the Wiki.
+
 ## Live Demo
 
 ### Frontend
@@ -164,6 +166,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Instructions](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#instructions)  
    1. [Push Notifications](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#push-notifications)  
    1. [Run iOS App](https://github.com/aelassas/movinin/wiki/Run-Mobile-App#run-ios-app)  
+1. [Fork, Customize, and Sync](https://github.com/aelassas/movinin/wiki/Fork,-Customize,-and-Sync)
 1. [Locations](https://github.com/aelassas/movinin/wiki/Locations)  
 1. [Auto‐Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)  
 1. [Add New Language](https://github.com/aelassas/movinin/wiki/Add-New-Language)  
@@ -176,7 +179,6 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Release Notes](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md)  
 1. [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md)  
 1. [Code of Conduct](https://github.com/aelassas/movinin/blob/main/.github/CODE_OF_CONDUCT.md)
-
 
 ## License
 
