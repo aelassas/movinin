@@ -120,7 +120,7 @@ You can also install the Android App by downloading the APK and installing it on
 * [Download APK](https://github.com/aelassas/movinin/releases/download/v6.2/movinin-6.2.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
-
+<!--
 ## Website Source Code (movin-in.github.io)
 
 The source code for the official Movin' In website is available here:
@@ -136,7 +136,7 @@ The codebase follows the Separation of Concerns (SoC) principle, with a modular 
 The website loads in under 1.5 seconds on slow 4G with **0ms blocking**, **0 layout shift**, and a blazing **Speed Index of 0.8**.
 
 Feel free to explore the code, suggest improvements, or use it as a template for your own landing page.
-
+-->
 ## Documentation
 
 1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)  
