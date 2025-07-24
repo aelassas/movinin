@@ -19,7 +19,7 @@ jobs:
             TAG_NAME="${{ github.event.release.tag_name }}"
           else
             echo "Fetching latest release tag from GitHub API..."
-            TAG_NAME=$(curl -s https://api.github.com/repos/aelassas/bookcars/releases/latest | jq -r '.tag_name')
+            TAG_NAME=$(curl -s https://api.github.com/repos/aelassas/movinin/releases/latest | jq -r '.tag_name')
           fi
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           echo "VERSION=${TAG_NAME#v}" >> $GITHUB_ENV
@@ -38,7 +38,7 @@ jobs:
           git pull --rebase origin $DEFAULT_BRANCH
 
           # Generate the JSON file after pull
-          echo "{\"latestApkUrl\": \"https://github.com/aelassas/bookcars/releases/download/${TAG_NAME}/bookcars-${VERSION}.apk\"}" > .github/latest-release.json
+          echo "{\"latestApkUrl\": \"https://github.com/aelassas/movinin/releases/download/${TAG_NAME}/movinin-${VERSION}.apk\"}" > .github/latest-release.json
 
           git add .github/latest-release.json
           git diff --cached --quiet || git commit -m "chore: update latest-release.json for ${TAG_NAME}"
