@@ -2,7 +2,7 @@
 
 ## [Movin' In 6.4](https://github.com/aelassas/movinin/releases/tag/v6.4) – 2025-07-24
 
-test update-mobile-app-url.yml
+test
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.4)
