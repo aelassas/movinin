@@ -1,5 +1,13 @@
 # Releases
 
+## [Movin' In 6.4](https://github.com/aelassas/movinin/releases/tag/v6.4) – 2025-07-24
+
+test update-mobile-app-url.yml
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.4)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v6.4)
+
 ## [Movin' In 6.3](https://github.com/aelassas/movinin/releases/tag/v6.3) – 2025-07-24
 
 * feat(password-input): add toggle visibility with eye icon
@@ -10,6 +18,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v6.2...v6.3
 
 ### Assets
+- [movinin-6.3.apk](https://github.com/aelassas/movinin/releases/download/v6.3/movinin-6.3.apk) (92.47 MB)
 - [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v6.3/movinin-db.zip) (4.74 MB)
 
 ### Source Code
