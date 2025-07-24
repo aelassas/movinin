@@ -1,5 +1,21 @@
 # Releases
 
+## [Movin' In 6.3](https://github.com/aelassas/movinin/releases/tag/v6.3) – 2025-07-24
+
+* feat(password-input): add toggle visibility with eye icon
+* fix(admin): hide booking prices when dates are not selected
+* fix(ci): update mobile app url workflow to push to main branch
+* chore: update dependencies
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v6.2...v6.3
+
+### Assets
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v6.3/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.3)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v6.3)
+
 ## [Movin' In 6.2](https://github.com/aelassas/movinin/releases/tag/v6.2) – 2025-07-11
 
 * feat: add flexible [time-based property availability](https://github.com/aelassas/movinin/wiki/FAQ#how-to-automatically-prevent-a-property-from-being-booked-multiple-times-when-its-already-booked)
