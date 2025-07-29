@@ -154,6 +154,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 -->
 ## Documentation
 
+<!--
 1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)  
    1. [Frontend](https://github.com/aelassas/movinin/wiki/Overview#frontend)  
    1. [Admin Panel](https://github.com/aelassas/movinin/wiki/Overview#admin-panel)  
@@ -161,8 +162,9 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Why Use Movin' In](https://github.com/aelassas/movinin/wiki/Why-Use-Movin'-In)  
 1. [Software Architecture](https://github.com/aelassas/movinin/wiki/Architecture)  
 1. [Advanced Features](https://github.com/aelassas/movinin/wiki/Advanced-Features)  
-1. [Installing (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))  
-1. [Installing (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))  
+-->
+1. [Install Guide (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))  
+1. [Install Guide (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))  
    1. [Docker Image](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#docker-image)  
    1. [SSL](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#ssl)  
 1. [Free SSL Setup Guide](https://github.com/aelassas/movinin/wiki/Free-SSL-Setup-Guide)
@@ -191,9 +193,12 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Integration Tests and Coverage](https://github.com/aelassas/movinin/wiki/Integration-Tests-and-Coverage)  
    1. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)  
 1. [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)  
+<!--
 1. [Release Notes](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md)  
 1. [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md)  
 1. [Code of Conduct](https://github.com/aelassas/movinin/blob/main/.github/CODE_OF_CONDUCT.md)
+-->
+
 
 ## License
 
