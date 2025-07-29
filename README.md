@@ -29,6 +29,21 @@ The admin panel allows admins to manage agencies, properties, countries, locatio
 
 Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly.
 
+## Quick Links
+* [Install Guide (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))
+* [Install Guide (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))
+* [Build Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App)
+* [Locations](https://github.com/aelassas/movinin/wiki/Locations)
+* [Auto‐Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)    
+* [Payment Gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
+* [Social Login Setup](https://github.com/aelassas/movinin/wiki/Social-Login-Setup)  
+* [Free SSL Setup Guide](https://github.com/aelassas/movinin/wiki/Free-SSL-Setup-Guide)
+* [Run from Source](https://github.com/aelassas/movinin/wiki/Run-from-Source)
+* [Run from Source (Docker)](https://github.com/aelassas/movinin/wiki/Run-from-Source-(Docker))
+* [Run Mobile App](https://github.com/aelassas/movinin/wiki/Run-Mobile-App)
+* [Fork, Customize, and Sync](https://github.com/aelassas/movinin/wiki/Fork,-Customize,-and-Sync)
+* [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)  
+
 ## Features
 
 ### Agency & Property Management
