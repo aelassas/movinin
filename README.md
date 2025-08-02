@@ -30,6 +30,7 @@ The admin panel allows admins to manage agencies, properties, countries, locatio
 Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly.
 
 ## Quick Links
+* [Overview](https://github.com/aelassas/movinin/wiki/Overview)  
 * [Software Architecture](https://github.com/aelassas/movinin/wiki/Software-Architecture)  
 * [Install Guide (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))
 * [Install Guide (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))
@@ -163,6 +164,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Why Use Movin' In](https://github.com/aelassas/movinin/wiki/Why-Use-Movin'-In)  
 1. [Advanced Features](https://github.com/aelassas/movinin/wiki/Advanced-Features)  
 -->
+1. [Overview](https://github.com/aelassas/movinin/wiki/Overview)  
 1. [Software Architecture](https://github.com/aelassas/movinin/wiki/Software-Architecture)  
 1. [Install Guide (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))  
 1. [Install Guide (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))  
