@@ -30,13 +30,14 @@ The admin panel allows admins to manage agencies, properties, countries, locatio
 Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly.
 
 ## Quick Links
+* [Software Architecture](https://github.com/aelassas/movinin/wiki/Software-Architecture)  
 * [Install Guide (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))
 * [Install Guide (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))
 * [Build Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App)
 * [Locations](https://github.com/aelassas/movinin/wiki/Locations)
 * [Auto‐Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)    
 * [Payment Gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
-* [Social Login Setup](https://github.com/aelassas/movinin/wiki/Social-Login-Setup)  
+* [Social Login Setup Guide](https://github.com/aelassas/movinin/wiki/Social-Login-Setup)  
 * [Free SSL Setup Guide](https://github.com/aelassas/movinin/wiki/Free-SSL-Setup-Guide)
 * [Run from Source](https://github.com/aelassas/movinin/wiki/Run-from-Source)
 * [Run from Source (Docker)](https://github.com/aelassas/movinin/wiki/Run-from-Source-(Docker))
@@ -160,9 +161,9 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Admin Panel](https://github.com/aelassas/movinin/wiki/Overview#admin-panel)  
    1. [Mobile App](https://github.com/aelassas/movinin/wiki/Overview#mobile-app)  
 1. [Why Use Movin' In](https://github.com/aelassas/movinin/wiki/Why-Use-Movin'-In)  
-1. [Software Architecture](https://github.com/aelassas/movinin/wiki/Architecture)  
 1. [Advanced Features](https://github.com/aelassas/movinin/wiki/Advanced-Features)  
 -->
+1. [Software Architecture](https://github.com/aelassas/movinin/wiki/Software-Architecture)  
 1. [Install Guide (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))  
 1. [Install Guide (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))  
    1. [Docker Image](https://github.com/aelassas/movinin/wiki/Installing-(Docker)#docker-image)  
@@ -171,7 +172,7 @@ Feel free to explore the code, suggest improvements, or use it as a template for
 1. [Setup Sentry](https://github.com/aelassas/movinin/wiki/Setup-Sentry)  
 1. [Payment Gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways)  
 1. [Setup Stripe](https://github.com/aelassas/movinin/wiki/Setup-Stripe)  
-1. [Social Login Setup](https://github.com/aelassas/movinin/wiki/Social-Login-Setup)  
+1. [Social Login Setup Guide](https://github.com/aelassas/movinin/wiki/Social-Login-Setup)  
 1. [Build Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App)  
 1. [Demo Database](https://github.com/aelassas/movinin/wiki/Demo-Database)  
    1. [Windows, Linux and macOS](https://github.com/aelassas/movinin/wiki/Demo-Database#windows-linux-and-macos)  
@@ -193,11 +194,9 @@ Feel free to explore the code, suggest improvements, or use it as a template for
    1. [Integration Tests and Coverage](https://github.com/aelassas/movinin/wiki/Integration-Tests-and-Coverage)  
    1. [Manual Tests](https://github.com/aelassas/movinin/wiki/Manual-Tests)  
 1. [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)  
-<!--
 1. [Release Notes](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md)  
 1. [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md)  
 1. [Code of Conduct](https://github.com/aelassas/movinin/blob/main/.github/CODE_OF_CONDUCT.md)
--->
 
 
 ## License
