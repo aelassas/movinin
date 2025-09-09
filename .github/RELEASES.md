@@ -1,5 +1,60 @@
 # Releases
 
+## [Movin' In 6.4](https://github.com/aelassas/movinin/releases/tag/v6.4) – 2025-07-24
+
+test
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.4)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v6.4)
+
+## [Movin' In 6.3](https://github.com/aelassas/movinin/releases/tag/v6.3) – 2025-07-24
+
+* feat(password-input): add toggle visibility with eye icon
+* fix(admin): hide booking prices when dates are not selected
+* fix(ci): update mobile app url workflow to push to main branch
+* chore: update dependencies
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v6.2...v6.3
+
+### Assets
+- [movinin-6.3.apk](https://github.com/aelassas/movinin/releases/download/v6.3/movinin-6.3.apk) (92.47 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v6.3/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.3)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v6.3)
+
+## [Movin' In 6.2](https://github.com/aelassas/movinin/releases/tag/v6.2) – 2025-07-11
+
+* feat: add flexible [time-based property availability](https://github.com/aelassas/movinin/wiki/FAQ#how-to-automatically-prevent-a-property-from-being-booked-multiple-times-when-its-already-booked)
+* feat(backend): integrate [Sentry](https://github.com/aelassas/movinin/wiki/Setup-Sentry) for error tracking and performance monitoring with configurable tracesSampleRate
+* feat(ci): add GitHub Actions workflow to update mobile app URL on release
+* feat(tests): improve code coverage
+* fix(docker): .env file not loaded and setup issues
+* fix(sentry): remove unecessary import from app.ts and fix docker issues
+* fix(backend): improve TTL index handling and logging for updates
+* fix(backend): location created even if image file does not exist
+* fix(admin): rental dates issues in create and update booking forms
+* fix(frontend): property search filter not updating results on date change
+* fix(frontend): remove event listeners when analytics script starts
+* fix(tests): cleanup test data
+* fix(tests): increase test timeout to for stability
+* refactor(models): move manual index creation from models to initialization script
+* refactor: rename common folder to utils
+* chore(backend): organize and document .env.example
+* chore: update dependencies
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v6.1...v6.2
+
+### Assets
+- [movinin-6.2.apk](https://github.com/aelassas/movinin/releases/download/v6.2/movinin-6.2.apk) (92.46 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v6.2/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.2)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v6.2)
+
 ## [Movin' In 6.1](https://github.com/aelassas/movinin/releases/tag/v6.1) – 2025-06-28
 
 * feat(backend): add setup script to create admin user

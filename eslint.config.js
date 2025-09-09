@@ -11,7 +11,7 @@ const config = [
       '.github/',
       '.husky/',
       '.vscode/',
-      'api/',
+      'backend/',
       'admin/',
       'frontend/',
       'mobile/',
@@ -50,6 +50,7 @@ const config = [
       'no-multi-spaces': 'error',
       'padded-blocks': ['error', 'never'],
       'no-irregular-whitespace': 'error',
+      'no-unused-vars': 'warn',
 
       // Import plugin rules
       'import/no-unresolved': 'off',
