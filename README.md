@@ -100,7 +100,9 @@ If this project helped you, saved you time, or inspired you in any way, please c
 
 To contribute code or report issues, please read the [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md) to learn about the process, coding standards, and how to submit pull requests.
 
+<!--
 If you want to customize Movin' In while keeping your fork up to date with the latest changes, check out the [Fork, Customize, and Sync](https://github.com/aelassas/movinin/wiki/Fork,-Customize,-and-Sync) guide in the Wiki.
+-->
 
 ## Live Demo
 
