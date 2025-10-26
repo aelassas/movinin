@@ -44,7 +44,9 @@
           "merchantIdentifier": "MERCHANT_IDENTIFIER",
           "enableGooglePay": true
         }
-      ]
+      ],
+      "expo-asset",
+      "expo-font"
     ],
     "owner": "aelassas",
     "extra": {
@@ -63,4 +65,3 @@
     }
   }
 }
-
