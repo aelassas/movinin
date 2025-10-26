@@ -1,8 +1,16 @@
 # Releases
 
-## [Movin' In 6.4](https://github.com/aelassas/movinin/releases/tag/v6.4) – 2025-07-24
+## [Movin' In 6.4](https://github.com/aelassas/movinin/releases/tag/v6.4) – 2025-10-26
 
-test
+* chore(mobile): upgrade to expo 54
+* chore(deps): update dependencies
+* fix(frontend): typo in checkout form (#15)
+* fix(mobile): update dependencies to resolve expo doctor warnings
+* fix(mobile): status bar background color and text color not applied on android
+* fix(mobile): drawer navigator bottom inset for devices with home indicator
+
+### Assets
+- [movinin-6.4.apk](https://github.com/aelassas/movinin/releases/download/v6.4/movinin-6.4.apk) (99.86 MB)
 
 ### Source Code
 - [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.4)
