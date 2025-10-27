@@ -1,6 +1,6 @@
 [![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) 
 [![test](https://github.com/aelassas/movinin/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/test.yml)
-[![codecov](https://img.shields.io/codecov/c/github/aelassas/movinin?label=coverage)](https://codecov.io/gh/aelassas/movinin) 
+[![coveralls](https://coveralls.io/repos/github/aelassas/movinin/badge.svg?branch=main)](https://coveralls.io/github/aelassas/movinin?branch=main)
 [![containerize](https://github.com/aelassas/movinin/actions/workflows/containerize.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/containerize.yml) 
 [![loc](https://raw.githubusercontent.com/aelassas/movinin/refs/heads/loc/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml)
 [![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://movinin.dynv6.net:3004/)
