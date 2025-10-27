@@ -48,7 +48,7 @@
     "@types/nodemailer": "^7.0.3",
     "@types/supertest": "^6.0.3",
     "@types/validator": "^13.15.3",
-    "axios": "^1.12.2",
+    "axios": "^1.13.0",
     "babel-jest": "^30.2.0",
     "babel-plugin-add-import-extension": "^1.6.0",
     "babel-plugin-module-resolver": "^5.0.2",
@@ -74,7 +74,7 @@
     "stripe": "^19.1.0",
     "supertest": "^7.1.4",
     "typescript": "^5.9.3",
-    "validator": "^13.15.15",
+    "validator": "^13.15.20",
     "winston": "^3.18.3"
   }
 }
