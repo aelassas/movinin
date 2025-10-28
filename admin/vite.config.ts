@@ -28,7 +28,11 @@ export default ({ mode }: { mode: string }) => {
     ],
 
     resolve: {
+      preserveSymlinks: true,
       alias: {
+        'react': path.resolve(__dirname, 'node_modules/react'),
+        'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
+
         '@': path.resolve(__dirname, './src'),
         ':movinin-types': path.resolve(__dirname, '../packages/movinin-types'),
         ':movinin-helper': path.resolve(__dirname, '../packages/movinin-helper'),
