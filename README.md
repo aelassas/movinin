@@ -48,40 +48,46 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 ## Features
 
 ### Agency & Property Management
+
 * Agency management
 * Ready for single or multiple agencies
 * Property management
-* [Flexible Time-Based Property Availability](https://github.com/aelassas/movinin/wiki/FAQ#how-to-automatically-prevent-a-property-from-being-booked-multiple-times-when-its-already-booked)
+* Flexible time-based property availability
 * Booking management
-* [Property scheduler](https://movin-in.github.io/content/screenshots/v4.5/backend-scheduler.png?raw=true)
-* [Auto-Notification System](https://github.com/aelassas/movinin/wiki/Auto%E2%80%90Notification-System)
+* Property scheduler
+* Auto-notification system
 
 ### Pricing & Payments
+
 * Payment management
-* [Multiple payment gateways supported (Stripe, PayPal)](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
+* Multiple payment gateways supported: Stripe, PayPal
 * Multiple payment methods: Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later
 
 ### Locations & Mapping
-* [Hierarchical locations with country and map integration](https://github.com/aelassas/movinin/wiki/Locations)
+
+* Hierarchical locations with country and map integration
 * Location-based search with nested location support
 * Map display for locations
 
 ### User Experience
+
 * Customer management
-* [Multiple login options](https://github.com/aelassas/movinin/wiki/Social-Login-Setup): Google, Facebook, Apple, Email
+* Multiple login options: Google, Facebook, Apple, Email
 * Multiple language support: English, French
-* [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
+* Multiple currencies support
 * Multiple pagination styles: classic (next/previous), infinite scroll
 * Push notifications
 
 ### Security & Performance
+
 * Secure against XSS, XST, CSRF, MITM, and DDoS attacks
 * Responsive admin panel and frontend
 * Native mobile app for Android and iOS (single codebase)
-* [Docker](https://www.docker.com/) support for easy deployment and a better developer experience
-* Error monitoring and performance tracing with [Sentry](https://github.com/aelassas/movinin/wiki/Setup-Sentry)
+* Docker support for easy deployment and better developer experience
+* Error monitoring and performance tracing
 
 ### Supported Platforms
+
 * iOS
 * Android
 * Web
