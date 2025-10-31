@@ -1,7 +1,7 @@
 {
   "name": "movinin-backend",
   "description": "Backend server for Movin' In",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "main": "index.js",
   "type": "module",
   "scripts": {
