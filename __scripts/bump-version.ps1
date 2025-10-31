@@ -1,5 +1,5 @@
 # Example usage:
-# .\update-version.ps1 5.8.0
+# .\bump-version.ps1 5.8.0
 
 param(
     [Parameter(Mandatory=$true)]
@@ -81,6 +81,7 @@ function Update-NpmPackageVersion {
 # Update-NpmPackageVersion -Version "1.2.3" -FolderPath "C:\path\to\project"
 # Update-NpmPackageVersion -Version "1.2.3" -FolderPath ".\relative\path" -Force
 
+Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
 Update-NpmPackageVersion -Version "$Version" -FolderPath ".."
 Update-NpmPackageVersion -Version "$Version" -FolderPath "..\backend"
 Update-NpmPackageVersion -Version "$Version" -FolderPath "..\admin"
