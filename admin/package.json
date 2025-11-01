@@ -1,7 +1,7 @@
 {
   "name": "movinin-admin",
   "description": "Admin panel for managing Movin' In",
-  "version": "6.5.0",
+  "version": "6.6.0",
   "private": true,
   "type": "module",
   "scripts": {
