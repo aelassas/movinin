@@ -109,7 +109,7 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
       //
       // Delete user in case of smtp failure
       //
-      await Token.deleteMany({ user: user.id })
+      await Token.deleteMany({ user: user._id.toString() })
       await user.deleteOne()
     } catch (deleteErr) {
       logger.error(`[user.signup] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, deleteErr)
@@ -205,7 +205,7 @@ export const create = async (req: Request, res: Response) => {
         ${helper.joinURL(
           user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.ADMIN_HOST,
           'activate',
-        )}/?u=${encodeURIComponent(user.id)}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+        )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${i18n.t('REGARDS')}<br></p>`,
     }
 
@@ -351,7 +351,7 @@ export const resend = async (req: Request, res: Response) => {
             ${helper.joinURL(
             user.type === movininTypes.UserType.User ? env.FRONTEND_HOST : env.ADMIN_HOST,
             reset ? 'reset-password' : 'activate',
-          )}/?u=${encodeURIComponent(user.id)}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+          )}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
             ${i18n.t('REGARDS')}<br></p>`,
       }
 
@@ -476,11 +476,11 @@ export const signin = async (req: Request, res: Response) => {
         cookieOptions.maxAge = env.JWT_EXPIRE_AT * 1000
       }
 
-      const payload: authHelper.SessionData = { id: user.id }
+      const payload: authHelper.SessionData = { id: user._id.toString() }
       const token = await authHelper.encryptJWT(payload, stayConnected)
 
       const loggedUser: movininTypes.User = {
-        _id: user.id,
+        _id: user._id.toString(),
         email: user.email,
         fullName: user.fullName,
         language: user.language,
@@ -598,11 +598,11 @@ export const socialSignin = async (req: Request, res: Response) => {
       cookieOptions.maxAge = env.JWT_EXPIRE_AT * 1000
     }
 
-    const payload: authHelper.SessionData = { id: user.id }
+    const payload: authHelper.SessionData = { id: user._id.toString() }
     const token = await authHelper.encryptJWT(payload, stayConnected)
 
     const loggedUser: movininTypes.User = {
-      _id: user.id,
+      _id: user._id.toString(),
       email: user.email,
       fullName: user.fullName,
       language: user.language,
@@ -1354,7 +1354,7 @@ export const getUsers = async (req: Request, res: Response) => {
     const { body }: { body: movininTypes.GetUsersBody } = req
     const { types, user: userId } = body
 
-    const $match: mongoose.FilterQuery<env.User> = {
+    const $match: mongoose.QueryFilter<env.User> = {
       $and: [
         {
           type: { $in: types },

@@ -47,7 +47,7 @@ beforeAll(async () => {
     type: movininTypes.UserType.User,
   })
   await renter1.save()
-  RENTER1_ID = renter1.id
+  RENTER1_ID = renter1._id.toString()
 
   // create a location
   LOCATION_ID = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
@@ -81,12 +81,12 @@ beforeAll(async () => {
   // property 1
   let property = new Property(payload)
   await property.save()
-  PROPERTY1_ID = property.id
+  PROPERTY1_ID = property._id.toString()
 
   // property 2
   property = new Property({ ...payload, name: 'Beautiful Townhouse in Detroit', price: 1200 })
   await property.save()
-  PROPERTY2_ID = property.id
+  PROPERTY2_ID = property._id.toString()
 })
 
 //
@@ -171,7 +171,7 @@ describe('POST /api/checkout', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body.bookingId).toBeTruthy()
-    
+
     bookings = await Booking.find({ renter: RENTER1_ID })
     expect(bookings.length).toBeGreaterThan(1)
 
@@ -259,10 +259,10 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.bookingId).toBeTruthy()
     await testHelper.deleteNotifications(res.body.bookingId)
-    
+
     const renter2 = await User.findOne({ email: payload.renter.email })
     expect(renter2).not.toBeNull()
-    RENTER2_ID = renter2?.id
+    RENTER2_ID = renter2?._id.toString() || ''
     const token = await Token.findOne({ user: RENTER2_ID })
     expect(token).not.toBeNull()
     expect(token?.token.length).toBeGreaterThan(0)
@@ -274,7 +274,7 @@ describe('POST /api/checkout', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body.bookingId).toBeTruthy()
-    
+
 
     payload.booking!.property = testHelper.GetRandromObjectIdAsString()
     res = await request(app)
@@ -310,7 +310,7 @@ describe('POST /api/checkout', () => {
     // cleanup notifications
     bookings = await Booking.find({ renter: { $in: [RENTER1_ID, RENTER2_ID] } })
     for (const booking of bookings) {
-      await testHelper.deleteNotifications(booking.id)
+      await testHelper.deleteNotifications(booking._id.toString())
     }
   })
 })
@@ -481,7 +481,7 @@ describe('GET /api/booking-id/:sessionId', () => {
     let res = await request(app)
       .get(`/api/booking-id/${sessionId}`)
     expect(res.statusCode).toBe(200)
-    expect(res.body).toBe(booking!.id)
+    expect(res.body).toBe(booking!._id.toString())
 
     // test success (booking not found)
     res = await request(app)
@@ -645,7 +645,7 @@ describe('POST /api/delete-bookings', () => {
 
     let bookings = await Booking.find({ renter: { $in: renters } })
     expect(bookings.length).toBeGreaterThan(0)
-    const payload: string[] = bookings.map((u) => u.id)
+    const payload: string[] = bookings.map((u) => u._id.toString())
     let res = await request(app)
       .post('/api/delete-bookings')
       .set(env.X_ACCESS_TOKEN, token)
@@ -684,7 +684,7 @@ describe('DELETE /api/delete-temp-booking', () => {
     const booking = new Booking({
       agency: AGENCY_ID,
       property: PROPERTY1_ID,
-      renter: renter.id,
+      renter: renter._id.toString(),
       location: LOCATION_ID,
       from: new Date(2024, 2, 1),
       to: new Date(2024, 2, 4),
@@ -702,7 +702,7 @@ describe('DELETE /api/delete-temp-booking', () => {
     await booking.save()
 
     let res = await request(app)
-      .delete(`/api/delete-temp-booking/${booking.id}/${sessionId}`)
+      .delete(`/api/delete-temp-booking/${booking._id.toString()}/${sessionId}`)
     expect(res.statusCode).toBe(200)
     const _booking = await Booking.findById(booking._id)
     expect(_booking).toBeNull()
@@ -715,7 +715,7 @@ describe('DELETE /api/delete-temp-booking', () => {
     try {
       await databaseHelper.close()
       res = await request(app)
-        .delete(`/api/delete-temp-booking/${booking.id}/${sessionId}`)
+        .delete(`/api/delete-temp-booking/${booking._id.toString()}/${sessionId}`)
       expect(res.statusCode).toBe(400)
     } catch (err) {
       console.error(err)
