@@ -1,5 +1,19 @@
 # Releases
 
+## [Movin' In 6.6](https://github.com/aelassas/movinin/releases/tag/v6.6) – 2025-12-21
+
+* fix(docker): remove version from `docker-compose.yml` (#17)
+* fix(admin,frontend): production build issues
+* chore(deps): update dependencies
+
+### Assets
+- [movinin-6.6.apk](https://github.com/aelassas/movinin/releases/download/v6.6/movinin-6.6.apk) (99.86 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v6.6/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v6.6)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v6.6)
+
 ## [Movin' In 6.5](https://github.com/aelassas/movinin/releases/tag/v6.5) – 2025-11-01
 
 * fix(admin,frontend): production build issues
