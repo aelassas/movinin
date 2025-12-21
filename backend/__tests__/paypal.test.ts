@@ -134,8 +134,8 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
 
     let booking = new Booking({
       agency: agencyId,
-      property: property.id,
-      renter: renter.id,
+      property: property._id.toString(),
+      renter: renter._id.toString(),
       location: locationId,
       from: new Date(2024, 2, 1),
       to: new Date(2024, 2, 4),
@@ -170,16 +170,16 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       let res = await request(app)
-        .post(`/api/check-paypal-order/${booking.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${booking._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(200)
-      await testHelper.deleteNotifications(booking.id)
+      await testHelper.deleteNotifications(booking._id.toString())
 
       // test success (deposit)
       await booking.deleteOne()
       booking = new Booking({
         agency: agencyId,
-        property: property.id,
-        renter: renter.id,
+        property: property._id.toString(),
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -195,16 +195,16 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       })
       await booking.save()
       res = await request(app)
-        .post(`/api/check-paypal-order/${booking.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${booking._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(200)
-      await testHelper.deleteNotifications(booking.id)
+      await testHelper.deleteNotifications(booking._id.toString())
 
       // test failure (paypal order error)
       await booking.deleteOne()
       booking = new Booking({
         agency: agencyId,
-        property: property.id,
-        renter: renter.id,
+        property: property._id.toString(),
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -232,20 +232,20 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       res = await request(app)
-        .post(`/api/check-paypal-order/${booking.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${booking._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(204)
       jest.resetModules()
 
       // test failure (booking exists, order does not exist)
       res = await request(app)
-        .post(`/api/check-paypal-order/${booking.id}/${testHelper.GetRandromObjectIdAsString()}`)
+        .post(`/api/check-paypal-order/${booking._id.toString()}/${testHelper.GetRandromObjectIdAsString()}`)
       expect(res.statusCode).toBe(204)
 
       // test failure (payment expired)
       booking2 = new Booking({
         agency: agencyId,
-        property: property.id,
-        renter: renter.id,
+        property: property._id.toString(),
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -273,9 +273,9 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       expect(paypal.getOrder).toHaveBeenCalledWith('123')
 
       res = await request(app)
-        .post(`/api/check-paypal-order/${booking2.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${booking2._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(400)
-      const b = await Booking.findById(booking2.id)
+      const b = await Booking.findById(booking2._id.toString())
       expect(b).toBeFalsy()
       booking2 = undefined
       jest.resetModules()
@@ -284,7 +284,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       booking3 = new Booking({
         agency: agencyId,
         property: testHelper.GetRandromObjectId(),
-        renter: renter.id,
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -313,14 +313,14 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
 
       // property missing
       res = await request(app)
-        .post(`/api/check-paypal-order/${booking3.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${booking3._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(400)
       // agency missing
       await booking3.deleteOne()
       booking3 = new Booking({
         agency: testHelper.GetRandromObjectId(),
-        property: property.id,
-        renter: renter.id,
+        property: property._id.toString(),
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -336,13 +336,13 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       })
       await booking3.save()
       res = await request(app)
-        .post(`/api/check-paypal-order/${booking3.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${booking3._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(400)
       // renter missing
       await booking3.deleteOne()
       booking3 = new Booking({
         agency: agencyId,
-        property: property.id,
+        property: property._id.toString(),
         renter: testHelper.GetRandromObjectId(),
         location: locationId,
         from: new Date(2024, 2, 1),
@@ -359,13 +359,13 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       })
       await booking3.save()
       res = await request(app)
-        .post(`/api/check-paypal-order/${booking3.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${booking3._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(400)
       // location missing
       await booking3.deleteOne()
       booking3 = new Booking({
         agency: agencyId,
-        property: property.id,
+        property: property._id.toString(),
         renter: renter,
         location: testHelper.GetRandromObjectId(),
         from: new Date(2024, 2, 1),
@@ -382,7 +382,7 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       })
       await booking3.save()
       res = await request(app)
-        .post(`/api/check-paypal-order/${booking3.id}/${orderId}`)
+        .post(`/api/check-paypal-order/${booking3._id.toString()}/${orderId}`)
       expect(res.statusCode).toBe(400)
       jest.resetModules()
     } catch (err) {
@@ -398,8 +398,8 @@ describe('POST /api/check-paypal-order/:bookingId/:orderId', () => {
       }
       await property.deleteOne()
       await renter.deleteOne()
-      await Notification.deleteMany({ user: renter.id })
-      await NotificationCounter.deleteMany({ user: renter.id })
+      await Notification.deleteMany({ user: renter._id.toString() })
+      await NotificationCounter.deleteMany({ user: renter._id.toString() })
       await testHelper.deleteLocation(locationId)
       await testHelper.deleteAgency(agencyId)
     }

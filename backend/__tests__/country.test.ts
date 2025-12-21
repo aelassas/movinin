@@ -54,7 +54,7 @@ describe('POST /api/validate-country', () => {
     const name = nanoid()
     const countryValue = new LocationValue({ language, value: name })
     await countryValue.save()
-    const country = new Country({ values: [countryValue.id] })
+    const country = new Country({ values: [countryValue._id.toString()] })
     await country.save()
     const payload: movininTypes.ValidateCountryPayload = {
       language,
@@ -238,7 +238,7 @@ describe('GET /api/countries-with-locations/:language/:imageRequired/:minLocatio
     const locationValueFr = new LocationValue({ language: 'fr', value: 'Location 1 fr' })
     await locationValueFr.save()
 
-    const location = new Location({ country: COUNTRY_ID, values: [locationValueEn.id, locationValueFr.id] })
+    const location = new Location({ country: COUNTRY_ID, values: [locationValueEn._id.toString(), locationValueFr._id.toString()] })
     await location.save()
 
     let res = await request(app)

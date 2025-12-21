@@ -755,7 +755,7 @@ describe('DELETE /api/delete-property/:id', () => {
     })
     await property.save()
     res = await request(app)
-      .delete(`/api/delete-property/${property.id}`)
+      .delete(`/api/delete-property/${property._id.toString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
 
@@ -785,7 +785,7 @@ describe('DELETE /api/delete-property/:id', () => {
     })
     await property.save()
     res = await request(app)
-      .delete(`/api/delete-property/${property.id}`)
+      .delete(`/api/delete-property/${property._id.toString()}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
 

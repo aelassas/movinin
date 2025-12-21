@@ -47,8 +47,8 @@ export const initialize = async () => {
     type: movininTypes.UserType.Admin,
   })
   await admin.save()
-  expect(admin.id).toBeDefined()
-  ADMIN_USER_ID = admin.id
+  expect(admin._id.toString()).toBeDefined()
+  ADMIN_USER_ID = admin._id.toString()
 
   // user
   const user = new User({
@@ -59,8 +59,8 @@ export const initialize = async () => {
     type: movininTypes.UserType.User,
   })
   await user.save()
-  expect(user.id).toBeDefined()
-  USER_ID = user.id
+  expect(user._id.toString()).toBeDefined()
+  USER_ID = user._id.toString()
 }
 
 export const getAdminUserId = () => ADMIN_USER_ID
@@ -138,8 +138,8 @@ export const createAgency = async (email: string, fullName: string) => {
   }
   const agency = new User(body)
   await agency.save()
-  expect(agency.id).toBeDefined()
-  return agency.id as string
+  expect(agency._id.toString()).toBeDefined()
+  return agency._id.toString() as string
 }
 
 export const deleteAgency = async (id: string) => {
@@ -189,6 +189,6 @@ export const createLocation = async (nameEN: string, nameFR: string, country?: s
   const values = [locationValueEN._id, locationValueFR._id]
   const location = new Location({ country: country || GetRandromObjectIdAsString(), values })
   await location.save()
-  expect(location.id).toBeDefined()
-  return location.id as string
+  expect(location._id.toString()).toBeDefined()
+  return location._id.toString() as string
 }

@@ -109,14 +109,14 @@ export const checkPayPalOrder = async (req: Request, res: Response) => {
       // Notify agency
       i18n.locale = agency.language
       let message = i18n.t('BOOKING_PAID_NOTIFICATION')
-      await bookingController.notify(user, booking.id, agency, message)
+      await bookingController.notify(user, booking._id.toString(), agency, message)
 
       // Notify admin
       const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin }))
       if (admin) {
         i18n.locale = admin.language
         message = i18n.t('BOOKING_PAID_NOTIFICATION')
-        await bookingController.notify(user, booking.id, admin, message)
+        await bookingController.notify(user, booking._id.toString(), admin, message)
       }
 
       res.sendStatus(200)

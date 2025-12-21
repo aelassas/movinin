@@ -55,13 +55,13 @@ beforeAll(async () => {
 
   const countryValue1 = new LocationValue({ language: 'en', value: 'Country 1' })
   await countryValue1.save()
-  countryValue1Id = countryValue1.id
+  countryValue1Id = countryValue1._id.toString()
   const countryValue2 = new LocationValue({ language: 'fr', value: 'Pays 1' })
   await countryValue2.save()
-  countryValue2Id = countryValue2.id
-  const country = new Country({ values: [countryValue1.id, countryValue2.id] })
+  countryValue2Id = countryValue2._id.toString()
+  const country = new Country({ values: [countryValue1._id.toString(), countryValue2._id.toString()] })
   await country.save()
-  countryId = country.id
+  countryId = country._id.toString()
   PARENT_LOCATION_ID = await testHelper.createLocation('parent-loc-name', 'parent-loc-fr', countryId)
 })
 
@@ -90,7 +90,7 @@ describe('POST /api/validate-location', () => {
     const name = nanoid()
     const locationValue = new LocationValue({ language, value: name })
     await locationValue.save()
-    const location = new Location({ country: countryId, values: [locationValue.id] })
+    const location = new Location({ country: countryId, values: [locationValue._id.toString()] })
     await location.save()
     const payload: movininTypes.ValidateLocationPayload = {
       language,

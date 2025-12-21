@@ -101,7 +101,7 @@ describe('POST /api/create-checkout-session', () => {
       // const customers = await stripeAPI.customers.list({ email: receiptEmail })
       // if (customers.data.length > 0) {
       //   for (const customer of customers.data) {
-      //     await stripeAPI.customers.del(customer.id)
+      //     await stripeAPI.customers.del(customer._id.toString())
       //   }
       // }
     }
@@ -254,8 +254,8 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
 
     let booking = new Booking({
       agency: agencyId,
-      property: property.id,
-      renter: renter.id,
+      property: property._id.toString(),
+      renter: renter._id.toString(),
       location: locationId,
       from: new Date(2024, 2, 1),
       to: new Date(2024, 2, 4),
@@ -295,7 +295,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       res = await request(app)
         .post(`/api/check-checkout-session/${sessionId}`)
       expect(res.statusCode).toBe(200)
-      await testHelper.deleteNotifications(booking.id)
+      await testHelper.deleteNotifications(booking._id.toString())
 
       // test failure (booking not found)
       res = await request(app)
@@ -306,8 +306,8 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       await booking.deleteOne()
       booking = new Booking({
         agency: agencyId,
-        property: property.id,
-        renter: renter.id,
+        property: property._id.toString(),
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -326,14 +326,14 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       res = await request(app)
         .post(`/api/check-checkout-session/${sessionId}`)
       expect(res.statusCode).toBe(200)
-      await testHelper.deleteNotifications(booking.id)
+      await testHelper.deleteNotifications(booking._id.toString())
 
       // test failure (stripe order error)
       await booking.deleteOne()
       booking = new Booking({
         agency: agencyId,
-        property: property.id,
-        renter: renter.id,
+        property: property._id.toString(),
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -384,8 +384,8 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       const sessionId2 = nanoid()
       booking2 = new Booking({
         agency: agencyId,
-        property: property.id,
-        renter: renter.id,
+        property: property._id.toString(),
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -420,7 +420,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       res = await request(app)
         .post(`/api/check-checkout-session/${sessionId2}`)
       expect(res.statusCode).toBe(400)
-      const b = await Booking.findById(booking2.id)
+      const b = await Booking.findById(booking2._id.toString())
       expect(b).toBeFalsy()
       booking2 = undefined
       jest.resetModules()
@@ -430,7 +430,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       booking3 = new Booking({
         agency: agencyId,
         property: testHelper.GetRandromObjectId(),
-        renter: renter.id,
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -470,8 +470,8 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       await booking3.deleteOne()
       booking3 = new Booking({
         agency: testHelper.GetRandromObjectId(),
-        property: property.id,
-        renter: renter.id,
+        property: property._id.toString(),
+        renter: renter._id.toString(),
         location: locationId,
         from: new Date(2024, 2, 1),
         to: new Date(2024, 2, 4),
@@ -494,7 +494,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       await booking3.deleteOne()
       booking3 = new Booking({
         agency: agencyId,
-        property: property.id,
+        property: property._id.toString(),
         renter: testHelper.GetRandromObjectId(),
         location: locationId,
         from: new Date(2024, 2, 1),
@@ -518,7 +518,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       await booking3.deleteOne()
       booking3 = new Booking({
         agency: agencyId,
-        property: property.id,
+        property: property._id.toString(),
         renter: renter,
         location: testHelper.GetRandromObjectId(),
         from: new Date(2024, 2, 1),
@@ -552,8 +552,8 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       }
       await property.deleteOne()
       await renter.deleteOne()
-         await Notification.deleteMany({ user: renter.id })
-      await NotificationCounter.deleteMany({ user: renter.id })
+         await Notification.deleteMany({ user: renter._id.toString() })
+      await NotificationCounter.deleteMany({ user: renter._id.toString() })
       await testHelper.deleteLocation(locationId)
       await testHelper.deleteAgency(agencyId)
     }
@@ -649,7 +649,7 @@ describe('POST /api/create-payment-intent', () => {
       // const customers = await stripeAPI.customers.list({ email: receiptEmail })
       // if (customers.data.length > 0) {
       //   for (const customer of customers.data) {
-      //     await stripeAPI.customers.del(customer.id)
+      //     await stripeAPI.customers.del(customer._id.toString())
       //   }
       // }
     }

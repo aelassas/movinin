@@ -105,7 +105,7 @@ export const create = async (req: Request, res: Response) => {
         value: name.name,
       })
       await locationValue.save()
-      values.push(locationValue.id)
+      values.push(locationValue._id.toString())
     }
 
     const location = new Location({
@@ -502,8 +502,8 @@ export const getLocationId = async (req: Request, res: Response) => {
     }
     const lv = await LocationValue.findOne({ language, value: { $regex: new RegExp(`^${escapeStringRegexp(helper.trim(name, ' '))}$`, 'i') } })
     if (lv) {
-      const location = await Location.findOne({ values: lv.id })
-      res.status(200).json(location?.id)
+      const location = await Location.findOne({ values: lv._id.toString() })
+      res.status(200).json(location?._id.toString())
       return
     }
     res.sendStatus(204)

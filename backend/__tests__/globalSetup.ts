@@ -22,7 +22,7 @@ export default async function globalSetup() {
           type: movininTypes.UserType.Admin,
         })
         await admin.save()
-        logger.info('globalSetup: Admin user created:', admin.id)
+        logger.info('globalSetup: Admin user created:', admin._id.toString())
       }
       await databaseHelper.close()
     }

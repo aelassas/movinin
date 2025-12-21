@@ -510,7 +510,7 @@ export const getProperties = async (req: Request, res: Response) => {
     const options = 'i'
     // const language = body.language || env.DEFAULT_LANGUAGE
 
-    const $match: mongoose.FilterQuery<movininTypes.Property> = {
+    const $match: mongoose.QueryFilter<movininTypes.Property> = {
       $and: [
         { agency: { $in: agencies } },
         { type: { $in: types } },
@@ -703,7 +703,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
 
     const locationIds = locIds.map((loc) => loc._id)
 
-    const $match: mongoose.FilterQuery<movininTypes.Property> = {
+    const $match: mongoose.QueryFilter<movininTypes.Property> = {
       $and: [
         { agency: { $in: agencies } },
         // { location },
