@@ -1263,12 +1263,25 @@ export const deleteTempAvatar = async (req: Request, res: Response) => {
   const { avatar } = req.params
 
   try {
-    const avatarFile = path.join(env.CDN_TEMP_USERS, avatar)
-    if (!(await helper.pathExists(avatarFile))) {
-      throw new Error(`[user.deleteTempAvatar] temp avatar ${avatarFile} not found`)
+    // prevent null bytes
+    if (avatar.includes('\0')) {
+      res.status(400).send('Invalid filename')
+      return
     }
 
-    await asyncFs.unlink(avatarFile)
+    const baseDir = path.resolve(env.CDN_TEMP_USERS)
+    const targetPath = path.resolve(baseDir, avatar)
+
+    // critical security check: prevent directory traversal
+    if (!targetPath.startsWith(baseDir + path.sep)) {
+      logger.warn(`Directory traversal attempt: ${avatar}`)
+      res.status(403).send('Forbidden')
+      return
+    }
+
+    if (await helper.pathExists(targetPath)) {
+      await asyncFs.unlink(targetPath)
+    }
 
     res.sendStatus(200)
   } catch (err) {
