@@ -1056,6 +1056,32 @@ export const updateLanguage = async (req: Request, res: Response) => {
       return
     }
 
+     // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = await User.findById(sessionUserId)
+    if (!sessionUser) {
+      logger.error(`[user.updateLanguage] Invalid session user: ${sessionUserId}`)
+      res.status(403).send('Forbidden: Invalid session')
+      return
+    }
+    // users can only update their own language
+    if (
+      sessionUser.type === movininTypes.UserType.User && sessionUserId !== user._id.toString()
+    ) {
+      logger.error(`[user.updateLanguage] User ${sessionUserId} tried to update another user's language`)
+      res.status(403).send('Forbidden: You cannot update another user')
+      return
+    }
+    // suppliers can only update their own language
+    if (
+      sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== user._id.toString()
+    ) {
+      logger.error(`[user.updateLanguage] Agency ${sessionUserId} tried to update another user's language`)
+      res.status(403).send('Forbidden: You cannot update another user')
+      return
+    }
+    // end of security check
+
     user.language = language
     await user.save()
     res.sendStatus(200)
