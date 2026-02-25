@@ -29,6 +29,7 @@ const ChangePassword = () => {
   const [visible, setVisible] = useState(false)
   const [currentPassword, setCurrentPassword] = useState('')
   const [currentPasswordError, setCurrentPasswordError] = useState(false)
+  const [hasPassword, setHasPassword] = useState(false)
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(e.target.value)
@@ -77,7 +78,7 @@ const ChangePassword = () => {
           _id: userId || loggedUser?._id as string,
           password: currentPassword,
           newPassword,
-          strict: true,
+          strict: hasPassword,
         }
 
         const status = await UserService.changePassword(data)
@@ -87,20 +88,25 @@ const ChangePassword = () => {
           setCurrentPassword('')
           setNewPassword('')
           setConfirmPassword('')
+          setHasPassword(true)
           helper.info(strings.PASSWORD_UPDATE)
         } else {
           error()
         }
       }
 
-      const status = await UserService.checkPassword(userId || loggedUser?._id as string, currentPassword)
+      if (hasPassword) {
+        const status = await UserService.checkPassword(userId || loggedUser?._id as string, currentPassword)
 
-      setCurrentPasswordError(status !== 200)
-      setNewPasswordError(false)
-      setPasswordLengthError(false)
-      setConfirmPasswordError(false)
+        setCurrentPasswordError(status !== 200)
+        setNewPasswordError(false)
+        setPasswordLengthError(false)
+        setConfirmPasswordError(false)
 
-      if (status === 200) {
+        if (status === 200) {
+          submit()
+        }
+      } else {
         submit()
       }
     } catch (err) {
@@ -114,11 +120,16 @@ const ChangePassword = () => {
     }
   }
 
-  const onLoad = (user?: movininTypes.User) => {
+  const onLoad = async (user?: movininTypes.User) => {
     const params = new URLSearchParams(window.location.search)
     if (params.has('u')) {
       const _userId = params.get('u') || undefined
       setUserId(_userId)
+
+      if (_userId) {
+        const status = await UserService.hasPassword(_userId)
+        setHasPassword(status === 200)
+      }
     }
     setLoggedUser(user)
     setLoading(false)
@@ -136,16 +147,17 @@ const ChangePassword = () => {
           </h1>
           <form className="form" onSubmit={handleSubmit}>
 
-
-            <PasswordInput
-              label={strings.CURRENT_PASSWORD}
-              variant="standard"
-              value={currentPassword}
-              onChange={handleCurrentPasswordChange}
-              error={currentPasswordError}
-              required
-              helperText={(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}
-            />
+            {hasPassword && (
+              <PasswordInput
+                label={strings.CURRENT_PASSWORD}
+                variant="standard"
+                value={currentPassword}
+                onChange={handleCurrentPasswordChange}
+                error={currentPasswordError}
+                required
+                helperText={(currentPasswordError && strings.CURRENT_PASSWORD_ERROR) || ''}
+              />
+            )}
 
             <PasswordInput
               label={strings.NEW_PASSWORD}

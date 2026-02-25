@@ -61,6 +61,17 @@ export const update = async (req: Request, res: Response) => {
     if (!helper.isValidObjectId(_id)) {
       throw new Error('body._id is not valid')
     }
+
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = await User.findById(sessionUserId)
+    if (!sessionUser || sessionUser.type == movininTypes.UserType.User || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== _id)) {
+      logger.error(`[agency.update] Unauthorized attempt to update agency ${_id} by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot update agency information')
+      return
+    }
+    // end of security check
+
     const agency = await User.findById(_id)
 
     if (agency) {
@@ -114,6 +125,16 @@ export const deleteAgency = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = await User.findById(sessionUserId)
+    if (!sessionUser || sessionUser.type != movininTypes.UserType.Admin) {
+      logger.error(`[agency.delete] Unauthorized attempt to delete agency ${id} by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot delete agency')
+      return
+    }
+    // end of security check
+
     const agency = await User.findById(id)
 
     if (agency) {

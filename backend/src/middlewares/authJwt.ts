@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 import mongoose from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import * as env from '../config/env.config'
@@ -6,6 +6,12 @@ import * as helper from '../utils/helper'
 import * as authHelper from '../utils/authHelper'
 import * as logger from '../utils/logger'
 import User from '../models/User'
+
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: { _id: string }
+  }
+}
 
 /**
  * Verify authentication token middleware.
@@ -54,6 +60,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
         res.status(401).send({ message: 'Unauthorized!' })
       } else {
         // Token valid!
+        req.user = { _id: sessionData.id }
         next()
       }
     } catch (err) {
