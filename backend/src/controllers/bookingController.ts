@@ -623,7 +623,9 @@ export const getBooking = async (req: Request, res: Response) => {
       // begin of security check
       const sessionUserId = req.user?._id
       const sessionUser = await User.findById(sessionUserId)
-      if (!sessionUser || sessionUser.type == movininTypes.UserType.User || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== booking.agency._id?.toString())) {
+      if (!sessionUser
+        || (sessionUser.type == movininTypes.UserType.User && sessionUserId !== booking.renter._id?.toString())
+        || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== booking.agency._id?.toString())) {
         logger.error(`[booking.getBooking] Unauthorized attempt to get booking ${id} by user ${sessionUserId}`)
         res.status(403).send('Forbidden: You cannot get booking information')
         return
