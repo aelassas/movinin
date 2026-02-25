@@ -1056,7 +1056,7 @@ export const updateLanguage = async (req: Request, res: Response) => {
       return
     }
 
-     // begin of security check
+    // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
     if (!sessionUser) {
@@ -1281,6 +1281,8 @@ export const deleteTempAvatar = async (req: Request, res: Response) => {
 
     if (await helper.pathExists(targetPath)) {
       await asyncFs.unlink(targetPath)
+    } else {
+      throw new Error(`[user.deleteTempAvatar] temp avatar ${avatar} not found`)
     }
 
     res.sendStatus(200)
