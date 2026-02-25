@@ -65,7 +65,7 @@ export const update = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
-    if (!sessionUser || sessionUser.type == movininTypes.UserType.User || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== _id)) {
+    if (!sessionUser || sessionUser.type === movininTypes.UserType.User || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== _id)) {
       logger.error(`[agency.update] Unauthorized attempt to update agency ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot update agency information')
       return

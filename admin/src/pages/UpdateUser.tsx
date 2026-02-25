@@ -309,6 +309,8 @@ const UpdateUser = () => {
         _user.type = type
         setUser(_user)
         helper.info(commonStrings.UPDATED)
+        setAvatarError(false)
+        setError(false)
       } else {
         helper.error()
 

@@ -434,7 +434,7 @@ export const update = async (req: Request, res: Response) => {
       // begin of security check
       const sessionUserId = req.user?._id
       const sessionUser = await User.findById(sessionUserId)
-      if (!sessionUser || sessionUser.type == movininTypes.UserType.User || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== booking.agency?.toString())) {
+      if (!sessionUser || sessionUser.type === movininTypes.UserType.User || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== booking.agency?.toString())) {
         logger.error(`[booking.update] Unauthorized attempt to update booking ${booking._id.toString()} by user ${sessionUserId}`)
         res.status(403).send('Forbidden: You cannot update booking information')
         return
@@ -540,7 +540,7 @@ export const deleteBookings = async (req: Request, res: Response) => {
 
       if (booking) {
         // begin of security check
-        if (!sessionUser || sessionUser.type == movininTypes.UserType.User || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== booking.agency?.toString())) {
+        if (!sessionUser || sessionUser.type === movininTypes.UserType.User || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== booking.agency?.toString())) {
           logger.error(`[booking.deleteBookings] Unauthorized attempt to delete booking ${booking._id.toString()} by user ${sessionUserId}`)
           unauthorizedAttemptLogged = true
           continue
@@ -624,8 +624,8 @@ export const getBooking = async (req: Request, res: Response) => {
       const sessionUserId = req.user?._id
       const sessionUser = await User.findById(sessionUserId)
       if (!sessionUser
-        || (sessionUser.type == movininTypes.UserType.User && sessionUserId !== booking.renter._id?.toString())
-        || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== booking.agency._id?.toString())) {
+        || (sessionUser.type === movininTypes.UserType.User && sessionUserId !== booking.renter._id?.toString())
+        || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== booking.agency._id?.toString())) {
         logger.error(`[booking.getBooking] Unauthorized attempt to get booking ${id} by user ${sessionUserId}`)
         res.status(403).send('Forbidden: You cannot get booking information')
         return
@@ -718,12 +718,12 @@ export const getBookings = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
-    if (!sessionUser || sessionUser.type == movininTypes.UserType.User) {
+    if (!sessionUser || sessionUser.type === movininTypes.UserType.User) {
       logger.error(`[booking.getBookings] Unauthorized attempt to get bookings by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot get booking information')
       return
     }
-    if (sessionUser.type == movininTypes.UserType.Agency) {
+    if (sessionUser.type === movininTypes.UserType.Agency) {
       agencies = [new mongoose.Types.ObjectId(sessionUserId)]
     }
     // end of security check

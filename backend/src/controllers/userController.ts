@@ -161,7 +161,7 @@ export const create = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
-    if (!sessionUser || sessionUser.type == movininTypes.UserType.User) {
+    if (!sessionUser || sessionUser.type === movininTypes.UserType.User) {
       logger.error(`[user.create] Unauthorized attempt to create user by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot create user')
       return
@@ -946,7 +946,7 @@ export const update = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
-    if (!sessionUser || sessionUser.type == movininTypes.UserType.User || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== user.agency?.toString())) {
+    if (!sessionUser || sessionUser.type === movininTypes.UserType.User || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== user.agency?.toString())) {
       logger.error(`[user.update] Unauthorized attempt to update user ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot update user information')
       return
@@ -973,7 +973,8 @@ export const update = async (req: Request, res: Response) => {
     user.bio = bio
     user.birthDate = birthDate ? new Date(birthDate) : undefined
     user.blacklisted = !!blacklisted
-    if (type) {
+    // only admins can update user type
+    if (type && sessionUser.type === movininTypes.UserType.Admin) {
       user.type = type as movininTypes.UserType
     }
     if (typeof enableEmailNotifications !== 'undefined') {
@@ -1283,9 +1284,9 @@ export const changePassword = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
-    if (!sessionUser 
-      || (sessionUser.type == movininTypes.UserType.User && sessionUserId !== user._id.toString())
-      || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== user.agency?.toString())) {
+    if (!sessionUser
+      || (sessionUser.type === movininTypes.UserType.User && sessionUserId !== user._id.toString())
+      || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== user.agency?.toString())) {
       logger.error(`[user.changePassword] Unauthorized attempt to update user ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot change user password')
       return
@@ -1475,7 +1476,7 @@ export const deleteUsers = async (req: Request, res: Response) => {
 
       if (user) {
         // begin of security check
-        if (!sessionUser || sessionUser.type == movininTypes.UserType.User || (sessionUser.type == movininTypes.UserType.Agency && sessionUserId !== user.agency?.toString())) {
+        if (!sessionUser || sessionUser.type === movininTypes.UserType.User || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== user.agency?.toString())) {
           logger.error(`[user.delete] Unauthorized attempt to delete user ${id} by user ${sessionUserId}`)
           unauthorizedAttemptLogged = true
           continue
