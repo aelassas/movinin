@@ -1522,6 +1522,14 @@ export const checkPassword = async (req: Request, res: Response) => {
  */
 export const getUsers = async (req: Request, res: Response) => {
   try {
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = await User.findById(sessionUserId)
+    if (!sessionUser || sessionUser.type === movininTypes.UserType.User) {
+      throw new Error('Forbidden: You cannot fetch users')
+    }
+    // end of security check
+    
     const keyword: string = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
     const page: number = Number.parseInt(req.params.page, 10)
