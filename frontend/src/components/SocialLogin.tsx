@@ -108,7 +108,7 @@ const SocialLogin = ({
             appId={env.FB_APP_ID}
             redirect_uri={REDIRECT_URI}
             onResolve={({ data }: IResolveParams) => {
-              loginSuccess(movininTypes.SocialSignInType.Facebook, data?.signedRequest, data?.email, data?.name, data?.picture?.data?.url)
+              loginSuccess(movininTypes.SocialSignInType.Facebook, data?.accessToken, data?.email, data?.name, data?.picture?.data?.url)
             }}
             onReject={(err: any) => {
               loginError(err)
