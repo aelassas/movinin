@@ -61,20 +61,64 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
     user = new User(body)
     await user.save()
 
+    // avatar
     if (body.avatar) {
-      const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
-      if (await helper.pathExists(avatar)) {
-        const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
-        const newPath = path.join(env.CDN_USERS, filename)
+      // -----------------------------
+      // 1️. Sanitize filename
+      // -----------------------------
+      const safeAvatar = path.basename(body.avatar)
 
-        await asyncFs.rename(avatar, newPath)
+      // If basename changed it, it's a traversal attempt
+      if (safeAvatar !== body.avatar) {
+        logger.warn(`[user.signup] Directory traversal attempt (avatar): ${body.avatar}`)
+        res.status(400).send('Invalid avatar filename')
+        return
+      }
+
+      const tempDir = path.resolve(env.CDN_TEMP_USERS)
+      const usersDir = path.resolve(env.CDN_USERS)
+
+      const avatarPath = path.resolve(tempDir, safeAvatar)
+
+      // -----------------------------
+      // 2️. Ensure source is inside temp directory
+      // -----------------------------
+      if (!avatarPath.startsWith(tempDir + path.sep)) {
+        logger.warn(`[user.signup] Avatar source path escape attempt: ${avatarPath}`)
+        res.status(400).send('Invalid avatar path')
+        return
+      }
+
+      if (await helper.pathExists(avatarPath)) {
+        const ext = path.extname(safeAvatar)
+
+        // security check: restrict allowed extensions
+        if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+          res.status(400).send('Invalid avatar file type')
+          return
+        }
+
+        const filename = `${user._id}_${Date.now()}${ext}`
+        const newPath = path.resolve(usersDir, filename)
+
+        // -----------------------------
+        // 3. Ensure destination is inside users directory
+        // -----------------------------
+        if (!newPath.startsWith(usersDir + path.sep)) {
+          logger.warn(`[user.signup] Avatar destination path escape attempt: ${newPath}`)
+          res.status(400).send('Invalid avatar destination')
+          return
+        }
+
+        await asyncFs.rename(avatarPath, newPath)
+
         user.avatar = filename
         await user.save()
       }
     }
   } catch (err) {
-    logger.error(`[user.signup] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.signup] ${i18n.t('ERROR')} ${JSON.stringify(body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
     return
   }
 
@@ -112,7 +156,7 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
       await Token.deleteMany({ user: user._id.toString() })
       await user.deleteOne()
     } catch (deleteErr) {
-      logger.error(`[user.signup] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, deleteErr)
+      logger.error(`[user.signup] ${i18n.t('ERROR')} ${JSON.stringify(body)}`, deleteErr)
     }
     logger.error(`[user.signup] ${i18n.t('SMTP_ERROR')}`, err)
     res.status(400).send(i18n.t('SMTP_ERROR') + err)
@@ -182,12 +226,55 @@ export const create = async (req: Request, res: Response) => {
 
     // avatar
     if (body.avatar) {
-      const avatar = path.join(env.CDN_TEMP_USERS, body.avatar)
-      if (await helper.pathExists(avatar)) {
-        const filename = `${user._id}_${Date.now()}${path.extname(body.avatar)}`
-        const newPath = path.join(env.CDN_USERS, filename)
+      // -----------------------------
+      // 1️. Sanitize filename
+      // -----------------------------
+      const safeAvatar = path.basename(body.avatar)
 
-        await asyncFs.rename(avatar, newPath)
+      // If basename changed it, it's a traversal attempt
+      if (safeAvatar !== body.avatar) {
+        logger.warn(`[user.create] Directory traversal attempt (avatar): ${body.avatar}`)
+        res.status(400).send('Invalid avatar filename')
+        return
+      }
+
+      const tempDir = path.resolve(env.CDN_TEMP_USERS)
+      const usersDir = path.resolve(env.CDN_USERS)
+
+      const avatarPath = path.resolve(tempDir, safeAvatar)
+
+      // -----------------------------
+      // 2️. Ensure source is inside temp directory
+      // -----------------------------
+      if (!avatarPath.startsWith(tempDir + path.sep)) {
+        logger.warn(`[user.create] Avatar source path escape attempt: ${avatarPath}`)
+        res.status(400).send('Invalid avatar path')
+        return
+      }
+
+      if (await helper.pathExists(avatarPath)) {
+        const ext = path.extname(safeAvatar)
+
+        // security check: restrict allowed extensions
+        if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+          res.status(400).send('Invalid avatar file type')
+          return
+        }
+
+        const filename = `${user._id}_${Date.now()}${ext}`
+        const newPath = path.resolve(usersDir, filename)
+
+        // -----------------------------
+        // 3. Ensure destination is inside users directory
+        // -----------------------------
+        if (!newPath.startsWith(usersDir + path.sep)) {
+          logger.warn(`[user.create] Avatar destination path escape attempt: ${newPath}`)
+          res.status(400).send('Invalid avatar destination')
+          return
+        }
+
+        await asyncFs.rename(avatarPath, newPath)
+
         user.avatar = filename
         await user.save()
       }
@@ -222,8 +309,8 @@ export const create = async (req: Request, res: Response) => {
     await mailHelper.sendMail(mailOptions)
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.create] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.create] ${i18n.t('ERROR')} ${JSON.stringify(body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -274,8 +361,8 @@ export const checkToken = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.checkToken] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.params)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.checkToken] ${i18n.t('ERROR')} ${JSON.stringify(req.params)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -303,8 +390,8 @@ export const deleteTokens = async (req: Request, res: Response) => {
 
     res.sendStatus(400)
   } catch (err) {
-    logger.error(`[user.deleteTokens] ${i18n.t('DB_ERROR')} ${userId}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.deleteTokens] ${i18n.t('ERROR')} ${userId}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -372,8 +459,8 @@ export const resend = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.resend] ${i18n.t('DB_ERROR')} ${email}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.resend] ${i18n.t('ERROR')} ${email}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -417,8 +504,8 @@ export const activate = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.activate] ${i18n.t('DB_ERROR')} ${userId}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.activate] ${i18n.t('ERROR')} ${userId}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -526,8 +613,8 @@ export const signin = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.signin] ${i18n.t('DB_ERROR')} ${emailFromBody}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.signin] ${i18n.t('ERROR')} ${emailFromBody}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -644,8 +731,8 @@ export const socialSignin = async (req: Request, res: Response) => {
       .status(200)
       .send(loggedUser)
   } catch (err) {
-    logger.error(`[user.socialSignin] ${i18n.t('DB_ERROR')} ${emailFromBody}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.socialSignin] ${i18n.t('ERROR')} ${emailFromBody}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -691,7 +778,7 @@ export const getPushToken = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.pushToken] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.pushToken] ${i18n.t('ERROR')} ${userId}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -727,7 +814,7 @@ export const createPushToken = async (req: Request, res: Response) => {
 
     res.status(400).send('Push Token already exists.')
   } catch (err) {
-    logger.error(`[user.createPushToken] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.createPushToken] ${i18n.t('ERROR')} ${userId}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -752,7 +839,7 @@ export const deletePushToken = async (req: Request, res: Response) => {
     await PushToken.deleteMany({ user: userId })
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.deletePushToken] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.deletePushToken] ${i18n.t('ERROR')} ${userId}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -785,8 +872,8 @@ export const validateEmail = async (req: Request, res: Response) => {
     // email does not exist in db (can be added)
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.validateEmail] ${i18n.t('DB_ERROR')} ${email}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.validateEmail] ${i18n.t('ERROR')} ${email}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -851,8 +938,8 @@ export const confirmEmail = async (req: Request, res: Response) => {
     await user.save()
     res.status(200).send(getStatusMessage(user.language, i18n.t('ACCOUNT_ACTIVATION_SUCCESS')))
   } catch (err) {
-    logger.error(`[user.confirmEmail] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.params)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.confirmEmail] ${i18n.t('ERROR')} ${JSON.stringify(req.params)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -912,8 +999,8 @@ export const resendLink = async (req: Request, res: Response) => {
       .status(200)
       .send(getStatusMessage(user.language, i18n.t('ACCOUNT_ACTIVATION_EMAIL_SENT_PART_1') + user.email + i18n.t('ACCOUNT_ACTIVATION_EMAIL_SENT_PART_2')))
   } catch (err) {
-    logger.error(`[user.resendLink] ${i18n.t('DB_ERROR')} ${email}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.resendLink] ${i18n.t('ERROR')} ${email}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -987,8 +1074,8 @@ export const update = async (req: Request, res: Response) => {
     await user.save()
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.update] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.update] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -1025,8 +1112,8 @@ export const updateEmailNotifications = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.updateEmailNotifications] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.updateEmailNotifications] ${i18n.t('ERROR')} ${JSON.stringify(body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -1086,8 +1173,8 @@ export const updateLanguage = async (req: Request, res: Response) => {
     await user.save()
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.updateLanguage] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.updateLanguage] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -1133,8 +1220,8 @@ export const getUser = async (req: Request, res: Response) => {
 
     res.json(user)
   } catch (err) {
-    logger.error(`[user.getUser] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.getUser] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -1156,10 +1243,17 @@ export const createAvatar = async (req: Request, res: Response) => {
     const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_USERS, filename)
 
+    // security check: restrict allowed extensions
+    const ext = path.extname(filename)
+    if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+      res.status(400).send('Invalid avatar file type')
+      return
+    }
+
     await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
   } catch (err) {
-    logger.error(`[user.createAvatar] ${i18n.t('DB_ERROR')}`, err)
+    logger.error(`[user.createAvatar] ${i18n.t('ERROR')}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1198,6 +1292,13 @@ export const updateAvatar = async (req: Request, res: Response) => {
       const filename = `${user._id}_${Date.now()}${path.extname(req.file.originalname)}`
       const filepath = path.join(env.CDN_USERS, filename)
 
+      // security check: restrict allowed extensions
+      const ext = path.extname(filename)
+      if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+        res.status(400).send('Invalid avatar file type')
+        return
+      }
+
       await asyncFs.writeFile(filepath, req.file.buffer)
       user.avatar = filename
       await user.save()
@@ -1208,7 +1309,7 @@ export const updateAvatar = async (req: Request, res: Response) => {
     logger.error('[user.updateAvatar] User not found:', userId)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.updateAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.updateAvatar] ${i18n.t('ERROR')} ${userId}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1245,7 +1346,7 @@ export const deleteAvatar = async (req: Request, res: Response) => {
     logger.error('[user.deleteAvatar] User not found:', userId)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.deleteAvatar] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[user.deleteAvatar] ${i18n.t('ERROR')} ${userId}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1287,7 +1388,7 @@ export const deleteTempAvatar = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.deleteTempAvatar] ${i18n.t('DB_ERROR')} ${avatar}`, err)
+    logger.error(`[user.deleteTempAvatar] ${i18n.t('ERROR')} ${avatar}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1361,7 +1462,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
     _changePassword()
   } catch (err) {
-    logger.error(`[user.changePassword] ${i18n.t('DB_ERROR')} ${_id}`, err)
+    logger.error(`[user.changePassword] ${i18n.t('ERROR')} ${_id}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1405,7 +1506,7 @@ export const checkPassword = async (req: Request, res: Response) => {
     logger.error('[user.checkPassword] User not found:', id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.checkPassword] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[user.checkPassword] ${i18n.t('ERROR')} ${id}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -1489,8 +1590,8 @@ export const getUsers = async (req: Request, res: Response) => {
 
     res.json(users)
   } catch (err) {
-    logger.error(`[user.getUsers] ${i18n.t('DB_ERROR')}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.getUsers] ${i18n.t('ERROR')}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -1573,8 +1674,8 @@ export const deleteUsers = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[user.delete] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.delete] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -1598,8 +1699,8 @@ export const verifyRecaptcha = async (req: Request, res: Response) => {
     }
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.delete] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.delete] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -1665,7 +1766,7 @@ export const hasPassword = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.hasPassword] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[user.hasPassword] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }

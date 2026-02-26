@@ -64,8 +64,8 @@ export const validate = async (req: Request, res: Response) => {
       res.sendStatus(200)
     }
   } catch (err) {
-    logger.error(`[location.validate]  ${i18n.t('DB_ERROR')} ${name}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.validate]  ${i18n.t('ERROR')} ${name}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -117,14 +117,58 @@ export const create = async (req: Request, res: Response) => {
     })
     await location.save()
 
-    if (image) {
-      const _image = path.join(env.CDN_TEMP_LOCATIONS, image)
+ if (image) {
+      // -----------------------------
+      // 1. Sanitize filename
+      // -----------------------------
+      const safeImage = path.basename(image)
 
-      if (await helper.pathExists(_image)) {
-        const filename = `${location._id}_${Date.now()}${path.extname(image)}`
-        const newPath = path.join(env.CDN_LOCATIONS, filename)
+      // If basename changed it, it's a traversal attempt
+      if (safeImage !== image) {
+        logger.warn(`[location.create] Directory traversal attempt (image): ${image}`)
+        res.status(400).send('Invalid image filename')
+        return
+      }
 
-        await asyncFs.rename(_image, newPath)
+      const tempDir = path.resolve(env.CDN_TEMP_LOCATIONS)
+      const locationsDir = path.resolve(env.CDN_LOCATIONS)
+
+      const sourcePath = path.resolve(tempDir, safeImage)
+
+      // -----------------------------
+      // 2. Ensure source stays inside temp directory
+      // -----------------------------
+      if (!sourcePath.startsWith(tempDir + path.sep)) {
+        logger.warn(`[location.create] Image source path escape attempt: ${sourcePath}`)
+        res.status(400).send('Invalid image path')
+        return
+      }
+
+      if (await helper.pathExists(sourcePath)) {
+        const ext = path.extname(safeImage).toLowerCase()
+
+        // -----------------------------
+        // 3. Restrict allowed image extensions
+        // -----------------------------
+        if (!env.allowedImageExtensions.includes(ext)) {
+          res.status(400).send('Invalid image type')
+          return
+        }
+
+        const filename = `${location._id}_${Date.now()}${ext}`
+        const newPath = path.resolve(locationsDir, filename)
+
+        // -----------------------------
+        // 4. Ensure destination stays inside locations directory
+        // -----------------------------
+        if (!newPath.startsWith(locationsDir + path.sep)) {
+          logger.warn(`[location.create] Image destination path escape attempt: ${newPath}`)
+          res.status(400).send('Invalid image destination')
+          return
+        }
+
+        await asyncFs.rename(sourcePath, newPath)
+
         location.image = filename
         await location.save()
       }
@@ -132,8 +176,8 @@ export const create = async (req: Request, res: Response) => {
 
     res.send(location)
   } catch (err) {
-    logger.error(`[location.create] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.create] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -192,8 +236,8 @@ export const update = async (req: Request, res: Response) => {
     logger.error('[location.update] Location not found:', id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[location.update] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.update] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -229,8 +273,8 @@ export const deleteLocation = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[location.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.delete] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -288,8 +332,8 @@ export const getLocation = async (req: Request, res: Response) => {
     logger.error('[location.getLocation] Location not found:', id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[location.getLocation] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.getLocation] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -383,8 +427,8 @@ export const getLocations = async (req: Request, res: Response) => {
 
     res.json(locations)
   } catch (err) {
-    logger.error(`[location.getLocations] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.getLocations] ${i18n.t('ERROR')} ${req.query.s}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -443,8 +487,8 @@ export const getLocationsWithPosition = async (req: Request, res: Response) => {
 
     res.json(locations)
   } catch (err) {
-    logger.error(`[location.getLocationsWithPosition] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.getLocationsWithPosition] ${i18n.t('ERROR')} ${req.query.s}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -480,8 +524,8 @@ export const checkLocation = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[location.checkLocation] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.checkLocation] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -508,8 +552,8 @@ export const getLocationId = async (req: Request, res: Response) => {
     }
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[location.getLocationId] ${i18n.t('DB_ERROR')} ${name}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.getLocationId] ${i18n.t('ERROR')} ${name}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -531,10 +575,17 @@ export const createImage = async (req: Request, res: Response) => {
     const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_LOCATIONS, filename)
 
+    // security check: restrict allowed extensions
+    const ext = path.extname(filename)
+    if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+      res.status(400).send('Invalid location image file type')
+      return
+    }
+
     await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
   } catch (err) {
-    logger.error(`[location.createImage] ${i18n.t('DB_ERROR')}`, err)
+    logger.error(`[location.createImage] ${i18n.t('ERROR')}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -574,6 +625,13 @@ export const updateImage = async (req: Request, res: Response) => {
       const filename = `${location._id}_${Date.now()}${path.extname(file.originalname)}`
       const filepath = path.join(env.CDN_LOCATIONS, filename)
 
+      // security check: restrict allowed extensions
+      const ext = path.extname(filename)
+      if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+        res.status(400).send('Invalid location image file type')
+        return
+      }
+
       await asyncFs.writeFile(filepath, file.buffer)
       location.image = filename
       await location.save()
@@ -584,8 +642,8 @@ export const updateImage = async (req: Request, res: Response) => {
     logger.error('[location.updateImage] Location not found:', id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[location.updateImage] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.updateImage] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -623,8 +681,8 @@ export const deleteImage = async (req: Request, res: Response) => {
     logger.error('[location.deleteImage] Location not found:', id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[location.deleteImage] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[location.deleteImage] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -663,7 +721,7 @@ export const deleteTempImage = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[location.deleteTempImage] ${i18n.t('DB_ERROR')} ${image}`, err)
+    logger.error(`[location.deleteTempImage] ${i18n.t('ERROR')} ${image}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }

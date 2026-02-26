@@ -39,8 +39,8 @@ export const validate = async (req: Request, res: Response) => {
       res.sendStatus(200)
     }
   } catch (err) {
-    logger.error(`[agency.validate] ${i18n.t('DB_ERROR')} ${fullName}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[agency.validate] ${i18n.t('ERROR')} ${fullName}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -107,8 +107,8 @@ export const update = async (req: Request, res: Response) => {
     logger.error('[agency.update] Agency not found:', _id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[agency.update] ${i18n.t('DB_ERROR')} ${_id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[agency.update] ${i18n.t('ERROR')} ${_id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -174,8 +174,8 @@ export const deleteAgency = async (req: Request, res: Response) => {
     }
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[agency.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[agency.delete] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -224,8 +224,8 @@ export const getAgency = async (req: Request, res: Response) => {
       blacklisted,
     })
   } catch (err) {
-    logger.error(`[agency.getAgency] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[agency.getAgency] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -275,8 +275,8 @@ export const getAgencies = async (req: Request, res: Response) => {
 
     res.json(data)
   } catch (err) {
-    logger.error(`[agency.getAgencies] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[agency.getAgencies] ${i18n.t('ERROR')} ${req.query.s}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -312,7 +312,7 @@ export const getAllAgencies = async (req: Request, res: Response) => {
 
     res.json(data)
   } catch (err) {
-    logger.error(`[agency.getAllAgencies] ${i18n.t('DB_ERROR')}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[agency.getAllAgencies] ${i18n.t('ERROR')}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }

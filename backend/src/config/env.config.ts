@@ -747,3 +747,18 @@ export interface Token extends Document {
   token: string
   expireAt?: Date
 }
+
+/**
+ * Allowed driver's license file extensions.
+ *
+ * @type {string[]}
+ */
+export const allowedImageExtensions = [
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.webp',
+  '.gif',
+  '.bmp',
+  '.tiff',
+]

@@ -79,40 +79,125 @@ export const create = async (req: Request, res: Response) => {
     const property = new Property(_property)
     await property.save()
 
-    // image
-    const _image = path.join(env.CDN_TEMP_PROPERTIES, imageFile)
-    if (await helper.pathExists(_image)) {
-      const filename = `${property._id}_${Date.now()}${path.extname(imageFile)}`
-      const newPath = path.join(env.CDN_PROPERTIES, filename)
+    const tempDir = path.resolve(env.CDN_TEMP_PROPERTIES)
+    const propertiesDir = path.resolve(env.CDN_PROPERTIES)
 
-      await asyncFs.rename(_image, newPath)
-      property.image = filename
-    } else {
+    // 1. MAIN IMAGE
+    if (!imageFile) {
+      await Property.deleteOne({ _id: property._id })
+      const err = 'Image file is required'
+      logger.error(i18n.t('ERROR'), err)
+      res.status(400).send(i18n.t('ERROR') + err)
+      return
+    }
+
+    const safeImage = path.basename(imageFile)
+
+    if (safeImage !== imageFile) {
+      await Property.deleteOne({ _id: property._id })
+      const err = 'Invalid image filename'
+      logger.warn(`[property.create] Directory traversal attempt: ${imageFile}`)
+      res.status(400).send(i18n.t('ERROR') + err)
+      return
+    }
+
+    const sourceImagePath = path.resolve(tempDir, safeImage)
+
+    if (!sourceImagePath.startsWith(tempDir + path.sep)) {
+      await Property.deleteOne({ _id: property._id })
+      const err = 'Invalid image path'
+      logger.warn(`[property.create] Source path escape attempt: ${sourceImagePath}`)
+      res.status(400).send(i18n.t('ERROR') + err)
+      return
+    }
+
+    if (!(await helper.pathExists(sourceImagePath))) {
       await Property.deleteOne({ _id: property._id })
       const err = 'Image file not found'
       logger.error(i18n.t('ERROR'), err)
       res.status(400).send(i18n.t('ERROR') + err)
+      return
     }
 
-    // images
+    const mainExt = path.extname(safeImage).toLowerCase()
+
+    if (!env.allowedImageExtensions.includes(mainExt)) {
+      await Property.deleteOne({ _id: property._id })
+      const err = 'Invalid image type'
+      res.status(400).send(i18n.t('ERROR') + err)
+      return
+    }
+
+    const mainFilename = `${property._id}_${Date.now()}${mainExt}`
+    const mainDestPath = path.resolve(propertiesDir, mainFilename)
+
+    if (!mainDestPath.startsWith(propertiesDir + path.sep)) {
+      await Property.deleteOne({ _id: property._id })
+      const err = 'Invalid destination path'
+      res.status(400).send(i18n.t('ERROR') + err)
+      return
+    }
+
+    await asyncFs.rename(sourceImagePath, mainDestPath)
+    property.image = mainFilename
+
+    // 2. ADDITIONAL IMAGES
     property.images = []
-    if (images) {
+
+    if (images && Array.isArray(images)) {
       let i = 1
+
       for (const img of images) {
-        const _img = path.join(env.CDN_TEMP_PROPERTIES, img)
+        const safeImg = path.basename(img)
 
-        if (await helper.pathExists(_img)) {
-          const filename = `${property._id}_${nanoid()}_${Date.now()}_${i}${path.extname(img)}`
-          const newPath = path.join(env.CDN_PROPERTIES, filename)
+        if (safeImg !== img) {
+          await Property.deleteOne({ _id: property._id })
+          const err = 'Invalid image filename'
+          logger.warn(`[property.create] Directory traversal attempt: ${img}`)
+          res.status(400).send(i18n.t('ERROR') + err)
+          return
+        }
 
-          await asyncFs.rename(_img, newPath)
-          property.images.push(filename)
-        } else {
+        const sourceImgPath = path.resolve(tempDir, safeImg)
+
+        if (!sourceImgPath.startsWith(tempDir + path.sep)) {
+          await Property.deleteOne({ _id: property._id })
+          const err = 'Invalid image path'
+          logger.warn(`[property.create] Source path escape attempt: ${sourceImgPath}`)
+          res.status(400).send(i18n.t('ERROR') + err)
+          return
+        }
+
+        if (!(await helper.pathExists(sourceImgPath))) {
           await Property.deleteOne({ _id: property._id })
           const err = 'Image file not found'
           logger.error(i18n.t('ERROR'), err)
           res.status(400).send(i18n.t('ERROR') + err)
+          return
         }
+
+        const ext = path.extname(safeImg).toLowerCase()
+
+        if (!env.allowedImageExtensions.includes(ext)) {
+          await Property.deleteOne({ _id: property._id })
+          const err = 'Invalid image type'
+          res.status(400).send(i18n.t('ERROR') + err)
+          return
+        }
+
+        const filename = `${property._id}_${nanoid()}_${Date.now()}_${i}${ext}`
+        const destPath = path.resolve(propertiesDir, filename)
+
+        if (!destPath.startsWith(propertiesDir + path.sep)) {
+          await Property.deleteOne({ _id: property._id })
+          const err = 'Invalid destination path'
+          res.status(400).send(i18n.t('ERROR') + err)
+          return
+        }
+
+        await asyncFs.rename(sourceImgPath, destPath)
+        property.images.push(filename)
+
         i += 1
       }
     }
@@ -121,7 +206,7 @@ export const create = async (req: Request, res: Response) => {
 
     res.json(property)
   } catch (err) {
-    logger.error(`[property.create] ${i18n.t('DB_ERROR')} ${JSON.stringify(body)}`, err)
+    logger.error(`[property.create] ${i18n.t('ERROR')} ${JSON.stringify(body)}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -198,57 +283,89 @@ export const update = async (req: Request, res: Response) => {
       property.rentalTerm = rentalTerm as movininTypes.RentalTerm
       property.blockOnPay = blockOnPay
 
+      const tempDir = path.resolve(env.CDN_TEMP_PROPERTIES)
+      const propertiesDir = path.resolve(env.CDN_PROPERTIES)
+
+      // 1. MAIN IMAGE
       if (image && image !== property.image) {
-        const oldImage = path.join(env.CDN_PROPERTIES, property.image)
-        if (await helper.pathExists(oldImage)) {
-          await asyncFs.unlink(oldImage)
+        // Delete old image
+        if (property.image) {
+          const oldImagePath = path.resolve(propertiesDir, path.basename(property.image))
+          if (oldImagePath.startsWith(propertiesDir + path.sep) && await helper.pathExists(oldImagePath)) {
+            await asyncFs.unlink(oldImagePath)
+          }
         }
 
-        const filename = `${property._id}_${Date.now()}${path.extname(image)}`
-        const filepath = path.join(env.CDN_PROPERTIES, filename)
+        // Sanitize new image
+        const safeImage = path.basename(image)
+        if (safeImage !== image) {
+          throw new Error('Invalid image filename')
+        }
 
-        const tempImagePath = path.join(env.CDN_TEMP_PROPERTIES, image)
-        await asyncFs.rename(tempImagePath, filepath)
+        const tempImagePath = path.resolve(tempDir, safeImage)
+        if (!tempImagePath.startsWith(tempDir + path.sep) || !(await helper.pathExists(tempImagePath))) {
+          throw new Error('Image file not found')
+        }
+
+        const ext = path.extname(safeImage).toLowerCase()
+        if (!env.allowedImageExtensions.includes(ext)) {
+          throw new Error('Invalid image type')
+        }
+
+        const filename = `${property._id}_${Date.now()}${ext}`
+        const destPath = path.resolve(propertiesDir, filename)
+        if (!destPath.startsWith(propertiesDir + path.sep)) {
+          throw new Error('Invalid destination path')
+        }
+
+        await asyncFs.rename(tempImagePath, destPath)
         property.image = filename
       }
 
-      // delete deleted images
-      const _images: string[] = []
+      // 2. DELETE DELETED IMAGES
+      const updatedImages: string[] = []
       if (images && property.images) {
-        if (images.length === 0) {
-          for (const img of property.images) {
-            const _image = path.join(env.CDN_PROPERTIES, img)
-            if (await helper.pathExists(_image)) {
-              await asyncFs.unlink(_image)
+        for (const img of property.images) {
+          if (!images.includes(img)) {
+            const oldPath = path.resolve(propertiesDir, path.basename(img))
+            if (oldPath.startsWith(propertiesDir + path.sep) && await helper.pathExists(oldPath)) {
+              await asyncFs.unlink(oldPath)
             }
-          }
-        } else {
-          for (const img of property.images) {
-            if (!images.includes(img)) {
-              const _image = path.join(env.CDN_PROPERTIES, img)
-              if (await helper.pathExists(_image)) {
-                await asyncFs.unlink(_image)
-              }
-            } else {
-              _images.push(img)
-            }
+          } else {
+            updatedImages.push(img)
           }
         }
       }
-      property.images = _images
+      property.images = updatedImages
 
-      // add new images
+      // 3. ADD NEW IMAGES
       if (images) {
         let i = 1
         for (const img of images) {
           if (!property.images.includes(img)) {
-            const _image = path.join(env.CDN_TEMP_PROPERTIES, img)
+            const safeImg = path.basename(img)
+            if (safeImg !== img) {
+              throw new Error('Invalid image filename')
+            }
 
-            if (await helper.pathExists(_image)) {
-              const filename = `${property._id}_${nanoid()}_${Date.now()}_${i}${path.extname(img)}`
-              const newPath = path.join(env.CDN_PROPERTIES, filename)
+            const tempImgPath = path.resolve(tempDir, safeImg)
+            if (!tempImgPath.startsWith(tempDir + path.sep)) {
+              throw new Error(`Directory traversal attempt: ${safeImg}`)
+            }
 
-              await asyncFs.rename(_image, newPath)
+            const ext = path.extname(safeImg).toLowerCase()
+            if (!env.allowedImageExtensions.includes(ext)) {
+              throw new Error('Invalid image type')
+            }
+
+            const filename = `${property._id}_${nanoid()}_${Date.now()}_${i}${ext}`
+            const destPath = path.resolve(propertiesDir, filename)
+            if (!destPath.startsWith(propertiesDir + path.sep)) {
+              throw new Error('Invalid destination path')
+            }
+
+            if ((await helper.pathExists(tempImgPath))) {
+              await asyncFs.rename(tempImgPath, destPath)
               property.images.push(filename)
             }
           }
@@ -256,6 +373,7 @@ export const update = async (req: Request, res: Response) => {
         }
       }
 
+      // 4. SAVE PROPERTY
       await property.save()
       res.json(property)
       return
@@ -264,7 +382,7 @@ export const update = async (req: Request, res: Response) => {
     logger.error('[property.update] Property not found:', _id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[property.update] ${i18n.t('DB_ERROR')} ${_id}`, err)
+    logger.error(`[property.update] ${i18n.t('ERROR')} ${_id}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -295,7 +413,7 @@ export const checkProperty = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[property.check] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[property.check] ${i18n.t('ERROR')} ${id}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -340,8 +458,8 @@ export const deleteProperty = async (req: Request, res: Response) => {
     }
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[property.delete] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[property.delete] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -362,6 +480,13 @@ export const uploadImage = async (req: Request, res: Response) => {
 
     const filename = `${helper.getFilenameWithoutExtension(req.file.originalname)}_${nanoid()}_${Date.now()}${path.extname(req.file.originalname)}`
     const filepath = path.join(env.CDN_TEMP_PROPERTIES, filename)
+
+    // security check: restrict allowed extensions
+    const ext = path.extname(filename)
+    if (!env.allowedImageExtensions.includes(ext.toLowerCase())) {
+      res.status(400).send('Invalid property image file type')
+      return
+    }
 
     await asyncFs.writeFile(filepath, req.file.buffer)
     res.json(filename)
@@ -498,7 +623,7 @@ export const getProperty = async (req: Request, res: Response) => {
     logger.error('[property.getProperty] Property not found:', id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[property.getProperty] ${i18n.t('DB_ERROR')} ${id}`, err)
+    logger.error(`[property.getProperty] ${i18n.t('ERROR')} ${id}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -632,8 +757,8 @@ export const getProperties = async (req: Request, res: Response) => {
 
     res.json(data)
   } catch (err) {
-    logger.error(`[property.getProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[property.getProperties] ${i18n.t('ERROR')} ${req.query.s}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -675,8 +800,8 @@ export const getBookingProperties = async (req: Request, res: Response) => {
 
     res.json(properties)
   } catch (err) {
-    logger.error(`[property.getBookingProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[property.getBookingProperties] ${i18n.t('ERROR')} ${req.query.s}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -881,7 +1006,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
 
     res.json(data)
   } catch (err) {
-    logger.error(`[property.getFrontendProperties] ${i18n.t('DB_ERROR')} ${req.query.s}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[property.getFrontendProperties] ${i18n.t('ERROR')} ${req.query.s}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }

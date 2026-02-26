@@ -249,3 +249,12 @@ export const safeStringify = (obj: any) => {
     return '[Unserializable object]'
   }
 }
+
+/**
+ * Validate language code (ISO 639-1).
+ *
+ * @param {string} lang 
+ * @returns {boolean} 
+ */
+export const validateLanguage = (lang: string) =>
+  /^[a-z]{2}$/.test(lang)

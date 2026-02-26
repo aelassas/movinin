@@ -36,8 +36,8 @@ export const create = async (req: Request, res: Response) => {
     await booking.save()
     res.json(booking)
   } catch (err) {
-    logger.error(`[booking.create] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.create] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -479,8 +479,8 @@ export const update = async (req: Request, res: Response) => {
     logger.error('[booking.update] Booking not found:', body._id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[booking.update] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.update] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -512,8 +512,8 @@ export const updateStatus = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[booking.updateStatus] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.updateStatus] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -557,8 +557,8 @@ export const deleteBookings = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[booking.deleteBookings] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.deleteBookings] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -582,8 +582,8 @@ export const deleteTempBooking = async (req: Request, res: Response) => {
     await booking?.deleteOne()
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[booking.deleteTempBooking] ${i18n.t('DB_ERROR')} ${JSON.stringify({ bookingId, sessionId })}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.deleteTempBooking] ${i18n.t('ERROR')} ${JSON.stringify({ bookingId, sessionId })}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -656,8 +656,8 @@ export const getBooking = async (req: Request, res: Response) => {
     logger.error('[booking.getBooking] Booking not found:', id)
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[booking.getBooking] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.getBooking] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -683,8 +683,8 @@ export const getBookingId = async (req: Request, res: Response) => {
     }
     res.json(booking?._id.toString())
   } catch (err) {
-    logger.error(`[booking.getBookingId] (sessionId) ${i18n.t('DB_ERROR')} ${sessionId}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.getBookingId] (sessionId) ${i18n.t('ERROR')} ${sessionId}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -896,8 +896,8 @@ export const getBookings = async (req: Request, res: Response) => {
 
     res.json(data)
   } catch (err) {
-    logger.error(`[booking.getBookings] ${i18n.t('DB_ERROR')} ${JSON.stringify(req.body)}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.getBookings] ${i18n.t('ERROR')} ${JSON.stringify(req.body)}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -928,8 +928,8 @@ export const hasBookings = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[booking.hasBookings] ${i18n.t('DB_ERROR')} ${renter}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.hasBookings] ${i18n.t('ERROR')} ${renter}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -980,7 +980,7 @@ export const cancelBooking = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[booking.cancelBooking] ${i18n.t('DB_ERROR')} ${id}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[booking.cancelBooking] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }

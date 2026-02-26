@@ -28,7 +28,7 @@ export const notificationCounter = async (req: Request, res: Response) => {
     await cnt.save()
     res.json(cnt)
   } catch (err) {
-    logger.error(`[notification.notificationCounter] ${i18n.t('DB_ERROR')} ${userId}`, err)
+    logger.error(`[notification.notificationCounter] ${i18n.t('ERROR')} ${userId}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }
@@ -66,8 +66,8 @@ export const getNotifications = async (req: Request, res: Response) => {
 
     res.json(notifications)
   } catch (err) {
-    logger.error(`[notification.getNotifications] ${i18n.t('DB_ERROR')} ${_userId}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[notification.getNotifications] ${i18n.t('ERROR')} ${_userId}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -100,8 +100,8 @@ export const markAsRead = async (req: Request, res: Response) => {
     // const result = await bulk.execute()
 
     // if (result.modifiedCount !== length) {
-    //   logger.error(`[notification.markAsRead] ${i18n.t('DB_ERROR')}`)
-    //   res.status(400).send(i18n.t('DB_ERROR'))
+    //   logger.error(`[notification.markAsRead] ${i18n.t('ERROR')}`)
+    //   res.status(400).send(i18n.t('ERROR'))
     // }
 
     const counter = await NotificationCounter.findOne({ user: userId })
@@ -114,8 +114,8 @@ export const markAsRead = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[notification.markAsRead] ${i18n.t('DB_ERROR')}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[notification.markAsRead] ${i18n.t('ERROR')}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -148,8 +148,8 @@ export const markAsUnRead = async (req: Request, res: Response) => {
     // const result = await bulk.execute()
 
     // if (result.modifiedCount !== length) {
-    //   logger.error(`[notification.markAsUnRead] ${i18n.t('DB_ERROR')}`)
-    //   res.status(400).send(i18n.t('DB_ERROR'))
+    //   logger.error(`[notification.markAsUnRead] ${i18n.t('ERROR')}`)
+    //   res.status(400).send(i18n.t('ERROR'))
     // }
 
     const counter = await NotificationCounter.findOne({ user: userId })
@@ -162,8 +162,8 @@ export const markAsUnRead = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[notification.markAsUnRead] ${i18n.t('DB_ERROR')}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[notification.markAsUnRead] ${i18n.t('ERROR')}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
 
@@ -200,7 +200,7 @@ export const deleteNotifications = async (req: Request, res: Response) => {
 
     res.sendStatus(200)
   } catch (err) {
-    logger.error(`[notification.deleteNotifications] ${i18n.t('DB_ERROR')}`, err)
-    res.status(400).send(i18n.t('DB_ERROR') + err)
+    logger.error(`[notification.deleteNotifications] ${i18n.t('ERROR')}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
   }
 }
