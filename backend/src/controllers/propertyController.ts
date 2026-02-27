@@ -7,6 +7,7 @@ import { Request, Response } from 'express'
 import * as movininTypes from ':movinin-types'
 import Booking from '../models/Booking'
 import Property from '../models/Property'
+import User from '../models/User'
 import i18n from '../lang/i18n'
 import * as env from '../config/env.config'
 import * as helper from '../utils/helper'
@@ -231,6 +232,16 @@ export const update = async (req: Request, res: Response) => {
     const property = await Property.findById(_id)
 
     if (property) {
+      // begin of security check
+      const sessionUserId = req.user?._id
+      const sessionUser = await User.findById(sessionUserId)
+      if (!sessionUser || (sessionUser.type === movininTypes.UserType.Agency && property.agency?.toString() !== sessionUserId)) {
+        logger.error(`[property.update] Unauthorized attempt to update property ${property._id} by user ${sessionUserId}`)
+        res.status(403).send('Forbidden: You cannot update this property')
+        return
+      }
+      // end of security check
+
       const {
         name,
         type,
@@ -433,6 +444,16 @@ export const deleteProperty = async (req: Request, res: Response) => {
   try {
     const property = await Property.findById(id)
     if (property) {
+      // begin of security check
+      const sessionUserId = req.user?._id
+      const sessionUser = await User.findById(sessionUserId)
+      if (!sessionUser || (sessionUser.type === movininTypes.UserType.Agency && property.agency?.toString() !== sessionUserId)) {
+        logger.error(`[property.delete] Unauthorized attempt to delete property ${property._id} by user ${sessionUserId}`)
+        res.status(403).send('Forbidden: You cannot delete this property')
+        return
+      }
+      // end of security check
+
       await Property.deleteOne({ _id: id })
 
       if (property.image) {
