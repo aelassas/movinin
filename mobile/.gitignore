@@ -96,3 +96,5 @@ ios/
 .eslintcache
 
 app.json.bak
+
+GoogleService-Info.plist
