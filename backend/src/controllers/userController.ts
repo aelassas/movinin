@@ -1033,7 +1033,12 @@ export const update = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
-    if (!sessionUser || sessionUser.type === movininTypes.UserType.User || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== user.agency?.toString())) {
+    if (!sessionUser
+      || (sessionUser.type === movininTypes.UserType.User && sessionUserId !== user._id.toString())
+      || (sessionUser.type === movininTypes.UserType.Agency
+        && ((user.type === movininTypes.UserType.User && sessionUserId !== user.agency?.toString())
+          || (user.type === movininTypes.UserType.Agency && sessionUserId !== user._id.toString())))
+    ) {
       logger.error(`[user.update] Unauthorized attempt to update user ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot update user information')
       return
@@ -1159,7 +1164,7 @@ export const updateLanguage = async (req: Request, res: Response) => {
       res.status(403).send('Forbidden: You cannot update another user')
       return
     }
-    // suppliers can only update their own language
+    // agencys can only update their own language
     if (
       sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== user._id.toString()
     ) {
@@ -1428,8 +1433,11 @@ export const changePassword = async (req: Request, res: Response) => {
     const sessionUser = await User.findById(sessionUserId)
     if (!sessionUser
       || (sessionUser.type === movininTypes.UserType.User && sessionUserId !== user._id.toString())
-      || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== user.agency?.toString())) {
-      logger.error(`[user.changePassword] Unauthorized attempt to update user ${_id} by user ${sessionUserId}`)
+      || (sessionUser.type === movininTypes.UserType.Agency
+        && ((user.type === movininTypes.UserType.User && sessionUserId !== user.agency?.toString())
+          || (user.type === movininTypes.UserType.Agency && sessionUserId !== user._id.toString())))
+    ) {
+      logger.error(`[user.changePassword] Unauthorized attempt to change user password ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot change user password')
       return
     }
@@ -1529,7 +1537,7 @@ export const getUsers = async (req: Request, res: Response) => {
       throw new Error('Forbidden: You cannot fetch users')
     }
     // end of security check
-    
+
     const keyword: string = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
     const page: number = Number.parseInt(req.params.page, 10)

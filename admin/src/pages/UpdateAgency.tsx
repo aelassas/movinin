@@ -180,6 +180,12 @@ const UpdateAgency = () => {
             const _agency = await AgencyService.getAgency(id)
 
             if (_agency) {
+              if (!(_user.type === movininTypes.UserType.Admin || _user._id === _agency._id)) {
+                setLoading(false)
+                setNoMatch(true)
+                return
+              }
+
               setAgency(_agency)
               setEmail(_agency.email || '')
               setAvatar(_agency.avatar || '')

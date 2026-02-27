@@ -213,6 +213,16 @@ const UpdateUser = () => {
             const _user = await UserService.getUser(id)
 
             if (_user) {
+              if (!(
+                _loggedUser.type === movininTypes.UserType.Admin
+                || (_user.type === movininTypes.UserType.Agency && _loggedUser._id === _user._id)
+                || (_user.type === movininTypes.UserType.User && _loggedUser._id === _user.agency)
+              )) {
+                setLoading(false)
+                setNoMatch(true)
+                return
+              }
+
               setLoggedUser(_loggedUser)
               setUser(_user)
               setAdmin(helper.admin(_loggedUser))

@@ -620,18 +620,6 @@ export const getBooking = async (req: Request, res: Response) => {
       .lean()
 
     if (booking) {
-      // begin of security check
-      const sessionUserId = req.user?._id
-      const sessionUser = await User.findById(sessionUserId)
-      if (!sessionUser
-        || (sessionUser.type === movininTypes.UserType.User && sessionUserId !== booking.renter._id?.toString())
-        || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== booking.agency._id?.toString())) {
-        logger.error(`[booking.getBooking] Unauthorized attempt to get booking ${id} by user ${sessionUserId}`)
-        res.status(403).send('Forbidden: You cannot get booking information')
-        return
-      }
-      // end of security check
-
       const { language } = req.params
 
       booking.agency = {
@@ -705,7 +693,7 @@ export const getBookings = async (req: Request, res: Response) => {
     let agencies = body.agencies.map((id: string) => new mongoose.Types.ObjectId(id))
     const {
       statuses,
-      user,
+      // user,
       property,
     } = body
     const location = (body.filter && body.filter.location) || null
@@ -715,10 +703,14 @@ export const getBookings = async (req: Request, res: Response) => {
     let keyword = (body.filter && body.filter.keyword) || ''
     const options = 'i'
 
+    const $match: mongoose.QueryFilter<any> = {
+      $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }, { expireAt: null }],
+    }
+
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
-    if (!sessionUser || sessionUser.type === movininTypes.UserType.User) {
+    if (!sessionUser) {
       logger.error(`[booking.getBookings] Unauthorized attempt to get bookings by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot get booking information')
       return
@@ -726,17 +718,16 @@ export const getBookings = async (req: Request, res: Response) => {
     if (sessionUser.type === movininTypes.UserType.Agency) {
       agencies = [new mongoose.Types.ObjectId(sessionUserId)]
     }
+        if (sessionUser.type === movininTypes.UserType.User) {
+      $match.$and!.push({ 'renter._id': { $eq: new mongoose.Types.ObjectId(sessionUser._id) } })
+    }
     // end of security check
 
-    const $match: mongoose.QueryFilter<any> = {
-      $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }, { expireAt: null }],
-    }
-
-    if (user) {
-      $match.$and!.push({
-        'renter._id': { $eq: new mongoose.Types.ObjectId(user) },
-      })
-    }
+    // if (user) {
+    //   $match.$and!.push({
+    //     'renter._id': { $eq: new mongoose.Types.ObjectId(user) },
+    //   })
+    // }
     if (property) {
       $match.$and!.push({
         'property._id': { $eq: new mongoose.Types.ObjectId(property) },
