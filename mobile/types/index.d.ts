@@ -1,53 +1,61 @@
+interface CheckoutParams {
+  property: string
+  location: string
+  from: number
+  to: number
+  d?: number
+}
+
 type StackParams = {
   About: {
-      d?: number
+    d?: number
   }
   Booking: {
-      d?: number
-      id: string
+    d?: number
+    id: string
   }
   Bookings: {
-      d?: number
+    d?: number
   }
   Properties: {
-      d?: number
-      location: string
-      from: number
-      to: number
+    d?: number
+    location: string
+    from: number
+    to: number
   }
   ChangePassword: {
-      d?: number
+    d?: number
   }
   Checkout: {
-      d?: number
-      property: string
-      location: string
-      from: number
-      to: number
+    d?: number
+    property: string
+    location: string
+    from: number
+    to: number
   }
   Contact: {
-      d?: number
+    d?: number
   }
   ForgotPassword: {
-      d?: number
+    d?: number
   }
   Home: {
-      d?: number
+    d?: number
   }
   Notifications: {
-      d?: number
+    d?: number
   }
   Settings: {
-      d?: number
+    d?: number
   }
   SignIn: {
-      d?: number
+    d?: number
   }
   SignUp: {
-      d?: number
+    d?: number
   }
   ToS: {
-      d?: number
+    d?: number
   }
 }
 

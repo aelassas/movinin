@@ -25,7 +25,8 @@
       "buildNumber": "6.7.0",
       "supportsTablet": true,
       "icon": "./assets/icon.png",
-      "bundleIdentifier": "com.movinin"
+      "bundleIdentifier": "com.movinin",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "plugins": [
       "expo-localization",
@@ -45,8 +46,23 @@
           "enableGooglePay": true
         }
       ],
+      "@react-native-google-signin/google-signin",
+      "expo-apple-authentication",
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "FACEBOOK_APP_ID",
+          "clientToken": "FACEBOOK_CLIENT_TOKEN",
+          "displayName": "Movin' In",
+          "scheme": "FACEBOOK_SCHEME",
+          "advertiserIDCollectionEnabled": false,
+          "autoLogAppEventsEnabled": false,
+          "isAutoInitEnabled": true
+        }
+      ],
       "expo-asset",
-      "expo-font"
+      "expo-font",
+      "react-native-fbsdk-next"
     ],
     "owner": "aelassas",
     "extra": {

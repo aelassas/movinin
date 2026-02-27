@@ -132,6 +132,25 @@ export const signin = async (data: movininTypes.SignInPayload): Promise<{ status
     })
 
 /**
+ * Social sign in.
+ *
+ * @param {movininTypes.SignInPayload} data
+ * @returns {Promise<{ status: number, data: movininTypes.User }>}
+ */
+export const socialSignin = (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> =>
+  axiosInstance
+    .post(
+      '/api/social-sign-in',
+      data,
+      { withCredentials: true }
+    )
+    .then(async (res) => {
+      await AsyncStorage.storeObject('mi-user', res.data)
+      return { status: res.status, data: res.data }
+    })
+
+
+/**
  * Get push notification token.
  *
  * @async

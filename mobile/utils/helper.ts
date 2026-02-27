@@ -21,6 +21,13 @@ import * as toastHelper from './toastHelper'
 export const android = () => Platform.OS === 'android'
 
 /**
+ * Indicate whether Platform OS is iOS or not.
+ *
+ * @returns {boolean}
+ */
+export const ios = () => Platform.OS === 'ios'
+
+/**
  * Toast message.
  *
  * @param {string} message

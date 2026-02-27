@@ -35,6 +35,7 @@ import * as StripeService from '@/services/StripeService'
 import * as env from '@/config/env.config'
 import Backdrop from '@/components/Backdrop'
 import Indicator from '@/components/Indicator'
+import SocialLogin from '@/components/SocialLogin'
 
 const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Checkout'>) => {
   const isFocused = useIsFocused()
@@ -667,6 +668,16 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                     />
 
                     <Switch style={styles.component} textStyle={styles.tosText} label={i18n.t('ACCEPT_TOS')} value={tosChecked} onValueChange={onChangeToS} />
+
+                    <SocialLogin
+                      checkoutParams={{
+                        property: property._id,
+                        location: location._id,
+                        from: from.getTime(),
+                        to: to.getTime(),
+                        d: Date.now()
+                      }}
+                    />
                   </View>
                 )}
 

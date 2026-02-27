@@ -178,4 +178,7 @@ export const fr = {
   PROPERTY_TYPE: 'Type de propriété',
   SELECT_FROM_DATE: 'Veuillez saisir la date de début de location',
   PAYMENT_FAILED: 'Paiement échoué.',
+  OR: 'ou',
+  ERROR: 'Erreur',
+  LOGIN_ERROR: "L'authentification a échoué.",
 }

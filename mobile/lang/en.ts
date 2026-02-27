@@ -178,4 +178,7 @@ export const en = {
   PROPERTY_TYPE: 'Property type',
   SELECT_FROM_DATE: 'Please enter rental start date',
   PAYMENT_FAILED: 'Payment failed.',
+  OR: 'or',
+  ERROR: 'Error',
+  LOGIN_ERROR: 'Authentication failed.',
 }

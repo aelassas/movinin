@@ -92,3 +92,7 @@ ios/
 %ProgramData%/
 
 *.tsbuildinfo
+
+.eslintcache
+
+app.json.bak

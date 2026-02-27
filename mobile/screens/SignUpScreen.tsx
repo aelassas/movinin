@@ -21,6 +21,7 @@ import * as env from '@/config/env.config'
 import Error from '@/components/Error'
 import Backdrop from '@/components/Backdrop'
 import Header from '@/components/Header'
+import SocialLogin from '@/components/SocialLogin'
 
 const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'SignUp'>) => {
   const isFocused = useIsFocused()
@@ -391,6 +392,8 @@ const SignUpScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
             />
 
             <Switch style={styles.component} textStyle={styles.tosText} label={i18n.t('ACCEPT_TOS')} value={tosChecked} onValueChange={onChangeToS} />
+
+            <SocialLogin />
 
             <Button style={styles.component} label={i18n.t('SIGN_UP')} onPress={onPressSignUp} />
 
