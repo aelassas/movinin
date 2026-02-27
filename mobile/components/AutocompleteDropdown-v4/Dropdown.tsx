@@ -2,10 +2,10 @@ import React, { memo, useMemo } from 'react'
 import type { ListRenderItem } from 'react-native'
 import { StyleSheet, FlatList, View, useColorScheme } from 'react-native'
 import * as Animatable from 'react-native-animatable'
-import { JSX } from 'react/jsx-runtime'
 import { fadeInDownShort, fadeInUpShort } from './helpers'
 import { theme } from './theme'
 import type { AutocompleteDropdownItem, IAutocompleteDropdownProps } from './types'
+import { JSX } from 'react/jsx-runtime'
 
 interface DropdownProps extends Omit<IAutocompleteDropdownProps, 'renderItem' | 'ref'> {
   ListEmptyComponent: JSX.Element
@@ -23,7 +23,8 @@ export const Dropdown = memo((props: DropdownProps) => {
     ...rest
   } = props
   const themeName = useColorScheme()
-  const styles = useMemo(() => getStyles(themeName || 'light'), [themeName])
+  const normalizedTheme: 'light' | 'dark' = themeName === 'dark' ? 'dark' : 'light'
+  const styles = useMemo(() => getStyles(normalizedTheme || 'light'), [normalizedTheme])
 
   const defaultItemSeparator = useMemo(() => function () {
     return <View style={styles.itemSeparator} />
