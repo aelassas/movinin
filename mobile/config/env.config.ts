@@ -16,6 +16,7 @@ import {
   MI_STRIPE_COUNTRY_CODE,
   MI_BASE_CURRENCY,
   MI_WEBSITE_NAME,
+  MI_GOOGLE_WEB_CLIENT_ID,
 } from '@env'
 
 /**
@@ -222,3 +223,10 @@ export const STRIPE_COUNTRY_CODE: string = MI_STRIPE_COUNTRY_CODE
  * @type {string}
  */
 export const BASE_CURRENCY: string = MI_BASE_CURRENCY || 'USD'
+
+/**
+ * Google WebClientID.
+ *
+ * @type {string}
+ */
+export const GOOGLE_WEB_CLIENT_ID: string = String(MI_GOOGLE_WEB_CLIENT_ID)

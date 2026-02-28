@@ -149,7 +149,12 @@ const UserList = ({
             if (__user.type === movininTypes.RecordType.Agency) {
               userAvatar = <img src={movininHelper.joinURL(env.CDN_USERS, row.avatar)} alt={row.fullName} />
             } else {
-              const avatar = <Avatar src={movininHelper.joinURL(env.CDN_USERS, row.avatar)} className="avatar-small" />
+              const userAvatarUrl = __user.avatar
+                ? (__user.avatar.startsWith('http') ? __user.avatar : movininHelper.joinURL(env.CDN_USERS, __user.avatar))
+                : ''
+
+              const avatar = <Avatar src={userAvatarUrl} className="avatar-small" />
+
               if (__user.verified) {
                 userAvatar = (
                   <Badge

@@ -440,7 +440,11 @@ const Avatar = ({
 
   const locationImageStyle = { maxWidth: '100%', maxHeight: '100%' }
 
-  const userAvatar = avatar ? <MaterialAvatar src={movininHelper.joinURL(cdn(), avatar)} className={size ? `avatar-${size}` : 'avatar'} /> : <></>
+  const userAvatar = avatar ?
+    <MaterialAvatar src={
+      avatar.startsWith('http') ? avatar : movininHelper.joinURL(cdn(), avatar)
+    } className={size ? `avatar-${size}` : 'avatar'} />
+    : <></>
 
   const emptyAvatar = <AccountCircle className={size ? `avatar-${size}` : 'avatar'} color={color || 'inherit'} />
 

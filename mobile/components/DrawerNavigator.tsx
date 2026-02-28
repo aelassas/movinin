@@ -57,6 +57,7 @@ const DrawerNavigator = () => {
   const { loggedIn, language } = useAuth()
   const insets = useSafeAreaInsets()
 
+  // Define drawer items with useMemo so they only update when loggedIn changes
   const drawerItems: DrawerItem[] = useMemo(() => [
     { name: 'Home', title: i18n.t('HOME'), iconName: 'home', hideTitle: true },
     { name: 'Properties', title: i18n.t('PROPERTIES'), iconName: 'home', hidden: true, hideTitle: true },
