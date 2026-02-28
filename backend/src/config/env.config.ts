@@ -463,6 +463,13 @@ export const APPLE_CLIENT_ID = __env__('MI_APPLE_CLIENT_ID', false, 'APPLE_CLIEN
 export const GOOGLE_CLIENT_ID = __env__('MI_GOOGLE_CLIENT_ID', false, 'GOOGLE_CLIENT_ID')
 
 /**
+ * Google mobile app Web client ID.
+ *
+ * @type {string}
+ */
+export const GOOGLE_MOBILE_CLIENT_ID = __env__('MI_GOOGLE_MOBILE_CLIENT_ID', false, 'GOOGLE_MOBILE_CLIENT_ID')
+
+/**
  * Facebook App ID.
  *
  * @type {string}
