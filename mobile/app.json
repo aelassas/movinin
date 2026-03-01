@@ -3,7 +3,7 @@
     "newArchEnabled": true,
     "jsEngine": "hermes",
     "name": "Movin' In",
-    "version": "6.8.0",
+    "version": "6.9.0",
     "slug": "movinin",
     "icon": "./assets/icon.png",
     "assetBundlePatterns": [
@@ -14,7 +14,7 @@
       "image": "./assets/splash.png"
     },
     "android": {
-      "versionCode": 680,
+      "versionCode": 690,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png"
       },
@@ -23,7 +23,7 @@
       "package": "com.movinin"
     },
     "ios": {
-      "buildNumber": "6.8.0",
+      "buildNumber": "6.9.0",
       "supportsTablet": true,
       "icon": "./assets/icon.png",
       "bundleIdentifier": "com.movinin",
@@ -83,3 +83,4 @@
     }
   }
 }
+
