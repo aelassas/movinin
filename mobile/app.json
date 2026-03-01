@@ -63,7 +63,8 @@
       ],
       "expo-asset",
       "expo-font",
-      "react-native-fbsdk-next"
+      "react-native-fbsdk-next",
+      "@react-native-community/datetimepicker"
     ],
     "owner": "aelassas",
     "extra": {
