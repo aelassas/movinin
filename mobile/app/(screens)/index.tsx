@@ -8,7 +8,7 @@ import {
   Keyboard
 } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 
 import * as env from '@/config/env.config'
 import i18n from '@/lang/i18n'
@@ -19,8 +19,10 @@ import Button from '@/components/Button'
 import LocationSelectList from '@/components/LocationSelectList'
 import DateTimePicker from '@/components/DateTimePicker'
 
-const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Home'>) => {
+const HomeScreen = () => {
   const isFocused = useIsFocused()
+  const router = useRouter()
+  const { d } = useLocalSearchParams<{ d: string }>()
 
   const _minDate = new Date()
   _minDate.setDate(_minDate.getDate() + 1)
@@ -60,7 +62,8 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
     } else {
       setVisible(false)
     }
-  }, [route.params, isFocused])  
+  }, [d, isFocused])
+
 
   const onLoad = () => {
     setReload(false)
@@ -99,14 +102,15 @@ const HomeScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, '
 
     const params = {
       location,
-      from: from.getTime(),
-      to: to.getTime(),
+      from: from.getTime().toString(),
+      to: to.getTime().toString(),
     }
-    navigation.navigate('Properties', params)
+
+    router.push({ pathname: '/properties', params })
   }
 
   return (
-    <Layout style={styles.master} navigation={navigation} onLoad={onLoad} reload={reload} route={route}>
+    <Layout style={styles.master} onLoad={onLoad} reload={reload}>
       {init && visible && (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
           <View style={styles.contentContainer}>

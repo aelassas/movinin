@@ -1,9 +1,9 @@
 {
   "expo": {
-    "newArchEnabled": true,
     "jsEngine": "hermes",
     "name": "Movin' In",
     "version": "6.9.0",
+    "scheme": "movinin",
     "slug": "movinin",
     "icon": "./assets/icon.png",
     "assetBundlePatterns": [
@@ -20,7 +20,8 @@
       },
       "icon": "./assets/icon.png",
       "googleServicesFile": "./google-services.json",
-      "package": "com.movinin"
+      "package": "com.movinin",
+      "backgroundColor": "#00000000"
     },
     "ios": {
       "buildNumber": "6.9.0",
@@ -64,7 +65,8 @@
       "expo-asset",
       "expo-font",
       "react-native-fbsdk-next",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-router"
     ],
     "owner": "aelassas",
     "extra": {
@@ -76,11 +78,11 @@
       "url": "https://u.expo.dev/68f84550-e978-45b5-9de1-da514eb547fe"
     },
     "experiments": {
-      "tsconfigPaths": true
+      "tsconfigPaths": true,
+      "typedRoutes": true
     },
     "runtimeVersion": {
       "policy": "appVersion"
     }
   }
 }
-

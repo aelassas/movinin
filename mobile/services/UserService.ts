@@ -2,6 +2,8 @@ import { Platform } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import * as Localization from 'expo-localization'
 import { decode as atob } from 'base-64'
+import { router } from 'expo-router'
+
 import axiosInstance from './axiosInstance'
 import * as env from '@/config/env.config'
 import * as AsyncStorage from '@/utils/AsyncStorage'
@@ -208,23 +210,18 @@ export const deletePushToken = async (userId: string): Promise<number> => {
  * Sign out.
  *
  * @async
- * @param {NativeStackNavigationProp<StackParams, keyof StackParams>} navigation
- * @param {boolean} [redirect=true]
+ * @param {boolean} [redirectHome=true]
  * @param {boolean} [redirectSignin=false]
  * @returns {void}
  */
-export const signout = async (
-  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>,
-  redirect = true,
-  redirectSignin = false
-) => {
+export const signout = async (redirectHome = true, redirectSignin = false) => {
   await AsyncStorage.removeItem('mi-user')
 
-  if (redirect) {
-    navigation.navigate('Home', { d: new Date().getTime() })
-  }
-  if (redirectSignin) {
-    navigation.navigate('SignIn', {})
+  const now = new Date().getTime().toString()
+  if (redirectHome) {
+    router.push({ pathname: '/', params: { d: now } })
+  } else if (redirectSignin) {
+    router.push({ pathname: '/sign-in', params: { d: now } })
   }
 }
 
@@ -298,7 +295,7 @@ export const getLanguage = async () => {
   if (user && user.language) {
     return user.language
   }
-  
+
   let lang = await AsyncStorage.getString('mi-language')
 
   if (lang && lang.length === 2) {
@@ -545,6 +542,23 @@ export const loggedIn = async () => {
   } catch {
     return false
   }
+}
+
+/**
+ * Check if password exists.
+ *
+ * @param {string} id
+ * @returns {Promise<bookcarsTypes.User|null>}
+ */
+export const hasPassword = async (id: string): Promise<number> => {
+  const headers = await authHeader()
+
+  return axiosInstance
+    .get(
+      `/api/has-password/${encodeURIComponent(id)}`,
+      { headers }
+    )
+    .then((res) => res.status)
 }
 
 /**

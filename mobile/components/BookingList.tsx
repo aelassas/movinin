@@ -7,7 +7,7 @@ import {
   Text,
   RefreshControl,
 } from 'react-native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { useRouter } from 'expo-router'
 import {
   Text as RNPText,
   Dialog,
@@ -23,7 +23,6 @@ import * as BookingService from '@/services/BookingService'
 import Booking from './Booking'
 
 interface BookingListProps {
-  navigation?: NativeStackNavigationProp<StackParams, keyof StackParams>,
   agencies?: string[]
   statuses?: string[]
   filter?: movininTypes.Filter
@@ -34,7 +33,6 @@ interface BookingListProps {
 }
 
 const BookingList = ({
-  navigation,
   agencies,
   statuses,
   filter,
@@ -43,6 +41,8 @@ const BookingList = ({
   language,
   header
 }: BookingListProps) => {
+  const router = useRouter()
+
   const [firstLoad, setFirstLoad] = useState(true)
   const [onScrollEnd, setOnScrollEnd] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -184,9 +184,13 @@ const BookingList = ({
         }}
         ListHeaderComponent={header}
         ListFooterComponent={
-          fetch && !openCancelDialog
-            ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
-            : null
+          <View style={styles.container}>
+            {
+              fetch && !openCancelDialog && loading
+                ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
+                : null
+            }
+          </View>
         }
         ListEmptyComponent={
           !loading ? (
@@ -198,35 +202,29 @@ const BookingList = ({
         }
         refreshing={loading}
         refreshControl={
-          navigation && (
-            <RefreshControl refreshing={refreshing} onRefresh={() => {
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
               setRefreshing(true)
 
+              const now = Date.now().toString() // The "cache-buster"
+
               if (bookingId) {
-                navigation.navigate('Booking', { id: bookingId })
+                // 1. Use /booking (with leading slash)
+                // 2. Use router.replace to "overwrite" current state
+                // 3. Add the 'd' parameter to force useEffect to fire
+                router.replace({
+                  pathname: '/booking',
+                  params: { id: bookingId, d: now }
+                })
               } else {
-                navigation.navigate('Bookings', {})
+                router.replace({
+                  pathname: '/bookings',
+                  params: { d: now }
+                })
               }
-
-              // navigation.dispatch((state) => {
-              //   const { routes } = state
-              //   const index = routes.findIndex((r) => r.name === 'Bookings')
-              //   routes.splice(index, 1)
-              //   const now = Date.now()
-              //   routes.push({
-              //     name: 'Bookings',
-              //     key: `Bookings-${now}`,
-              //     params: {},
-              //   })
-
-              //   return CommonActions.reset({
-              //     ...state,
-              //     routes,
-              //     index: routes.length - 1,
-              //   })
-              // })
             }}
-            />)
+          />
         }
       />
 
@@ -236,7 +234,7 @@ const BookingList = ({
           <Dialog.Content style={styles.dialogContent}>
             {cancelRequestProcessing ? (
               <ActivityIndicator size="large" color="#0D63C9" />
-              ) : cancelRequestSent ? (
+            ) : cancelRequestSent ? (
               <RNPText variant="bodyMedium">{i18n.t('CANCEL_BOOKING_REQUEST_SENT')}</RNPText>
             ) : (
               <RNPText variant="bodyMedium">{i18n.t('CANCEL_BOOKING')}</RNPText>

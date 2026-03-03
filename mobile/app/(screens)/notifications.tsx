@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
-import { useIsFocused } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useLocalSearchParams } from 'expo-router'
 import { enUS, fr } from 'date-fns/locale'
+import { useIsFocused } from '@react-navigation/native'
+
 import * as movininTypes from ':movinin-types'
 
 import i18n from '@/lang/i18n'
@@ -10,8 +11,10 @@ import * as UserService from '@/services/UserService'
 import Layout from '@/components/Layout'
 import NotificationList from '@/components/NotificationList'
 
-const NotificationsScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Notifications'>) => {
+
+const NotificationsScreen = () => {
   const isFocused = useIsFocused()
+  const { d } = useLocalSearchParams<{ d: string }>()
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)
   const [user, setUser] = useState<movininTypes.User>()
@@ -26,14 +29,14 @@ const NotificationsScreen = ({ navigation, route }: NativeStackScreenProps<Stack
     const currentUser = await UserService.getCurrentUser()
 
     if (!currentUser || !currentUser._id) {
-      await UserService.signout(navigation, false, true)
+      await UserService.signout(false, true)
       return
     }
 
     const _user = await UserService.getUser(currentUser._id)
 
     if (!_user) {
-      await UserService.signout(navigation, false, true)
+      await UserService.signout(false, true)
       return
     }
 
@@ -48,16 +51,16 @@ const NotificationsScreen = ({ navigation, route }: NativeStackScreenProps<Stack
     } else {
       setVisible(false)
     }
-  }, [route.params, isFocused]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [d, isFocused])
 
   const onLoad = () => {
     setReload(false)
   }
 
   return (
-    <Layout style={styles.master} navigation={navigation} route={route} onLoad={onLoad} reload={reload} strict>
+    <Layout style={styles.master} onLoad={onLoad} reload={reload} strict>
       {visible && (
-        <NotificationList navigation={navigation} user={user} locale={locale} />
+        <NotificationList user={user} locale={locale} />
       )}
     </Layout>
   )

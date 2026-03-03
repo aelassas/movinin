@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  StyleSheet,
-  ScrollView,
-  View,
-  TextInput as ReactTextInput
-} from 'react-native'
-import { useIsFocused } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { StyleSheet, ScrollView, View, TextInput as ReactTextInput } from 'react-native'
+import { useIsFocused, useLocalSearchParams, useRouter } from 'expo-router'
 import validator from 'validator'
 import * as movininTypes from ':movinin-types'
 
@@ -21,8 +15,11 @@ import Switch from '@/components/Switch'
 import Header from '@/components/Header'
 import SocialLogin from '@/components/SocialLogin'
 
-const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'SignIn'>) => {
+const SignInScreen = () => {
   const isFocused = useIsFocused()
+  const router = useRouter()
+  const { d } = useLocalSearchParams<{ d: string }>()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [stayConnected, setStayConnected] = useState(false)
@@ -70,7 +67,7 @@ const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
     if (isFocused) {
       _init()
     }
-  }, [route.params, isFocused]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [d, isFocused]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const validateEmail = async () => {
     if (email) {
@@ -166,7 +163,7 @@ const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
     try {
       if (res.status === 200) {
         if (res.data.blacklisted) {
-          await UserService.signout(navigation, false)
+          await UserService.signout(false)
           setPasswordError(false)
           setBlacklisted(true)
         } else {
@@ -176,7 +173,7 @@ const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
           setPasswordError(false)
           setBlacklisted(false)
           clear()
-          navigation.navigate('Home', { d: new Date().getTime() })
+          router.push({ pathname: '/', params: { d: new Date().getTime().toString() } })
         }
       } else {
         setPasswordError(true)
@@ -188,18 +185,21 @@ const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
   }
 
   const onPressSignUp = () => {
-    navigation.navigate('SignUp', {})
+    router.push('/sign-up')
   }
 
   const onPressForgotPassword = () => {
-    navigation.navigate('ForgotPassword', {})
+    router.push('/forgot-password')
   }
 
   return (
     <View style={styles.master}>
-      <Header route={route} title={i18n.t('SIGN_IN_TITLE')} hideTitle={false} loggedIn={false} />
+      <Header title={i18n.t('SIGN_IN_TITLE')} hideTitle={false} loggedIn={false} />
 
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps={helper.android() ? 'handled' : 'always'}
+      >
         <View style={styles.contentContainer}>
           <TextInput
             ref={emailRef}
@@ -223,9 +223,9 @@ const SignInScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
             onSubmitEditing={onPressSignIn}
           />
 
-          <Switch style={styles.stayConnected} textStyle={styles.stayConnectedText} label={i18n.t('STAY_CONNECTED')} value={stayConnected} onValueChange={onChangeStayConnected} />
-
           <SocialLogin stayConnected={stayConnected} />
+
+          <Switch style={styles.stayConnected} textStyle={styles.stayConnectedText} label={i18n.t('STAY_CONNECTED')} value={stayConnected} onValueChange={onChangeStayConnected} />
 
           <Button style={styles.component} label={i18n.t('SIGN_IN')} onPress={onPressSignIn} />
 
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexGrow: 1,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#f5f5f5',
   },
   contentContainer: {
     width: '100%',

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { useRouter } from 'expo-router'
 import {
   StyleSheet,
   Text,
@@ -18,7 +18,6 @@ import i18n from '@/lang/i18n'
 import * as StripeService from '@/services/StripeService'
 
 interface PropertyProps {
-  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
   language: string
   property: movininTypes.Property
   from?: Date
@@ -39,9 +38,9 @@ const Property = ({
   from,
   to,
   location,
-  navigation,
   hidePrice
 }: PropertyProps) => {
+  const router = useRouter()
   const { width } = useWindowDimensions()
 
   const [days, setDays] = useState<number>()
@@ -307,10 +306,10 @@ const Property = ({
                   const params = {
                     property: property._id,
                     location,
-                    from: from.getTime(),
-                    to: to.getTime(),
+                    from: from.getTime().toString(),
+                    to: to.getTime().toString(),
                   }
-                  navigation.navigate('Checkout', params)
+                  router.push({ pathname: '/checkout', params })
                 }}
               />
             </View>

@@ -20,7 +20,6 @@ import * as PropertyService from '@/services/PropertyService'
 import Property from './Property'
 
 interface PropertyListProps {
-  navigation: NativeStackNavigationProp<StackParams, keyof StackParams>
   from?: Date
   to?: Date
   location?: string
@@ -31,13 +30,11 @@ interface PropertyListProps {
   properties?: movininTypes.Property[]
   hidePrice?: boolean
   footerComponent?: React.ReactElement
-  route: RouteProp<StackParams, keyof StackParams>
   routeName?: 'Properties' | 'Checkout'
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
 }
 
 const PropertyList = ({
-  navigation,
   from,
   to,
   location,
@@ -48,7 +45,6 @@ const PropertyList = ({
   properties,
   hidePrice,
   footerComponent,
-  // route,
   routeName,
   onLoad
 }: PropertyListProps) => {
@@ -172,7 +168,6 @@ const PropertyList = ({
               from={from}
               to={to}
               location={location}
-              navigation={navigation}
               hidePrice={hidePrice}
             />
           )}
@@ -191,7 +186,7 @@ const PropertyList = ({
           }}
           ListHeaderComponent={header}
           ListFooterComponent={
-            footerComponent || (fetch
+            footerComponent || (fetch && loading
               ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
               : null)
           }
@@ -205,78 +200,35 @@ const PropertyList = ({
           }
           refreshing={loading}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={() => {
-              setRefreshing(true)
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true)
 
-              if ((routeName && location && from && to) && ((routeName === 'Checkout' && properties && properties.length > 0) || routeName === 'Properties')) {
-                // helper.navigate(route, navigation, true)
+                const hasRequiredParams = location && from && to
+                const isPropertiesRoute = routeName === 'Properties'
+                const isCheckoutRoute = routeName === 'Checkout' && properties && properties.length > 0
 
-                navigation.dispatch((state) => {
-                  const { routes } = state
-                  const _routes = movininHelper.cloneArray(routes) as NavigationRoute<StackParams, keyof StackParams>[]
-                  let index = 0
-                  if (routeName === 'Properties') {
-                    index = routes.findIndex((r) => r.name === 'Properties')
-                    // routes.splice(index, 1)
-                    const now = Date.now()
-                    _routes[index] = {
-                      name: routeName,
-                      key: `${routeName}-${now}`,
-                      params: {
-                        location: location!,
-                        from: from!.getTime(),
-                        to: to!.getTime(),
-                        d: now,
-                      },
-                    }
-                    // routes.push({
-                    //   name: 'Properties',
-                    //   key: `Properties-${now}`,
-                    //   params: {
-                    //     location: location!,
-                    //     from: from!.getTime(),
-                    //     to: to!.getTime(),
-                    //     d: now,
-                    //   },
-                    // })
-                  } else {
-                    index = routes.findIndex((r) => r.name === 'Checkout')
-                    // routes.splice(index, 1)
-                    const now = Date.now()
-                    _routes[index] = {
-                      name: routeName,
-                      key: `${routeName}-${now}`,
-                      params: {
-                        property: properties![0]._id,
-                        location: location!,
-                        from: from!.getTime(),
-                        to: to!.getTime(),
-                        d: now,
-                      },
-                    }
-                    // routes.push({
-                    //   name: 'Checkout',
-                    //   key: `Checkout-${now}`,
-                    //   params: {
-                    //     property: properties![0]._id,
-                    //     location: location!,
-                    //     from: from!.getTime(),
-                    //     to: to!.getTime(),
-                    //     d: now,
-                    //   },
-                    // })
+                if (hasRequiredParams && (isPropertiesRoute || isCheckoutRoute)) {
+                  // 1. Prepare the params for the specific route
+                  const params: any = {
+                    location,
+                    from: from.getTime().toString(),
+                    to: to.getTime().toString(),
+                    d: Date.now().toString(),
                   }
 
-                  return CommonActions.reset({
-                    ...state,
-                    routes: _routes,
-                    index,
-                  })
-                })
-              } else {
-                setRefreshing(false)
-              }
-            }}
+                  if (isCheckoutRoute) {
+                    params.car = properties[0]._id
+                  }
+
+                  // 2. Use the helper.navigate with reload = true
+                  // This internally calls router.replace and adds 'd: Date.now()'
+                  helper.navigate({ name: routeName, params: { ...params } }, true)
+                } else {
+                  setRefreshing(false)
+                }
+              }}
             />
           }
         />

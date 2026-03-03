@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useLocalSearchParams } from 'expo-router'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 
@@ -14,8 +14,15 @@ import RentalTermFilter from '@/components/RentalTermFilter'
 import PropertyTypeFilter from '@/components/PropertyTypeFilter'
 import Indicator from '@/components/Indicator'
 
-const SearchScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Properties'>) => {
+const SearchScreen = () => {
   const isFocused = useIsFocused()
+  const { d, from, to, location } = useLocalSearchParams<{
+    d: string
+    from: string
+    to: string
+    location: string
+  }>()
+
   const [reload, setReload] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -36,7 +43,7 @@ const SearchScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
     } else {
       setVisible(false)
     }
-  }, [route.params, isFocused])
+  }, [d, isFocused])
 
   const onLoad = () => {
     setReload(false)
@@ -60,18 +67,16 @@ const SearchScreen = ({ navigation, route }: NativeStackScreenProps<StackParams,
   }
 
   return (
-    <Layout style={styles.master} onLoad={onLoad} reload={reload} navigation={navigation} route={route}>
+    <Layout style={styles.master} onLoad={onLoad} reload={reload}>
       {!visible && <Indicator style={{ marginVertical: 10 }} />}
       {visible && (
         <PropertyList
-          navigation={navigation}
           agencies={agencies}
           types={propertyTypes}
           rentalTerms={rentalTerms}
-          location={route.params.location}
-          from={new Date(route.params.from)}
-          to={new Date(route.params.to)}
-          route={route}
+          location={location}
+          from={new Date(Number(from))}
+          to={new Date(Number(to))}
           routeName="Properties"
           header={(
             <View>

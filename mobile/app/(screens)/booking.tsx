@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useLocalSearchParams } from 'expo-router'
+
 import * as movininTypes from ':movinin-types'
 
 import i18n from '@/lang/i18n'
@@ -10,8 +11,11 @@ import Layout from '@/components/Layout'
 import BookingList from '@/components/BookingList'
 import * as env from '@/config/env.config'
 
-const BookingScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Booking'>) => {
+const BookingScreen = () => {
   const isFocused = useIsFocused()
+  // 1. Get params (id for the booking, d for the reload timestamp)
+  const { id, d } = useLocalSearchParams<{ id: string; d: string }>()
+
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -26,14 +30,14 @@ const BookingScreen = ({ navigation, route }: NativeStackScreenProps<StackParams
     const currentUser = await UserService.getCurrentUser()
 
     if (!currentUser || !currentUser._id) {
-      await UserService.signout(navigation, false, true)
+      await UserService.signout(false, true)
       return
     }
 
     const _user = await UserService.getUser(currentUser._id)
 
     if (!_user) {
-      await UserService.signout(navigation, false, true)
+      await UserService.signout(false, true)
       return
     }
 
@@ -48,19 +52,19 @@ const BookingScreen = ({ navigation, route }: NativeStackScreenProps<StackParams
     } else {
       setVisible(false)
     }
-  }, [route.params, isFocused]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, d, isFocused])
 
   const onLoad = () => {
     setReload(false)
   }
 
   return (
-    <Layout style={styles.master} navigation={navigation} route={route} onLoad={onLoad} reload={reload} strict>
+    <Layout style={styles.master} onLoad={onLoad} reload={reload} strict>
       {visible
         && (
           <BookingList
             user={user?._id as string}
-            booking={route.params.id}
+            booking={id as string}
             language={language}
           />
         )}

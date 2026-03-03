@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Pressable
-} from 'react-native'
-import { useIsFocused } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { StyleSheet, View, ScrollView, Pressable } from 'react-native'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { MaterialIcons } from '@expo/vector-icons'
-import {
-  Avatar,
-  Dialog,
-  Portal,
-  Button as NativeButton,
-  Paragraph
-} from 'react-native-paper'
+import { Avatar, Dialog, Portal, Button as NativeButton, Paragraph } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import validator from 'validator'
 import { intervalToDuration } from 'date-fns'
+import { useIsFocused } from '@react-navigation/native'
+
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 
@@ -31,8 +21,10 @@ import Button from '@/components/Button'
 import * as helper from '@/utils/helper'
 import * as env from '@/config/env.config'
 
-const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Settings'>) => {
+const SettingsScreen = () => {
   const isFocused = useIsFocused()
+  const router = useRouter()
+  const { d } = useLocalSearchParams<{ d: string }>()
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
@@ -61,20 +53,20 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       const currentUser = await UserService.getCurrentUser()
 
       if (!currentUser || !currentUser._id) {
-        await UserService.signout(navigation, false, true)
+        await UserService.signout(false, true)
         return
       }
 
       const _user = await UserService.getUser(currentUser._id)
 
       if (!_user) {
-        await UserService.signout(navigation, false, true)
+        await UserService.signout(false, true)
         return
       }
 
       setUser(_user)
       if (_user.avatar) {
-        setAvatar(_user.avatar.startsWith('https://') || _user.avatar.startsWith('http://') ? _user.avatar : movininHelper.joinURL(env.CDN_USERS, _user.avatar))
+        setAvatar((_user.avatar.startsWith('https://') || _user.avatar.startsWith('http://')) ? _user.avatar : movininHelper.joinURL(env.CDN_USERS, _user.avatar))
       } else {
         setAvatar(null)
       }
@@ -106,7 +98,7 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
       setVisible(true)
     } catch {
-      await UserService.signout(navigation, false, true)
+      await UserService.signout(false, true)
     }
   }
 
@@ -117,7 +109,7 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     } else {
       setVisible(false)
     }
-  }, [route.params, isFocused]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [d, isFocused])
 
   const onLoad = () => {
     setReload(false)
@@ -196,8 +188,7 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const onPressSave = async () => {
     try {
-      if (!user || !user._id || !birthDate) {
-        helper.error()
+      if (!user || !user._id) {
         return
       }
 
@@ -239,14 +230,56 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   }
 
   const onPressChangePassword = () => {
-    navigation.navigate('ChangePassword', {})
+    router.push('/change-password')
+  }
+
+  const handleUpdateAvatar = async () => {
+    try {
+      if (!user || !user._id) {
+        helper.error()
+        return
+      }
+
+      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+
+      if (permissionResult.granted === false) {
+        alert(i18n.t('CAMERA_PERMISSION'))
+        return
+      }
+
+      const pickerResult = await ImagePicker.launchImageLibraryAsync()
+
+      if (pickerResult.canceled === true) {
+        return
+      }
+
+      const { uri } = pickerResult.assets[0]
+      const name = helper.getFileName(uri)
+      const type = helper.getMimeType(name)
+      const image: BlobInfo = { uri, name, type }
+      const status = await UserService.updateAvatar(user._id, image)
+
+      if (status === 200) {
+        const _user = await UserService.getUser(user._id)
+        setUser(_user)
+        const _avatar = movininHelper.joinURL(env.CDN_USERS, _user.avatar)
+        setAvatar(_avatar)
+      } else {
+        helper.error()
+      }
+    } catch (err) {
+      helper.error(err)
+    }
   }
 
   return (
-    <Layout style={styles.master} navigation={navigation} route={route} onLoad={onLoad} reload={reload} avatar={avatar} strict>
+    <Layout style={styles.master} onLoad={onLoad} reload={reload} avatar={avatar} strict>
       {visible && language && (
         <>
-          <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" nestedScrollEnabled>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps={helper.android() ? 'handled' : 'always'}
+          >
             <View style={styles.contentContainer}>
               <View style={styles.avatar}>
                 {
@@ -257,11 +290,12 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                 <View style={styles.avatarActions}>
                   {avatar && (
                     <Pressable
+                      disabled
                       style={styles.deleteAvatar}
                       hitSlop={15}
-                    // onPress={() => {
-                    //   setOpenDeleteDialog(true)
-                    // }}
+                      onPress={() => {
+                        setOpenDeleteDialog(true)
+                      }}
                     >
                       {/* <Badge style={styles.badge} size={36}> */}
                       <View style={styles.badge}>
@@ -271,46 +305,10 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                     </Pressable>
                   )}
                   <Pressable
+                    disabled
                     style={styles.updateAvatar}
                     hitSlop={15}
-                  // onPress={async () => {
-                  //   try {
-                  //     if (!user || !user._id) {
-                  //       helper.error()
-                  //       return
-                  //     }
-
-                  //     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
-
-                  //     if (permissionResult.granted === false) {
-                  //       alert(i18n.t('CAMERA_PERMISSION'))
-                  //       return
-                  //     }
-
-                  //     const pickerResult = await ImagePicker.launchImageLibraryAsync()
-
-                  //     if (pickerResult.canceled === true) {
-                  //       return
-                  //     }
-
-                  //     const { uri } = pickerResult.assets[0]
-                  //     const name = helper.getFileName(uri)
-                  //     const type = helper.getMimeType(name)
-                  //     const image: BlobInfo = { uri, name, type }
-                  //     const status = await UserService.updateAvatar(user._id, image)
-
-                  //     if (status === 200) {
-                  //       const _user = await UserService.getUser(user._id)
-                  //       setUser(_user)
-                  //       const _avatar = movininHelper.joinURL(env.CDN_USERS, _user.avatar)
-                  //       setAvatar(_avatar)
-                  //     } else {
-                  //       helper.error()
-                  //     }
-                  //   } catch (err) {
-                  //     helper.error(err)
-                  //   }
-                  // }}
+                    onPress={handleUpdateAvatar}
                   >
                     {/* <Badge style={styles.badge} size={36}> */}
                     <View style={styles.badge}>
@@ -367,14 +365,14 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
               <Button
                 style={styles.component}
                 label={i18n.t('SAVE')}
-              // onPress={onPressSave}
+                // onPress={onPressSave}
               />
 
               <Button
                 style={styles.component}
                 color="secondary"
                 label={i18n.t('CHANGE_PASSWORD')}
-              // onPress={onPressChangePassword}
+                // onPress={onPressChangePassword}
               />
             </View>
           </ScrollView>
@@ -387,7 +385,7 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
               </Dialog.Content>
               <Dialog.Actions style={styles.dialogActions}>
                 <NativeButton
-                  // color='#0D63C9'
+                  // color='#f37022'
                   onPress={() => {
                     setOpenDeleteDialog(false)
                   }}
@@ -395,7 +393,7 @@ const SettingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                   {i18n.t('CANCEL')}
                 </NativeButton>
                 <NativeButton
-                  // color='#0D63C9'
+                  // color='#f37022'
                   onPress={async () => {
                     try {
                       if (user?._id) {

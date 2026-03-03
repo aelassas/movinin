@@ -1,6 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "composite": true,
     "strict": true,
     "typeRoots": [
       "./types"
@@ -8,13 +9,29 @@
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./*"],
-      ":movinin-types": ["../packages/movinin-types"],
-      ":movinin-helper": ["../packages/movinin-helper"]
+      "@/*": [
+        "./*"
+      ],
+      ":movinin-types": [
+        "../packages/movinin-types"
+      ],
+      ":movinin-helper": [
+        "../packages/movinin-helper"
+      ]
     }
   },
   "references": [
-    { "path": "../packages/movinin-types" },
-    { "path": "../packages/movinin-helper" }
-  ]  
+    {
+      "path": "../packages/movinin-types"
+    },
+    {
+      "path": "../packages/movinin-helper"
+    }
+  ],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }

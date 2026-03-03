@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useLocalSearchParams } from 'expo-router'
 import * as movininTypes from ':movinin-types'
 
 import Layout from '@/components/Layout'
@@ -15,8 +15,10 @@ import * as BookingService from '@/services/BookingService'
 import BookingFilter from '@/components/BookingFilter'
 import Indicator from '@/components/Indicator'
 
-const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Bookings'>) => {
+const BookingsScreen = () => {
   const isFocused = useIsFocused()
+  const { d } = useLocalSearchParams<{ d: string }>()
+
   const [language, setLanguage] = useState(env.DEFAULT_LANGUAGE)
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -40,14 +42,14 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       const currentUser = await UserService.getCurrentUser()
 
       if (!currentUser || !currentUser._id) {
-        await UserService.signout(navigation, false, true)
+        await UserService.signout(false, true)
         return
       }
 
       const _user = await UserService.getUser(currentUser._id)
 
       if (!_user?._id) {
-        await UserService.signout(navigation, false, true)
+        await UserService.signout(false, true)
         return
       }
 
@@ -59,7 +61,7 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
       setVisible(true)
     } catch {
-      await UserService.signout(navigation, false, true)
+      await UserService.signout(false, true)
     }
   }
 
@@ -70,7 +72,7 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     } else {
       setVisible(false)
     }
-  }, [route.params, isFocused]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [d, isFocused])
 
   const onLoad = () => {
     setReload(false)
@@ -97,11 +99,10 @@ const BookingsScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   }
 
   return (
-    <Layout style={styles.master} navigation={navigation} route={route} onLoad={onLoad} reload={reload} strict>
+    <Layout style={styles.master} onLoad={onLoad} reload={reload} strict>
       {!visible && <Indicator style={{ marginVertical: 10 }} />}
       {visible && user?._id && (
         <BookingList
-          navigation={navigation}
           user={user._id}
           language={language}
           agencies={agencies}

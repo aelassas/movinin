@@ -36,9 +36,19 @@ import * as env from '@/config/env.config'
 import Backdrop from '@/components/Backdrop'
 import Indicator from '@/components/Indicator'
 import SocialLogin from '@/components/SocialLogin'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 
-const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParams, 'Checkout'>) => {
+const CheckoutScreen = () => {
   const isFocused = useIsFocused()
+  const router = useRouter()
+  const { d, from, to, location, property } = useLocalSearchParams<{
+    d: string
+    from: string
+    to: string
+    location: string
+    property: string
+  }>()
+
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)
   const [formVisible, setFormVisible] = useState(false)
@@ -51,10 +61,10 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   const [phone, setPhone] = useState('')
   const [birthDate, setBirthDate] = useState<Date>()
   const [tosChecked, setTosChecked] = useState(false)
-  const [property, setProperty] = useState<movininTypes.Property | null>(null)
-  const [location, setLocation] = useState<movininTypes.Location | null>(null)
-  const [from, setFrom] = useState<Date>()
-  const [to, setTo] = useState<Date>()
+  const [__property, setProperty] = useState<movininTypes.Property | null>(null)
+  const [__location, setLocation] = useState<movininTypes.Location | null>(null)
+  const [__from, setFrom] = useState<Date>()
+  const [__to, setTo] = useState<Date>()
   const [price, setPrice] = useState(0)
   const [cancellation, setCancellation] = useState(false)
 
@@ -176,25 +186,24 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
         cvvRef.current.clear()
       }
 
-      if (!route.params
-        || !route.params.property
-        || !route.params.location
-        || !route.params.from
-        || !route.params.to) {
-        await UserService.signout(navigation)
+      if (!property
+        || !location
+        || !from
+        || !to) {
+        await UserService.signout()
         return
       }
 
-      const _property = await PropertyService.getProperty(route.params.property)
+      const _property = await PropertyService.getProperty(property)
       setProperty(_property)
 
-      const _location = await LocationService.getLocation(route.params.location)
+      const _location = await LocationService.getLocation(location)
       setLocation(_location)
 
-      const _from = new Date(route.params.from)
+      const _from = new Date(Number(from))
       setFrom(_from)
 
-      const _to = new Date(route.params.to)
+      const _to = new Date(Number(to))
       setTo(_to)
 
       const _price = await StripeService.convertPrice(movininHelper.calculateTotalPrice(_property, _from, _to))
@@ -210,7 +219,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       setVisible(true)
       setFormVisible(true)
     } catch {
-      await UserService.signout(navigation)
+      await UserService.signout()
     }
   }
 
@@ -221,7 +230,8 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     } else {
       setVisible(false)
     }
-  }, [route.params, isFocused]) // eslint-disable-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [d, isFocused])
 
   const onLoad = () => {
     setReload(false)
@@ -357,7 +367,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
     const options = {
       cancellation: checked
     }
-    const _price = await StripeService.convertPrice(movininHelper.calculateTotalPrice(property as movininTypes.Property, from as Date, to as Date, options))
+    const _price = await StripeService.convertPrice(movininHelper.calculateTotalPrice(__property as movininTypes.Property, __from as Date, __to as Date, options))
     setCancellation(checked)
     setPrice(_price)
   }
@@ -369,7 +379,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
   const handleCheckout = async () => {
     try {
-      if (!property || !location || !from || !to) {
+      if (!__property || !__location || !__from || !__to) {
         helper.error()
         return
       }
@@ -426,11 +436,11 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       let customerId: string | undefined
       try {
         if (!payLater) {
-          const name = movininHelper.truncateString(`${env.WEBSITE_NAME} - ${property.name}`, StripeService.ORDER_NAME_MAX_LENGTH)
+          const name = movininHelper.truncateString(`${env.WEBSITE_NAME} - ${__property.name}`, StripeService.ORDER_NAME_MAX_LENGTH)
           const _locale = _fr ? fr : enUS
-          const days = movininHelper.days(from, to)
-          const daysLabel = from && to && `${helper.getDaysShort(days)} (${movininHelper.capitalize(format(from, _format, { locale: _locale }),)} - ${movininHelper.capitalize(format(to, _format, { locale: _locale }))})`
-          const _description = `${env.WEBSITE_NAME} - ${property.name} - ${daysLabel} - ${location.name}`
+          const days = movininHelper.days(__from, __to)
+          const daysLabel = __from && __to && `${helper.getDaysShort(days)} (${movininHelper.capitalize(format(__from, _format, { locale: _locale }),)} - ${movininHelper.capitalize(format(__to, _format, { locale: _locale }))})`
+          const _description = `${env.WEBSITE_NAME} - ${__property.name} - ${daysLabel} - ${__location.name}`
           const description = movininHelper.truncateString(_description, StripeService.ORDER_DESCRIPTION_MAX_LENGTH)
 
           const createPaymentIntentPayload: movininTypes.CreatePaymentPayload = {
@@ -502,12 +512,12 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
       const basePrice = await movininHelper.convertPrice(price, currency, env.BASE_CURRENCY)
 
       const booking: movininTypes.Booking = {
-        agency: property.agency._id as string,
-        property: property._id as string,
+        agency: __property.agency._id as string,
+        property: __property._id as string,
         renter: authenticated ? user?._id : undefined,
-        location: location._id as string,
-        from,
-        to,
+        location: __location._id as string,
+        from: __from,
+        to: __to,
         status: payLater ? movininTypes.BookingStatus.Pending : movininTypes.BookingStatus.Paid,
         cancellation,
         price: basePrice,
@@ -541,19 +551,17 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
   const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
 
   return (
-    <Layout style={styles.master} navigation={navigation} onLoad={onLoad} reload={reload} route={route}>
+    <Layout style={styles.master} onLoad={onLoad} reload={reload}>
       {!visible && <Indicator style={{ marginVertical: 10 }} />}
-      {visible && property && from && to && location && (
+      {visible && __property && __from && __to && __location && (
         <>
           {formVisible && (
             <PropertyList
-              navigation={navigation}
-              properties={[property]}
-              location={location._id}
-              from={from}
-              to={to}
+              properties={[__property]}
+              location={__location._id}
+              from={__from}
+              to={__to}
               hidePrice
-              route={route}
               routeName="Checkout"
               // header={<Text style={styles.header}>{i18n.t('CREATE_BOOKING')}</Text>}
               footerComponent={<View style={styles.contentContainer}>
@@ -565,7 +573,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
                   <View style={styles.extra}>
                     <Switch
-                      disabled={property.cancellation === -1 || property.cancellation === 0}
+                      disabled={__property.cancellation === -1 || __property.cancellation === 0}
                       textStyle={styles.extraSwitch}
                       label={i18n.t('CANCELLATION')}
                       value={cancellation}
@@ -583,26 +591,26 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
                   <Text style={styles.detailTitle}>{i18n.t('DAYS')}</Text>
                   <Text style={styles.detailText}>
-                    {`${helper.getDaysShort(movininHelper.days(from, to))} (${movininHelper.capitalize(format(from, _format, { locale }))} - ${movininHelper.capitalize(
-                      format(to, _format, { locale }),
+                    {`${helper.getDaysShort(movininHelper.days(__from, __to))} (${movininHelper.capitalize(format(__from, _format, { locale }))} - ${movininHelper.capitalize(
+                      format(__to, _format, { locale }),
                     )})`}
                   </Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('LOCATION')}</Text>
-                  <Text style={styles.detailText}>{location.name}</Text>
+                  <Text style={styles.detailText}>{__location.name}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('PROPERTY')}</Text>
-                  <Text style={styles.detailText}>{`${property.name} (${priceLabel})`}</Text>
+                  <Text style={styles.detailText}>{`${__property.name} (${priceLabel})`}</Text>
 
                   <Text style={styles.detailTitle}>{i18n.t('AGENCY')}</Text>
                   <View style={styles.agency}>
                     <Image
                       style={styles.agencyImg}
                       source={{
-                        uri: movininHelper.joinURL(env.CDN_USERS, property.agency.avatar),
+                        uri: movininHelper.joinURL(env.CDN_USERS, __property.agency.avatar),
                       }}
                     />
-                    <Text style={styles.agencyText} numberOfLines={2} ellipsizeMode="tail">{property.agency.fullName}</Text>
+                    <Text style={styles.agencyText} numberOfLines={2} ellipsizeMode="tail">{__property.agency.fullName}</Text>
                   </View>
 
                   <Text style={styles.detailTitle}>{i18n.t('COST')}</Text>
@@ -662,7 +670,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                       label={i18n.t('BIRTH_DATE')}
                       value={birthDate}
                       error={birthDateRequired || !birthDateValid}
-                      helperText={(birthDateRequired && i18n.t('REQUIRED')) || (!birthDateValid && helper.getBirthDateError(property.minimumAge)) || ''}
+                      helperText={(birthDateRequired && i18n.t('REQUIRED')) || (!birthDateValid && helper.getBirthDateError(__property.minimumAge)) || ''}
                       onChange={onChangeBirthDate}
                       backgroundColor="#fbfbfb"
                     />
@@ -671,17 +679,17 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
 
                     <SocialLogin
                       checkoutParams={{
-                        property: property._id,
-                        location: location._id,
-                        from: from.getTime(),
-                        to: to.getTime(),
-                        d: Date.now()
+                        property: __property._id,
+                        location: __location._id,
+                        from: __from.getTime().toString(),
+                        to: __to.getTime().toString(),
+                        d: Date.now().toString(),
                       }}
                     />
                   </View>
                 )}
 
-                {property.agency.payLater && (
+                {__property.agency.payLater && (
                   <View style={styles.section}>
                     <View style={styles.sectionHeader}>
                       <MaterialIcons name="settings" size={iconSize} color={iconColor} />
@@ -709,12 +717,12 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                 )}
 
                 <View style={styles.footer}>
-                  <Button style={styles.component} label={i18n.t('BOOK_NOW')} onPress={handleCheckout} />
-
                   <View style={styles.error}>
                     {error && <Error message={i18n.t('FIX_ERRORS')} />}
                     {tosError && <Error message={i18n.t('TOS_ERROR')} />}
                   </View>
+
+                  <Button style={styles.component} label={i18n.t('BOOK_NOW')} onPress={handleCheckout} />
                 </View>
               </View>
               }
@@ -727,7 +735,7 @@ const CheckoutScreen = ({ navigation, route }: NativeStackScreenProps<StackParam
                 style={styles.sucessLink}
                 label={i18n.t('GO_TO_HOME')}
                 onPress={() => {
-                  navigation.navigate('Home', { d: new Date().getTime() })
+                  router.push({ pathname: '/', params: { d: new Date().getTime().toString() } })
                 }}
               />
             </View>
@@ -927,7 +935,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   error: {
-    marginTop: 10,
+    marginBottom: 10,
   },
 })
 
