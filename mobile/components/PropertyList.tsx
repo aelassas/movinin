@@ -101,7 +101,7 @@ const PropertyList = ({
         const _rows = _page === 1 ? _data.resultData : [...rows, ..._data.resultData]
 
         setRows(_rows)
-        setFetch(_data.resultData.length > 0)
+        setFetch(_data.resultData.length === env.PROPERTIES_PAGE_SIZE)
         if (onLoad) {
           onLoad({ rows: _data.resultData, rowCount: totalRecords })
         }
@@ -186,7 +186,7 @@ const PropertyList = ({
           }}
           ListHeaderComponent={header}
           ListFooterComponent={
-            footerComponent || (fetch && loading
+            footerComponent || (loading
               ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
               : null)
           }
@@ -219,7 +219,7 @@ const PropertyList = ({
                   }
 
                   if (isCheckoutRoute) {
-                    params.car = properties[0]._id
+                    params.property = properties[0]._id
                   }
 
                   // 2. Use the helper.navigate with reload = true
