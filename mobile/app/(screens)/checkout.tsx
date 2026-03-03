@@ -83,7 +83,7 @@ const CheckoutScreen = () => {
   const [tosError, setTosError] = useState(false)
   const [error, setError] = useState(false)
   const [success, setSuccess] = useState(true)
-  const [locale, setLoacle] = useState(fr)
+  const [locale, setLocale] = useState(fr)
 
   const [currencySymbol, setCurrencySymbol] = useState('')
   const [cancellationText, setCancellationText] = useState('')
@@ -108,7 +108,7 @@ const CheckoutScreen = () => {
       const _language = await UserService.getLanguage()
       i18n.locale = _language
       setLanguage(_language)
-      setLoacle(_language === 'fr' ? fr : enUS)
+      setLocale(_language === 'fr' ? fr : enUS)
 
       setAuthenticated(false)
       setUser(null)
