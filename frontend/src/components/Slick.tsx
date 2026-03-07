@@ -65,13 +65,15 @@ interface SlickProps extends ComponentPropsWithRef<typeof ReactSlick> {
 const Slick = forwardRef<ReactSlick, SlickProps>(({ children, ...props }, ref) => {
   const slickRef = useRef<ReactSlick>(null)
 
-  useImperativeHandle(
-    ref,
-    () =>
-    ({
-      ...slickRef.current,
-    } as ReactSlick),
-  )
+  // useImperativeHandle(
+  //   ref,
+  //   () =>
+  //   ({
+  //     ...slickRef.current,
+  //   } as ReactSlick),
+  // )
+
+  useImperativeHandle(ref, () => slickRef.current as ReactSlick)
 
   const {
     handleMouseDown,
