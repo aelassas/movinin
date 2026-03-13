@@ -287,7 +287,7 @@ const BookingList = ({
         },
         renderHeader: () => (selectedIds.length > 0 ? (
           <div>
-            <Tooltip title={strings.UPDATE_SELECTION}>
+            {/* <Tooltip title={strings.UPDATE_SELECTION}>
               <IconButton
                 onClick={() => {
                   setOpenUpdateDialog(true)
@@ -296,7 +296,7 @@ const BookingList = ({
                 <EditIcon />
               </IconButton>
             </Tooltip>
-            {/* <Tooltip title={strings.DELETE_SELECTION}>
+             <Tooltip title={strings.DELETE_SELECTION}>
               <IconButton
                 onClick={() => {
                   setopenDeleteDialog(true)
