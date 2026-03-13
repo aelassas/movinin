@@ -91,7 +91,7 @@ const router = createBrowserRouter([
       { path: '/property-bookings', element: <PropertyBookings /> },
       // { path: '/create-property', element: <CreateProperty /> },
       // { path: '/update-property', element: <UpdateProperty /> },
-      { path: '/update-booking', element: <UpdateBooking /> },
+      // { path: '/update-booking', element: <UpdateBooking /> },
       { path: '/create-booking', element: <CreateBooking /> },
       // { path: '/users', element: <Users /> },
       // { path: '/user', element: <User /> },
