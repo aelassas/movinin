@@ -1,6 +1,5 @@
 {
   "expo": {
-    "jsEngine": "hermes",
     "name": "Movin' In",
     "version": "7.0.0",
     "scheme": "movinin",
@@ -86,4 +85,3 @@
     }
   }
 }
-

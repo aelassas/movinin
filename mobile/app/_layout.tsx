@@ -106,10 +106,10 @@ const RootLayout = () => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <ExpoStatusBar style="dark" backgroundColor="#ffffff" translucent={false} />
 
-      <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <GlobalProvider>
           <AuthProvider>
             <SafeAreaProvider>
