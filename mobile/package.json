@@ -1,7 +1,7 @@
 {
   "name": "movinin-mobile",
   "description": "Mobile app for Movin' In (customer app)",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "main": "expo-router/entry",
   "scripts": {
     "install:dependencies": "cd ../packages/currency-converter && npm i && cd ../movinin-helper && npm i",
