@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { Editor } from 'react-draft-wysiwyg'
 import { EditorState, convertToRaw, ContentState } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
-import htmlToDraft from 'html-to-draftjs'
+import htmlToDraftModule from 'html-to-draftjs'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import Layout from '@/components/Layout'
@@ -34,6 +34,8 @@ import RentalTermList from '@/components/RentalTermList'
 import PositionInput from '@/components/PositionInput'
 
 import '@/assets/css/create-property.css'
+
+const htmlToDraft = (htmlToDraftModule as any).default || htmlToDraftModule
 
 const UpdateProperty = () => {
   const navigate = useNavigate()
