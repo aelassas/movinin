@@ -93,10 +93,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 
 ## Stats for Nerds
 
-[![LoC Prod](https://raw.githubusercontent.com/aelassas/movinin/refs/heads/loc/loc-prod.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml)
-[![LoC Tests](https://raw.githubusercontent.com/aelassas/movinin/refs/heads/loc/loc-tests.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml)
 [![LoC Total](https://raw.githubusercontent.com/aelassas/movinin/refs/heads/loc/loc-total.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml)
-
 
 ## Support & Contributing
 
