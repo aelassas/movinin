@@ -44,7 +44,7 @@ jobs:
           ENCODED_LOC=$(echo "${LOC_COMMA}" | sed 's/,/%2C/g')
 
           # Download badge from Shields.io (label: "lines of code", URL encoded as "lines%20of%20code")
-          curl -fsS --retry 3 -o output/badge.svg "https://img.shields.io/badge/lines%20of%20code-${ENCODED_LOC}-green"
+          curl -fsS --retry 3 -o output/badge.svg "https://img.shields.io/badge/LoC-${ENCODED_LOC}-green"
 
       - name: Deploy to loc branch
         uses: peaceiris/actions-gh-pages@v3
