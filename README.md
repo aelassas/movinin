@@ -1,7 +1,6 @@
 [![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) 
 [![test](https://github.com/aelassas/movinin/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/test.yml)
 [![codecov](https://img.shields.io/codecov/c/github/aelassas/movinin?label=coverage)](https://codecov.io/gh/aelassas/movinin)
-[![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://movinin.dynv6.net/)
 [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/movinin/wiki)
 
 <!--
@@ -46,7 +45,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 
 ## Features
 
-### Agency & Property Management
+**Agency & Property Management**
 
 * Agency management
 * Ready for single or multiple agencies
@@ -56,19 +55,19 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Property scheduler
 * Auto-notification system
 
-### Pricing & Payments
+**Pricing & Payments**
 
 * Payment management
 * Multiple payment gateways supported: Stripe, PayPal
 * Multiple payment methods: Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later
 
-### Locations & Mapping
+**Locations & Mapping**
 
 * Hierarchical locations with country and map integration
 * Location-based search with nested location support
 * Map display for locations
 
-### User Experience
+**User Experience**
 
 * Customer management
 * Multiple login options: Google, Facebook, Apple, Email
@@ -77,7 +76,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Multiple pagination styles: classic (next/previous), infinite scroll
 * Push notifications
 
-### Security & Performance
+**Security & Performance**
 
 * Secure against XSS, XST, CSRF, MITM, and DDoS attacks
 * Responsive admin panel and frontend
@@ -85,7 +84,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * Docker support for easy deployment and better developer experience
 * Error monitoring and performance tracing
 
-### Supported Platforms
+**Supported Platforms**
 
 * iOS
 * Android
@@ -111,7 +110,7 @@ To contribute code or report issues, please read the [Contribution Guide](https:
 
 If you want to customize Movin' In while keeping your fork up to date with the latest changes, check out the [Fork, Customize, and Sync](https://github.com/aelassas/movinin/wiki/Fork,-Customize,-and-Sync) guide in the Wiki.
 -->
-
+<!--
 ## Live Demo
 
 ### Frontend
@@ -149,6 +148,7 @@ You can also install the Android App by downloading the APK and installing it on
 * [Download APK](https://github.com/aelassas/movinin/releases/download/v7.0/movinin-7.0.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
+-->
 
 ## License
 
