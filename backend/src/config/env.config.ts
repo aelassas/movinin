@@ -190,7 +190,7 @@ export const X_ACCESS_TOKEN = 'x-access-token'
  *
  * @type {string}
  */
-export const JWT_SECRET = __env__('MI_JWT_SECRET', false, 'Movinin')
+export const JWT_SECRET = __env__('MI_JWT_SECRET', true)
 
 /**
  * JWT expiration in seconds. Default is 86400 seconds.
