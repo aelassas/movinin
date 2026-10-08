@@ -498,10 +498,34 @@ export const updateStatus = async (req: Request, res: Response) => {
     const { body }: { body: movininTypes.UpdateStatusPayload } = req
     const { ids: _ids, status } = body
     const ids = _ids.map((id) => new mongoose.Types.ObjectId(id))
-    const bulk = Booking.collection.initializeOrderedBulkOp()
-    const bookings = await Booking.find({ _id: { $in: ids } })
 
-    bulk.find({ _id: { $in: ids } }).update({ $set: { status } })
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = await User.findById(sessionUserId)
+
+    if (!sessionUser || sessionUser.type === movininTypes.UserType.User) {
+      logger.error(`[booking.updateStatus] Unauthorized attempt to update status by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot update booking status')
+      return
+    }
+
+    const filter: Record<string, any> = { _id: { $in: ids } }
+    if (sessionUser.type === movininTypes.UserType.Agency) {
+      filter.agency = sessionUserId
+    }
+    // end of security check
+
+    const bulk = Booking.collection.initializeOrderedBulkOp()
+    const bookings = await Booking.find(filter)
+
+    if (bookings.length === 0) {
+      res.sendStatus(200)
+      return
+    }
+
+    const allowedIds = bookings.map((booking) => booking._id)
+
+    bulk.find({ _id: { $in: allowedIds } }).update({$set: { status } })
     await bulk.execute()
 
     for (const booking of bookings) {
