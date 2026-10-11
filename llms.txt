@@ -10,6 +10,8 @@ Movin' In provides complete property rental workflows for single-agency and mult
 - **License**: MIT License
 - **Tech Stack**: Node.js, Express, React, TypeScript, React Native (Expo SDK 55), MongoDB, Docker
 
+> **Full Text Documentation:** For full-text concatenated markdown documentation, see [llms-full.txt](https://movin-in.github.io/llms-full.txt).
+
 ## Key Capabilities
 
 - **Agency & Property Management**: Single and multi-agency modes, property fleet schedulers, flexible time-based availability, and automated email/push notification workflows.
