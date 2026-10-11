@@ -1,5 +1,23 @@
 # Releases
 
+## [Movin' In 7.1](https://github.com/aelassas/movinin/releases/tag/v7.1) – 2026-10-11
+
+* fix(admin): TypeError: w.default is not a function in CreateProperty page (Rolldown/html-to-draftjs incompatibility) (#20)
+* fix(backend): Agency can update another agency's booking status
+* fix(backend): Hard-Coded JWT Fallback Enables Agency Account Impersonation
+* fix(backend): prevent unauthenticated access and IDOR on booking details
+* fix(frontend): localization issues in checkout page 
+* ci(loc.yml): switch to `cloc` for accurate code-only line counts
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v7.0...v7.1
+
+### Assets
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.1/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v7.1)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v7.1)
+
 ## [Movin' In 7.0](https://github.com/aelassas/movinin/releases/tag/v7.0) – 2026-03-18
 
 * fix(backend): optimize mailer with transporter pooling
