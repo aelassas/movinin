@@ -5,6 +5,7 @@ import * as movininTypes from ':movinin-types'
 import app from '../src/app'
 import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
+import * as authHelper from '../src/utils/authHelper'
 import Property from '../src/models/Property'
 import Booking from '../src/models/Booking'
 import User from '../src/models/User'
@@ -449,25 +450,75 @@ describe('POST /api/update-booking-status', () => {
 
 describe('GET /api/booking/:id/:language', () => {
   it('should get a booking', async () => {
-    const token = await testHelper.signinAsAdmin()
+    const adminToken = await testHelper.signinAsAdmin()
 
+    // test success (admin)
     let res = await request(app)
       .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}`)
-      .set(env.X_ACCESS_TOKEN, token)
+      .set(env.X_ACCESS_TOKEN, adminToken)
     expect(res.statusCode).toBe(200)
     expect(res.body.property._id).toBe(PROPERTY2_ID)
 
+    // test success (renter owner)
+    const renterToken = await testHelper.generateToken(RENTER1_ID)
+    res = await request(app)
+      .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}`)
+      .set(env.X_ACCESS_TOKEN, renterToken)
+    expect(res.statusCode).toBe(200)
+    expect(res.body._id).toBe(BOOKING_ID)
+
+   // test success (assigned agency)
+    const agencyToken = await testHelper.generateToken(AGENCY_ID)
+    res = await request(app)
+      .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}`)
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+    expect(res.statusCode).toBe(200)
+    expect(res.body._id).toBe(BOOKING_ID)
+
+    // test success (guest checkout with valid sessionId)
+    const validSessionId = testHelper.GetRandromObjectIdAsString()
+    const booking = await Booking.findById(BOOKING_ID)
+    booking!.sessionId = validSessionId
+    await booking!.save()
+
+    res = await request(app)
+      .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}?sessionId=${validSessionId}`)
+    expect(res.statusCode).toBe(200)
+    expect(res.body._id).toBe(BOOKING_ID)
+
+    // test forbidden (unauthenticated without sessionId)
+    res = await request(app)
+      .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}`)
+    expect(res.statusCode).toBe(403)
+
+    // test forbidden (unrelated user)
+    const unrelatedRenter = new User({
+      fullName: 'Unrelated Renter',
+      email: testHelper.GetRandomEmail(),
+      language: testHelper.LANGUAGE,
+      type: movininTypes.UserType.User,
+    })
+    await unrelatedRenter.save()
+    const unrelatedToken = await testHelper.generateToken(unrelatedRenter._id.toString())
+    res = await request(app)
+      .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}`)
+      .set(env.X_ACCESS_TOKEN, unrelatedToken)
+    expect(res.statusCode).toBe(403)
+    await unrelatedRenter.deleteOne()
+
+    // test success (booking not found)
     res = await request(app)
       .get(`/api/booking/${testHelper.GetRandromObjectIdAsString()}/${testHelper.LANGUAGE}`)
-      .set(env.X_ACCESS_TOKEN, token)
+      .set(env.X_ACCESS_TOKEN, adminToken)
     expect(res.statusCode).toBe(204)
 
+    // test failure (invalid booking id)
     res = await request(app)
       .get(`/api/booking/${nanoid()}/${testHelper.LANGUAGE}`)
-      .set(env.X_ACCESS_TOKEN, token)
+      .set(env.X_ACCESS_TOKEN, adminToken)
     expect(res.statusCode).toBe(400)
 
-    await testHelper.signout(token)
+    await testHelper.signout(adminToken)
   })
 })
 

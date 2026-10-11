@@ -38,10 +38,10 @@ export const getBookings = (payload: movininTypes.GetBookingsPayload, page: numb
  * @param {string} id
  * @returns {Promise<movininTypes.Booking>}
  */
-export const getBooking = (id: string): Promise<movininTypes.Booking> =>
+export const getBooking = (id: string, sessionId?: string): Promise<movininTypes.Booking> =>
   axiosInstance
     .get(
-      `/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}`,
+       `/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}${sessionId ? `?sessionId=${encodeURIComponent(sessionId)}` : ''}`,
       { withCredentials: true }
     )
     .then((res) => res.data)

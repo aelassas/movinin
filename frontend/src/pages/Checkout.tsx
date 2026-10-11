@@ -19,6 +19,7 @@ import {
   Settings as PaymentOptionsIcon
 } from '@mui/icons-material'
 import validator from 'validator'
+import { nanoid } from 'nanoid'
 import { format, intervalToDuration } from 'date-fns'
 import { fr, enUS } from 'date-fns/locale'
 import {
@@ -317,6 +318,8 @@ const Checkout = () => {
           _sessionId = res.sessionId
           _customerId = res.customerId
         } else {
+          // Generate a unique session ID for PayPal checkout
+          _sessionId = nanoid()
           setPayPalLoaded(true)
         }
       }
@@ -735,6 +738,7 @@ const Checkout = () => {
           bookingId={bookingId}
           language={language}
           payLater={payLater}
+          sessionId={sessionId}
           status="success"
           className="status"
         />

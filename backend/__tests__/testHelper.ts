@@ -92,7 +92,9 @@ export const getToken = (cookie: string) => {
   return token
 }
 
-const signin = async (appType: movininTypes.AppType, email: string) => {
+export const generateToken = (userId: string) => authHelper.encryptJWT({ id: userId })
+
+export const signin = async (appType: movininTypes.AppType, email: string) => {
   const payload: movininTypes.SignInPayload = {
     email,
     password: PASSWORD,
