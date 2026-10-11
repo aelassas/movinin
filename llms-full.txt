@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-10-11T07:04:41Z
+> Generated on: 2026-10-11T09:04:44Z
 
 ---
 
@@ -885,6 +885,7 @@ From the backend, admins can create and manage agencies, properties, locations, 
 
 When new agencies are created, they receive an email prompting them to create their account in order to access the backend and manage their properties, customers and bookings.
 -->
+
 
 ---
 
