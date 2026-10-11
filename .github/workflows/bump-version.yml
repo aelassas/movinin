@@ -121,6 +121,7 @@ jobs:
           } else {
               git add --all
               git commit -m "chore: bump version from $env:VERSION to $env:NEXT_VERSION"
+              git pull origin main --rebase
               git push origin main
           }
 
@@ -148,5 +149,6 @@ jobs:
           } else {
               git add --all
               git commit -m "chore: bump version from $env:VERSION to $env:NEXT_VERSION"
+              git pull origin demo --rebase
               git push origin demo
           }
