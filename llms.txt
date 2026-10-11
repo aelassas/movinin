@@ -1,0 +1,36 @@
+# Movin' In
+
+> Movin' In is an open-source rental property management platform comprising an admin management panel, a web frontend, a cross-platform native mobile application (iOS & Android), and a Node.js REST API backend.
+
+## Overview
+
+Movin' In provides complete property rental workflows for single-agency and multi-agency operations. Agencies manage property listings, availability, and bookings through a dedicated admin portal. Customers search for properties based on location and rental dates, completing bookings via integrated payment gateways (Stripe and PayPal) or pay-later options.
+
+- **Repository**: https://github.com/aelassas/movinin
+- **License**: MIT License
+- **Tech Stack**: Node.js, Express, React, TypeScript, React Native (Expo SDK 55), MongoDB, Docker
+
+## Key Capabilities
+
+- **Agency & Property Management**: Single and multi-agency modes, property fleet schedulers, flexible time-based availability, and automated email/push notification workflows.
+- **Locations & Mapping**: Hierarchical location modeling (Countries, Cities, Locations) with geolocation coordinates and interactive map UI integration.
+- **Payments & Checkout**: Stripe (Cards, Apple Pay, Google Pay, Link) and PayPal integrations. Supports Pay Online and Pay Later options.
+- **Authentication & Security**: Social Sign-In (Google, Facebook, Apple) and traditional email/password credentials with role-based authorization (Admin, Agency, Customer). Protection against XSS, XST, CSRF, MITM, and DDoS attacks.
+- **User Experience**: Multi-language support (English, French), multi-currency support, infinite scroll and classic pagination options, and mobile push notifications.
+
+## Core Documentation & Wiki
+
+- [Overview](https://github.com/aelassas/movinin/wiki/Overview): High-level system architecture and component breakdown.
+- [Software Architecture](https://github.com/aelassas/movinin/wiki/Software-Architecture): Backend REST API, admin panel, web frontend, and React Native mobile architecture.
+- [Self-Hosted Installation](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted)): Manual deployment guide for Node.js environments.
+- [Docker Deployment](https://github.com/aelassas/movinin/wiki/Installing-(Docker)): Containerized deployment instructions with Nginx and SSL setup.
+- [Payment Gateways Setup](https://github.com/aelassas/movinin/wiki/Payment-Gateways): Configuring Stripe and PayPal API keys and webhooks.
+- [Social Login Setup Guide](https://github.com/aelassas/movinin/wiki/Social-Login-Setup): OAuth configuration for Google, Facebook, and Apple authentication.
+- [Build & Run Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App): Expo mobile application setup, building APK/IPA binaries, and push notification configuration.
+- [Testing & Integration](https://github.com/aelassas/movinin/wiki/Testing): Running backend integration tests and tracking code coverage.
+
+## Repository Resources
+
+- [Contribution Guide](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md): Guidelines for submitting pull requests, issue reporting, and coding standards.
+- [Release Notes](https://github.com/aelassas/movinin/blob/main/.github/RELEASES.md): Version history and changelogs.
+- [FAQ](https://github.com/aelassas/movinin/wiki/FAQ): Frequently asked questions and troubleshooting guides.
