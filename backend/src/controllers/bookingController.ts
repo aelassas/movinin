@@ -648,7 +648,7 @@ export const getBooking = async (req: Request, res: Response) => {
       .lean()
 
     if (booking) {
-            // 1. SessionId Token Check (for unauthenticated checkout session confirmation)
+      // 1. SessionId Token Check (for unauthenticated checkout session confirmation)
       const isValidSession = !!sessionId && booking.sessionId === sessionId
 
       // 2. Role-Based Authorization Check
