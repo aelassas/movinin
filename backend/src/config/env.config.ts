@@ -51,6 +51,13 @@ export const expireAt = 'expireAt'
 export const WEBSITE_NAME = __env__('MI_WEBSITE_NAME', false, "Movin' In")
 
 /**
+ * Base currency. Default is USD.
+ *
+ * @type {string}
+ */
+export const BASE_CURRENCY = __env__('MI_BASE_CURRENCY', false, 'USD')
+
+/**
  * Indicate whether we are in CI environment or not.
  *
  * @type {boolean}
