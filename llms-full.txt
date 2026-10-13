@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-10-13T10:09:11Z
+> Generated on: 2026-10-13T10:09:31Z
 
 ---
 
@@ -936,6 +936,9 @@ MI_GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID
 MI_GOOGLE_MOBILE_CLIENT_ID=GOOGLE_MOBILE_CLIENT_ID
 MI_FACEBOOK_APP_ID=FACEBOOK_APP_ID
 MI_FACEBOOK_APP_SECRET=FACEBOOK_APP_SECRET
+
+# Currency
+MI_BASE_CURRENCY=USD
 
 # Email (SMTP)
 MI_SMTP_HOST=smtp.sendgrid.net
