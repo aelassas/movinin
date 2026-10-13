@@ -16,6 +16,7 @@
       LOCATIONS: 'Destinations',
       PRIVACY_POLICY: 'Politique de Confidentialité',
       COOKIE_POLICY: 'Politique de cookies',
+      NOTIFICATIONS: 'Notifications',
     },
     en: {
       SIGN_IN: 'Sign in',
@@ -31,6 +32,7 @@
       LOCATIONS: 'Destinations',
       PRIVACY_POLICY: 'Privacy Policy',
       COOKIE_POLICY: 'Cookie Policy',
+      NOTIFICATIONS: 'Notifications',
     },
   })
 

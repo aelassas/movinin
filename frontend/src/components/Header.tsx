@@ -470,7 +470,7 @@ const Header = ({
                 </Button>
               )}
               {!hideSignin && !isSignedIn && isLoaded && (
-                <Button variant="contained" size="medium" startIcon={<SignUpIcon />} onClick={() => navigate('/sign-up')} disableElevation className="btn btn-auth" aria-label="Sign in">
+                <Button variant="contained" size="medium" startIcon={<SignUpIcon />} onClick={() => navigate('/sign-up')} disableElevation className="btn btn-auth" aria-label={suStrings.SIGN_UP}>
                   <span className="btn-auth-txt">{suStrings.SIGN_UP}</span>
                 </Button>
               )}
@@ -480,7 +480,7 @@ const Header = ({
                 </Button>
               )}
               {isSignedIn && (
-                <IconButton aria-label="" color="inherit" onClick={handleNotificationsClick} className="btn">
+                <IconButton aria-label={strings.NOTIFICATIONS} color="inherit" onClick={handleNotificationsClick} className="btn">
                   <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">
                     <NotificationsIcon />
                   </Badge>
@@ -503,7 +503,7 @@ const Header = ({
                 </Button>
               )}
               {isSignedIn && (
-                <IconButton color="inherit" onClick={handleNotificationsClick} className="btn">
+                <IconButton aria-label={strings.NOTIFICATIONS} color="inherit" onClick={handleNotificationsClick} className="btn">
                   <Badge badgeContent={notificationCount > 0 ? notificationCount : null} color="error">
                     <NotificationsIcon />
                   </Badge>
