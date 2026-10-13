@@ -341,7 +341,7 @@ export const calculateTotalPrice = (property: movininTypes.Property, from: Date,
     }
   }
 
-  return _price
+  return Number(_price.toFixed(2))
 }
 
 /**
@@ -365,7 +365,7 @@ export const convertPrice = async (amount: number, from: string, to: string): Pr
   }
   const cc = new CurrencyConverter({ from, to, amount })
   const res = await cc.convert()
-  return res
+  return Number(res.toFixed(2))
 }
 
 /**
