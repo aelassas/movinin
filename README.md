@@ -67,8 +67,7 @@ All seeded development accounts use the password: **`SeedDev1!`**
 | Frontend (`:3004`) | Customer | `bob.smith@example.com` | `SeedDev1!` |
 | Frontend (`:3004`) | Customer | `carol.white@example.com` | `SeedDev1!` |
 
-For full contributor documentation and safety guarantees, see [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md).
-
+For full contributor documentation and safety guarantees, see [CONTRIBUTING.md](.github/CONTRIBUTING.md).
 
 ## Features
 
