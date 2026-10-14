@@ -65,14 +65,6 @@ export const BASE_CURRENCY = __env__('MI_BASE_CURRENCY', false, 'USD')
 export const CI = helper.StringToBoolean(__env__('MI_CI', false, 'false'))
 
 /**
- * Indicate whether user accounts should be automatically verified upon signup.
- * This is useful for local development and testing purposes.
- *
- * @type {boolean}
- */
-export const AUTO_VERIFY_ON_SIGNUP = helper.StringToBoolean(__env__('MI_AUTO_VERIFY_ON_SIGNUP', false, 'false'))
-
-/**
  * Number of documents to process per batch when deleting obsolete language values.
  * This helps avoid large memory usage and improves performance during deletions.
  * Default is 1000.
@@ -255,6 +247,14 @@ export const SMTP_PASS = __env__('MI_SMTP_PASS', true)
  * @type {string}
  */
 export const SMTP_FROM = __env__('MI_SMTP_FROM', true)
+
+/**
+ * Indicate whether user accounts should be automatically verified upon signup.
+ * This is useful for local development and testing purposes.
+ *
+ * @type {boolean}
+ */
+export const AUTO_VERIFY_ON_SIGNUP = helper.StringToBoolean(__env__('MI_AUTO_VERIFY_ON_SIGNUP', false, 'false'))
 
 /**
  * CDN root folder path.
