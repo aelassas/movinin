@@ -78,7 +78,14 @@ describe('Environment safeguards', () => {
 
 describe('Development database seeding (seedDev)', () => {
   beforeEach(async () => {
-    await cleanDev()
+    await User.deleteMany({ _id: { $in: SEED_USER_IDS } })
+    await Property.deleteMany({ _id: { $in: SEED_PROPERTY_IDS } })
+    await Booking.deleteMany({ _id: { $in: SEED_BOOKING_IDS } })
+    await Location.deleteMany({ _id: { $in: SEED_LOCATION_IDS } })
+    await Country.deleteMany({ _id: { $in: SEED_COUNTRY_IDS } })
+    await LocationValue.deleteMany({ _id: { $in: SEED_LOCATION_VALUE_IDS } })
+    await Notification.deleteMany({ _id: { $in: SEED_NOTIFICATION_IDS } })
+    await NotificationCounter.deleteMany({ user: { $in: SEED_USER_IDS } })
   })
 
   it('should seed all expected categories and counts of records including images', async () => {
@@ -475,6 +482,8 @@ describe('Error handling', () => {
     await databaseHelper.close()
     const res = await databaseHelper.connect('wrong-uri', false, false)
     expect(res).toBe(false)
+
+    // Re-connect to the valid database so teardown and remaining tests have an active connection
     await databaseHelper.connect(env.DB_URI, false, false)
   })
 })
