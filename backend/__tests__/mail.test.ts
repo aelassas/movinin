@@ -6,6 +6,7 @@ const TEST_ACCOUNT = { user: 'testuser', pass: 'testpass' }
 jest.unstable_mockModule('nodemailer', () => ({
   createTestAccount: jest.fn(async () => TEST_ACCOUNT),
   createTransport: jest.fn(), // We'll define implementation per test
+  getTestMessageUrl: jest.fn(() => false),
 }))
 
 describe('mail module', () => {

@@ -152,8 +152,8 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
     await mailHelper.sendMail(mailOptions)
     res.sendStatus(200)
   } catch (err) {
-    if (process.env.NODE_ENV !== 'production') {
-      logger.warn('[user.signup] Email sending failed in development mode, activating user account for local testing:', err)
+    if (env.AUTO_VERIFY_ON_SIGNUP) {
+      logger.warn('[user.signup] Email sending failed with AUTO_VERIFY_ON_SIGNUP enabled. Activating user account for local testing:', err)
       user.verified = true
       user.verifiedAt = new Date()
       await user.save()
@@ -168,7 +168,7 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
       await Token.deleteMany({ user: user._id.toString() })
       await user.deleteOne()
     } catch (deleteErr) {
-      logger.error(`[user.signup] ${i18n.t('ERROR')} ${JSON.stringify(body)}`, deleteErr)
+      logger.error(`[user.signup] Failed to cleanup user after email failure for email: ${body.email}`, deleteErr)
     }
     logger.error(`[user.signup] ${i18n.t('SMTP_ERROR')}`, err)
     res.status(400).send(i18n.t('SMTP_ERROR') + err)

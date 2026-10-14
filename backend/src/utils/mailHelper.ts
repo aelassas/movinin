@@ -112,10 +112,10 @@ const createTransporter = async (): Promise<nodemailer.Transporter> => {
 export const sendMail = async (mailOptions: nodemailer.SendMailOptions): Promise<nodemailer.SentMessageInfo> => {
   const transporter = await createTransporter()
   const info = await transporter.sendMail(mailOptions)
-  const testUrl = nodemailer.getTestMessageUrl(info)
+  const getTestMessageUrl = nodemailer.getTestMessageUrl || (nodemailer as any).default?.getTestMessageUrl
+  const testUrl = typeof getTestMessageUrl === 'function' ? getTestMessageUrl(info) : false
   if (testUrl) {
     logger.info(`[mailHelper] Email preview URL: ${testUrl}`)
   }
   return info
 }
-
