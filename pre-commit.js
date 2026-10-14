@@ -203,7 +203,7 @@ const cmd = (() => {
 
       if (runInDocker && container) {
         return _run(
-          `docker compose -f ${config.dockerComposeFile} exec -T ${container} sh -c "cd /bookcars/${safeFolder} && ${safeCmd}"`,
+          `docker compose -f ${config.dockerComposeFile} exec -T ${container} sh -c "cd /movinin/${safeFolder} && ${safeCmd}"`,
           { cwd: process.cwd() },
         )
       }

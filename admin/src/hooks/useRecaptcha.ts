@@ -85,16 +85,20 @@ const useReCaptcha = (): RecaptchaType => {
   const generateReCaptchaToken = (action: string = 'submit'): Promise<string> => new Promise((resolve, reject) => {
     if (!env.RECAPTCHA_ENABLED) {
       resolve('')
+      return
     }
     if (env.isSafari) {
       resolve('')
+      return
     }
     if (!reCaptchaLoaded) {
       reject(new Error('ReCaptcha not loaded'))
+      return
     }
     if (typeof window === 'undefined' || !window.grecaptcha) {
       setReCaptchaLoaded(false)
       reject(new Error('ReCaptcha not loaded'))
+      return
     }
     window.grecaptcha.ready(() => {
       window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action }).then((token: string) => {

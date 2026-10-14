@@ -134,6 +134,9 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
     // Send email
     i18n.locale = user.language
 
+    const activationLink = `http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}`
+    logger.info(`[user.signup] Account activation link: ${activationLink}`)
+
     const mailOptions: nodemailer.SendMailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
@@ -142,13 +145,22 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
         `<p>
     ${i18n.t('HELLO')}${user.fullName},<br><br>
     ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
-    http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}<br><br>
+    ${activationLink}<br><br>
     ${i18n.t('REGARDS')}<br>
     </p>`,
     }
     await mailHelper.sendMail(mailOptions)
     res.sendStatus(200)
   } catch (err) {
+    if (process.env.NODE_ENV !== 'production') {
+      logger.warn('[user.signup] Email sending failed in development mode, activating user account for local testing:', err)
+      user.verified = true
+      user.verifiedAt = new Date()
+      await user.save()
+      res.sendStatus(200)
+      return
+    }
+
     try {
       //
       // Delete user in case of smtp failure

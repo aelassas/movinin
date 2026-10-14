@@ -28,6 +28,8 @@
   "type": "module",
   "main": "pre-commit.js",
   "scripts": {
+    "seed:dev": "npm --prefix backend run seed:dev",
+    "clean:dev": "npm --prefix backend run clean:dev",
     "pre-commit": "node pre-commit.js",
     "releases": "node releases.js",
     "prepare": "husky install",

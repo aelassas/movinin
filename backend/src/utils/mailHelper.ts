@@ -1,5 +1,6 @@
 import * as nodemailer from 'nodemailer'
 import * as env from '../config/env.config'
+import * as logger from './logger'
 
 /**
  * A cached promise of the Nodemailer Transporter to prevent 
@@ -10,7 +11,7 @@ let transporterPromise: Promise<nodemailer.Transporter> | null = null
 /**
  * Initializes and returns a Nodemailer Transporter.
  * 
- * If running in a CI environment, it generates a temporary Ethereal test account.
+ * If running in a CI environment or when SMTP is unconfigured/dummy, it generates a temporary Ethereal test account.
  * Otherwise, it uses the SMTP configuration provided in the environment variables.
  * @returns {Promise<nodemailer.Transporter>} The initialized transporter instance.
  * @throws {Error} If the SMTP configuration is invalid or connection fails.
@@ -23,16 +24,26 @@ const createTransporter = async (): Promise<nodemailer.Transporter> => {
   transporterPromise = (async () => {
     let transporterOptions: nodemailer.TransportOptions | any
 
-    if (env.CI) {
-      const testAccount = await nodemailer.createTestAccount()
-      transporterOptions = {
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false, // Ethereal uses STARTTLS
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass,
-        },
+    const isDummySmtp = !env.SMTP_PASS || env.SMTP_PASS === 'PASSWORD' || env.SMTP_PASS === '"PASSWORD"'
+    const shouldUseTestAccount = env.CI || isDummySmtp
+
+    if (shouldUseTestAccount) {
+      try {
+        const testAccount = await nodemailer.createTestAccount()
+        transporterOptions = {
+          host: 'smtp.ethereal.email',
+          port: 587,
+          secure: false, // Ethereal uses STARTTLS
+          auth: {
+            user: testAccount.user,
+            pass: testAccount.pass,
+          },
+        }
+      } catch (err) {
+        logger.warn('[mailHelper] Failed to create Ethereal test account, falling back to JSON transport:', err)
+        transporterOptions = {
+          jsonTransport: true,
+        }
       }
     } else {
       transporterOptions = {
@@ -52,7 +63,32 @@ const createTransporter = async (): Promise<nodemailer.Transporter> => {
     const transporter = nodemailer.createTransport(transporterOptions)
     
     // Verify connection on startup to catch config errors early
-    await transporter.verify()
+    if (!transporterOptions.jsonTransport) {
+      try {
+        await transporter.verify()
+      } catch (verifyErr) {
+        if (!shouldUseTestAccount) {
+          logger.warn('[mailHelper] SMTP verification failed for configured host, falling back to Ethereal test account:', verifyErr)
+          try {
+            const testAccount = await nodemailer.createTestAccount()
+            const fallbackTransporter = nodemailer.createTransport({
+              host: 'smtp.ethereal.email',
+              port: 587,
+              secure: false,
+              auth: {
+                user: testAccount.user,
+                pass: testAccount.pass,
+              },
+            })
+            await fallbackTransporter.verify()
+            return fallbackTransporter
+          } catch {
+            return nodemailer.createTransport({ jsonTransport: true })
+          }
+        }
+        throw verifyErr
+      }
+    }
     
     return transporter
   })()
@@ -75,5 +111,11 @@ const createTransporter = async (): Promise<nodemailer.Transporter> => {
  */
 export const sendMail = async (mailOptions: nodemailer.SendMailOptions): Promise<nodemailer.SentMessageInfo> => {
   const transporter = await createTransporter()
-  return transporter.sendMail(mailOptions)
+  const info = await transporter.sendMail(mailOptions)
+  const testUrl = nodemailer.getTestMessageUrl(info)
+  if (testUrl) {
+    logger.info(`[mailHelper] Email preview URL: ${testUrl}`)
+  }
+  return info
 }
+
