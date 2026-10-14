@@ -41,6 +41,24 @@ We appreciate your interest in contributing to Movin' In. This guide will help y
   ```
 
 - **Setup environment variables** according to the [Run from Source Guide](https://github.com/aelassas/movinin/wiki/Run-from-Source) or [Run from Source Docker Guide](https://github.com/aelassas/movinin/wiki/Run-from-Source-(Docker)).  
+- **Start MongoDB**:
+  - Run standalone local MongoDB: `mongod`
+  - Or use Docker: `docker compose -f docker-compose.dev.yml up -d mongo`
+
+- **Seed Development Database**:
+  To quickly populate the local database with a complete dataset (admin, agencies, customers, properties, locations, bookings, notifications):
+  ```bash
+  # From repository root
+  npm run seed:dev
+  ```
+
+- **Clean Development Database**:
+  To safely remove all seed-generated records while preserving unrelated contributor data and the setup admin:
+  ```bash
+  # From repository root
+  npm run clean:dev
+  ```
+
 - **Run the backend development server** to verify your setup:
   ```bash
   cd ./backend
@@ -66,6 +84,43 @@ We appreciate your interest in contributing to Movin' In. This guide will help y
   # ios
   npm run ios
   ```
+
+## Development Database Commands
+
+### Available Commands
+| Command | Location | Description |
+|---|---|---|
+| `npm run seed:dev` | Root or `backend/` | Builds backend and seeds deterministic dev dataset idempotently. |
+| `npm run clean:dev` | Root or `backend/` | Safely removes seed-owned records without touching contributor data. |
+| `npm run setup` | `backend/` | Creates default admin configured by `MI_ADMIN_EMAIL`. |
+| `npm run reset` | `backend/` | Deletes default admin configured by `MI_ADMIN_EMAIL`. |
+
+### Development Credentials
+All seeded development accounts share the password: **`SeedDev1!`**
+
+| Role | Email | Password | Intended Portal | Description |
+|---|---|---|---|---|
+| **Admin** | `dev-admin@example.com` | `SeedDev1!` | Admin Panel (`localhost:3003`) | Development superadmin (distinct from `MI_ADMIN_EMAIL`) |
+| **Agency** | `sunshine-realty@example.com` | `SeedDev1!` | Admin Panel (`localhost:3003`) | Multi-property agency with `payLater: true` |
+| **Agency** | `urban-homes@example.com` | `SeedDev1!` | Admin Panel (`localhost:3003`) | Multi-property agency with `payLater: false` |
+| **Customer** | `alice.johnson@example.com` | `SeedDev1!` | Frontend (`localhost:3004`) / Mobile | Verified customer with active bookings & notifications |
+| **Customer** | `bob.smith@example.com` | `SeedDev1!` | Frontend (`localhost:3004`) / Mobile | Verified customer with ongoing bookings & notifications |
+| **Customer** | `carol.white@example.com` | `SeedDev1!` | Frontend (`localhost:3004`) / Mobile | Verified customer with cancel request & notifications |
+
+### Seed Dataset Details
+- **Users**: 1 Admin, 2 Agencies, 3 Customers (all active, verified, hashed passwords).
+- **Locations & Countries**: 2 Countries (United States, France), 6 Locations (New York, Los Angeles, San Francisco, Paris, Lyon, Manhattan as a child of NY) with English and French localizations.
+- **Properties (20 total)**: Exercises multi-page pagination. Covers all property types (*Apartment, Townhouse, House, Plot, Farm, Commercial, Industrial*) and all rental terms (*Daily, Weekly, Monthly, Yearly*), with varied amenities, pricing, availability, and visibility flags.
+- **Bookings (12 total)**: Computed relative to execution date (`now`) to prevent staleness. Covers all booking statuses (*Void, Pending, Deposit, Paid, Reserved, Cancelled*) across multiple agencies and properties without unintentional date collisions.
+- **Notifications & Counters**: 8 read and unread notifications linked to seeded bookings and users, with accurately computed `NotificationCounter` records.
+
+### Safety & Cleanup Guarantees
+- **Environment Safeguard**: Refuses to run if `NODE_ENV=production` or if `DB_URI` points to a non-local address without explicit `MI_SEED_ALLOW_REMOTE=true`.
+- **Targeted Deletion**: Only deletes documents marked with the deterministic seed IDs and ownership tag (`__SEED_DEV__`).
+- **Never Touches Unrelated Data**: Does NOT drop collections or databases. Preserves contributor-created users, properties, bookings, and locations.
+- **Preserves Setup Admin**: Will never delete the administrator created by `npm run setup` (`MI_ADMIN_EMAIL`).
+- **Safe to Re-run**: Running `clean:dev` multiple times is idempotent and safely reports when no seed records are present.
+
 
 ## Code Style and Guidelines
 

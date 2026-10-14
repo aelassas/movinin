@@ -43,6 +43,33 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)
 * [Full Documentation](https://github.com/aelassas/movinin/wiki)
 
+## Development Database Quick Start
+
+For local development and testing, you can populate an isolated MongoDB instance with a complete fixture dataset including admin, agencies, customers, properties, bookings, and notifications:
+
+```bash
+# Seed development database (idempotent)
+npm run seed:dev
+
+# Clean development database (safely removes only seed-owned records)
+npm run clean:dev
+```
+
+### Sample Development Credentials
+All seeded development accounts use the password: **`SeedDev1!`**
+
+| Portal | Role | Email | Password |
+|---|---|---|---|
+| Admin Panel (`:3003`) | Admin | `dev-admin@example.com` | `SeedDev1!` |
+| Admin Panel (`:3003`) | Agency | `sunshine-realty@example.com` | `SeedDev1!` |
+| Admin Panel (`:3003`) | Agency | `urban-homes@example.com` | `SeedDev1!` |
+| Frontend (`:3004`) | Customer | `alice.johnson@example.com` | `SeedDev1!` |
+| Frontend (`:3004`) | Customer | `bob.smith@example.com` | `SeedDev1!` |
+| Frontend (`:3004`) | Customer | `carol.white@example.com` | `SeedDev1!` |
+
+For full contributor documentation and safety guarantees, see [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md).
+
+
 ## Features
 
 **Agency & Property Management**

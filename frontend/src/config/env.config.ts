@@ -87,7 +87,9 @@ const env = {
   PROPERTY_IMAGE_HEIGHT: Number.parseInt(String(import.meta.env.VITE_MI_PROPERTY_IMAGE_HEIGHT), 10) || 200,
   PROPERTY_OPTION_IMAGE_HEIGHT: 85,
   SELECTED_PROPERTY_OPTION_IMAGE_HEIGHT: 30,
-  RECAPTCHA_ENABLED: (import.meta.env.VITE_MI_RECAPTCHA_ENABLED && import.meta.env.VITE_MI_RECAPTCHA_ENABLED.toLowerCase()) === 'true',
+  RECAPTCHA_ENABLED:
+    (import.meta.env.VITE_MI_RECAPTCHA_ENABLED && import.meta.env.VITE_MI_RECAPTCHA_ENABLED.toLowerCase()) === 'true'
+    && Boolean(import.meta.env.VITE_MI_RECAPTCHA_SITE_KEY && import.meta.env.VITE_MI_RECAPTCHA_SITE_KEY !== 'RECAPTCHA_SITE_KEY'),
   RECAPTCHA_SITE_KEY: String(import.meta.env.VITE_MI_RECAPTCHA_SITE_KEY),
   MINIMUM_AGE: Number.parseInt(String(import.meta.env.VITE_MI_MINIMUM_AGE), 10) || 21,
   /**
