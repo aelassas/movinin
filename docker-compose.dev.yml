@@ -22,7 +22,16 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
 
   mi-dev-backend:
     build:
@@ -33,7 +42,10 @@ services:
     ports:
       - 4004:4004
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     volumes:
       - cdn:/var/www/cdn/movinin
       - ./backend:/movinin/backend
@@ -80,3 +92,4 @@ volumes:
   mongodb_data:
   mongodb_config:
   backend_logs:
+  redis_data:

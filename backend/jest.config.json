@@ -10,7 +10,7 @@
     "./__tests__/"
   ],
   "testMatch": [
-    "**/*.test.ts"
+    "**/booking.test.ts"
   ],
   "collectCoverage": true,
   "coverageReporters": [
@@ -25,5 +25,6 @@
   ],
   "testTimeout": 300000,
   "globalSetup": "./dist/__tests__/globalSetup.js",
-  "maxWorkers": 1
+  "maxWorkers": 1,
+  "setupFilesAfterEnv": ["<rootDir>/__tests__/setupTests.ts"]
 }

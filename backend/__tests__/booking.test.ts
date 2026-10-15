@@ -449,6 +449,22 @@ describe('POST /api/update-booking-status', () => {
 })
 
 describe('GET /api/booking/:id/:language', () => {
+  it('should deny unauthenticated access', async () => {
+    const res = await request(app)
+      .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}`)
+    expect(res.statusCode).toBe(403)
+  })
+
+  it('should deny unauthorized user (IDOR prevention)', async () => {
+    // Sign in as a different user who is neither renter, agency, nor admin
+    const token = await testHelper.signinAsUser()
+    const res = await request(app)
+      .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}`)
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(403)
+    await testHelper.signout(token)
+  })
+
   it('should get a booking', async () => {
     const adminToken = await testHelper.signinAsAdmin()
 
@@ -467,7 +483,7 @@ describe('GET /api/booking/:id/:language', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body._id).toBe(BOOKING_ID)
 
-   // test success (assigned agency)
+    // test success (assigned agency)
     const agencyToken = await testHelper.generateToken(AGENCY_ID)
     res = await request(app)
       .get(`/api/booking/${BOOKING_ID}/${testHelper.LANGUAGE}`)
@@ -813,7 +829,7 @@ describe('Security Regression Tests - Issue #124 Equivalent', () => {
     agencyBId = await testHelper.createAgency(`${nameB}@testB.movinin.io`, nameB)
     agencyBToken = await testHelper.generateToken(agencyBId)
 
-   const propertyB = new Property({
+    const propertyB = new Property({
       name: 'Agency B Property',
       agency: agencyBId,
       type: movininTypes.PropertyType.House,
