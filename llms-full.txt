@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-10-15T13:46:19Z
+> Generated on: 2026-10-15T20:14:00Z
 
 ---
 
@@ -1619,6 +1619,10 @@ MI_DB_SERVER_SIDE_JAVASCRIPT=false
 
 # Redis
 MI_REDIS_URL=redis://127.0.0.1:6379
+
+# Rate Limiter
+MI_RATE_LIMIT_CAPACITY=10
+MI_RATE_LIMIT_REFILL_RATE_MS=2000
 
 # Auth
 MI_COOKIE_SECRET=COOKIE_SECRET
