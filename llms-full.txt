@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-10-15T13:40:51Z
+> Generated on: 2026-10-15T13:46:19Z
 
 ---
 
@@ -1184,10 +1184,9 @@ You can find PayPal client id in [PayPal Developer Dashboard](https://developer.
 
 5. Open `./docker-compose.yml` and set MongoDB password:
 ```yaml
-version: "3.8"
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:7.0.12 # Update mongo version if necessary
     command: mongod --quiet --logpath /dev/null
     restart: always
     environment:
@@ -1210,7 +1209,16 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
 
   mi-backend:
     build:
@@ -1221,7 +1229,10 @@ services:
     ports:
       - 4004:4004
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     volumes:
       - cdn:/var/www/cdn/movinin
       - backend_logs:/movinin/backend/logs
@@ -1252,7 +1263,7 @@ volumes:
   mongodb_data:
   mongodb_config:
   backend_logs:
-
+  redis_data:
 ```
 
 If you want to use MongoDB Atlas, remove `mongo` container. Otherwise, replace `PASSWORD` with the password that you have set in `MI_DB_URI` in `./backend/.env.docker`.
@@ -1435,7 +1446,16 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
 
   mi-backend:
     build:
@@ -1470,7 +1490,10 @@ services:
       context: .
       dockerfile: ./frontend/Dockerfile
     depends_on:
-      - mi-backend
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
     ports:
       - 8081:80
       - 8443:443
@@ -1484,6 +1507,7 @@ volumes:
   mongodb_data:
   mongodb_config:
   backend_logs:
+  redis_data:
 ```
 
 Rebuild and run Docker image:
