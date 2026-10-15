@@ -644,7 +644,7 @@ export const getBooking = async (req: Request, res: Response) => {
           model: 'User',
         },
       })
-      .populate<{ renter: env.User }>('renter')
+      .populate<{ renter: env.User }>('renter', '-password -expireAt')
       .lean()
 
     if (booking) {
@@ -745,10 +745,6 @@ export const getBookings = async (req: Request, res: Response) => {
     let keyword = (body.filter && body.filter.keyword) || ''
     const options = 'i'
 
-    const $match: mongoose.QueryFilter<any> = {
-      $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }, { expireAt: null }],
-    }
-
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
@@ -760,10 +756,15 @@ export const getBookings = async (req: Request, res: Response) => {
     if (sessionUser.type === movininTypes.UserType.Agency) {
       agencies = [new mongoose.Types.ObjectId(sessionUserId)]
     }
+    // end of security check
+
+    const $match: mongoose.QueryFilter<any> = {
+      $and: [{ 'agency._id': { $in: agencies } }, { status: { $in: statuses } }, { expireAt: null }],
+    }
+
     if (sessionUser.type === movininTypes.UserType.User) {
       $match.$and!.push({ 'renter._id': { $eq: new mongoose.Types.ObjectId(sessionUser._id) } })
     }
-    // end of security check
 
     // if (user) {
     //   $match.$and!.push({
@@ -899,6 +900,12 @@ export const getBookings = async (req: Request, res: Response) => {
               $match: {
                 $expr: { $eq: ['$_id', '$$renterId'] },
               },
+            },
+            {
+              $project: {
+                password: 0,
+                expireAt: 0,
+              }
             },
           ],
           as: 'renter',

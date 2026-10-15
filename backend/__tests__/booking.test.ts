@@ -794,3 +794,112 @@ describe('DELETE /api/delete-temp-booking', () => {
     }
   })
 })
+
+describe('Security Regression Tests - Issue #124 Equivalent', () => {
+  let agencyAId: string
+  let agencyAToken: string
+  let agencyBId: string
+  let agencyBToken: string
+  let bookingBId: string
+
+  beforeAll(async () => {
+    // Create Agency A
+    const nameA = testHelper.getAgencyName()
+    agencyAId = await testHelper.createAgency(`${nameA}@testA.movinin.io`, nameA)
+    agencyAToken = await testHelper.generateToken(agencyAId)
+
+    // Create Agency B
+    const nameB = testHelper.getAgencyName()
+    agencyBId = await testHelper.createAgency(`${nameB}@testB.movinin.io`, nameB)
+    agencyBToken = await testHelper.generateToken(agencyBId)
+
+   const propertyB = new Property({
+      name: 'Agency B Property',
+      agency: agencyBId,
+      type: movininTypes.PropertyType.House,
+      description: 'Test Property B',
+      image: 'house.jpg',
+      images: [],
+      bedrooms: 2,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 1,
+      size: 100,
+      petsAllowed: false,
+      furnished: true,
+      aircon: true,
+      minimumAge: 21,
+      location: LOCATION_ID,
+      price: 1500,
+      cancellation: 0,
+      available: true,
+      rentalTerm: movininTypes.RentalTerm.Daily,
+    })
+    await propertyB.save()
+
+    // Create a booking for Agency B
+    const bookingB = new Booking({
+      agency: agencyBId,
+      property: propertyB._id,
+      renter: RENTER1_ID,
+      location: LOCATION_ID,
+      from: new Date(2025, 0, 1),
+      to: new Date(2025, 0, 5),
+      status: movininTypes.BookingStatus.Reserved,
+      price: 1500,
+    })
+    await bookingB.save()
+    bookingBId = bookingB._id.toString()
+  })
+
+  afterAll(async () => {
+    await Booking.deleteOne({ _id: bookingBId })
+    await Property.deleteMany({ agency: agencyBId })
+    await testHelper.deleteAgency(agencyAId)
+    await testHelper.deleteAgency(agencyBId)
+  })
+
+  it("should prevent Agency A from retrieving Agency B's bookings via client-supplied agencies field", async () => {
+    const payload: movininTypes.GetBookingsPayload = {
+      agencies: [agencyBId], // Agency A attempts to query Agency B's ID
+      statuses: [movininTypes.BookingStatus.Reserved],
+    }
+
+    const res = await request(app)
+      .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
+      .set(env.X_ACCESS_TOKEN, agencyAToken)
+      .send(payload)
+
+    expect(res.statusCode).toBe(200)
+    // Agency A should receive 0 bookings belonging to Agency B
+    expect(res.body[0].resultData.length).toBe(0)
+  })
+
+  it('should not disclose renter password in POST /api/bookings list endpoint', async () => {
+    const payload: movininTypes.GetBookingsPayload = {
+      agencies: [agencyBId],
+      statuses: [movininTypes.BookingStatus.Reserved],
+    }
+
+    const res = await request(app)
+      .post(`/api/bookings/${testHelper.PAGE}/${testHelper.SIZE}/${testHelper.LANGUAGE}`)
+      .set(env.X_ACCESS_TOKEN, agencyBToken)
+      .send(payload)
+
+    expect(res.statusCode).toBe(200)
+    expect(res.body[0].resultData.length).toBeGreaterThan(0)
+    const booking = res.body[0].resultData[0]
+    expect(booking.renter).toBeDefined()
+    expect(booking.renter.password).toBeUndefined()
+  })
+
+  it('should not disclose renter password in GET /api/booking/:id detail endpoint', async () => {
+    const res = await request(app)
+      .get(`/api/booking/${bookingBId}/${testHelper.LANGUAGE}`)
+      .set(env.X_ACCESS_TOKEN, agencyBToken)
+
+    expect(res.statusCode).toBe(200)
+    expect(res.body.renter).toBeDefined()
+    expect(res.body.renter.password).toBeUndefined()
+  })
+})
