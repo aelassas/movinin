@@ -13,7 +13,7 @@ import {
   List,
   ListItemIcon,
   ListItemText,
-  ListItem
+  ListItemButton
 } from '@mui/material'
 import {
   Menu as MenuIcon,
@@ -280,7 +280,7 @@ const Header = ({
           <>
             <Drawer open={isSideMenuOpen} onClose={handleSideMenuClose} className="menu side-menu">
               <List sx={classes.list}>
-                <ListItem
+                <ListItemButton
                   onClick={() => {
                     navigate('/')
                     handleSideMenuClose()
@@ -288,8 +288,8 @@ const Header = ({
                 >
                   <ListItemIcon><DashboardIcon /></ListItemIcon>
                   <ListItemText primary={strings.DASHBOARD} />
-                </ListItem>
-                <ListItem
+                </ListItemButton>
+                <ListItemButton
                   onClick={() => {
                     navigate('/scheduler')
                     handleSideMenuClose()
@@ -297,8 +297,8 @@ const Header = ({
                 >
                   <ListItemIcon><SchedulerIcon /></ListItemIcon>
                   <ListItemText primary={strings.SCHEDULER} />
-                </ListItem>
-                <ListItem
+                </ListItemButton>
+                <ListItemButton
                   onClick={() => {
                     navigate('/agencies')
                     handleSideMenuClose()
@@ -306,8 +306,8 @@ const Header = ({
                 >
                   <ListItemIcon><AgenciesIcon /></ListItemIcon>
                   <ListItemText primary={strings.AGENCIES} />
-                </ListItem>
-                <ListItem
+                </ListItemButton>
+                <ListItemButton
                   onClick={() => {
                     navigate('/countries')
                     handleSideMenuClose()
@@ -315,8 +315,8 @@ const Header = ({
                 >
                   <ListItemIcon><CountriesIcon /></ListItemIcon>
                   <ListItemText primary={strings.COUNTRIES} />
-                </ListItem>
-                <ListItem
+                </ListItemButton>
+                <ListItemButton
                   onClick={() => {
                     navigate('/locations')
                     handleSideMenuClose()
@@ -324,8 +324,8 @@ const Header = ({
                 >
                   <ListItemIcon><LocationsIcon /></ListItemIcon>
                   <ListItemText primary={strings.LOCATIONS} />
-                </ListItem>
-                <ListItem
+                </ListItemButton>
+                <ListItemButton
                   onClick={() => {
                     navigate('/properties')
                     handleSideMenuClose()
@@ -333,8 +333,8 @@ const Header = ({
                 >
                   <ListItemIcon><PropertiesIcon /></ListItemIcon>
                   <ListItemText primary={strings.PROPERTIES} />
-                </ListItem>
-                <ListItem
+                </ListItemButton>
+                <ListItemButton
                   onClick={() => {
                     navigate('/users')
                     handleSideMenuClose()
@@ -342,8 +342,8 @@ const Header = ({
                 >
                   <ListItemIcon><UsersIcon /></ListItemIcon>
                   <ListItemText primary={strings.USERS} />
-                </ListItem>
-                <ListItem
+                </ListItemButton>
+                <ListItemButton
                   onClick={() => {
                     navigate('about/')
                     handleSideMenuClose()
@@ -351,8 +351,8 @@ const Header = ({
                 >
                   <ListItemIcon><AboutIcon /></ListItemIcon>
                   <ListItemText primary={strings.ABOUT} />
-                </ListItem>
-                <ListItem
+                </ListItemButton>
+                <ListItemButton
                   onClick={() => {
                     navigate('/tos')
                     handleSideMenuClose()
@@ -360,8 +360,8 @@ const Header = ({
                 >
                   <ListItemIcon><TosIcon /></ListItemIcon>
                   <ListItemText primary={strings.TOS} />
-                </ListItem>
-                <ListItem
+                </ListItemButton>
+                <ListItemButton
                   onClick={() => {
                     navigate('/contact')
                     handleSideMenuClose()
@@ -369,7 +369,7 @@ const Header = ({
                 >
                   <ListItemIcon><MailIcon /></ListItemIcon>
                   <ListItemText primary={strings.CONTACT} />
-                </ListItem>
+                </ListItemButton>
               </List>
             </Drawer>
           </>
