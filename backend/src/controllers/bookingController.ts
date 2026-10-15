@@ -644,7 +644,10 @@ export const getBooking = async (req: Request, res: Response) => {
           model: 'User',
         },
       })
-      .populate<{ renter: env.User }>('renter', '-password -expireAt')
+      .populate<{ renter: env.UserInfo }>({
+        path: 'renter',
+        select: '_id fullName avatar',
+      })
       .lean()
 
     if (booking) {
@@ -652,7 +655,7 @@ export const getBooking = async (req: Request, res: Response) => {
       const isValidSession = !!sessionId && booking.sessionId === sessionId
 
       // 2. Role-Based Authorization Check
-      const isOwner = !!sessionUserId && booking.renter._id.toString() === sessionUserId
+      const isOwner = !!sessionUserId && booking.renter._id?.toString() === sessionUserId
       const isAgency = !!sessionUser && sessionUser.type === movininTypes.UserType.Agency && booking.agency._id?.toString() === sessionUserId
       const isAdmin = !!sessionUser && sessionUser.type === movininTypes.UserType.Admin
 
@@ -902,10 +905,7 @@ export const getBookings = async (req: Request, res: Response) => {
               },
             },
             {
-              $project: {
-                password: 0,
-                expireAt: 0,
-              }
+              $project: { _id: 1, fullName: 1, avatar: 1 },
             },
           ],
           as: 'renter',
