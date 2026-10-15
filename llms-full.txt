@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-10-15T13:02:55Z
+> Generated on: 2026-10-15T13:40:36Z
 
 ---
 
@@ -1589,6 +1589,9 @@ MI_DB_SSL_CERT=/etc/ssl/movinin.pem
 MI_DB_SSL_CA=/etc/ssl/movinin.pem
 MI_DB_DEBUG=true
 MI_DB_SERVER_SIDE_JAVASCRIPT=false
+
+# Redis
+MI_REDIS_URL=redis://127.0.0.1:6379
 
 # Auth
 MI_COOKIE_SECRET=COOKIE_SECRET
