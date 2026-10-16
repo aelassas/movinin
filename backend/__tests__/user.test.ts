@@ -5,6 +5,7 @@ import url from 'url'
 import path from 'path'
 import asyncFs from 'node:fs/promises'
 import { nanoid } from 'nanoid'
+import bcrypt from 'bcrypt'
 import * as movininTypes from ':movinin-types'
 import app from '../src/app'
 import * as databaseHelper from '../src/utils/databaseHelper'
@@ -335,6 +336,144 @@ describe('POST /api/create-user', () => {
     expect(deleteRes.deletedCount).toBe(1)
 
     await testHelper.signout(token)
+  })
+})
+
+describe('POST /api/create-user authorization', () => {
+  const agencyPassword = 'Synthetic-User-Creation-Password!'
+  const agencyEmail = testHelper.GetRandomEmail()
+  const adminAllowedCandidateEmails = [
+    testHelper.GetRandomEmail(),
+    testHelper.GetRandomEmail(),
+    testHelper.GetRandomEmail(),
+  ]
+  const adminCandidateEmail = testHelper.GetRandomEmail()
+  const agencyCandidateEmail = testHelper.GetRandomEmail()
+  const foreignCandidateEmail = testHelper.GetRandomEmail()
+  const driverCandidateEmail = testHelper.GetRandomEmail()
+  const invalidRoleCandidateEmail = testHelper.GetRandomEmail()
+  let agencyId: string
+
+  beforeAll(async () => {
+    agencyId = await testHelper.createAgency(agencyEmail, 'User Creation Test Agency')
+  })
+
+  afterAll(async () => {
+    await User.deleteMany({
+      email: {
+        $in: [
+          ...adminAllowedCandidateEmails,
+          adminCandidateEmail,
+          agencyCandidateEmail,
+          foreignCandidateEmail,
+          driverCandidateEmail,
+          invalidRoleCandidateEmail,
+        ],
+      },
+    })
+    if (agencyId) {
+      await testHelper.deleteAgency(agencyId)
+    }
+  })
+
+  const createPayload = (email: string, type?: string, agency?: string): movininTypes.CreateUserPayload => ({
+    email,
+    fullName: 'Synthetic User Creation Candidate',
+    language: testHelper.LANGUAGE,
+    phone: '',
+    location: '',
+    bio: '',
+    password: agencyPassword,
+    type,
+    agency,
+  })
+
+  it('restricts agency-created roles and binds permitted users to the authenticated agency', async () => {
+    const agencyToken = await testHelper.generateToken(agencyId)
+
+    let response = await request(app)
+      .post('/api/create-user')
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+      .send(createPayload(adminCandidateEmail, movininTypes.UserType.Admin))
+    expect(response.statusCode).toBe(403)
+    expect(await User.findOne({ email: adminCandidateEmail })).toBeNull()
+
+    response = await request(app)
+      .post('/api/create-user')
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+      .send(createPayload(agencyCandidateEmail, movininTypes.UserType.Agency))
+    expect(response.statusCode).toBe(403)
+    expect(await User.findOne({ email: agencyCandidateEmail })).toBeNull()
+
+    response = await request(app)
+      .post('/api/create-user')
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+      .send(createPayload(foreignCandidateEmail, movininTypes.UserType.User, testHelper.GetRandromObjectIdAsString()))
+    expect(response.statusCode).toBe(403)
+    expect(await User.findOne({ email: foreignCandidateEmail })).toBeNull()
+
+    response = await request(app)
+      .post('/api/create-user')
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+      .send(createPayload(driverCandidateEmail, movininTypes.UserType.User))
+    expect(response.statusCode).toBe(200)
+    const driver = await User.findOne({ email: driverCandidateEmail })
+    expect(driver).not.toBeNull()
+    expect(driver?.type).toBe(movininTypes.UserType.User)
+    expect(driver?.agency?.toString()).toBe(agencyId)
+    expect(driver?.password).not.toBe(agencyPassword)
+    expect(await bcrypt.compare(agencyPassword, driver!.password!)).toBe(true)
+
+    response = await request(app)
+      .post('/api/create-user')
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+      .send(createPayload(invalidRoleCandidateEmail, 'super-admin'))
+    expect(response.statusCode).toBe(400)
+    expect(await User.findOne({ email: invalidRoleCandidateEmail })).toBeNull()
+  })
+
+  it('rejects ordinary, unauthenticated, and invalid-token callers', async () => {
+    const payload = createPayload(testHelper.GetRandomEmail(), movininTypes.UserType.User)
+    const userToken = await testHelper.generateToken(testHelper.getUserId())
+
+    const ordinaryUserResponse = await request(app)
+      .post('/api/create-user')
+      .set(env.X_ACCESS_TOKEN, userToken)
+      .send(payload)
+    expect(ordinaryUserResponse.statusCode).toBe(403)
+
+    const unauthenticatedResponse = await request(app)
+      .post('/api/create-user')
+      .send(payload)
+    expect(unauthenticatedResponse.statusCode).toBe(403)
+
+    const invalidTokenResponse = await request(app)
+      .post('/api/create-user')
+      .set(env.X_ACCESS_TOKEN, 'invalid-synthetic-token')
+      .send(payload)
+    expect(invalidTokenResponse.statusCode).toBe(401)
+  })
+
+  it('allows an authenticated Admin to create an allowed account type', async () => {
+    const adminToken = await testHelper.signinAsAdmin()
+    const allowedTypes = [movininTypes.UserType.User, movininTypes.UserType.Agency, movininTypes.UserType.Admin]
+
+    for (const [index, type] of allowedTypes.entries()) {
+      const email = adminAllowedCandidateEmails[index]
+      const response = await request(app)
+        .post('/api/create-user')
+        .set(env.X_ACCESS_TOKEN, adminToken)
+        .send(createPayload(email, type))
+
+      expect(response.statusCode).toBe(200)
+      const createdUser = await User.findOne({ email })
+      expect(createdUser).not.toBeNull()
+      expect(createdUser?.type).toBe(type)
+      expect(createdUser?.password).not.toBe(agencyPassword)
+      expect(await bcrypt.compare(agencyPassword, createdUser!.password!)).toBe(true)
+    }
+
+    await testHelper.signout(adminToken)
   })
 })
 

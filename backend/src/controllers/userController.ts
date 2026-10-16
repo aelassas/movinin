@@ -222,6 +222,37 @@ export const create = async (req: Request, res: Response) => {
       res.status(403).send('Forbidden: You cannot create user')
       return
     }
+    if (
+      sessionUser.type !== movininTypes.UserType.Admin
+      && sessionUser.type !== movininTypes.UserType.Agency
+    ) {
+      logger.error(`[user.create] Unsupported caller role ${sessionUser.type}`)
+      res.status(403).send('Forbidden: You cannot create user')
+      return
+    }
+
+    const targetType = body.type ?? movininTypes.UserType.User
+    if (!Object.values(movininTypes.UserType).includes(targetType as movininTypes.UserType)) {
+      res.status(400).send('Invalid user type')
+      return
+    }
+    if (sessionUser.type === movininTypes.UserType.Agency) {
+      if (targetType !== movininTypes.UserType.User) {
+        logger.error(`[user.create] Agency ${sessionUserId} attempted to create user type ${targetType}`)
+        res.status(403).send('Forbidden: Agencies can only create users')
+        return
+      }
+      if (body.agency && (
+        !helper.isValidObjectId(body.agency)
+        || !new mongoose.Types.ObjectId(body.agency).equals(sessionUser._id)
+      )) {
+        logger.error(`[user.create] Agency ${sessionUserId} attempted to assign a user to another agency`)
+        res.status(403).send('Forbidden: You cannot assign users to another agency')
+        return
+      }
+      body.agency = sessionUser._id.toString()
+    }
+    body.type = targetType
     // end of security check
 
     body.verified = false
