@@ -24,7 +24,7 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
       mongo:
-        condition: service_healthy
+        condition: service_started
 
   redis:
     image: redis:7-alpine
@@ -44,7 +44,7 @@ services:
       - 4004:4004
     depends_on:
       mongo:
-        condition: service_healthy
+        condition: service_started
       redis:
         condition: service_started
     volumes:
