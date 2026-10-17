@@ -12,6 +12,11 @@ services:
     volumes:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --username admin --password admin --authenticationDatabase admin --eval \"try { rs.status().ok } catch (error) { db.runCommand({ ping: 1 }).ok }\" | grep -q 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
 
   mongo-express:
     image: mongo-express:latest
@@ -24,7 +29,7 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: admin
     depends_on:
       mongo:
-        condition: service_started
+        condition: service_healthy
 
   redis:
     image: redis:7-alpine
@@ -33,6 +38,11 @@ services:
       - 6379:6379
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   mi-backend:
     build:
@@ -44,9 +54,9 @@ services:
       - 4004:4004
     depends_on:
       mongo:
-        condition: service_started
+        condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - cdn:/var/www/cdn/movinin
       - backend_logs:/movinin/backend/logs
@@ -55,6 +65,7 @@ services:
     build:
       context: .
       dockerfile: ./admin/Dockerfile
+    restart: always
     depends_on:
       - mi-backend
     ports:
@@ -64,6 +75,7 @@ services:
     build:
       context: .
       dockerfile: ./frontend/Dockerfile
+    restart: always
     depends_on:
       - mi-backend
     ports:
