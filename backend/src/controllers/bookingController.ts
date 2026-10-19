@@ -219,7 +219,7 @@ export const checkout = async (req: Request, res: Response) => {
       toDate, {
       cancellation: body.booking.cancellation,
     })
-    const expectedBasePriceUsd = await movininHelper.convertPrice(expectedBasePrice, env.BASE_CURRENCY, env.BASE_CURRENCY)
+    const expectedBasePriceInBaseCurrency = await movininHelper.convertPrice(expectedBasePrice, env.BASE_CURRENCY, env.BASE_CURRENCY)
 
     if (body.payLater) {
       // Server explicitly decides payment status for payLater
@@ -254,7 +254,7 @@ export const checkout = async (req: Request, res: Response) => {
         }
 
         // Validate currency and amount
-        const expectedAmountCents = Math.floor(expectedBasePriceUsd * 100)
+        const expectedAmountCents = Math.floor(expectedBasePriceInBaseCurrency * 100)
         if (paymentIntent.currency.toLowerCase() !== env.BASE_CURRENCY.toLowerCase()) {
           const message = `Payment currency mismatch: expected ${env.BASE_CURRENCY}, got ${paymentIntent.currency}`
           logger.error(message, body)
@@ -306,7 +306,7 @@ export const checkout = async (req: Request, res: Response) => {
     const { language } = user
     i18n.locale = language
 
-    body.booking.price = expectedBasePriceUsd
+    body.booking.price = expectedBasePriceInBaseCurrency
     const booking = new Booking(body.booking)
 
     await booking.save()
