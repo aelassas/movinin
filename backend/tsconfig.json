@@ -31,6 +31,8 @@
     "paths": {
       // "@/*": ["./src/*"],
       ":movinin-types": ["../packages/movinin-types"],
+      ":movinin-helper": ["../packages/movinin-helper"],
+      ":currency-converter": ["../packages/currency-converter"],
     },                                                   /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
@@ -114,5 +116,7 @@
   ],
   "references": [
     { "path": "../packages/movinin-types" },
+    { "path": "../packages/movinin-helper" },
+    { "path": "../packages/currency-converter" },
   ],
 }

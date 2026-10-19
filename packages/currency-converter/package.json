@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "rimraf ./tsconfig.tsbuildinfo ./index.js ./index.d.ts ./check.js ./check.d.ts && tsc --build --verbose",
+    "build": "rimraf ./tsconfig.tsbuildinfo ./index.js ./index.d.ts ./index.d.ts.map ./check.js ./check.d.ts ./check.d.ts.map && tsc --build --verbose",
     "check": "npm run build && node check.js"
   },
   "author": "Akram El Assas",

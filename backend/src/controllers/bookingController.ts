@@ -4,6 +4,7 @@ import { Expo, ExpoPushMessage, ExpoPushTicket } from 'expo-server-sdk'
 import { Request, Response } from 'express'
 import nodemailer from 'nodemailer'
 import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import i18n from '../lang/i18n'
 import Booking from '../models/Booking'
 import User from '../models/User'
@@ -203,7 +204,27 @@ export const checkout = async (req: Request, res: Response) => {
       return
     }
 
-    if (!body.payLater) {
+    // Verify property existence and calculate expected total
+    const propertyObj = await Property.findById(body.booking.property)
+    if (!propertyObj) {
+      res.status(400).send('Property not found')
+      return
+    }
+
+    const fromDate = new Date(body.booking.from)
+    const toDate = new Date(body.booking.to)
+    const expectedBasePrice = movininHelper.calculateTotalPrice(
+      propertyObj.toObject() as unknown as movininTypes.Property,
+      fromDate,
+      toDate, {
+      cancellation: body.booking.cancellation,
+    })
+    const expectedBasePriceUsd = await movininHelper.convertPrice(expectedBasePrice, env.BASE_CURRENCY, env.BASE_CURRENCY)
+
+    if (body.payLater) {
+      // Server explicitly decides payment status for payLater
+      body.booking.status = movininTypes.BookingStatus.Pending
+    } else {
       const { payPal, paymentIntentId, sessionId } = body
 
       if (!payPal && !paymentIntentId && !sessionId) {
@@ -215,9 +236,34 @@ export const checkout = async (req: Request, res: Response) => {
       }
 
       if (paymentIntentId) {
+        // Replay check: Ensure paymentIntentId hasn't already been used for another booking
+        const existingBooking = await Booking.findOne({ paymentIntentId })
+        if (existingBooking) {
+          const message = `PaymentIntent ${paymentIntentId} has already been used`
+          logger.error(message, body)
+          res.status(400).send(message)
+          return
+        }
+
         const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
         if (paymentIntent.status !== 'succeeded') {
           const message = `Payment failed: ${paymentIntent.status}`
+          logger.error(message, body)
+          res.status(400).send(message)
+          return
+        }
+
+        // Validate currency and amount
+        const expectedAmountCents = Math.floor(expectedBasePriceUsd * 100)
+        if (paymentIntent.currency.toLowerCase() !== env.BASE_CURRENCY.toLowerCase()) {
+          const message = `Payment currency mismatch: expected ${env.BASE_CURRENCY}, got ${paymentIntent.currency}`
+          logger.error(message, body)
+          res.status(400).send(message)
+          return
+        }
+
+        if (paymentIntent.amount !== expectedAmountCents) {
+          const message = `Payment amount mismatch: expected ${expectedAmountCents}, got ${paymentIntent.amount}`
           logger.error(message, body)
           res.status(400).send(message)
           return
@@ -260,6 +306,7 @@ export const checkout = async (req: Request, res: Response) => {
     const { language } = user
     i18n.locale = language
 
+    body.booking.price = expectedBasePriceUsd
     const booking = new Booking(body.booking)
 
     await booking.save()

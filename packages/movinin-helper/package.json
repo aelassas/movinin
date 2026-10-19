@@ -5,13 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "rimraf ./tsconfig.tsbuildinfo ./index.js ./index.d.ts && tsc --build --verbose"
+    "build": "rimraf ./tsconfig.tsbuildinfo ./index.js ./index.d.ts ./index.d.ts.map && tsc --build --verbose && tsc-alias"
   },
   "author": "Akram El Assas",
   "license": "ISC",
   "devDependencies": {
     "rimraf": "^5.0.1",
-    "typescript": "^5.2.2"
+    "tsc-alias": "^1.9.8",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@babel/runtime": "^7.26.0"

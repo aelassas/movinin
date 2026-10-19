@@ -2,10 +2,10 @@ import 'dotenv/config'
 import request from 'supertest'
 import { nanoid } from 'nanoid'
 import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import app from '../src/app'
 import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
-import * as authHelper from '../src/utils/authHelper'
 import Property from '../src/models/Property'
 import Booking from '../src/models/Booking'
 import User from '../src/models/User'
@@ -179,8 +179,18 @@ describe('POST /api/checkout', () => {
     // Test failed stripe payment
     payload.payLater = false
     const receiptEmail = testHelper.GetRandomEmail()
+
+    // Calculate actual expected amount in cents to pass validation
+    const prop = await Property.findById(PROPERTY1_ID)
+    const expectedBasePrice = movininHelper.calculateTotalPrice(
+      prop! as unknown as movininTypes.Property,
+      new Date(2024, 3, 1),
+      new Date(2024, 3, 4),
+      { cancellation: true }
+    )
+
     const paymentIntentPayload: movininTypes.CreatePaymentPayload = {
-      amount: 534,
+      amount: expectedBasePrice,
       currency: 'usd',
       receiptEmail,
       customerName: 'John Doe',
@@ -312,6 +322,154 @@ describe('POST /api/checkout', () => {
     bookings = await Booking.find({ renter: { $in: [RENTER1_ID, RENTER2_ID] } })
     for (const booking of bookings) {
       await testHelper.deleteNotifications(booking._id.toString())
+    }
+  })
+})
+
+describe('Security Regression Tests - Issue #28 Checkout Payment Binding', () => {
+  it('should ignore client-supplied Paid status when payLater is enabled', async () => {
+    const payload: movininTypes.CheckoutPayload = {
+      booking: {
+        agency: AGENCY_ID,
+        property: PROPERTY1_ID,
+        renter: RENTER1_ID,
+        location: LOCATION_ID,
+        from: new Date(2025, 5, 1),
+        to: new Date(2025, 5, 4),
+        status: movininTypes.BookingStatus.Paid, // Client attempting to tamper with status
+        cancellation: false,
+        price: 3000,
+      },
+      payLater: true,
+    }
+
+    const res = await request(app)
+      .post('/api/checkout')
+      .send(payload)
+
+    expect(res.statusCode).toBe(200)
+    const booking = await Booking.findById(res.body.bookingId)
+    expect(booking).not.toBeNull()
+    // Server must force status to Pending, ignoring client's requested "Paid"
+    expect(booking?.status).toBe(movininTypes.BookingStatus.Pending)
+    await Booking.deleteOne({ _id: res.body.bookingId })
+  })
+
+  it('should reject payment checkout if amount does not match expected property price', async () => {
+    // Create Payment Intent for $10.00 USD (1000 cents)
+    const receiptEmail = testHelper.GetRandomEmail()
+    const paymentIntentPayload: movininTypes.CreatePaymentPayload = {
+      amount: 10,
+      currency: 'usd',
+      receiptEmail,
+      customerName: 'Underpaid Attacker',
+      description: 'Underpaid Test Intent',
+      locale: 'en',
+      name: 'Test Underpay',
+    }
+    const piRes = await request(app)
+      .post('/api/create-payment-intent')
+      .send(paymentIntentPayload)
+    expect(piRes.statusCode).toBe(200)
+    const { paymentIntentId, customerId } = piRes.body
+
+    await stripeAPI.paymentIntents.confirm(paymentIntentId, {
+      payment_method: 'pm_card_visa',
+    })
+
+    // Property price is 1000 per day x 3 days = 3000 USD
+    const payload: movininTypes.CheckoutPayload = {
+      booking: {
+        agency: AGENCY_ID,
+        property: PROPERTY1_ID,
+        renter: RENTER1_ID,
+        location: LOCATION_ID,
+        from: new Date(2025, 6, 1),
+        to: new Date(2025, 6, 4),
+        status: movininTypes.BookingStatus.Pending,
+        cancellation: false,
+        price: 3000,
+      },
+      payLater: false,
+      paymentIntentId,
+      customerId,
+    }
+
+    const res = await request(app)
+      .post('/api/checkout')
+      .send(payload)
+
+    expect(res.statusCode).toBe(400)
+    expect(res.text).toContain('Payment amount mismatch')
+
+    const customer = await stripeAPI.customers.retrieve(customerId)
+    if (customer) {
+      await stripeAPI.customers.del(customerId)
+    }
+  })
+
+  it('should reject payment checkout if paymentIntentId is replayed', async () => {
+    // Create Property with 0 minimum price for predictable amount
+    const prop = await Property.findById(PROPERTY1_ID)
+    const expectedBasePrice = movininHelper.calculateTotalPrice(
+      prop! as unknown as movininTypes.Property, 
+      new Date(2025, 7, 1), 
+      new Date(2025, 7, 4), 
+      { cancellation: false })
+
+    const receiptEmail = testHelper.GetRandomEmail()
+    const paymentIntentPayload: movininTypes.CreatePaymentPayload = {
+      amount: expectedBasePrice,
+      currency: 'usd',
+      receiptEmail,
+      customerName: 'Replay Tester',
+      description: 'Valid Intent',
+      locale: 'en',
+      name: 'Test Replay',
+    }
+    const piRes = await request(app)
+      .post('/api/create-payment-intent')
+      .send(paymentIntentPayload)
+    const { paymentIntentId, customerId } = piRes.body
+
+    await stripeAPI.paymentIntents.confirm(paymentIntentId, {
+      payment_method: 'pm_card_visa',
+    })
+
+    const payload: movininTypes.CheckoutPayload = {
+      booking: {
+        agency: AGENCY_ID,
+        property: PROPERTY1_ID,
+        renter: RENTER1_ID,
+        location: LOCATION_ID,
+        from: new Date(2025, 7, 1),
+        to: new Date(2025, 7, 4),
+        status: movininTypes.BookingStatus.Pending,
+        cancellation: false,
+        price: expectedBasePrice,
+      },
+      payLater: false,
+      paymentIntentId,
+      customerId,
+    }
+
+    // First checkout succeeds
+    const firstRes = await request(app)
+      .post('/api/checkout')
+      .send(payload)
+    expect(firstRes.statusCode).toBe(200)
+
+    // Replay attack attempt with same paymentIntentId fails
+    const secondRes = await request(app)
+      .post('/api/checkout')
+      .send(payload)
+    expect(secondRes.statusCode).toBe(400)
+    expect(secondRes.text).toContain('already been used')
+
+    await Booking.deleteOne({ _id: firstRes.body.bookingId })
+    const customer = await stripeAPI.customers.retrieve(customerId)
+    if (customer) {
+      await stripeAPI.customers.del(customerId)
     }
   })
 })

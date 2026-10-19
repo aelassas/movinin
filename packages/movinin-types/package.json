@@ -5,13 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "rimraf ./index.js ./index.d.ts && tsc"
+    "build": "rimraf ./index.js ./index.d.ts  ./index.d.ts.map tsconfig.tsbuildinfo && tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "rimraf": "^5.0.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.9.3"
   }
 }
