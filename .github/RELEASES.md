@@ -1,5 +1,32 @@
 # Releases
 
+## [Movin' In 7.2](https://github.com/aelassas/movinin/releases/tag/v7.2) – 2026-10-21
+
+#### What's Changed
+* feat(backend): add deterministic development seed and cleanup commands (#22,#24)
+* fix(security): add distributed Redis Token Bucket rate limiting on authentication routes
+* fix(backend): prevent users from requesting cancellation of bookings they do not own
+* fix(backend): high - PayPal checkout trusts client-supplied amount and does not reconcile it with the booking price
+* fix(backend): Broken Access Control in Agency Bookings and Customer Password Hash Disclosure
+* fix(backend): prevent agency privilege escalation
+* fix(backend): /api/checkout does not sufficiently bind payment to booking and accepts client-controlled paid state (#28)
+* fix(admin,frontend): Fix contact form responsiveness on narrow mobile screens (#25)
+* fix(frontend): misleading and missing accessible labels in the frontend header (#23)
+* fix(frontend): improve drawer keyboard accessibility (#27)
+
+#### New Contributors
+* @PriyanshuDolwani made their first contribution in https://github.com/aelassas/movinin/pull/24
+* @payalvts06 made their first contribution in https://github.com/aelassas/movinin/pull/27
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v7.1...v7.2
+
+### Assets
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.2/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v7.2)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v7.2)
+
 ## [Movin' In 7.1](https://github.com/aelassas/movinin/releases/tag/v7.1) – 2026-10-11
 
 * fix(admin): TypeError: w.default is not a function in CreateProperty page (Rolldown/html-to-draftjs incompatibility) (#20)
