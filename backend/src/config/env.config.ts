@@ -553,6 +553,7 @@ export interface User extends Document {
   blacklisted?: boolean
   payLater?: boolean
   customerId?: string
+  savedProperties?: Types.ObjectId[]
   expireAt?: Date
 }
 

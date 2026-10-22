@@ -31,6 +31,9 @@ const routes = {
   verifyRecaptcha: '/api/verify-recaptcha/:token/:ip',
   sendEmail: '/api/send-email',
   hasPassword: '/api/has-password/:id',
+  getSavedProperties: '/api/saved-properties/:language',
+  saveProperty: '/api/saved-properties/:propertyId',
+  removeSavedProperty: '/api/saved-properties/:propertyId',
 }
 
 export default routes

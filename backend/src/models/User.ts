@@ -99,6 +99,10 @@ const userSchema = new Schema<env.User>(
     customerId: {
       type: String,
     },
+    savedProperties: {
+      type: [{ type: Schema.Types.ObjectId, ref: 'Property' }],
+      default: [],
+    },
     expireAt: {
       //
       // Non verified and active users created from checkout with Stripe are temporary and

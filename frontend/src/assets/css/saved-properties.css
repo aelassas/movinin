@@ -1,0 +1,19 @@
+.saved-properties-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 0 auto;
+  min-height: 60vh;
+  padding: 30px 12px 60px;
+}
+
+.saved-properties-page h1 {
+  color: #232323;
+  text-align: center;
+  margin: 20px 0 30px;
+}
+
+.saved-properties-empty {
+  text-align: center;
+  color: #666;
+}
