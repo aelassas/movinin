@@ -32,6 +32,7 @@ interface PropertyListProps {
   hideActions?: boolean
   sizeAuto?: boolean
   onLoad?: movininTypes.DataEvent<movininTypes.Property>
+  onSavedChange?: (propertyId: string, isSaved: boolean) => void
 }
 
 const PropertyList = ({
@@ -50,6 +51,7 @@ const PropertyList = ({
   hideActions,
   sizeAuto,
   onLoad,
+  onSavedChange,
 }: PropertyListProps) => {
   const [init, setInit] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -195,6 +197,7 @@ const PropertyList = ({
               hideAgency={hideAgency}
               hidePrice={hidePrice}
               hideActions={hideActions}
+              onSavedChange={onSavedChange}
             />
           ))}
 

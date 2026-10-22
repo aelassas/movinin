@@ -267,6 +267,7 @@ export interface User {
   accessToken?: string
   checked?: boolean
   customerId?: string
+  savedProperties?: string[]
 }
 
 export interface Option {

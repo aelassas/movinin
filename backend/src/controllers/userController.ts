@@ -1255,6 +1255,7 @@ export const getUser = async (req: Request, res: Response) => {
       blacklisted: 1,
       birthDate: 1,
       payLater: 1,
+      savedProperties: 1,
       customerId: 1,
     }).lean()
 
@@ -1825,5 +1826,126 @@ export const hasPassword = async (req: Request, res: Response) => {
   } catch (err) {
     logger.error(`[user.hasPassword] ${i18n.t('ERROR')} ${id}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
+  }
+}
+
+/**
+ * Return the authenticated customer, or reject non-customer accounts.
+ * Saved properties are a customer-only feature; agencies and admins must not
+ * be able to read or modify a customer's private list.
+ */
+const getSavedPropertiesCustomer = async (req: Request, res: Response): Promise<env.User | null> => {
+  const user = await User.findById(req.user?._id)
+  if (!user || user.type !== movininTypes.UserType.User) {
+    res.status(403).send('Forbidden: Saved properties are available to customers only')
+    return null
+  }
+  return user
+}
+
+/**
+ * Get saved properties for the authenticated customer.
+ */
+export const getSavedProperties = async (req: Request, res: Response) => {
+  const { language } = req.params
+
+  try {
+    const user = await getSavedPropertiesCustomer(req, res)
+    if (!user) {
+      return
+    }
+
+    const properties = await Property.find({
+      _id: { $in: user.savedProperties || [] },
+      hidden: false,
+    })
+      .populate<{ agency: env.UserInfo }>('agency')
+      .populate<{ location: env.LocationInfo }>({
+        path: 'location',
+        populate: {
+          path: 'values',
+          model: 'LocationValue',
+        },
+      })
+      .lean()
+
+    for (const property of properties) {
+      const { _id, fullName, avatar, payLater } = property.agency
+      property.agency = { _id, fullName, avatar, payLater }
+
+      const matchingLocation = property.location.values.find((value) => value.language === language)
+      property.location.name = matchingLocation?.value || property.location.values[0]?.value || ''
+    }
+
+    res.json(properties)
+  } catch (err) {
+    logger.error(`[user.getSavedProperties] ${i18n.t('ERROR')}`, err)
+    res.status(400).send(i18n.t('ERROR'))
+  }
+}
+
+/**
+ * Save a visible property for the authenticated customer.
+ */
+export const saveProperty = async (req: Request, res: Response) => {
+  const { propertyId } = req.params
+
+  try {
+    if (!helper.isValidObjectId(propertyId)) {
+      res.status(400).send('Invalid property id')
+      return
+    }
+
+    const user = await getSavedPropertiesCustomer(req, res)
+    if (!user) {
+      return
+    }
+
+    const property = await Property.findOne({ _id: propertyId, hidden: false }).select('_id').lean()
+    if (!property) {
+      res.status(404).send('Property not found')
+      return
+    }
+
+    await User.updateOne(
+      { _id: user._id, type: movininTypes.UserType.User },
+      { $addToSet: { savedProperties: property._id } },
+    )
+
+    const updatedUser = await User.findById(user._id, { savedProperties: 1 }).lean()
+    res.json({ savedProperties: (updatedUser?.savedProperties || []).map((id) => id.toString()) })
+  } catch (err) {
+    logger.error(`[user.saveProperty] ${i18n.t('ERROR')} ${propertyId}`, err)
+    res.status(400).send(i18n.t('ERROR'))
+  }
+}
+
+/**
+ * Remove a property from the authenticated customer's saved list.
+ */
+export const removeSavedProperty = async (req: Request, res: Response) => {
+  const { propertyId } = req.params
+
+  try {
+    if (!helper.isValidObjectId(propertyId)) {
+      res.status(400).send('Invalid property id')
+      return
+    }
+
+    const user = await getSavedPropertiesCustomer(req, res)
+    if (!user) {
+      return
+    }
+
+    await User.updateOne(
+      { _id: user._id, type: movininTypes.UserType.User },
+      { $pull: { savedProperties: new mongoose.Types.ObjectId(propertyId) } },
+    )
+
+    const updatedUser = await User.findById(user._id, { savedProperties: 1 }).lean()
+    res.json({ savedProperties: (updatedUser?.savedProperties || []).map((id) => id.toString()) })
+  } catch (err) {
+    logger.error(`[user.removeSavedProperty] ${i18n.t('ERROR')} ${propertyId}`, err)
+    res.status(400).send(i18n.t('ERROR'))
   }
 }

@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button } from '@mui/material'
+import { Button, IconButton, Tooltip } from '@mui/material'
+import { Favorite as FavoriteIcon, FavoriteBorder as FavoriteBorderIcon } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as UserService from '@/services/UserService'
 import * as PaymentService from '@/services/PaymentService'
+import * as SavedPropertyService from '@/services/SavedPropertyService'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/properties'
 import * as helper from '@/utils/helper'
+import { useUserContext, UserContextType } from '@/context/UserContext'
 import PropertyInfo from '@/components/PropertyInfo'
 import AgencyBadge from '@/components/AgencyBadge'
 
@@ -23,6 +26,7 @@ interface PropertyProps {
   hideAgency?: boolean
   hidePrice?: boolean
   hideActions?: boolean
+  onSavedChange?: (propertyId: string, isSaved: boolean) => void
 }
 
 const Property = ({
@@ -34,17 +38,49 @@ const Property = ({
   hideAgency,
   hidePrice,
   hideActions,
+  onSavedChange,
 }: PropertyProps) => {
   const navigate = useNavigate()
+  const { user, setUser } = useUserContext() as UserContextType
 
   const [language, setLanguage] = useState('')
   const [days, setDays] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [isSaved, setIsSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     setLanguage(UserService.getLanguage())
   }, [])
+
+  useEffect(() => {
+    setIsSaved(Boolean(user?.savedProperties?.includes(property._id)))
+  }, [user?.savedProperties, property._id])
+
+  const handleSavedToggle = async () => {
+    if (!user || user.type !== movininTypes.UserType.User) {
+      navigate('/sign-in')
+      return
+    }
+
+    try {
+      setSaving(true)
+      const response = isSaved
+        ? await SavedPropertyService.removeSavedProperty(property._id)
+        : await SavedPropertyService.saveProperty(property._id)
+      const nextSaved = response.savedProperties || []
+      const saved = nextSaved.includes(property._id)
+      setIsSaved(saved)
+      setUser({ ...user, savedProperties: nextSaved })
+      onSavedChange?.(property._id, saved)
+      helper.info(strings.SAVED_PROPERTY_UPDATED)
+    } catch (err) {
+      helper.error(err)
+    } finally {
+      setSaving(false)
+    }
+  }
 
   useEffect(() => {
     const fetchPrice = async () => {
@@ -101,6 +137,20 @@ const Property = ({
           !hideActions
           && (
             <div className="action">
+              {(!user || user.type === movininTypes.UserType.User) && (
+                <Tooltip title={isSaved ? strings.REMOVE_SAVED_PROPERTY : strings.SAVE_PROPERTY}>
+                  <span>
+                    <IconButton
+                      aria-label={isSaved ? strings.REMOVE_SAVED_PROPERTY : strings.SAVE_PROPERTY}
+                      onClick={handleSavedToggle}
+                      disabled={saving}
+                      size="large"
+                    >
+                      {isSaved ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              )}
               <Button
                 variant="outlined"
                 className="btn-margin-bottom btn-view"

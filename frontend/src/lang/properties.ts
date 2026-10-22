@@ -33,6 +33,11 @@ const strings = new LocalizedStrings({
     FURNISHED_TOOLTIP: 'Ce bien est meublé',
     YEARS: 'ans',
     BOOK: 'Réserver',
+    SAVE_PROPERTY: 'Enregistrer dans les favoris',
+    REMOVE_SAVED_PROPERTY: 'Retirer des favoris',
+    SAVED_PROPERTIES: 'Propriétés enregistrées',
+    EMPTY_SAVED_PROPERTIES: 'Vous n’avez pas encore enregistré de propriété.',
+    SAVED_PROPERTY_UPDATED: 'Liste des propriétés enregistrées mise à jour.',
     PETS_ALLOWED_TOOLTIP: 'Animaux domestiques autorisés',
   },
   en: {
@@ -66,6 +71,11 @@ const strings = new LocalizedStrings({
     FURNISHED_TOOLTIP: 'This property is furnished',
     YEARS: 'years',
     BOOK: 'Book now',
+    SAVE_PROPERTY: 'Save property',
+    REMOVE_SAVED_PROPERTY: 'Remove from saved properties',
+    SAVED_PROPERTIES: 'Saved properties',
+    EMPTY_SAVED_PROPERTIES: 'You have not saved any properties yet.',
+    SAVED_PROPERTY_UPDATED: 'Saved properties updated.',
     PETS_ALLOWED_TOOLTIP: 'Pets allowed',
   },
 })

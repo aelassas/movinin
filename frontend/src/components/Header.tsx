@@ -33,6 +33,7 @@ import {
   PersonOutline as SignUpIcon,
   PrivacyTip as PrivacyIcon,
   Cookie as CookiePolicyIcon,
+  Favorite as SavedPropertiesIcon,
 } from '@mui/icons-material'
 import { toast } from 'react-toastify'
 import { CircleFlag } from 'react-circle-flags'
@@ -41,6 +42,7 @@ import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as suStrings } from '@/lang/sign-up'
 import { strings } from '@/lang/header'
+import { strings as propertyStrings } from '@/lang/properties'
 import * as UserService from '@/services/UserService'
 import * as PaymentService from '@/services/PaymentService'
 import Avatar from './Avatar'
@@ -209,6 +211,11 @@ const Header = ({
     navigate('/settings')
   }
 
+  const handleSavedPropertiesClick = () => {
+    handleMenuClose()
+    navigate('/saved-properties')
+  }
+
   const handleSignout = async () => {
     await UserService.signout(true, false)
     handleMenuClose()
@@ -242,6 +249,12 @@ const Header = ({
       onClose={handleMenuClose}
       className="menu"
     >
+      {currentUser?.type === movininTypes.UserType.User && (
+        <MenuItem onClick={handleSavedPropertiesClick}>
+          <SavedPropertiesIcon className="header-action" />
+          {propertyStrings.SAVED_PROPERTIES}
+        </MenuItem>
+      )}
       <MenuItem onClick={handleSettingsClick}>
         <SettingsIcon className="header-action" />
         {strings.SETTINGS}
@@ -265,6 +278,14 @@ const Header = ({
       onClose={handleMobileMenuClose}
       className="menu"
     >
+      {currentUser?.type === movininTypes.UserType.User && (
+        <MenuItem onClick={handleSavedPropertiesClick}>
+          <IconButton color="inherit">
+            <SavedPropertiesIcon />
+          </IconButton>
+          <p>{propertyStrings.SAVED_PROPERTIES}</p>
+        </MenuItem>
+      )}
       <MenuItem onClick={handleSettingsClick}>
         <SettingsIcon className="header-action" />
         <p>{strings.SETTINGS}</p>
@@ -366,6 +387,17 @@ const Header = ({
                     >
                       <ListItemIcon><BookingsIcon /></ListItemIcon>
                       <ListItemText primary={strings.BOOKINGS} />
+                    </ListItemButton>
+                  )}
+                  {currentUser?.type === movininTypes.UserType.User && (
+                    <ListItemButton
+                      onClick={() => {
+                        navigate('/saved-properties')
+                        handleSideMenuClose()
+                      }}
+                    >
+                      <ListItemIcon><SavedPropertiesIcon /></ListItemIcon>
+                      <ListItemText primary={propertyStrings.SAVED_PROPERTIES} />
                     </ListItemButton>
                   )}
                   <ListItemButton

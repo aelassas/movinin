@@ -36,7 +36,7 @@ const TOKEN_BUCKET_LUA = `
   end
 `
 
-const isTest = env.CI
+const isTest = env.CI || process.env.NODE_ENV === 'test'
 
 export const rateLimiter = async (req: Request, res: Response, next: NextFunction) => {
   if (isTest && !req.headers['x-test-rate-limit']) {
