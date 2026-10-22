@@ -969,6 +969,16 @@ export const cancelBooking = async (req: Request, res: Response) => {
       .populate<{ renter: env.User }>('renter')
 
     if (booking && booking.cancellation && !booking.cancelRequest) {
+      // begin of security check
+      // Only the booking's own renter may request cancellation.
+      const sessionUserId = req.user?._id
+      if (!sessionUserId || booking.renter._id.toString() !== sessionUserId) {
+        logger.error(`[booking.cancelBooking] Unauthorized attempt to cancel booking ${booking._id.toString()} by user ${sessionUserId}`)
+        res.status(403).send('Forbidden: You are not allowed to cancel this booking')
+        return
+      }
+      // end of security check
+
       booking.cancelRequest = true
       await booking.save()
 
@@ -980,13 +990,13 @@ export const cancelBooking = async (req: Request, res: Response) => {
         return
       }
       i18n.locale = agency.language
-      await notify(booking.renter, booking._id.toString().toString(), agency, i18n.t('CANCEL_BOOKING_NOTIFICATION'))
+      await notify(booking.renter, booking._id.toString(), agency, i18n.t('CANCEL_BOOKING_NOTIFICATION'))
 
       // Notify admin
       const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin }))
       if (admin) {
         i18n.locale = admin.language
-        await notify(booking.renter, booking._id.toString().toString(), admin, i18n.t('CANCEL_BOOKING_NOTIFICATION'))
+        await notify(booking.renter, booking._id.toString(), admin, i18n.t('CANCEL_BOOKING_NOTIFICATION'))
       }
 
       res.sendStatus(200)

@@ -5,6 +5,7 @@ import * as movininTypes from ':movinin-types'
 import app from '../src/app'
 import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'
+import * as authHelper from '../src/utils/authHelper'
 import Property from '../src/models/Property'
 import Booking from '../src/models/Booking'
 import User from '../src/models/User'
@@ -16,6 +17,8 @@ import Notification from '../src/models/Notification'
 import NotificationCounter from '../src/models/NotificationCounter'
 
 const RENTER1_NAME = 'Renter 1'
+const RENTER1_PASSWORD = 'Un1tTest5'
+let RENTER1_EMAIL: string
 
 let AGENCY_ID: string
 let RENTER1_ID: string
@@ -39,11 +42,14 @@ beforeAll(async () => {
   const agencyName = testHelper.getAgencyName()
   AGENCY_ID = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
 
-  // create renter 1
+  // create renter 1 (with credentials so it can sign in via the API)
+  RENTER1_EMAIL = testHelper.GetRandomEmail()
+  const renter1PasswordHash = await authHelper.hashPassword(RENTER1_PASSWORD)
   const renter1 = new User({
     fullName: RENTER1_NAME,
-    email: testHelper.GetRandomEmail(),
+    email: RENTER1_EMAIL,
     language: testHelper.LANGUAGE,
+    password: renter1PasswordHash,
     type: movininTypes.UserType.User,
   })
   await renter1.save()
@@ -597,14 +603,42 @@ describe('GET /api/has-bookings/:renter', () => {
 })
 
 describe('POST /api/cancel-booking/:id', () => {
-  it('should cancel a booking', async () => {
-    const token = await testHelper.signinAsUser()
+  it('should return 403 when a different authenticated user attempts cancellation', async () => {
+    // Sign in as the shared test user — NOT the booking owner
+    const otherUserToken = await testHelper.signinAsUser()
+
+    // Ensure the booking has not yet been cancelled
+    let booking = await Booking.findById(BOOKING_ID)
+    expect(booking?.cancelRequest).toBeFalsy()
+
+    // Record notification state before the unauthorized attempt
+    const notificationsBefore = await Notification.find({ booking: BOOKING_ID })
+
+    const res = await request(app)
+      .post(`/api/cancel-booking/${BOOKING_ID}`)
+      .set(env.X_ACCESS_TOKEN, otherUserToken)
+    expect(res.statusCode).toBe(403)
+
+    // Booking must NOT have been mutated
+    booking = await Booking.findById(BOOKING_ID)
+    expect(booking?.cancelRequest).toBeFalsy()
+
+    // No new notifications must have been created
+    const notificationsAfter = await Notification.find({ booking: BOOKING_ID })
+    expect(notificationsAfter.length).toBe(notificationsBefore.length)
+
+    await testHelper.signout(otherUserToken)
+  })
+
+  it('should cancel a booking when the owner requests it', async () => {
+    // Sign in as RENTER1 — the actual owner of BOOKING_ID
+    const renter1Token = await testHelper.signinAsRenter(RENTER1_EMAIL, RENTER1_PASSWORD)
 
     let booking = await Booking.findById(BOOKING_ID)
     expect(booking?.cancelRequest).toBeFalsy()
     let res = await request(app)
       .post(`/api/cancel-booking/${BOOKING_ID}`)
-      .set(env.X_ACCESS_TOKEN, token)
+      .set(env.X_ACCESS_TOKEN, renter1Token)
     expect(res.statusCode).toBe(200)
     booking = await Booking.findById(BOOKING_ID)
     expect(booking?.cancelRequest).toBeTruthy()
@@ -618,22 +652,24 @@ describe('POST /api/cancel-booking/:id', () => {
     await booking!.save()
     res = await request(app)
       .post(`/api/cancel-booking/${BOOKING_ID}`)
-      .set(env.X_ACCESS_TOKEN, token)
+      .set(env.X_ACCESS_TOKEN, renter1Token)
     expect(res.statusCode).toBe(204)
     booking!.agency = agencyId
     await booking!.save()
 
+    // test booking not found
     res = await request(app)
       .post(`/api/cancel-booking/${testHelper.GetRandromObjectIdAsString()}`)
-      .set(env.X_ACCESS_TOKEN, token)
+      .set(env.X_ACCESS_TOKEN, renter1Token)
     expect(res.statusCode).toBe(204)
 
+    // test invalid id format
     res = await request(app)
       .post(`/api/cancel-booking/${nanoid()}`)
-      .set(env.X_ACCESS_TOKEN, token)
+      .set(env.X_ACCESS_TOKEN, renter1Token)
     expect(res.statusCode).toBe(400)
 
-    await testHelper.signout(token)
+    await testHelper.signout(renter1Token)
   })
 })
 
