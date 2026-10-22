@@ -116,6 +116,31 @@ export const signinAsAdmin = () => signin(movininTypes.AppType.Admin, ADMIN_EMAI
 
 export const signinAsUser = () => signin(movininTypes.AppType.Frontend, USER_EMAIL)
 
+/**
+ * Sign in as a specific renter (frontend user) by email and password.
+ * Use this in tests that need to authenticate as a specific user account.
+ */
+export const signinAsRenter = (email: string, password: string) => {
+  const _signin = async () => {
+    const payload: movininTypes.SignInPayload = {
+      email,
+      password,
+    }
+
+    const res = await request(app)
+      .post(`/api/sign-in/${movininTypes.AppType.Frontend}`)
+      .send(payload)
+
+    expect(res.statusCode).toBe(200)
+    const cookies = res.headers['set-cookie'] as unknown as string[]
+    expect(cookies.length).toBeGreaterThan(1)
+    const token = getToken(cookies[1])
+    expect(token).toBeDefined()
+    return token
+  }
+  return _signin()
+}
+
 export const signout = async (token: string) => {
   const res = await request(app)
     .post('/api/sign-out')
