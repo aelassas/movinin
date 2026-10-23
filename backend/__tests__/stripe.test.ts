@@ -73,7 +73,7 @@ describe('POST /api/create-checkout-session', () => {
     let receiptEmail = testHelper.GetRandomEmail()
     let payload: movininTypes.CreatePaymentPayload = {
       amount: 234,
-      currency: 'usd',
+      currency: env.BASE_CURRENCY.toLowerCase(),
       receiptEmail,
       customerName: 'John Doe',
       locale: 'en',
@@ -196,6 +196,8 @@ describe('POST /api/create-checkout-session', () => {
 
 describe('POST /api/check-checkout-session/:sessionId', () => {
   it('should check checkout session', async () => {
+    const baseCurrency = env.BASE_CURRENCY.toLowerCase()
+
     // test failure (checkout session does not exist)
     let res = await request(app)
       .post('/api/check-checkout-session/xxxxxxxxxx')
@@ -281,7 +283,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         default: {
           checkout: {
             sessions: {
-              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: 'usd' })),
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: baseCurrency })),
             },
           },
         },
@@ -289,7 +291,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
 
       let stripeAPI = (await import('../src/payment/stripe.js')).default
 
-      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid', amount_total: 31200, currency: 'usd' })
+      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid', amount_total: 31200, currency: baseCurrency })
       expect(stripeAPI.checkout.sessions.retrieve).toHaveBeenCalledWith('123')
 
       res = await request(app)
@@ -323,6 +325,17 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         additionalDriver: true,
       })
       await booking.save()
+      jest.resetModules()
+      await jest.unstable_mockModule('../src/payment/stripe.js', () => ({
+        default: {
+          checkout: {
+            sessions: {
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: baseCurrency })),
+            },
+          },
+        },
+      }))
+      stripeAPI = (await import('../src/payment/stripe.js')).default
       res = await request(app)
         .post(`/api/check-checkout-session/${sessionId}`)
       expect(res.statusCode).toBe(200)
@@ -354,7 +367,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         default: {
           checkout: {
             sessions: {
-              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 1000, currency: 'usd' })),
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 1000, currency: baseCurrency })),
             },
           },
         },
@@ -368,12 +381,13 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
       expect(unconfirmedBooking?.status).not.toBe(movininTypes.BookingStatus.Paid)
 
       // test failure (currency mismatch)
+      const invalidCurrency = baseCurrency === 'usd' ? 'eur' : 'usd'
       jest.resetModules()
       await jest.unstable_mockModule('../src/payment/stripe.js', () => ({
         default: {
           checkout: {
             sessions: {
-              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: 'eur' })),
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: invalidCurrency })),
             },
           },
         },
@@ -509,7 +523,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         default: {
           checkout: {
             sessions: {
-              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: 'usd' })),
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: baseCurrency })),
             },
           },
         },
@@ -517,7 +531,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
 
       stripeAPI = (await import('../src/payment/stripe.js')).default
 
-      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid', amount_total: 31200, currency: 'usd' })
+      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid', amount_total: 31200, currency: baseCurrency })
       expect(stripeAPI.checkout.sessions.retrieve).toHaveBeenCalledWith('123')
 
       // property missing
@@ -677,7 +691,7 @@ describe('POST /api/create-payment-intent', () => {
     //
     const payload: movininTypes.CreatePaymentPayload = {
       amount: 234,
-      currency: 'usd',
+      currency: env.BASE_CURRENCY.toLowerCase(),
       receiptEmail,
       customerName: 'John Doe',
       locale: 'en',
