@@ -677,6 +677,218 @@ describe('POST /api/frontend-properties/:page/:size', () => {
       expect(res.body[0].resultData.length).toBe(1)
     })
   })
+
+  it('should sort frontend properties by price ascending and descending and default', async () => {
+    const SORT_LOCATION_ID = await testHelper.createLocation('Sort Test EN', 'Sort Test FR')
+
+    const propA = new Property({
+      name: 'Alpha Property Low Price',
+      type: movininTypes.PropertyType.Townhouse,
+      agency: new mongoose.Types.ObjectId(AGENCY2_ID),
+      location: new mongoose.Types.ObjectId(SORT_LOCATION_ID),
+      description: 'Test Property A',
+      bedrooms: 1,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 0,
+      size: 50,
+      petsAllowed: false,
+      furnished: true,
+      aircon: true,
+      minimumAge: 21,
+      price: 70, // daily: 70 / 7 = 10 / day
+      rentalTerm: movininTypes.RentalTerm.Weekly,
+      available: true,
+      hidden: false,
+    })
+    await propA.save()
+
+    const propB = new Property({
+      name: 'Beta Property High Price',
+      type: movininTypes.PropertyType.Townhouse,
+      agency: new mongoose.Types.ObjectId(AGENCY2_ID),
+      location: new mongoose.Types.ObjectId(SORT_LOCATION_ID),
+      description: 'Test Property B',
+      bedrooms: 1,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 0,
+      size: 50,
+      petsAllowed: false,
+      furnished: true,
+      aircon: true,
+      minimumAge: 21,
+      price: 500, // daily: 500 / day
+      rentalTerm: movininTypes.RentalTerm.Daily,
+      available: true,
+      hidden: false,
+    })
+    await propB.save()
+
+    const propC = new Property({
+      name: 'Gamma Property Mid Price',
+      type: movininTypes.PropertyType.Townhouse,
+      agency: new mongoose.Types.ObjectId(AGENCY2_ID),
+      location: new mongoose.Types.ObjectId(SORT_LOCATION_ID),
+      description: 'Test Property C',
+      bedrooms: 1,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 0,
+      size: 50,
+      petsAllowed: false,
+      furnished: true,
+      aircon: true,
+      minimumAge: 21,
+      price: 50, // daily: 50 / day
+      rentalTerm: movininTypes.RentalTerm.Daily,
+      available: true,
+      hidden: false,
+    })
+    await propC.save()
+
+    try {
+      const payload: movininTypes.GetPropertiesPayload = {
+        agencies: [AGENCY2_ID],
+        types: [movininTypes.PropertyType.Townhouse],
+        rentalTerms: [movininTypes.RentalTerm.Weekly, movininTypes.RentalTerm.Daily],
+        location: SORT_LOCATION_ID,
+        from: new Date(2024, 0, 1),
+        to: new Date(2024, 1, 1),
+      }
+
+      // 1. Price Ascending (Low to High): propA ($10/day) -> propC ($50/day) -> propB ($500/day)
+      let res = await request(app)
+        .post('/api/frontend-properties/1/10')
+        .send({ ...payload, sortBy: movininTypes.PropertySortType.PriceAsc })
+      expect(res.statusCode).toBe(200)
+      const ascNames = res.body[0].resultData.map((p: any) => p.name)
+      expect(ascNames).toEqual([
+        'Alpha Property Low Price',
+        'Gamma Property Mid Price',
+        'Beta Property High Price',
+      ])
+
+      // 2. Price Descending (High to Low): propB ($500/day) -> propC ($50/day) -> propA ($10/day)
+      res = await request(app)
+        .post('/api/frontend-properties/1/10')
+        .send({ ...payload, sortBy: movininTypes.PropertySortType.PriceDesc })
+      expect(res.statusCode).toBe(200)
+      const descNames = res.body[0].resultData.map((p: any) => p.name)
+      expect(descNames).toEqual([
+        'Beta Property High Price',
+        'Gamma Property Mid Price',
+        'Alpha Property Low Price',
+      ])
+
+      // 3. Default (Alphabetical by name): Alpha -> Beta -> Gamma
+      res = await request(app)
+        .post('/api/frontend-properties/1/10')
+        .send({ ...payload, sortBy: movininTypes.PropertySortType.Default })
+      expect(res.statusCode).toBe(200)
+      const defaultNames = res.body[0].resultData.map((p: any) => p.name)
+      expect(defaultNames).toEqual([
+        'Alpha Property Low Price',
+        'Beta Property High Price',
+        'Gamma Property Mid Price',
+      ])
+
+      // 4. Pagination with PriceAsc: page 1 of size 2, then page 2 of size 2
+      const page1Res = await request(app)
+        .post('/api/frontend-properties/1/2')
+        .send({ ...payload, sortBy: movininTypes.PropertySortType.PriceAsc })
+      expect(page1Res.statusCode).toBe(200)
+      expect(page1Res.body[0].resultData.map((p: any) => p.name)).toEqual([
+        'Alpha Property Low Price',
+        'Gamma Property Mid Price',
+      ])
+      expect(page1Res.body[0].pageInfo[0].totalRecords).toBe(3)
+
+      const page2Res = await request(app)
+        .post('/api/frontend-properties/2/2')
+        .send({ ...payload, sortBy: movininTypes.PropertySortType.PriceAsc })
+      expect(page2Res.statusCode).toBe(200)
+      expect(page2Res.body[0].resultData.map((p: any) => p.name)).toEqual([
+        'Beta Property High Price',
+      ])
+    } finally {
+      await Property.deleteMany({ _id: { $in: [propA._id, propB._id, propC._id] } })
+      await testHelper.deleteLocation(SORT_LOCATION_ID)
+    }
+  })
+
+  it('should handle equal price properties consistently with secondary sort', async () => {
+    const TIE_LOCATION_ID = await testHelper.createLocation('Tie Test EN', 'Tie Test FR')
+
+    const propTie1 = new Property({
+      name: 'Zoo Property',
+      type: movininTypes.PropertyType.Townhouse,
+      agency: new mongoose.Types.ObjectId(AGENCY2_ID),
+      location: new mongoose.Types.ObjectId(TIE_LOCATION_ID),
+      description: 'Zoo Property',
+      bedrooms: 1,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 0,
+      size: 50,
+      petsAllowed: false,
+      furnished: true,
+      aircon: true,
+      minimumAge: 21,
+      price: 100,
+      rentalTerm: movininTypes.RentalTerm.Daily,
+      available: true,
+      hidden: false,
+    })
+    const propTie2 = new Property({
+      name: 'Apple Property',
+      type: movininTypes.PropertyType.Townhouse,
+      agency: new mongoose.Types.ObjectId(AGENCY2_ID),
+      location: new mongoose.Types.ObjectId(TIE_LOCATION_ID),
+      description: 'Apple Property',
+      bedrooms: 1,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 0,
+      size: 50,
+      petsAllowed: false,
+      furnished: true,
+      aircon: true,
+      minimumAge: 21,
+      price: 100,
+      rentalTerm: movininTypes.RentalTerm.Daily,
+      available: true,
+      hidden: false,
+    })
+    await propTie1.save()
+    await propTie2.save()
+
+    try {
+      const payload: movininTypes.GetPropertiesPayload = {
+        agencies: [AGENCY2_ID],
+        types: [movininTypes.PropertyType.Townhouse],
+        rentalTerms: [movininTypes.RentalTerm.Daily],
+        location: TIE_LOCATION_ID,
+        from: new Date(2024, 0, 1),
+        to: new Date(2024, 1, 1),
+        sortBy: movininTypes.PropertySortType.PriceAsc,
+      }
+
+      const res = await request(app)
+        .post('/api/frontend-properties/1/10')
+        .send(payload)
+      expect(res.statusCode).toBe(200)
+      const names = res.body[0].resultData.map((p: any) => p.name)
+      const appleIndex = names.indexOf('Apple Property')
+      const zooIndex = names.indexOf('Zoo Property')
+      expect(appleIndex).toBeGreaterThanOrEqual(0)
+      expect(zooIndex).toBeGreaterThanOrEqual(0)
+      expect(appleIndex).toBeLessThan(zooIndex)
+    } finally {
+      await Property.deleteMany({ _id: { $in: [propTie1._id, propTie2._id] } })
+      await testHelper.deleteLocation(TIE_LOCATION_ID)
+    }
+  })
 })
 
 describe('GET /api/check-property/:id', () => {
