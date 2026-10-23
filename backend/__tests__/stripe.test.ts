@@ -281,7 +281,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         default: {
           checkout: {
             sessions: {
-              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid' })),
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: 'usd' })),
             },
           },
         },
@@ -289,7 +289,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
 
       let stripeAPI = (await import('../src/payment/stripe.js')).default
 
-      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid' })
+      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid', amount_total: 31200, currency: 'usd' })
       expect(stripeAPI.checkout.sessions.retrieve).toHaveBeenCalledWith('123')
 
       res = await request(app)
@@ -327,6 +327,64 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         .post(`/api/check-checkout-session/${sessionId}`)
       expect(res.statusCode).toBe(200)
       await testHelper.deleteNotifications(booking._id.toString())
+
+      // test failure (amount mismatch)
+      await booking.deleteOne()
+      booking = new Booking({
+        agency: agencyId,
+        property: property._id.toString(),
+        renter: renter._id.toString(),
+        location: locationId,
+        from: new Date(2024, 2, 1),
+        to: new Date(2024, 2, 4),
+        status: movininTypes.BookingStatus.Void,
+        sessionId,
+        expireAt,
+        cancellation: true,
+        amendments: true,
+        theftProtection: false,
+        collisionDamageWaiver: false,
+        fullInsurance: false,
+        price: 312,
+        additionalDriver: true,
+      })
+      await booking.save()
+      jest.resetModules()
+      await jest.unstable_mockModule('../src/payment/stripe.js', () => ({
+        default: {
+          checkout: {
+            sessions: {
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 1000, currency: 'usd' })),
+            },
+          },
+        },
+      }))
+      stripeAPI = (await import('../src/payment/stripe.js')).default
+      res = await request(app)
+        .post(`/api/check-checkout-session/${sessionId}`)
+      expect(res.statusCode).toBe(400)
+      expect(res.text).toContain('Payment amount mismatch')
+      let unconfirmedBooking = await Booking.findById(booking._id)
+      expect(unconfirmedBooking?.status).not.toBe(movininTypes.BookingStatus.Paid)
+
+      // test failure (currency mismatch)
+      jest.resetModules()
+      await jest.unstable_mockModule('../src/payment/stripe.js', () => ({
+        default: {
+          checkout: {
+            sessions: {
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: 'eur' })),
+            },
+          },
+        },
+      }))
+      stripeAPI = (await import('../src/payment/stripe.js')).default
+      res = await request(app)
+        .post(`/api/check-checkout-session/${sessionId}`)
+      expect(res.statusCode).toBe(400)
+      expect(res.text).toContain('Payment currency mismatch')
+      unconfirmedBooking = await Booking.findById(booking._id)
+      expect(unconfirmedBooking?.status).not.toBe(movininTypes.BookingStatus.Paid)
 
       // test failure (stripe order error)
       await booking.deleteOne()
@@ -451,7 +509,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
         default: {
           checkout: {
             sessions: {
-              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid' })),
+              retrieve: jest.fn(() => Promise.resolve({ payment_status: 'paid', amount_total: 31200, currency: 'usd' })),
             },
           },
         },
@@ -459,7 +517,7 @@ describe('POST /api/check-checkout-session/:sessionId', () => {
 
       stripeAPI = (await import('../src/payment/stripe.js')).default
 
-      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid' })
+      await expect(stripeAPI.checkout.sessions.retrieve('123')).resolves.toStrictEqual({ payment_status: 'paid', amount_total: 31200, currency: 'usd' })
       expect(stripeAPI.checkout.sessions.retrieve).toHaveBeenCalledWith('123')
 
       // property missing
