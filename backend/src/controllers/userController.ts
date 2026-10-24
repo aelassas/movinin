@@ -1486,25 +1486,20 @@ export const changePassword = async (req: Request, res: Response) => {
       return
     }
 
-    // begin of security check
+   // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
+
     const isSelf = !!sessionUser && sessionUser._id.equals(user._id)
+    const isAdmin = !!sessionUser && sessionUser.type === movininTypes.UserType.Admin
     const isAuthorizedAgencyUser = !!sessionUser
       && sessionUser.type === movininTypes.UserType.Agency
       && user.type === movininTypes.UserType.User
       && user.agency?.equals(sessionUser._id)
-    if (!sessionUser
-      || (sessionUser.type === movininTypes.UserType.User && !isSelf)
-      || (sessionUser.type === movininTypes.UserType.Agency
-        && !isSelf
-        && !isAuthorizedAgencyUser)
-      || (
-        sessionUser.type !== movininTypes.UserType.Admin
-        && sessionUser.type !== movininTypes.UserType.Agency
-        && sessionUser.type !== movininTypes.UserType.User
-      )
-    ) {
+
+    const isAuthorized = isAdmin || isSelf || isAuthorizedAgencyUser
+
+    if (!sessionUser || !isAuthorized) {
       logger.error(`[user.changePassword] Unauthorized attempt to change user password ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot change user password')
       return
