@@ -1508,7 +1508,8 @@ export const changePassword = async (req: Request, res: Response) => {
     }
     // end of security check
 
-    const requireCurrentPassword = isSelf || strict
+    // Social accounts do not require current password
+    const requireCurrentPassword = strict
     if (requireCurrentPassword && !user.password) {
       logger.error('[user.changePassword] User.password not found:', _id)
       res.sendStatus(204)
