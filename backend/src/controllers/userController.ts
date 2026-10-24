@@ -1121,10 +1121,12 @@ export const update = async (req: Request, res: Response) => {
     if (typeof payLater !== 'undefined') {
       user.payLater = payLater
     }
-    if (sessionUser.type === movininTypes.UserType.Admin) {
+    if (sessionUser.type === movininTypes.UserType.Admin || isAuthorizedAgencyUser) {
       if (typeof blacklisted !== 'undefined') {
         user.blacklisted = blacklisted
       }
+    }
+    if (sessionUser.type === movininTypes.UserType.Admin) {
       if (type) {
         user.type = type as movininTypes.UserType
       }
@@ -1270,6 +1272,7 @@ export const getUser = async (req: Request, res: Response) => {
       payLater: 1,
       savedProperties: 1,
       customerId: 1,
+      agency: 1,
     }).lean()
 
     if (!user) {
