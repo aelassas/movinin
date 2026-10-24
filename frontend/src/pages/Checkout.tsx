@@ -322,6 +322,9 @@ const Checkout = () => {
           _sessionId = nanoid()
           setPayPalLoaded(true)
         }
+      } else {
+        // Generate a unique session ID for pay later checkout
+        _sessionId = nanoid()
       }
 
       const payload: movininTypes.CheckoutPayload = {

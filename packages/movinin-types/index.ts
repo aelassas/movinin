@@ -268,6 +268,7 @@ export interface User {
   checked?: boolean
   customerId?: string
   savedProperties?: string[]
+  isSocial?: boolean
 }
 
 export interface Option {
