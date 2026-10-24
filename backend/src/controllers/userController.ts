@@ -1074,11 +1074,21 @@ export const update = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
+    const isSelf = !!sessionUser && sessionUser._id.equals(user._id)
+    const isAuthorizedAgencyUser = !!sessionUser
+      && sessionUser.type === movininTypes.UserType.Agency
+      && user.type === movininTypes.UserType.User
+      && user.agency?.equals(sessionUser._id)
     if (!sessionUser
-      || (sessionUser.type === movininTypes.UserType.User && sessionUserId !== user._id.toString())
+      || (sessionUser.type === movininTypes.UserType.User && !isSelf)
       || (sessionUser.type === movininTypes.UserType.Agency
-        && ((user.type === movininTypes.UserType.User && sessionUserId !== user.agency?.toString())
-          || (user.type === movininTypes.UserType.Agency && sessionUserId !== user._id.toString())))
+        && !isSelf
+        && !isAuthorizedAgencyUser)
+      || (
+        sessionUser.type !== movininTypes.UserType.Admin
+        && sessionUser.type !== movininTypes.UserType.Agency
+        && sessionUser.type !== movininTypes.UserType.User
+      )
     ) {
       logger.error(`[user.update] Unauthorized attempt to update user ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot update user information')
@@ -1105,16 +1115,19 @@ export const update = async (req: Request, res: Response) => {
     user.location = location
     user.bio = bio
     user.birthDate = birthDate ? new Date(birthDate) : undefined
-    user.blacklisted = !!blacklisted
-    // only admins can update user type
-    if (type && sessionUser.type === movininTypes.UserType.Admin) {
-      user.type = type as movininTypes.UserType
-    }
     if (typeof enableEmailNotifications !== 'undefined') {
       user.enableEmailNotifications = enableEmailNotifications
     }
     if (typeof payLater !== 'undefined') {
       user.payLater = payLater
+    }
+    if (sessionUser.type === movininTypes.UserType.Admin) {
+      if (typeof blacklisted !== 'undefined') {
+        user.blacklisted = blacklisted
+      }
+      if (type) {
+        user.type = type as movininTypes.UserType
+      }
     }
 
     await user.save()
@@ -1473,11 +1486,21 @@ export const changePassword = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
+    const isSelf = !!sessionUser && sessionUser._id.equals(user._id)
+    const isAuthorizedAgencyUser = !!sessionUser
+      && sessionUser.type === movininTypes.UserType.Agency
+      && user.type === movininTypes.UserType.User
+      && user.agency?.equals(sessionUser._id)
     if (!sessionUser
-      || (sessionUser.type === movininTypes.UserType.User && sessionUserId !== user._id.toString())
+      || (sessionUser.type === movininTypes.UserType.User && !isSelf)
       || (sessionUser.type === movininTypes.UserType.Agency
-        && ((user.type === movininTypes.UserType.User && sessionUserId !== user.agency?.toString())
-          || (user.type === movininTypes.UserType.Agency && sessionUserId !== user._id.toString())))
+        && !isSelf
+        && !isAuthorizedAgencyUser)
+      || (
+        sessionUser.type !== movininTypes.UserType.Admin
+        && sessionUser.type !== movininTypes.UserType.Agency
+        && sessionUser.type !== movininTypes.UserType.User
+      )
     ) {
       logger.error(`[user.changePassword] Unauthorized attempt to change user password ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot change user password')
@@ -1485,7 +1508,8 @@ export const changePassword = async (req: Request, res: Response) => {
     }
     // end of security check
 
-    if (strict && !user.password) {
+    const requireCurrentPassword = isSelf || strict
+    if (requireCurrentPassword && !user.password) {
       logger.error('[user.changePassword] User.password not found:', _id)
       res.sendStatus(204)
       return
@@ -1499,10 +1523,10 @@ export const changePassword = async (req: Request, res: Response) => {
       res.sendStatus(200)
     }
 
-    if (strict) {
+    if (requireCurrentPassword) {
       const passwordMatch = await bcrypt.compare(currentPassword, user.password!)
       if (passwordMatch) {
-        _changePassword()
+        await _changePassword()
         return
       }
 
@@ -1510,7 +1534,7 @@ export const changePassword = async (req: Request, res: Response) => {
       return
     }
 
-    _changePassword()
+    await _changePassword()
   } catch (err) {
     logger.error(`[user.changePassword] ${i18n.t('ERROR')} ${_id}`, err)
     res.status(400).send(i18n.t('ERROR') + err)

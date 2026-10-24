@@ -1138,6 +1138,223 @@ describe('POST /api/update-user', () => {
   })
 })
 
+describe('User update and password authorization security', () => {
+  const agencyEmail = testHelper.GetRandomEmail()
+  const managedUserEmail = testHelper.GetRandomEmail()
+  const otherUserEmail = testHelper.GetRandomEmail()
+  let agencyId: string
+  let managedUserId: string
+  let otherUserId: string
+  let managedUserPasswordHash: string
+
+  beforeAll(async () => {
+    agencyId = await testHelper.createAgency(agencyEmail, 'User Authorization Test Agency')
+    managedUserPasswordHash = await authHelper.hashPassword(testHelper.PASSWORD)
+
+    const managedUser = new User({
+      email: managedUserEmail,
+      fullName: 'Managed User',
+      language: testHelper.LANGUAGE,
+      password: managedUserPasswordHash,
+      type: movininTypes.UserType.User,
+      agency: agencyId,
+      verified: true,
+      active: true,
+      blacklisted: false,
+    })
+    await managedUser.save()
+    managedUserId = managedUser._id.toString()
+
+    const otherUser = new User({
+      email: otherUserEmail,
+      fullName: 'Other User',
+      language: testHelper.LANGUAGE,
+      password: managedUserPasswordHash,
+      type: movininTypes.UserType.User,
+    })
+    await otherUser.save()
+    otherUserId = otherUser._id.toString()
+  })
+
+  afterAll(async () => {
+    await User.deleteMany({ _id: { $in: [managedUserId, otherUserId] } })
+    await testHelper.deleteAgency(agencyId)
+  })
+
+  it('denies agency access to admin accounts while allowing agency-managed user password resets', async () => {
+    const agencyToken = await testHelper.generateToken(agencyId)
+    const newPassword = 'Agency-Managed-Reset-Password!'
+
+    let response = await request(app)
+      .post('/api/change-password')
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+      .send({
+        _id: testHelper.getAdminUserId(),
+        password: '',
+        newPassword,
+        strict: false,
+      })
+    expect(response.statusCode).toBe(403)
+
+    response = await request(app)
+      .post('/api/change-password')
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+      .send({
+        _id: managedUserId,
+        password: '',
+        newPassword,
+        strict: false,
+      })
+    expect(response.statusCode).toBe(200)
+    const managedUser = await User.findById(managedUserId)
+    expect(await bcrypt.compare(newPassword, managedUser!.password!)).toBe(true)
+  })
+
+  it('requires current password for self-service changes and prevents users changing another account', async () => {
+    const userToken = await testHelper.generateToken(otherUserId)
+    const newPassword = 'Self-Service-Password!'
+
+    let response = await request(app)
+      .post('/api/change-password')
+      .set(env.X_ACCESS_TOKEN, userToken)
+      .send({
+        _id: otherUserId,
+        password: 'incorrect-current-password',
+        newPassword,
+        strict: false,
+      })
+    expect(response.statusCode).toBe(204)
+    let otherUser = await User.findById(otherUserId)
+    expect(await bcrypt.compare(testHelper.PASSWORD, otherUser!.password!)).toBe(true)
+
+    response = await request(app)
+      .post('/api/change-password')
+      .set(env.X_ACCESS_TOKEN, userToken)
+      .send({
+        _id: managedUserId,
+        password: testHelper.PASSWORD,
+        newPassword,
+        strict: false,
+      })
+    expect(response.statusCode).toBe(403)
+
+    response = await request(app)
+      .post('/api/change-password')
+      .set(env.X_ACCESS_TOKEN, userToken)
+      .send({
+        _id: otherUserId,
+        password: testHelper.PASSWORD,
+        newPassword,
+        strict: false,
+      })
+    expect(response.statusCode).toBe(200)
+    otherUser = await User.findById(otherUserId)
+    expect(await bcrypt.compare(newPassword, otherUser!.password!)).toBe(true)
+  })
+
+  it('limits agency profile updates to managed users and blocks lower-privilege security fields', async () => {
+    const agencyToken = await testHelper.generateToken(agencyId)
+    let response = await request(app)
+      .post('/api/update-user')
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+      .send({
+        _id: testHelper.getAdminUserId(),
+        fullName: 'Compromised Admin',
+        blacklisted: true,
+      })
+    expect(response.statusCode).toBe(403)
+
+    response = await request(app)
+      .post('/api/update-user')
+      .set(env.X_ACCESS_TOKEN, agencyToken)
+      .send({
+        _id: managedUserId,
+        fullName: 'Updated Managed User',
+        type: movininTypes.UserType.Admin,
+        blacklisted: true,
+        verified: false,
+        active: false,
+        agency: testHelper.GetRandromObjectIdAsString(),
+        roles: ['admin'],
+        permissions: ['manage-users'],
+      })
+    expect(response.statusCode).toBe(200)
+    let managedUser = await User.findById(managedUserId)
+    expect(managedUser?.fullName).toBe('Updated Managed User')
+    expect(managedUser?.type).toBe(movininTypes.UserType.User)
+    expect(managedUser?.blacklisted).toBe(false)
+    expect(managedUser?.verified).toBe(true)
+    expect(managedUser?.active).toBe(true)
+    expect(managedUser?.agency?.toString()).toBe(agencyId)
+
+    const userToken = await testHelper.generateToken(otherUserId)
+    response = await request(app)
+      .post('/api/update-user')
+      .set(env.X_ACCESS_TOKEN, userToken)
+      .send({
+        _id: managedUserId,
+        fullName: 'Unauthorized Update',
+      })
+    expect(response.statusCode).toBe(403)
+
+    response = await request(app)
+      .post('/api/update-user')
+      .set(env.X_ACCESS_TOKEN, userToken)
+      .send({
+        _id: otherUserId,
+        type: movininTypes.UserType.Admin,
+        blacklisted: true,
+        verified: false,
+        active: false,
+        agency: agencyId,
+        roles: ['admin'],
+        permissions: ['manage-users'],
+      })
+    expect(response.statusCode).toBe(200)
+    managedUser = await User.findById(otherUserId)
+    expect(managedUser?.type).toBe(movininTypes.UserType.User)
+    expect(managedUser?.blacklisted).toBe(false)
+    expect(managedUser?.verified).toBe(false)
+    expect(managedUser?.active).toBe(false)
+    expect(managedUser?.agency).toBeUndefined()
+  })
+
+  it('preserves administrative password reset and account-update capabilities', async () => {
+    const adminToken = await testHelper.signinAsAdmin()
+    const newPassword = 'Administrator-Reset-Password!'
+    const target = await User.findById(otherUserId)
+    expect(target).not.toBeNull()
+
+    let response = await request(app)
+      .post('/api/change-password')
+      .set(env.X_ACCESS_TOKEN, adminToken)
+      .send({
+        _id: otherUserId,
+        password: '',
+        newPassword,
+        strict: false,
+      })
+    expect(response.statusCode).toBe(200)
+    let otherUser = await User.findById(otherUserId)
+    expect(await bcrypt.compare(newPassword, otherUser!.password!)).toBe(true)
+
+    response = await request(app)
+      .post('/api/update-user')
+      .set(env.X_ACCESS_TOKEN, adminToken)
+      .send({
+        _id: otherUserId,
+        type: movininTypes.UserType.Agency,
+        blacklisted: true,
+      })
+    expect(response.statusCode).toBe(200)
+    otherUser = await User.findById(otherUserId)
+    expect(otherUser?.type).toBe(movininTypes.UserType.Agency)
+    expect(otherUser?.blacklisted).toBe(true)
+
+    await testHelper.signout(adminToken)
+  })
+})
+
 describe('POST /api/update-email-notifications', () => {
   it('should update email notifications setting', async () => {
     const token = await testHelper.signinAsAdmin()

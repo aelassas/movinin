@@ -332,6 +332,101 @@ describe('POST /api/checkout', () => {
   })
 })
 
+describe('POST /api/checkout security', () => {
+  it('allows legitimate checkout registration with the renter allowlist', async () => {
+    const email = testHelper.GetRandomEmail()
+    const response = await request(app)
+      .post('/api/checkout')
+      .send({
+        renter: {
+          fullName: 'Legitimate Checkout Renter',
+          email,
+          phone: '',
+          birthDate: new Date(1990, 0, 1),
+          language: testHelper.LANGUAGE,
+        },
+        booking: {
+          agency: AGENCY_ID,
+          property: PROPERTY1_ID,
+          renter: '',
+          location: LOCATION_ID,
+          from: new Date(2025, 6, 1),
+          to: new Date(2025, 6, 4),
+          status: movininTypes.BookingStatus.Pending,
+          cancellation: true,
+          price: 4000,
+        },
+        payLater: true,
+      })
+
+    expect(response.statusCode).toBe(200)
+    const renter = await User.findOne({ email })
+    expect(renter).not.toBeNull()
+    expect(renter?.type).toBe(movininTypes.UserType.User)
+    expect(renter?.fullName).toBe('Legitimate Checkout Renter')
+    expect(renter?.birthDate).toStrictEqual(new Date(1990, 0, 1))
+
+    const bookingId = response.body.bookingId as string
+    await testHelper.deleteNotifications(bookingId)
+    await Booking.deleteOne({ _id: bookingId })
+    await Token.deleteMany({ user: renter?._id })
+    await renter?.deleteOne()
+  })
+
+  it.each([movininTypes.UserType.Admin, movininTypes.UserType.Agency])(
+    'creates a normal renter when the client submits type %s and privileged fields',
+    async (type) => {
+      const email = testHelper.GetRandomEmail()
+      const payload: movininTypes.CheckoutPayload = {
+        renter: {
+          fullName: 'Checkout Security Test',
+          email,
+          phone: '',
+          language: testHelper.LANGUAGE,
+          type,
+          verified: true,
+          active: true,
+          blacklisted: true,
+          agency: AGENCY_ID,
+          password: 'client-controlled-password',
+        },
+        booking: {
+          agency: AGENCY_ID,
+          property: PROPERTY1_ID,
+          renter: '',
+          location: LOCATION_ID,
+          from: new Date(2025, 6, 1),
+          to: new Date(2025, 6, 4),
+          status: movininTypes.BookingStatus.Pending,
+          cancellation: true,
+          price: 4000,
+        },
+        payLater: true,
+      }
+
+      const response = await request(app)
+        .post('/api/checkout')
+        .send(payload)
+
+      expect(response.statusCode).toBe(200)
+      const renter = await User.findOne({ email })
+      expect(renter).not.toBeNull()
+      expect(renter?.type).toBe(movininTypes.UserType.User)
+      expect(renter?.verified).toBe(false)
+      expect(renter?.active).toBe(false)
+      expect(renter?.blacklisted).toBe(false)
+      expect(renter?.agency).toBeUndefined()
+      expect(renter?.password).toBeUndefined()
+
+      const bookingId = response.body.bookingId as string
+      await testHelper.deleteNotifications(bookingId)
+      await Booking.deleteOne({ _id: bookingId })
+      await Token.deleteMany({ user: renter?._id })
+      await renter?.deleteOne()
+    },
+  )
+})
+
 describe('Security Regression Tests - Issue #28 Checkout Payment Binding', () => {
   it('should ignore client-supplied Paid status when payLater is enabled', async () => {
     const payload: movininTypes.CheckoutPayload = {
