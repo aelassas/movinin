@@ -8,6 +8,7 @@
 * fix(backend): remediate notification IDOR and broken access control vulnerabilities (#39)
 * fix(backend): fix checkout privilege escalation and user authorization vulnerabilities (#40)
 * fix(frontend): non autenticated pay later checkout success page broken
+* ci: fix releases.yml workflow
 
 #### New Contributors
 * @BhavishTrehan77 made their first contribution in https://github.com/aelassas/movinin/pull/34
