@@ -1255,6 +1255,12 @@ export const getUser = async (req: Request, res: Response) => {
     if (!helper.isValidObjectId(id)) {
       throw new Error('User id is not valid')
     }
+      // Regular users can only read their own profile
+ if (req.user?.type === movininTypes.UserType.User && req.user._id !== id) {
+  logger.error(`[user.getUser] Forbidden: user ${req.user._id} tried to read user ${id}`)
+ res.status(403).send('Forbidden')
+ return
+ }
 
     const user = await User.findById(id, {
       company: 1,

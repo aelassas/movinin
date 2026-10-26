@@ -145,12 +145,57 @@ describe('GET /api/user/:id', () => {
     res = await request(app)
       .get(`/api/user/${testHelper.GetRandromObjectIdAsString()}`)
       .set(env.X_ACCESS_TOKEN, token)
-    expect(res.statusCode).toBe(204)
+    expect(res.statusCode).toBe(403)
 
     // user!.blacklisted = false
     // await user?.save()
   })
 })
+describe('GET /api/user/:id authorization (IDOR regression)', () => {
+  it('should forbid a regular user from reading another user profile', async () => {
+    const userToken = await testHelper.signinAsUser()
+    const adminId = testHelper.getAdminUserId()
+
+    const res = await request(app)
+      .get(`/api/user/${adminId}`)
+      .set(env.X_ACCESS_TOKEN, userToken)
+
+    expect(res.statusCode).toBe(403)
+    // no profile data must leak in the response
+    expect(res.body.email).toBeUndefined()
+    expect(res.body.phone).toBeUndefined()
+    expect(res.body.customerId).toBeUndefined()
+
+    await testHelper.signout(userToken)
+  })
+
+  it('should still allow a regular user to read their own profile', async () => {
+    const userToken = await testHelper.signinAsUser()
+
+    const res = await request(app)
+      .get(`/api/user/${USER_ID}`)
+      .set(env.X_ACCESS_TOKEN, userToken)
+
+    expect(res.statusCode).toBe(200)
+    expect(res.body.email).toBe(USER_EMAIL)
+
+    await testHelper.signout(userToken)
+  })
+
+  it('should still allow an admin to read any user profile', async () => {
+    const adminToken = await testHelper.signinAsAdmin()
+
+    const res = await request(app)
+      .get(`/api/user/${USER_ID}`)
+      .set(env.X_ACCESS_TOKEN, adminToken)
+
+    expect(res.statusCode).toBe(200)
+    expect(res.body.email).toBe(USER_EMAIL)
+
+    await testHelper.signout(adminToken)
+  })
+})
+
 
 describe('PATCH /api/user/:id', () => {
   it('should revoke access to PATCH method', async () => {
