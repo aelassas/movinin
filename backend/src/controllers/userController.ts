@@ -1276,6 +1276,32 @@ export const getUser = async (req: Request, res: Response) => {
       agency: 1,
     }).lean()
 
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUserType = req.user?.type
+
+    const isSelf = sessionUserId === id
+    const isAgencyUser = sessionUserType === movininTypes.UserType.Agency
+      && user?.type === movininTypes.UserType.User
+      && user?.agency?.toString() === sessionUserId
+
+    if (
+      sessionUserType === movininTypes.UserType.User && !isSelf
+    ) {
+      logger.error(`[user.getUser] Forbidden: user ${sessionUserId} tried to read user ${id}`)
+      res.status(403).send('Forbidden')
+      return
+    }
+
+    if (
+      sessionUserType === movininTypes.UserType.Agency && !isSelf && !isAgencyUser
+    ) {
+      logger.error(`[user.getUser] Forbidden: agency ${sessionUserId} tried to read user ${id}`)
+      res.status(403).send('Forbidden')
+      return
+    }
+    // end of security check
+
     if (!user) {
       logger.error('[user.getUser] User not found:', req.params)
       res.sendStatus(204)
@@ -1487,7 +1513,7 @@ export const changePassword = async (req: Request, res: Response) => {
       return
     }
 
-   // begin of security check
+    // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
 
