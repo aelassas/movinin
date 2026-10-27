@@ -66,6 +66,8 @@ const bookingSchema = new Schema<env.Booking>(
     },
     paymentIntentId: {
       type: String,
+      unique: true,
+      sparse: true,
     },
     customerId: {
       type: String,

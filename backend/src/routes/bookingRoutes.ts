@@ -1,12 +1,13 @@
 import express from 'express'
 import routeNames from '../config/bookingRoutes.config'
 import authJwt from '../middlewares/authJwt'
+import rateLimiter from '../middlewares/rateLimiter'
 import * as bookingController from '../controllers/bookingController'
 
 const routes = express.Router()
 
 routes.route(routeNames.create).post(authJwt.verifyToken, authJwt.authAgency, bookingController.create)
-routes.route(routeNames.checkout).post(bookingController.checkout)
+routes.route(routeNames.checkout).post(rateLimiter, authJwt.verifyTokenOptional, bookingController.checkout)
 routes.route(routeNames.update).put(authJwt.verifyToken, authJwt.authAgency, bookingController.update)
 routes.route(routeNames.updateStatus).post(authJwt.verifyToken, authJwt.authAgency, bookingController.updateStatus)
 routes.route(routeNames.delete).post(authJwt.verifyToken, authJwt.authAgency, bookingController.deleteBookings)

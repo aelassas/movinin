@@ -3,6 +3,7 @@ import escapeStringRegexp from 'escape-string-regexp'
 import { Expo, ExpoPushMessage, ExpoPushTicket } from 'expo-server-sdk'
 import { Request, Response } from 'express'
 import nodemailer from 'nodemailer'
+import validator from 'validator'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import i18n from '../lang/i18n'
@@ -161,85 +162,185 @@ export const confirm = async (user: env.User, booking: env.Booking, payLater: bo
  * @returns {unknown}
  */
 export const checkout = async (req: Request, res: Response) => {
+  let checkoutPaymentIntentId: string | undefined
   try {
-    let user: env.User | null
     const { body }: { body: movininTypes.CheckoutPayload } = req
-    const { renter } = body
-
-    if (!body.booking) {
+    checkoutPaymentIntentId = body.paymentIntentId
+    const bookingInput = body.booking
+    if (!bookingInput) {
       throw new Error('Booking missing')
     }
 
-    if (renter) {
-      user = new User({
-        fullName: renter.fullName,
-        email: renter.email,
-        phone: renter.phone,
-        birthDate: renter.birthDate,
-        language: renter.language,
-        type: movininTypes.UserType.User,
-        verified: false,
-        blacklisted: false,
-      })
-      await user.save()
-
-      const token = new Token({ user: user._id, token: helper.generateToken() })
-      await token.save()
-
-      i18n.locale = user.language
-
-      const mailOptions: nodemailer.SendMailOptions = {
-        from: env.SMTP_FROM,
-        to: user.email,
-        subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
-        html: `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
-        ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
-        ${helper.joinURL(env.FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
-        ${i18n.t('REGARDS')}<br></p>`,
-      }
-      await mailHelper.sendMail(mailOptions)
-
-      body.booking.renter = user._id.toString()
-    } else {
-      user = await User.findById(body.booking.renter)
-    }
-
-    if (!user) {
-      logger.info('Renter not found', body)
-      res.sendStatus(204)
+    if (typeof bookingInput.property !== 'string' || !helper.isValidObjectId(bookingInput.property)) {
+      res.status(400).send('Invalid property')
       return
     }
 
-    // Verify property existence and calculate expected total
-    const propertyObj = await Property.findById(body.booking.property)
+    const fromValue: unknown = bookingInput.from
+    const toValue: unknown = bookingInput.to
+    if (
+      typeof fromValue !== 'string'
+      || typeof toValue !== 'string'
+      || !validator.isISO8601(fromValue, { strict: true })
+      || !validator.isISO8601(toValue, { strict: true })
+    ) {
+      res.status(400).send('Invalid booking dates')
+      return
+    }
+
+    const fromDate = new Date(fromValue)
+    const toDate = new Date(toValue)
+    if (
+      Number.isNaN(fromDate.getTime())
+      || Number.isNaN(toDate.getTime())
+      || toDate <= fromDate
+      || typeof bookingInput.cancellation !== 'boolean'
+    ) {
+      res.status(400).send('Invalid booking dates or options')
+      return
+    }
+
+    if (body.payLater !== undefined && typeof body.payLater !== 'boolean') {
+      res.status(400).send('Invalid payment option')
+      return
+    }
+
+    const propertyObj = await Property.findById(bookingInput.property)
     if (!propertyObj) {
       res.status(400).send('Property not found')
       return
     }
 
-    const fromDate = new Date(body.booking.from)
-    const toDate = new Date(body.booking.to)
+    if (!propertyObj.available || propertyObj.hidden) {
+      res.status(400).send('Property is unavailable')
+      return
+    }
+
+    const [agency, location] = await Promise.all([
+      User.findById(propertyObj.agency),
+      Location.findById(propertyObj.location),
+    ])
+    if (!agency || agency.type !== movininTypes.UserType.Agency || agency.blacklisted || !location) {
+      res.status(400).send('Invalid property relationships')
+      return
+    }
+
+    if (body.payLater && !agency.payLater) {
+      res.status(400).send('Pay-later checkout is unavailable')
+      return
+    }
+
+    if (propertyObj.blockOnPay) {
+      const conflictingBooking = await Booking.findOne({
+        property: propertyObj._id,
+        from: { $lte: toDate },
+        to: { $gte: fromDate },
+        status: {
+          $in: [
+            movininTypes.BookingStatus.Paid,
+            movininTypes.BookingStatus.Reserved,
+            movininTypes.BookingStatus.Deposit,
+          ],
+        },
+      })
+      if (conflictingBooking) {
+        res.status(400).send('Property is unavailable for the selected dates')
+        return
+      }
+    }
+
     const expectedBasePrice = movininHelper.calculateTotalPrice(
       propertyObj.toObject() as unknown as movininTypes.Property,
       fromDate,
-      toDate, {
-      cancellation: body.booking.cancellation,
-    })
+      toDate,
+      { cancellation: bookingInput.cancellation },
+    )
+    if (!Number.isFinite(expectedBasePrice) || expectedBasePrice < 0) {
+      res.status(400).send('Invalid booking price')
+      return
+    }
     const expectedBasePriceInBaseCurrency = await movininHelper.convertPrice(expectedBasePrice, env.BASE_CURRENCY, env.BASE_CURRENCY)
+    if (!Number.isFinite(expectedBasePriceInBaseCurrency) || expectedBasePriceInBaseCurrency < 0) {
+      res.status(400).send('Invalid booking price')
+      return
+    }
 
-    if (body.payLater) {
-      // Server explicitly decides payment status for payLater
-      body.booking.status = movininTypes.BookingStatus.Pending
-      body.booking.sessionId = body.sessionId
+    let user: env.User | null = null
+    let guestUser: InstanceType<typeof User> | undefined
+    if (req.user) {
+      if (req.user.type !== movininTypes.UserType.User) {
+        res.status(403).send({ message: 'Only renters can checkout!' })
+        return
+      }
+      user = await User.findById(req.user._id)
+      if (!user || user.blacklisted) {
+        res.status(401).send({ message: 'Unauthorized!' })
+        return
+      }
     } else {
+      const renter = body.renter
+      if (!renter || !renter.fullName?.trim() || !renter.email?.trim()) {
+        res.status(400).send('Guest renter details are required')
+        return
+      }
+
+      const email = renter.email.trim().toLowerCase()
+      if (await User.findOne({ email })) {
+        res.status(400).send('An account already exists for this email')
+        return
+      }
+
+      const language = renter.language || env.DEFAULT_LANGUAGE
+      if (!env.LANGUAGES.includes(language.toLowerCase())) {
+        res.status(400).send('Invalid renter language')
+        return
+      }
+
+      if (
+        renter.birthDate !== undefined
+        && (
+          typeof renter.birthDate !== 'string'
+          || !validator.isISO8601(renter.birthDate, { strict: true })
+          || Number.isNaN(new Date(renter.birthDate).getTime())
+        )
+      ) {
+        res.status(400).send('Invalid renter birth date')
+        return
+      }
+
+      if (renter.birthDate) {
+        const birthDate = new Date(renter.birthDate)
+        const minimumBirthDate = new Date()
+        minimumBirthDate.setFullYear(minimumBirthDate.getFullYear() - propertyObj.minimumAge)
+        if (birthDate > minimumBirthDate) {
+          res.status(400).send('Renter does not meet the minimum age requirement')
+          return
+        }
+      }
+
+      guestUser = new User({
+        fullName: renter.fullName.trim(),
+        email,
+        phone: renter.phone,
+        birthDate: renter.birthDate,
+        language: language.toLowerCase(),
+        type: movininTypes.UserType.User,
+        verified: false,
+        blacklisted: false,
+      })
+      await guestUser.validate()
+    }
+
+    if (!body.payLater) {
       const { payPal, paymentIntentId, sessionId } = body
+
+      if (typeof payPal !== 'undefined' && typeof payPal !== 'boolean') {
+        res.status(400).send('Invalid payment provider')
+        return
+      }
 
       if (!payPal && !paymentIntentId && !sessionId) {
         throw new Error('paymentIntentId and sessionId not found')
-      }
-
-      if (!payPal) {
-        body.booking.customerId = body.customerId
       }
 
       if (paymentIntentId) {
@@ -251,74 +352,116 @@ export const checkout = async (req: Request, res: Response) => {
           res.status(400).send(message)
           return
         }
-
-        const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
-        if (paymentIntent.status !== 'succeeded') {
-          const message = `Payment failed: ${paymentIntent.status}`
-          logger.error(message, body)
-          res.status(400).send(message)
-          return
-        }
-
-        // Validate currency and amount
-        const expectedAmountCents = Math.floor(expectedBasePriceInBaseCurrency * 100)
-        if (paymentIntent.currency.toLowerCase() !== env.BASE_CURRENCY.toLowerCase()) {
-          const message = `Payment currency mismatch: expected ${env.BASE_CURRENCY}, got ${paymentIntent.currency}`
-          logger.error(message, body)
-          res.status(400).send(message)
-          return
-        }
-
-        if (paymentIntent.amount !== expectedAmountCents) {
-          const message = `Payment amount mismatch: expected ${expectedAmountCents}, got ${paymentIntent.amount}`
-          logger.error(message, body)
-          res.status(400).send(message)
-          return
-        }
-
-        body.booking.paymentIntentId = paymentIntentId
-        body.booking.status = movininTypes.BookingStatus.Paid
-      } else {
+      } else if (sessionId || payPal) {
         //
         // Bookings created from checkout with Stripe are temporary
         // and are automatically deleted if the payment checkout session expires.
         //
-        let expireAt = new Date()
-        expireAt.setSeconds(expireAt.getSeconds() + env.BOOKING_EXPIRE_AT)
-
-        body.booking.sessionId = body.sessionId
-        body.booking.status = movininTypes.BookingStatus.Void
-        body.booking.expireAt = expireAt
-
-        //
-        // Non verified and active users created from checkout with Stripe are temporary
-        // and are automatically deleted if the payment checkout session expires.
-        //
-        if (!user.verified) {
-          expireAt = new Date()
-          expireAt.setSeconds(expireAt.getSeconds() + env.USER_EXPIRE_AT)
-
-          user.expireAt = expireAt
-          await user.save()
+        if (typeof sessionId !== 'string' || !sessionId.trim()) {
+          res.status(400).send('Invalid checkout session')
+          return
         }
       }
     }
 
-    const { customerId } = body
-    if (customerId) {
-      user.customerId = customerId
-      await user?.save()
+    let paymentIntentCustomerId: string | undefined
+    if (!body.payLater && body.paymentIntentId) {
+      const paymentIntent = await stripeAPI.paymentIntents.retrieve(body.paymentIntentId)
+      if (paymentIntent.status !== 'succeeded') {
+        const message = `Payment failed: ${paymentIntent.status}`
+        logger.error(message, body)
+        res.status(400).send(message)
+        return
+      }
+
+      if (paymentIntent.currency.toLowerCase() !== env.BASE_CURRENCY.toLowerCase()) {
+        const message = `Payment currency mismatch: expected ${env.BASE_CURRENCY}, got ${paymentIntent.currency}`
+        logger.error(message, body)
+        res.status(400).send(message)
+        return
+      }
+
+      const expectedAmountCents = Math.floor(expectedBasePriceInBaseCurrency * 100)
+      if (paymentIntent.amount !== expectedAmountCents) {
+        const message = `Payment amount mismatch: expected ${expectedAmountCents}, got ${paymentIntent.amount}`
+        logger.error(message, body)
+        res.status(400).send(message)
+        return
+      }
+
+      paymentIntentCustomerId = typeof paymentIntent.customer === 'string'
+        ? paymentIntent.customer
+        : paymentIntent.customer?.id
+      if (body.customerId && body.customerId !== paymentIntentCustomerId) {
+        res.status(400).send('Payment customer mismatch')
+        return
+      }
+    }
+
+    const expireAt = new Date(Date.now() + (env.BOOKING_EXPIRE_AT * 1000))
+    if (guestUser) {
+      guestUser.expireAt = expireAt
+      await guestUser.save()
+      user = guestUser
+    }
+
+    if (!user) {
+      throw new Error('Renter not found')
+    }
+
+    const status = body.payLater
+      ? movininTypes.BookingStatus.Pending
+      : body.paymentIntentId
+        ? movininTypes.BookingStatus.Paid
+        : movininTypes.BookingStatus.Void
+    const bookingData: Partial<env.Booking> = {
+      agency: propertyObj.agency,
+      property: propertyObj._id,
+      renter: user._id,
+      location: propertyObj.location,
+      from: fromDate,
+      to: toDate,
+      status,
+      cancellation: bookingInput.cancellation,
+      price: expectedBasePriceInBaseCurrency,
+      ...(body.payLater || status === movininTypes.BookingStatus.Void ? { expireAt } : {}),
+      ...(status === movininTypes.BookingStatus.Void ? { sessionId: body.sessionId } : {}),
+      ...(body.paymentIntentId && status === movininTypes.BookingStatus.Paid
+        ? { paymentIntentId: body.paymentIntentId, customerId: paymentIntentCustomerId }
+        : {}),
     }
 
     const { language } = user
     i18n.locale = language
 
-    body.booking.price = expectedBasePriceInBaseCurrency
-    const booking = new Booking(body.booking)
-
+    const booking = new Booking(bookingData)
     await booking.save()
 
-    if (body.payLater || (booking.status === movininTypes.BookingStatus.Paid && body.paymentIntentId && body.customerId)) {
+    if (guestUser) {
+      if (status === movininTypes.BookingStatus.Paid) {
+        guestUser.expireAt = undefined
+        await guestUser.save()
+      }
+
+      const token = new Token({ user: user._id, token: helper.generateToken() })
+      await token.save()
+
+      const mailOptions: nodemailer.SendMailOptions = {
+        from: env.SMTP_FROM,
+        to: user.email,
+        subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
+        html: `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
+        ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
+        ${helper.joinURL(env.FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
+        ${i18n.t('REGARDS')}<br></p>`,
+      }
+      await mailHelper.sendMail(mailOptions)
+    } else if (paymentIntentCustomerId) {
+      user.customerId = paymentIntentCustomerId
+      await user.save()
+    }
+
+    if (body.payLater || booking.status === movininTypes.BookingStatus.Paid) {
       // Mark property as unavailable
       // if (env.MARK_PROPERTY_AS_UNAVAILABLE_ON_CHECKOUT) {
       //   await Property.updateOne({ _id: booking.property }, { available: false })
@@ -352,6 +495,11 @@ export const checkout = async (req: Request, res: Response) => {
 
     res.status(200).send({ bookingId: booking._id })
   } catch (err) {
+    if (checkoutPaymentIntentId && err instanceof mongoose.mongo.MongoServerError && err.code === 11000) {
+      res.status(400).send(`PaymentIntent ${checkoutPaymentIntentId} has already been used`)
+      return
+    }
+
     logger.error(`[booking.checkout] ${i18n.t('ERROR')}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
