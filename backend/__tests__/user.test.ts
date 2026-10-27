@@ -1723,6 +1723,27 @@ describe('GET /api/check-password/:id/:password', () => {
 
     await testHelper.signout(token)
   })
+    it('should forbid a regular user from checking another user password', async () => {
+    const userToken = await testHelper.signinAsUser()
+
+    const res = await request(app)
+      .get(`/api/check-password/${USER1_ID}/${encodeURIComponent(USER1_PASSWORD)}`)
+      .set(env.X_ACCESS_TOKEN, userToken)
+    expect(res.statusCode).toBe(403)
+
+    await testHelper.signout(userToken)
+  })
+
+  it('should allow a regular user to check their own password', async () => {
+    const userToken = await testHelper.signinAsUser()
+
+    const res = await request(app)
+      .get(`/api/check-password/${testHelper.getUserId()}/${encodeURIComponent(testHelper.PASSWORD)}`)
+      .set(env.X_ACCESS_TOKEN, userToken)
+    expect(res.statusCode).toBe(200)
+
+    await testHelper.signout(userToken)
+  })
 })
 
 describe('POST /api/users/:page/:size', () => {
