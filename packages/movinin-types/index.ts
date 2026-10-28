@@ -469,10 +469,10 @@ export interface PaymentResult {
 
 export interface SendEmailPayload {
   from: string
-  to: string
   subject: string
   message: string
   isContactForm: boolean
+  recaptchaToken?: string
 }
 
 // 
