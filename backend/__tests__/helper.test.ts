@@ -1,4 +1,7 @@
 import * as helper from '../src/utils/helper'
+import { jest } from '@jest/globals'
+import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 
 describe('Test string to boolean', () => {
   it('should convert a string to boolean', () => {
@@ -78,5 +81,23 @@ describe('delay', () => {
       res = false
     }
     expect(res).toBeTruthy()
+  })
+})
+
+describe('calculateTotalPrice (monthly rental term)', () => {
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  it('should divide the monthly price by the number of days of the current month', () => {
+    const property = { price: 2800, rentalTerm: movininTypes.RentalTerm.Monthly, cancellation: 0 } as movininTypes.Property
+    const from = new Date(2026, 1, 1)
+    const to = new Date(2026, 1, 11) // 10 days
+
+    jest.useFakeTimers({ now: new Date(2026, 1, 15) }) // February: 28 days
+    expect(movininHelper.calculateTotalPrice(property, from, to)).toBe(1000)
+
+    jest.useFakeTimers({ now: new Date(2026, 2, 15) }) // March: 31 days
+    expect(movininHelper.calculateTotalPrice(property, from, to)).toBe(903.23)
   })
 })

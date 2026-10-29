@@ -326,7 +326,7 @@ export const calculateTotalPrice = (property: movininTypes.Property, from: Date,
   let _price = 0
 
   if (property.rentalTerm === movininTypes.RentalTerm.Monthly) {
-    _price = (property.price * _days) / daysInMonth(now.getMonth(), now.getFullYear())
+    _price = (property.price * _days) / daysInMonth(now.getMonth()+1, now.getFullYear())
   } else if (property.rentalTerm === movininTypes.RentalTerm.Weekly) {
     _price = (property.price * _days) / 7
   } else if (property.rentalTerm === movininTypes.RentalTerm.Daily) {
