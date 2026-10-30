@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-10-30T09:08:29Z
+> Generated on: 2026-10-30T09:13:14Z
 
 ---
 
@@ -858,7 +858,8 @@ The admin panel allows admins to manage agencies, properties, countries, locatio
 
 Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly.
 
-Use the sidebar to browse installation guides, configuration options, and more.
+> [!TIP]
+> Use the sidebar to browse installation guides, configuration options, and more.
 
 ## Features
 
