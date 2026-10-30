@@ -14,6 +14,15 @@ import * as helper from '../utils/helper'
 import * as logger from '../utils/logger'
 
 /**
+ * Restricted agency fields. Only admins can update these fields.
+ *
+ * @type {readonly ["blacklisted"]}
+ */
+export const restrictedAgencyFields = [
+  'blacklisted', // Whether the agency is blacklisted
+] as const
+
+/**
  * Validate Agency fullname.
  *
  * @export
@@ -65,9 +74,18 @@ export const update = async (req: Request, res: Response) => {
     // begin of security check
     const sessionUserId = req.user?._id
     const sessionUser = await User.findById(sessionUserId)
+    const isAdmin = !!sessionUser && sessionUser?.type === movininTypes.UserType.Admin
     if (!sessionUser || sessionUser.type === movininTypes.UserType.User || (sessionUser.type === movininTypes.UserType.Agency && sessionUserId !== _id)) {
       logger.error(`[agency.update] Unauthorized attempt to update agency ${_id} by user ${sessionUserId}`)
       res.status(403).send('Forbidden: You cannot update agency information')
+      return
+    }
+    if (
+      !isAdmin
+      && restrictedAgencyFields.some((field) => Object.prototype.hasOwnProperty.call(body, field))
+    ) {
+      logger.error(`[agency.update] Agency ${sessionUserId} attempted to update restricted fields for agency ${_id}`)
+      res.status(403).send('Forbidden: You cannot update restricted agency information')
       return
     }
     // end of security check
@@ -88,7 +106,9 @@ export const update = async (req: Request, res: Response) => {
       agency.location = location
       agency.bio = bio
       agency.payLater = payLater
-      agency.blacklisted = !!blacklisted
+      if (isAdmin) {
+        agency.blacklisted = !!blacklisted
+      }
 
       await agency.save()
       res.json({

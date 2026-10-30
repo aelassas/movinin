@@ -27,6 +27,7 @@ import NoMatch from './NoMatch'
 import Avatar from '@/components/Avatar'
 
 import '@/assets/css/update-agency.css'
+import { is } from 'immutable'
 
 const UpdateAgency = () => {
   const navigate = useNavigate()
@@ -243,6 +244,7 @@ const UpdateAgency = () => {
         return
       }
 
+      const isAdmin = helper.admin(user)
       const data: movininTypes.UpdateAgencyPayload = {
         _id: agency._id as string,
         fullName,
@@ -250,7 +252,10 @@ const UpdateAgency = () => {
         location,
         bio,
         payLater,
-        blacklisted,
+      }
+
+      if (isAdmin) {
+        data.blacklisted = blacklisted
       }
 
       const status = await AgencyService.update(data)
@@ -314,6 +319,7 @@ const UpdateAgency = () => {
                         setBlacklisted(e.target.checked)
                       }}
                       color="primary"
+                      disabled={!admin}
                     />
                   )}
                   label={commonStrings.BLACKLISTED}
