@@ -5,6 +5,7 @@ import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
 import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import Booking from '../models/Booking'
 import Property from '../models/Property'
 import User from '../models/User'
@@ -876,8 +877,26 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
       ],
     }
 
-    let $addFields = {}
+    const now = new Date()
+    const daysInMonth = movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
+    const daysInYear = movininHelper.daysInYear(now.getFullYear())
+
+    let $addFields: any = {
+      dailyPrice: {
+        $switch: {
+          branches: [
+            { case: { $eq: ['$rentalTerm', movininTypes.RentalTerm.Monthly] }, then: { $divide: [{ $ifNull: ['$price', 0] }, daysInMonth] } },
+            { case: { $eq: ['$rentalTerm', movininTypes.RentalTerm.Weekly] }, then: { $divide: [{ $ifNull: ['$price', 0] }, 7] } },
+            { case: { $eq: ['$rentalTerm', movininTypes.RentalTerm.Daily] }, then: { $ifNull: ['$price', 0] } },
+            { case: { $eq: ['$rentalTerm', movininTypes.RentalTerm.Yearly] }, then: { $divide: [{ $ifNull: ['$price', 0] }, daysInYear] } },
+          ],
+          default: { $ifNull: ['$price', 0] },
+        },
+      },
+    }
+
     let $sort: Record<string, 1 | -1> = { name: 1, _id: 1 }
+
     if (env.DB_SERVER_SIDE_JAVASCRIPT) {
       $addFields = {
         dailyPrice:
@@ -911,6 +930,14 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
       }
 
       $sort = { dailyPrice: 1, name: 1, _id: 1 }
+    }
+
+    if (body.sortBy === movininTypes.PropertySortType.PriceAsc) {
+      $sort = { dailyPrice: 1, name: 1, _id: 1 }
+    } else if (body.sortBy === movininTypes.PropertySortType.PriceDesc) {
+      $sort = { dailyPrice: -1, name: 1, _id: 1 }
+    } else if (body.sortBy === movininTypes.PropertySortType.Default) {
+      $sort = { name: 1, _id: 1 }
     }
 
     const data = await Property.aggregate(

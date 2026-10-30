@@ -54,6 +54,12 @@ export enum PaymentGateway {
   Stripe = 'stripe',
 }
 
+export enum PropertySortType {
+  Default = 'DEFAULT',
+  PriceAsc = 'PRICE_ASC',
+  PriceDesc = 'PRICE_DESC',
+}
+
 export interface SignUpPayload {
   email: string
   password: string
@@ -420,6 +426,7 @@ export interface GetPropertiesPayload {
   language?: string
   from?: Date
   to?: Date
+  sortBy?: PropertySortType
 }
 
 export interface UpdateLanguagePayload {

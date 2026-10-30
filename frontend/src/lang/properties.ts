@@ -39,6 +39,10 @@ const strings = new LocalizedStrings({
     EMPTY_SAVED_PROPERTIES: 'Vous n’avez pas ajouté de propriétés à vos favoris.',
     SAVED_PROPERTY_UPDATED: 'Favoris mis à jour.',
     PETS_ALLOWED_TOOLTIP: 'Animaux domestiques autorisés',
+    SORT_BY: 'Trier par',
+    SORT_DEFAULT: 'Par défaut',
+    SORT_PRICE_ASC: 'Prix : Ordre croissant',
+    SORT_PRICE_DESC: 'Prix : Ordre décroissant',
   },
   en: {
     CANCELLATION: 'Cancellation',
@@ -77,6 +81,10 @@ const strings = new LocalizedStrings({
     EMPTY_SAVED_PROPERTIES: 'You have not added any properties to your wishlist yet.',
     SAVED_PROPERTY_UPDATED: 'Wishlist updated.',
     PETS_ALLOWED_TOOLTIP: 'Pets allowed',
+    SORT_BY: 'Sort by',
+    SORT_DEFAULT: 'Default',
+    SORT_PRICE_ASC: 'Price: Low to High',
+    SORT_PRICE_DESC: 'Price: High to Low',
   },
 })
 
