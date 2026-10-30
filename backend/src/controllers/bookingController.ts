@@ -209,7 +209,6 @@ export const confirm = async (user: env.User, booking: env.Booking, payLater: bo
  */
 export const checkout = async (req: Request, res: Response) => {
   try {
-    const now = new Date()
     let user: env.User | null
     const { body }: { body: movininTypes.CheckoutPayload } = req
     const { renter } = body
@@ -359,12 +358,7 @@ export const checkout = async (req: Request, res: Response) => {
         property: propertyObj._id,
         from: { $lte: toDate },
         to: { $gte: fromDate },
-        $or: [
-          {
-            status: { $in: BOOKING_RESERVATION_STATUSES },
-          },
-          { status: movininTypes.BookingStatus.Void, expireAt: { $gt: now } },
-        ]
+        status: { $in: BOOKING_RESERVATION_STATUSES },
       })
       if (conflictingBooking) {
         res.status(409).send('Property is no longer available for these dates')
@@ -394,12 +388,7 @@ export const checkout = async (req: Request, res: Response) => {
           property: propertyObj._id,
           from: { $lte: toDate },
           to: { $gte: fromDate },
-          $or: [
-            {
-              status: { $in: BOOKING_RESERVATION_STATUSES },
-            },
-            { status: movininTypes.BookingStatus.Void, expireAt: { $gt: now } },
-          ]
+          status: { $in: BOOKING_RESERVATION_STATUSES },
         })
         if (conflict) {
           const conflictErr = new Error('CONFLICT') as Error & { code: string }
