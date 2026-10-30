@@ -21,6 +21,17 @@ import * as logger from '../utils/logger'
 import stripeAPI from '../payment/stripe'
 
 /**
+ * Booking reservation statuses.
+ *
+ * @type {movininTypes.BookingStatus[]}
+ */
+export const BOOKING_RESERVATION_STATUSES = [
+  movininTypes.BookingStatus.Paid,
+  movininTypes.BookingStatus.Reserved,
+  movininTypes.BookingStatus.Deposit,
+]
+
+/**
  * In-process per-property async mutex.
  * Serialises concurrent checkout requests for the same property so that
  * the overlap-check and booking.save() are atomic from the application's
@@ -198,6 +209,7 @@ export const confirm = async (user: env.User, booking: env.Booking, payLater: bo
  */
 export const checkout = async (req: Request, res: Response) => {
   try {
+    const now = new Date()
     let user: env.User | null
     const { body }: { body: movininTypes.CheckoutPayload } = req
     const { renter } = body
@@ -345,15 +357,14 @@ export const checkout = async (req: Request, res: Response) => {
     if (propertyObj.blockOnPay) {
       const conflictingBooking = await Booking.exists({
         property: propertyObj._id,
-        status: {
-          $in: [
-            movininTypes.BookingStatus.Paid,
-            movininTypes.BookingStatus.Reserved,
-            movininTypes.BookingStatus.Deposit,
-          ],
-        },
         from: { $lte: toDate },
         to: { $gte: fromDate },
+        $or: [
+          {
+            status: { $in: BOOKING_RESERVATION_STATUSES },
+          },
+          { status: movininTypes.BookingStatus.Void, expireAt: { $gt: now } },
+        ]
       })
       if (conflictingBooking) {
         res.status(409).send('Property is no longer available for these dates')
@@ -381,15 +392,14 @@ export const checkout = async (req: Request, res: Response) => {
         // Re-check inside the lock to close the race window
         const conflict = await Booking.exists({
           property: propertyObj._id,
-          status: {
-            $in: [
-              movininTypes.BookingStatus.Paid,
-              movininTypes.BookingStatus.Reserved,
-              movininTypes.BookingStatus.Deposit,
-            ],
-          },
           from: { $lte: toDate },
           to: { $gte: fromDate },
+          $or: [
+            {
+              status: { $in: BOOKING_RESERVATION_STATUSES },
+            },
+            { status: movininTypes.BookingStatus.Void, expireAt: { $gt: now } },
+          ]
         })
         if (conflict) {
           const conflictErr = new Error('CONFLICT') as Error & { code: string }
