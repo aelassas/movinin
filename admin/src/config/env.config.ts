@@ -60,7 +60,7 @@ const env = {
     (import.meta.env.VITE_MI_RECAPTCHA_ENABLED && import.meta.env.VITE_MI_RECAPTCHA_ENABLED.toLowerCase()) === 'true'
     && Boolean(import.meta.env.VITE_MI_RECAPTCHA_SITE_KEY && import.meta.env.VITE_MI_RECAPTCHA_SITE_KEY !== 'RECAPTCHA_SITE_KEY'),
   RECAPTCHA_SITE_KEY: String(import.meta.env.VITE_MI_RECAPTCHA_SITE_KEY),
-  CONTACT_EMAIL: import.meta.env.VITE_MI_CONTACT_EMAIL,
+  CONTACT_EMAIL: String(import.meta.env.VITE_MI_CONTACT_EMAIL || ''),
 }
 
 export default env
