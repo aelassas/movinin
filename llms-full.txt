@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-10-15T20:14:21Z
+> Generated on: 2026-10-30T09:08:29Z
 
 ---
 
@@ -478,6 +478,38 @@ Replace <code>src-api-1</code> with your API container name.
 <b>Username</b>: jdoe@movinin.io<br>
 <b>Password</b>: M00vinin
 
+
+---
+
+# Document: Development Database
+
+> Source: https://github.com/aelassas/movinin/wiki/Development-Database
+
+## Development Database
+
+For local development and testing, you can populate an isolated MongoDB instance with a complete fixture dataset including admin, agencies, customers, properties, bookings, and notifications:
+
+```bash
+# Seed development database (idempotent)
+npm run seed:dev
+
+# Clean development database (safely removes only seed-owned records)
+npm run clean:dev
+```
+
+### Sample Development Credentials
+All seeded development accounts use the password: **`SeedDev1!`**
+
+| Portal | Role | Email | Password |
+|---|---|---|---|
+| Admin Panel (`:3003`) | Admin | `dev-admin@example.com` | `SeedDev1!` |
+| Admin Panel (`:3003`) | Agency | `sunshine-realty@example.com` | `SeedDev1!` |
+| Admin Panel (`:3003`) | Agency | `urban-homes@example.com` | `SeedDev1!` |
+| Frontend (`:3004`) | Customer | `alice.johnson@example.com` | `SeedDev1!` |
+| Frontend (`:3004`) | Customer | `bob.smith@example.com` | `SeedDev1!` |
+| Frontend (`:3004`) | Customer | `carol.white@example.com` | `SeedDev1!` |
+
+For full contributor documentation and safety guarantees, see [CONTRIBUTING.md](https://github.com/aelassas/movinin/blob/main/.github/CONTRIBUTING.md).
 
 ---
 
