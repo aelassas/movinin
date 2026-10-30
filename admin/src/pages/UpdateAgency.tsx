@@ -27,7 +27,6 @@ import NoMatch from './NoMatch'
 import Avatar from '@/components/Avatar'
 
 import '@/assets/css/update-agency.css'
-import { is } from 'immutable'
 
 const UpdateAgency = () => {
   const navigate = useNavigate()
