@@ -1,5 +1,29 @@
 # Releases
 
+## [Movin' In 7.3](https://github.com/aelassas/movinin/releases/tag/v7.3) – 2026-10-25
+
+#### What's Changed
+* feat: add saved properties wishlist feature (#32)
+* fix(backend): verify Stripe checkout session paid amount and currency (#34)
+* fix(backend): remediate notification IDOR and broken access control vulnerabilities (#39)
+* fix(backend): fix checkout privilege escalation and user authorization vulnerabilities (#40)
+* fix(frontend): non autenticated pay later checkout success page broken
+* ci: fix releases.yml workflow
+
+#### New Contributors
+* @BhavishTrehan77 made their first contribution in https://github.com/aelassas/movinin/pull/34
+* @Kakkar327-coder made their first contribution in https://github.com/aelassas/movinin/pull/39
+* @Somya-03-hub made their first contribution in https://github.com/aelassas/movinin/pull/40
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v7.2...7.3
+
+### Assets
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.3/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v7.3)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v7.3)
+
 ## [Movin' In 7.2](https://github.com/aelassas/movinin/releases/tag/v7.2) – 2026-10-21
 
 #### What's Changed

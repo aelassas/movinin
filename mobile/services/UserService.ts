@@ -434,18 +434,17 @@ export const updateEmailNotifications = async (data: movininTypes.UpdateEmailNot
 }
 
 /**
- * Check password.
+ * Check Password.
  *
- * @async
- * @param {string} id
- * @param {string} pass
+ * @param {movininTypes.CheckPasswordPayload} data
  * @returns {Promise<number>}
  */
-export const checkPassword = async (id: string, pass: string): Promise<number> => {
+export const checkPassword = async (data: movininTypes.CheckPasswordPayload): Promise<number> => {
   const headers = await authHeader()
   return axiosInstance
-    .get(
-      `/api/check-password/${encodeURIComponent(id)}/${encodeURIComponent(pass)}`,
+    .post(
+      '/api/check-password',
+      data,
       { headers }
     )
     .then((res) => res.status)

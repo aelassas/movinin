@@ -102,7 +102,11 @@ const ChangePassword = () => {
       }
 
       if (strict) {
-        const status = await UserService.checkPassword(userId || loggedUser?._id as string, currentPassword)
+        const payload: movininTypes.CheckPasswordPayload = {
+          _id: userId || loggedUser?._id as string,
+          password: currentPassword,
+        }
+        const status = await UserService.checkPassword(payload)
 
         setCurrentPasswordError(status !== 200)
         setNewPasswordError(false)

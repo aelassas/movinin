@@ -109,8 +109,8 @@ beforeAll(async () => {
   await hiddenProperty.save()
   HIDDEN_PROPERTY_ID = hiddenProperty._id.toString()
 
-  CUSTOMER1_TOKEN = await testHelper.signin(movininTypes.AppType.Frontend, CUSTOMER1_EMAIL)
-  CUSTOMER2_TOKEN = await testHelper.signin(movininTypes.AppType.Frontend, CUSTOMER2_EMAIL)
+  CUSTOMER1_TOKEN = await testHelper.signin(CUSTOMER1_EMAIL, movininTypes.AppType.Frontend)
+  CUSTOMER2_TOKEN = await testHelper.signin(CUSTOMER2_EMAIL, movininTypes.AppType.Frontend)
   ADMIN_TOKEN = await testHelper.signinAsAdmin()
 })
 

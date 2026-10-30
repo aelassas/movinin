@@ -171,10 +171,16 @@ export const checkout = async (req: Request, res: Response) => {
     }
 
     if (renter) {
-      renter.verified = false
-      renter.blacklisted = false
-
-      user = new User(renter)
+      user = new User({
+        fullName: renter.fullName,
+        email: renter.email,
+        phone: renter.phone,
+        birthDate: renter.birthDate,
+        language: renter.language,
+        type: movininTypes.UserType.User,
+        verified: false,
+        blacklisted: false,
+      })
       await user.save()
 
       const token = new Token({ user: user._id, token: helper.generateToken() })
@@ -224,6 +230,7 @@ export const checkout = async (req: Request, res: Response) => {
     if (body.payLater) {
       // Server explicitly decides payment status for payLater
       body.booking.status = movininTypes.BookingStatus.Pending
+      body.booking.sessionId = body.sessionId
     } else {
       const { payPal, paymentIntentId, sessionId } = body
 

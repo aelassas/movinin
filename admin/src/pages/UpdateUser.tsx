@@ -213,11 +213,17 @@ const UpdateUser = () => {
             const _user = await UserService.getUser(id)
 
             if (_user) {
-              if (!(
-                _loggedUser.type === movininTypes.UserType.Admin
-                || (_user.type === movininTypes.UserType.Agency && _loggedUser._id === _user._id)
-                || (_user.type === movininTypes.UserType.User && _loggedUser._id === _user.agency)
-              )) {
+              const isAdmin = _loggedUser.type === movininTypes.UserType.Admin
+              const isSelfAgency =
+                _user.type === movininTypes.UserType.Agency &&
+                _loggedUser._id?.toString() === _user._id?.toString()
+              const isUsersAgency =
+                _user.type === movininTypes.UserType.User &&
+                _loggedUser.type === movininTypes.UserType.Agency &&
+                _loggedUser._id?.toString() === _user.agency?.toString()
+                console.log(_user.agency?.toString())
+
+              if (!(isAdmin || isSelfAgency || isUsersAgency)) {
                 setLoading(false)
                 setNoMatch(true)
                 return

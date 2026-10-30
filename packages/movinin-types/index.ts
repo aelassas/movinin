@@ -274,6 +274,7 @@ export interface User {
   checked?: boolean
   customerId?: string
   savedProperties?: string[]
+  isSocial?: boolean
 }
 
 export interface Option {
@@ -397,6 +398,11 @@ export type Result<T> = [ResultData<T>] | [] | undefined | null
 export interface Data<T> {
   rows: T[]
   rowCount: number
+}
+
+export interface CheckPasswordPayload {
+  _id: string
+  password: string
 }
 
 export interface ChangePasswordPayload {

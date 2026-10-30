@@ -555,6 +555,7 @@ export interface User extends Document {
   customerId?: string
   savedProperties?: Types.ObjectId[]
   expireAt?: Date
+  isSocial?: boolean
 }
 
 /**
