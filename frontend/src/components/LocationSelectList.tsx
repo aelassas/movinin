@@ -159,6 +159,7 @@ const LocationSelectList = ({
     setRows([])
     setPage(1)
     setFetch(true)
+    setLoading(true)
 
     debounceTimerRef.current = setTimeout(() => {
       fetchData(1, nextKeyword, searchId)
