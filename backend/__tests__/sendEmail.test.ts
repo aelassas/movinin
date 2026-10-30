@@ -253,9 +253,12 @@ describe('POST /api/send-email', () => {
     expect(sendMail).toHaveBeenCalledTimes(rateLimitCapacity)
   })
 
-  it('fails closed when the Redis limiter is unavailable', async () => {
-    redisUnavailable = true
+it('fails closed when the Redis limiter is unavailable in production', async () => {
+  const originalEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'production'
+  redisUnavailable = true
 
+  try {
     const response = await request(app)
       .post('/api/send-email')
       .set('Origin', frontendHost)
@@ -264,7 +267,11 @@ describe('POST /api/send-email', () => {
 
     expect(response.statusCode).toBe(503)
     expect(sendMail).not.toHaveBeenCalled()
-  })
+  } finally {
+    process.env.NODE_ENV = originalEnv
+    redisUnavailable = false
+  }
+})
 
   it.each([
     ['invalid email', { from: 'not-an-email' }],

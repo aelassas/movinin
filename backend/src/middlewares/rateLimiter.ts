@@ -39,8 +39,9 @@ const TOKEN_BUCKET_LUA = `
 
 const isTest = env.CI || process.env.NODE_ENV === 'test'
 
-export const createRateLimiter = (namespace: string, failClosed = false) =>
+export const createRateLimiter = (namespace: string, failClosedOrFn: boolean | (() => boolean) = false) =>
   async (req: Request, res: Response, next: NextFunction) => {
+    const failClosed = typeof failClosedOrFn === 'function' ? failClosedOrFn() : failClosedOrFn
     if (isTest && !req.headers['x-test-rate-limit']) {
       return next()
     }

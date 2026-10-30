@@ -39,7 +39,7 @@ routes.route(routeNames.getUsers).post(authJwt.verifyToken, authJwt.authAgency, 
 routes.route(routeNames.delete).post(authJwt.verifyToken, authJwt.authAgency, userController.deleteUsers)
 routes.route(routeNames.verifyRecaptcha).post(userController.verifyRecaptcha)
 // Fail-closed in production to prevent spam/abuse if Redis goes down; fail-open in dev/testing so emails work without Redis
-routes.route(routeNames.sendEmail).post(createRateLimiter('send-email', process.env.NODE_ENV === 'production'), userController.sendEmail)
+routes.route(routeNames.sendEmail).post(createRateLimiter('send-email', () => process.env.NODE_ENV === 'production'), userController.sendEmail)
 routes.route(routeNames.hasPassword).get(authJwt.verifyToken, userController.hasPassword)
 routes.route(routeNames.getSavedProperties).get(authJwt.verifyToken, userController.getSavedProperties)
 routes.route(routeNames.saveProperty).put(authJwt.verifyToken, userController.saveProperty)

@@ -83,6 +83,7 @@ beforeAll(async () => {
     cancellation: 0,
     available: false,
     rentalTerm: movininTypes.RentalTerm.Daily,
+    blockOnPay: false,
   }
 
   // property 1
@@ -572,6 +573,230 @@ describe('Security Regression Tests - Issue #28 Checkout Payment Binding', () =>
     if (customer) {
       await stripeAPI.customers.del(customerId)
     }
+  })
+})
+
+// ---------------------------------------------------------------------------
+// TOCTOU / Double-Booking Regression Tests
+// Validates that checkout revalidates availability before persisting a booking.
+// ---------------------------------------------------------------------------
+describe('Security Regression Tests - TOCTOU Availability Revalidation', () => {
+  let toctouPropertyId: string
+  let toctouRenterId: string
+
+  beforeAll(async () => {
+    // Create a dedicated property with blockOnPay: true
+    const prop = new Property({
+      name: 'TOCTOU Test Property',
+      agency: AGENCY_ID,
+      type: movininTypes.PropertyType.Apartment,
+      description: '<p>Test property for TOCTOU checks</p>',
+      image: 'test.jpg',
+      images: [],
+      bedrooms: 1,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 0,
+      size: 50,
+      petsAllowed: false,
+      furnished: false,
+      aircon: false,
+      minimumAge: 21,
+      location: LOCATION_ID,
+      address: '',
+      price: 500,
+      hidden: false,
+      cancellation: 0,
+      available: true,
+      rentalTerm: movininTypes.RentalTerm.Daily,
+      blockOnPay: true,
+    })
+    await prop.save()
+    toctouPropertyId = prop._id.toString()
+
+    // Create a dedicated renter for TOCTOU tests
+    const toctouRenterEmail = testHelper.GetRandomEmail()
+    const renter = new User({
+      fullName: 'TOCTOU Renter',
+      email: toctouRenterEmail,
+      language: testHelper.LANGUAGE,
+      password: 'Un1tTest5',
+      type: movininTypes.UserType.User,
+    })
+    await renter.save()
+    toctouRenterId = renter._id.toString()
+  })
+
+  afterAll(async () => {
+    await Property.deleteOne({ _id: toctouPropertyId })
+    await User.deleteOne({ _id: toctouRenterId })
+    await Booking.deleteMany({ property: toctouPropertyId })
+    await Notification.deleteMany({ user: toctouRenterId })
+    await NotificationCounter.deleteMany({ user: toctouRenterId })
+  })
+
+  it('should return 409 when the property has a conflicting booking (stale-availability scenario)', async () => {
+    // Simulate Customer A already having a Paid booking for Oct 28–31
+    const conflictFrom = new Date(2026, 9, 28)
+    const conflictTo = new Date(2026, 9, 31)
+    const existingBooking = new Booking({
+      agency: AGENCY_ID,
+      property: toctouPropertyId,
+      renter: RENTER1_ID,
+      location: LOCATION_ID,
+      from: conflictFrom,
+      to: conflictTo,
+      status: movininTypes.BookingStatus.Paid,
+      cancellation: false,
+      price: 1500,
+    })
+    await existingBooking.save()
+
+    // Customer B attempts to checkout for the same dates — must be rejected
+    const payload: movininTypes.CheckoutPayload = {
+      booking: {
+        agency: AGENCY_ID,
+        property: toctouPropertyId,
+        renter: toctouRenterId,
+        location: LOCATION_ID,
+        from: conflictFrom,
+        to: conflictTo,
+        status: movininTypes.BookingStatus.Pending,
+        cancellation: false,
+        price: 1500,
+      },
+      payLater: true,
+    }
+
+    const res = await request(app).post('/api/checkout').send(payload)
+    expect(res.statusCode).toBe(409)
+    expect(res.text).toContain('no longer available')
+
+    // Ensure no duplicate booking was persisted
+    const count = await Booking.countDocuments({
+      property: toctouPropertyId,
+      from: conflictFrom,
+      to: conflictTo,
+    })
+    expect(count).toBe(1)
+
+    // Ensure orphaned guest user is deleted on 409 conflict
+    if (payload.renter) {
+      const createdUser = await User.findOne({ email: payload.renter.email })
+      expect(createdUser).toBeNull()
+    }
+
+    await Booking.deleteOne({ _id: existingBooking._id })
+  })
+
+  it('should block a checkout when a concurrent booking achieves Reserved status before saving (race condition)', async () => {
+    // This test proves the in-lock double-check works:
+    // 1. Seed a Reserved booking directly (simulating "Customer A just paid")
+    // 2. Customer B's checkout request should be rejected (409) even though
+    //    they started the flow before Customer A's payment was visible.
+    const raceFrom = new Date(2026, 10, 1)
+    const raceTo = new Date(2026, 10, 5)
+
+    // Customer A's booking is already Reserved (payment completed)
+    const reservedBooking = new Booking({
+      agency: AGENCY_ID,
+      property: toctouPropertyId,
+      renter: RENTER1_ID,
+      location: LOCATION_ID,
+      from: raceFrom,
+      to: raceTo,
+      status: movininTypes.BookingStatus.Reserved,
+      cancellation: false,
+      price: 2000,
+    })
+    await reservedBooking.save()
+
+    // Customer B tries to checkout for the same overlapping window
+    const payloadB: movininTypes.CheckoutPayload = {
+      booking: {
+        agency: AGENCY_ID,
+        property: toctouPropertyId,
+        renter: toctouRenterId,
+        location: LOCATION_ID,
+        from: raceFrom,
+        to: raceTo,
+        status: movininTypes.BookingStatus.Pending,
+        cancellation: false,
+        price: 2000,
+      },
+      payLater: true,
+    }
+
+    const res = await request(app).post('/api/checkout').send(payloadB)
+    expect(res.statusCode).toBe(409)
+    expect(res.text).toContain('no longer available')
+
+    // Only the original Reserved booking should exist; no duplicate
+    const count = await Booking.countDocuments({ property: toctouPropertyId, from: raceFrom, to: raceTo })
+    expect(count).toBe(1)
+
+    await Booking.deleteOne({ _id: reservedBooking._id })
+  })
+
+  it('should NOT block concurrent checkouts when blockOnPay is false', async () => {
+    // A property without blockOnPay — standard behaviour should allow concurrent bookings
+    const nonBlockProp = new Property({
+      name: 'Non-Block Property',
+      agency: AGENCY_ID,
+      type: movininTypes.PropertyType.Apartment,
+      description: '<p>No blocking</p>',
+      image: 'test.jpg',
+      images: [],
+      bedrooms: 1,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 0,
+      size: 50,
+      petsAllowed: false,
+      furnished: false,
+      aircon: false,
+      minimumAge: 21,
+      location: LOCATION_ID,
+      address: '',
+      price: 500,
+      hidden: false,
+      cancellation: 0,
+      available: true,
+      rentalTerm: movininTypes.RentalTerm.Daily,
+      blockOnPay: false,
+    })
+    await nonBlockProp.save()
+    const nbPropId = nonBlockProp._id.toString()
+
+    const nbFrom = new Date(2026, 11, 1)
+    const nbTo = new Date(2026, 11, 4)
+
+    const makePayload = (renterId: string): movininTypes.CheckoutPayload => ({
+      booking: {
+        agency: AGENCY_ID,
+        property: nbPropId,
+        renter: renterId,
+        location: LOCATION_ID,
+        from: nbFrom,
+        to: nbTo,
+        status: movininTypes.BookingStatus.Pending,
+        cancellation: false,
+        price: 1500,
+      },
+      payLater: true,
+    })
+
+    const [res1, res2] = await Promise.all([
+      request(app).post('/api/checkout').send(makePayload(RENTER1_ID)),
+      request(app).post('/api/checkout').send(makePayload(toctouRenterId)),
+    ])
+
+    // Both should succeed when blockOnPay is false
+    expect(res1.statusCode).toBe(200)
+    expect(res2.statusCode).toBe(200)
+
+    await Booking.deleteMany({ property: nbPropId })
+    await Property.deleteOne({ _id: nbPropId })
   })
 })
 

@@ -21,6 +21,42 @@ import * as logger from '../utils/logger'
 import stripeAPI from '../payment/stripe'
 
 /**
+ * In-process per-property async mutex.
+ * Serialises concurrent checkout requests for the same property so that
+ * the overlap-check and booking.save() are atomic from the application's
+ * perspective. This is sufficient for a single-process Node server and
+ * for the standalone (non-replica-set) MongoDB used in development and
+ * tests. In a multi-process deployment a distributed lock (e.g. Redis
+ * SET NX) would be required in addition.
+ */
+const propertyLocks = new Map<string, Promise<void>>()
+
+async function withPropertyLock<T>(propertyId: string, fn: () => Promise<T>): Promise<T> {
+  // Wait for any outstanding operation on this property to finish
+  const previous = propertyLocks.get(propertyId) ?? Promise.resolve()
+
+  let resolve!: () => void
+  const current = new Promise<void>((res) => {
+    resolve = res
+  })
+
+  // Store reference to the chained promise tail
+  const tail = previous.then(() => current)
+  propertyLocks.set(propertyId, tail)
+
+  await previous
+  try {
+    return await fn()
+  } finally {
+    resolve()
+    // Clean up map entry if no newer request replaced this tail
+    if (propertyLocks.get(propertyId) === tail) {
+      propertyLocks.delete(propertyId)
+    }
+  }
+}
+
+/**
  * Create a Booking.
  *
  * @export
@@ -304,6 +340,27 @@ export const checkout = async (req: Request, res: Response) => {
       }
     }
 
+    // Revalidate date availability (TOCTOU guard)
+    // Only enforced when blockOnPay is true (exclusive availability required).
+    if (propertyObj.blockOnPay) {
+      const conflictingBooking = await Booking.exists({
+        property: propertyObj._id,
+        status: {
+          $in: [
+            movininTypes.BookingStatus.Paid,
+            movininTypes.BookingStatus.Reserved,
+            movininTypes.BookingStatus.Deposit,
+          ],
+        },
+        from: { $lte: toDate },
+        to: { $gte: fromDate },
+      })
+      if (conflictingBooking) {
+        res.status(409).send('Property is no longer available for these dates')
+        return
+      }
+    }
+
     const { customerId } = body
     if (customerId) {
       user.customerId = customerId
@@ -316,7 +373,48 @@ export const checkout = async (req: Request, res: Response) => {
     body.booking.price = expectedBasePriceInBaseCurrency
     const booking = new Booking(body.booking)
 
-    await booking.save()
+    // Save the booking inside the per-property lock when exclusive
+    // availability is required, so the conflict check + save are
+    // effectively atomic in a single-process Node deployment.
+    if (propertyObj.blockOnPay) {
+      await withPropertyLock(propertyObj._id.toString(), async () => {
+        // Re-check inside the lock to close the race window
+        const conflict = await Booking.exists({
+          property: propertyObj._id,
+          status: {
+            $in: [
+              movininTypes.BookingStatus.Paid,
+              movininTypes.BookingStatus.Reserved,
+              movininTypes.BookingStatus.Deposit,
+            ],
+          },
+          from: { $lte: toDate },
+          to: { $gte: fromDate },
+        })
+        if (conflict) {
+          const conflictErr = new Error('CONFLICT') as Error & { code: string }
+          conflictErr.code = 'CONFLICT'
+          throw conflictErr
+        }
+        await booking.save()
+      }).catch(async (err: Error & { code?: string }) => {
+        if (err.code === 'CONFLICT') {
+          if (renter && user) {
+            await Token.deleteMany({ user: user._id })
+            await user.deleteOne()
+          }
+          res.status(409).send('Property is no longer available for these dates')
+          return
+        }
+        throw err
+      })
+      // If a 409 was already sent, stop here
+      if (res.headersSent) {
+        return
+      }
+    } else {
+      await booking.save()
+    }
 
     if (body.payLater || (booking.status === movininTypes.BookingStatus.Paid && body.paymentIntentId && body.customerId)) {
       // Mark property as unavailable
