@@ -38,84 +38,8 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 * [Overview](https://github.com/aelassas/movinin/wiki/Overview)  
 * [Install Guide (Self-hosted)](https://github.com/aelassas/movinin/wiki/Installing-(Self%E2%80%90hosted))
 * [Install Guide (Docker)](https://github.com/aelassas/movinin/wiki/Installing-(Docker))
-* [Build Mobile App](https://github.com/aelassas/movinin/wiki/Build-Mobile-App)
-* [Payment Gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways)
-* [FAQ](https://github.com/aelassas/movinin/wiki/FAQ)
+* [Development Database](https://github.com/aelassas/movinin/wiki/Development-Database)
 * [Full Documentation](https://github.com/aelassas/movinin/wiki)
-
-## Development Database Quick Start
-
-For local development and testing, you can populate an isolated MongoDB instance with a complete fixture dataset including admin, agencies, customers, properties, bookings, and notifications:
-
-```bash
-# Seed development database (idempotent)
-npm run seed:dev
-
-# Clean development database (safely removes only seed-owned records)
-npm run clean:dev
-```
-
-### Sample Development Credentials
-All seeded development accounts use the password: **`SeedDev1!`**
-
-| Portal | Role | Email | Password |
-|---|---|---|---|
-| Admin Panel (`:3003`) | Admin | `dev-admin@example.com` | `SeedDev1!` |
-| Admin Panel (`:3003`) | Agency | `sunshine-realty@example.com` | `SeedDev1!` |
-| Admin Panel (`:3003`) | Agency | `urban-homes@example.com` | `SeedDev1!` |
-| Frontend (`:3004`) | Customer | `alice.johnson@example.com` | `SeedDev1!` |
-| Frontend (`:3004`) | Customer | `bob.smith@example.com` | `SeedDev1!` |
-| Frontend (`:3004`) | Customer | `carol.white@example.com` | `SeedDev1!` |
-
-For full contributor documentation and safety guarantees, see [CONTRIBUTING.md](.github/CONTRIBUTING.md).
-
-## Features
-
-**Agency & Property Management**
-
-* Agency management
-* Ready for single or multiple agencies
-* Property management
-* Flexible time-based property availability
-* Booking management
-* Property scheduler
-* Auto-notification system
-
-**Pricing & Payments**
-
-* Payment management
-* Multiple payment gateways supported: Stripe, PayPal
-* Multiple payment methods: Credit Card, PayPal, Google Pay, Apple Pay, Link, Pay Later
-
-**Locations & Mapping**
-
-* Hierarchical locations with country and map integration
-* Location-based search with nested location support
-* Map display for locations
-
-**User Experience**
-
-* Customer management
-* Multiple login options: Google, Facebook, Apple, Email
-* Multiple language support: English, French
-* Multiple currencies support
-* Multiple pagination styles: classic (next/previous), infinite scroll
-* Push notifications
-
-**Security & Performance**
-
-* Secure against XSS, XST, CSRF, MITM, and DDoS attacks
-* Responsive admin panel and frontend
-* Native mobile app for Android and iOS (single codebase)
-* Docker support for easy deployment and better developer experience
-* Error monitoring and performance tracing
-
-**Supported Platforms**
-
-* iOS
-* Android
-* Web
-* Docker
 
 ## Stats for Nerds
 
@@ -125,11 +49,15 @@ For full contributor documentation and safety guarantees, see [CONTRIBUTING.md](
 -->
 [![LoC Total](https://raw.githubusercontent.com/aelassas/movinin/refs/heads/loc/loc-total.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml)
 
-## Support & Contributing
+## Support
 
-If this project helped you, saved you time, or inspired you, consider supporting its future growth and maintenance. You can show your support by starring the repository, sharing the project, or via [GitHub Sponsors](https://github.com/sponsors/aelassas), [PayPal](https://www.paypal.me/aelassaspp), [Liberapay](https://liberapay.com/aelassas/), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas).
+Movin' In is free and open source. If it helped you, saved you time, or powered your production workflows, consider supporting the project via [PayPal](https://www.paypal.me/aelassaspp), [GitHub Sponsors](https://github.com/sponsors/aelassas), [Liberapay](https://liberapay.com/aelassas/), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas) to keep it active, independent, and free for everyone.
+
+<!--
+If this project helped you, saved you time, or inspired you, consider supporting its future growth and maintenance. You can show your support by starring the repository, sharing the project, or via [PayPal](https://www.paypal.me/aelassaspp), [GitHub Sponsors](https://github.com/sponsors/aelassas), [Liberapay](https://liberapay.com/aelassas/), or [Buy Me a Coffee](https://www.buymeacoffee.com/aelassas).
 
 Open-source software requires time, effort, and resources to maintain. Your support helps keep this project alive, up-to-date, and accessible to everyone. Every contribution, big or small, makes a difference and motivates continued work on features, bug fixes, and new ideas.
+-->
 
 <!--<a href="https://github.com/sponsors/aelassas"><img src="https://aelassas.github.io/content/github-sponsor-button.png" alt="GitHub" width="210"></a>
 <a href="https://www.paypal.me/aelassaspp"><img src="https://aelassas.github.io/content/paypal-button-v2.png" alt="PayPal" width="208"></a>

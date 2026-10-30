@@ -677,6 +677,90 @@ describe('POST /api/frontend-properties/:page/:size', () => {
       expect(res.body[0].resultData.length).toBe(1)
     })
   })
+
+  it('should treat booking end dates as exclusive checkout boundaries', async () => {
+    const property = new Property({
+      name: 'Checkout Boundary Test Property',
+      agency: AGENCY2_ID,
+      type: movininTypes.PropertyType.House,
+      description: 'Property for booking availability boundary tests.',
+      bedrooms: 1,
+      bathrooms: 1,
+      petsAllowed: false,
+      furnished: true,
+      minimumAge: 21,
+      location: LOCATION2_ID,
+      price: 100,
+      rentalTerm: movininTypes.RentalTerm.Daily,
+      available: true,
+      hidden: false,
+      blockOnPay: true,
+    })
+    await property.save()
+
+    const bookingFrom = new Date('2027-10-28T12:00:00.000Z')
+    const bookingTo = new Date('2027-10-30T12:00:00.000Z')
+    const adjacentSearchTo = new Date('2027-11-02T12:00:00.000Z')
+    const overlappingSearchFrom = new Date('2027-10-29T12:00:00.000Z')
+    const search = async (from: Date, to: Date) => {
+      const res = await request(app)
+        .post(`/api/frontend-properties/${testHelper.PAGE}/${testHelper.SIZE}`)
+        .send({
+          agencies: [AGENCY2_ID],
+          types: [movininTypes.PropertyType.House],
+          rentalTerms: [movininTypes.RentalTerm.Daily],
+          location: LOCATION2_ID,
+          from,
+          to,
+        })
+
+      expect(res.statusCode).toBe(200)
+      return res.body[0].resultData.some(
+        (result: { _id: string }) => result._id === property._id.toString(),
+      )
+    }
+
+    try {
+      const booking = new Booking({
+        agency: AGENCY2_ID,
+        property: property._id,
+        renter: testHelper.getUserId(),
+        location: LOCATION2_ID,
+        from: bookingFrom,
+        to: bookingTo,
+        status: movininTypes.BookingStatus.Paid,
+        price: 200,
+      })
+      await booking.save()
+
+      expect(await search(bookingTo, adjacentSearchTo)).toBe(true)
+      expect(await search(overlappingSearchFrom, adjacentSearchTo)).toBe(false)
+
+      for (const status of [
+        movininTypes.BookingStatus.Paid,
+        movininTypes.BookingStatus.Reserved,
+        movininTypes.BookingStatus.Deposit,
+      ]) {
+        booking.status = status
+        await booking.save()
+        expect(await search(overlappingSearchFrom, adjacentSearchTo)).toBe(false)
+      }
+
+      property.blockOnPay = false
+      await property.save()
+      booking.status = movininTypes.BookingStatus.Paid
+      await booking.save()
+      expect(await search(overlappingSearchFrom, adjacentSearchTo)).toBe(true)
+
+      property.blockOnPay = true
+      await property.save()
+      await booking.deleteOne()
+      expect(await search(bookingTo, adjacentSearchTo)).toBe(true)
+    } finally {
+      await Booking.deleteMany({ property: property._id })
+      await property.deleteOne()
+    }
+  })
 })
 
 describe('GET /api/check-property/:id', () => {

@@ -221,7 +221,7 @@ const UpdateUser = () => {
                 _user.type === movininTypes.UserType.User &&
                 _loggedUser.type === movininTypes.UserType.Agency &&
                 _loggedUser._id?.toString() === _user.agency?.toString()
-                console.log(_user.agency?.toString())
+              console.log(_user.agency?.toString())
 
               if (!(isAdmin || isSelfAgency || isUsersAgency)) {
                 setLoading(false)
@@ -404,6 +404,9 @@ const UpdateUser = () => {
                         setBlacklisted(e.target.checked)
                       }}
                       color="primary"
+                      disabled={
+                        loggedUser?.type === movininTypes.UserType.Agency && (user.agency !== loggedUser?._id || user._id === loggedUser?._id)
+                      }
                     />
                   )}
                   label={commonStrings.BLACKLISTED}

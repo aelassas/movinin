@@ -46,7 +46,7 @@ const PasswordInput: React.FC<CombinedProps> = ({
   const commonProps = {
     ...inputProps,
     type: showPassword ? 'text' : 'password',
-    autoComplete: inputProps.autoComplete ?? 'password',
+    autoComplete: inputProps.autoComplete ?? 'current-password',
     endAdornment: (
       <InputAdornment position="end">
         <IconButton onClick={toggleVisibility} edge="end" size="small" tabIndex={-1}>

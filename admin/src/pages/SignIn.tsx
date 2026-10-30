@@ -142,7 +142,7 @@ const SignIn = () => {
                 onChange={handlePasswordChange}
                 onKeyDown={handlePasswordKeyDown}
                 required
-                autoComplete="password"
+                autoComplete="current-password"
               />
 
               <div className="stay-connected">

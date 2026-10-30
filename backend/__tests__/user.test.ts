@@ -1687,41 +1687,70 @@ describe('POST /api/change-password', () => {
   })
 })
 
-describe('GET /api/check-password/:id/:password', () => {
+describe('POST /api/check-password', () => {
   it('should check password', async () => {
     const token = await testHelper.signinAsAdmin()
 
     // good password
     let res = await request(app)
-      .get(`/api/check-password/${USER1_ID}/${encodeURIComponent(USER1_PASSWORD)}`)
+      .post('/api/check-password')
+      .send({ _id: USER1_ID, password: USER1_PASSWORD })
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
 
     // wrong password
     res = await request(app)
-      .get(`/api/check-password/${USER1_ID}/wrong-password`)
+      .post('/api/check-password')
+      .send({ _id: USER1_ID, password: 'wrong-password' })
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
     // user.password undefined
     res = await request(app)
-      .get(`/api/check-password/${USER2_ID}/some-password`)
+      .post('/api/check-password')
+      .send({ _id: USER2_ID, password: 'some-password' })
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
     // user not found
     res = await request(app)
-      .get(`/api/check-password/${testHelper.GetRandromObjectIdAsString()}/some-password`)
+      .post('/api/check-password')
+      .send({ _id: testHelper.GetRandromObjectIdAsString(), password: 'some-password' })
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(204)
 
     // wrong user id
     res = await request(app)
-      .get('/api/check-password/0/some-password')
+      .post('/api/check-password')
+      .send({ _id: '0', password: 'some-password' })
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(400)
 
     await testHelper.signout(token)
+  })
+
+  it('should forbid a regular user from checking another user password', async () => {
+    const userToken = await testHelper.signinAsUser()
+
+    const res = await request(app)
+      .post('/api/check-password')
+      .send({ _id: USER1_ID, password: USER1_PASSWORD })
+      .set(env.X_ACCESS_TOKEN, userToken)
+    expect(res.statusCode).toBe(403)
+
+    await testHelper.signout(userToken)
+  })
+
+  it('should allow a regular user to check their own password', async () => {
+    const userToken = await testHelper.signinAsUser()
+
+    const res = await request(app)
+      .post('/api/check-password')
+      .send({ _id: testHelper.getUserId(), password: testHelper.PASSWORD })
+      .set(env.X_ACCESS_TOKEN, userToken)
+    expect(res.statusCode).toBe(200)
+
+    await testHelper.signout(userToken)
   })
 })
 

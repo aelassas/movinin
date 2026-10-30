@@ -394,6 +394,11 @@ export interface Data<T> {
   rowCount: number
 }
 
+export interface CheckPasswordPayload {
+  _id: string
+  password: string
+}
+
 export interface ChangePasswordPayload {
   _id: string
   password: string

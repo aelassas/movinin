@@ -375,16 +375,16 @@ export const deleteAvatar = (userId: string): Promise<number> =>
     .then((res) => res.status)
 
 /**
- * Check password.
+ * Check Password.
  *
- * @param {string} id
- * @param {string} pass
+ * @param {movininTypes.CheckPasswordPayload} data
  * @returns {Promise<number>}
  */
-export const checkPassword = (id: string, pass: string): Promise<number> =>
+export const checkPassword = (data: movininTypes.CheckPasswordPayload): Promise<number> =>
   axiosInstance
-    .get(
-      `/api/check-password/${encodeURIComponent(id)}/${encodeURIComponent(pass)}`,
+    .post(
+      '/api/check-password',
+      data,
       { withCredentials: true }
     )
     .then((res) => res.status)
