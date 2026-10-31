@@ -320,7 +320,6 @@ const Checkout = () => {
         } else {
           // Generate a unique session ID for PayPal checkout
           _sessionId = nanoid()
-          setPayPalLoaded(true)
         }
       } else {
         // Generate a unique session ID for pay later checkout
@@ -343,9 +342,15 @@ const Checkout = () => {
         if (payLater) {
           setVisible(false)
           setSuccess(true)
+        } else if (env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.PayPal) {
+          // Set payPalLoaded ONLY AFTER bookingId is set
+          setBookingId(_bookingId)
+          setSessionId(_sessionId)
+          setPayPalLoaded(true)
+        } else {
+          setBookingId(_bookingId)
+          setSessionId(_sessionId)
         }
-        setBookingId(_bookingId)
-        setSessionId(_sessionId)
       } else {
         helper.error()
       }
@@ -636,11 +641,29 @@ const Checkout = () => {
                         <div className="payment-options-container">
                           <PayPalButtons
                             createOrder={async () => {
-                              const name = movininHelper.truncateString(property.name, PayPalService.ORDER_NAME_MAX_LENGTH)
-                              const _description = `${property.name} - ${daysLabel} - ${location.name}`
-                              const description = movininHelper.truncateString(_description, PayPalService.ORDER_DESCRIPTION_MAX_LENGTH)
-                              const orderId = await PayPalService.createOrder(bookingId!, price, PaymentService.getCurrency(), name, description)
-                              return orderId
+                              try {
+                                if (!bookingId) {
+                                  console.error('Missing bookingId before PayPal order creation')
+                                  return ''
+                                }
+
+                                const name = movininHelper.truncateString(property.name, PayPalService.ORDER_NAME_MAX_LENGTH)
+                                const _description = `${property.name} - ${daysLabel} - ${location.name}`
+                                const description = movininHelper.truncateString(_description, PayPalService.ORDER_DESCRIPTION_MAX_LENGTH)
+
+                                const orderId = await PayPalService.createOrder(
+                                  bookingId,
+                                  price,
+                                  PaymentService.getCurrency(),
+                                  name,
+                                  description
+                                )
+
+                                return orderId || ''
+                              } catch (err) {
+                                console.error('Error creating PayPal order:', err)
+                                return ''
+                              }
                             }}
                             onApprove={async (data, actions) => {
                               try {

@@ -1,6 +1,9 @@
 import 'dotenv/config'
+import { jest } from '@jest/globals'
 import request from 'supertest'
+import nodemailer from 'nodemailer'
 import { nanoid } from 'nanoid'
+import { mongo } from 'mongoose'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import app from '../src/app'
@@ -16,6 +19,9 @@ import * as env from '../src/config/env.config'
 import stripeAPI from '../src/payment/stripe'
 import Notification from '../src/models/Notification'
 import NotificationCounter from '../src/models/NotificationCounter'
+import redis from '../src/config/redis'
+
+const testTransporter = nodemailer.createTransport({ jsonTransport: true })
 
 const RENTER1_NAME = 'Renter 1'
 const RENTER1_PASSWORD = 'Un1tTest5'
@@ -23,6 +29,7 @@ let RENTER1_EMAIL: string
 
 let AGENCY_ID: string
 let RENTER1_ID: string
+let RENTER1_TOKEN: string
 let RENTER2_ID: string
 let LOCATION_ID: string
 let PROPERTY1_ID: string
@@ -33,13 +40,16 @@ let BOOKING_ID: string
 // Connecting and initializing the database before running the test suite
 //
 beforeAll(async () => {
+  jest.spyOn(nodemailer, 'createTransport').mockReturnValue(testTransporter)
+  jest.spyOn(testTransporter, 'sendMail')
+
   testHelper.initializeLogger()
 
   await databaseHelper.connect(env.DB_URI, false, false)
 
   await testHelper.initialize()
 
-  // create a agency
+  // create an agency
   const agencyName = testHelper.getAgencyName()
   AGENCY_ID = await testHelper.createAgency(`${agencyName}@test.movinin.io`, agencyName)
 
@@ -55,6 +65,7 @@ beforeAll(async () => {
   })
   await renter1.save()
   RENTER1_ID = renter1._id.toString()
+  RENTER1_TOKEN = await testHelper.generateToken(RENTER1_ID)
 
   // create a location
   LOCATION_ID = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
@@ -79,9 +90,9 @@ beforeAll(async () => {
     location: LOCATION_ID,
     address: '',
     price: 1000,
-    hidden: true,
+    hidden: false,
     cancellation: 0,
-    available: false,
+    available: true,
     rentalTerm: movininTypes.RentalTerm.Daily,
     blockOnPay: false,
   }
@@ -118,6 +129,7 @@ afterAll(async () => {
   await NotificationCounter.deleteMany({ user: { $in: [RENTER1_ID, RENTER2_ID] } })
 
   await databaseHelper.close()
+  jest.restoreAllMocks()
 })
 
 //
@@ -137,7 +149,7 @@ describe('POST /api/create-booking', () => {
       to: new Date(2024, 2, 4),
       status: movininTypes.BookingStatus.Pending,
       cancellation: true,
-      price: 4000,
+      price: 3000,
     }
     let res = await request(app)
       .post('/api/create-booking')
@@ -170,15 +182,22 @@ describe('POST /api/checkout', () => {
         to: new Date(2024, 3, 4),
         status: movininTypes.BookingStatus.Pending,
         cancellation: true,
-        price: 4000,
+        price: 3000,
       },
       payLater: true,
     }
     let res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body.bookingId).toBeTruthy()
+    const payLaterBooking = await Booking.findById(res.body.bookingId)
+    expect(payLaterBooking?.renter.toString()).toBe(RENTER1_ID)
+    expect(payLaterBooking?.agency.toString()).toBe(AGENCY_ID)
+    expect(payLaterBooking?.location.toString()).toBe(LOCATION_ID)
+    expect(payLaterBooking?.status).toBe(movininTypes.BookingStatus.Pending)
+    expect(payLaterBooking?.price).toBe(3000)
 
     bookings = await Booking.find({ renter: RENTER1_ID })
     expect(bookings.length).toBeGreaterThan(1)
@@ -217,6 +236,7 @@ describe('POST /api/checkout', () => {
     payload.customerId = customerId
     res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
     expect(res.statusCode).toBe(400)
 
@@ -229,9 +249,13 @@ describe('POST /api/checkout', () => {
     await renter?.save()
     res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
     try {
       expect(res.statusCode).toBe(200)
+      const paidBooking = await Booking.findById(res.body.bookingId)
+      expect(paidBooking?.status).toBe(movininTypes.BookingStatus.Paid)
+      expect(paidBooking?.price).toBe(expectedBasePrice)
       bookings = await Booking.find({ renter: RENTER1_ID })
       expect(bookings.length).toBeGreaterThan(2)
       expect(res.body.bookingId).toBeTruthy()
@@ -246,9 +270,11 @@ describe('POST /api/checkout', () => {
 
     // Test checkout session
     payload.paymentIntentId = undefined
+    payload.customerId = undefined
     payload.sessionId = 'xxxxxxxxxxxxxx'
     res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
     expect(res.statusCode).toBe(200)
     const { bookingId } = res.body
@@ -262,14 +288,18 @@ describe('POST /api/checkout', () => {
     payload.booking!.agency = testHelper.GetRandromObjectIdAsString()
     res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
-    expect(res.statusCode).toBe(204)
+    expect(res.statusCode).toBe(200)
+    const derivedAgencyBooking = await Booking.findById(res.body.bookingId)
+    expect(derivedAgencyBooking?.agency.toString()).toBe(AGENCY_ID)
 
     payload.booking!.agency = AGENCY_ID
     payload.renter = {
       fullName: 'renter',
       email: testHelper.GetRandomEmail(),
       language: testHelper.LANGUAGE,
+      birthDate: new Date(1990, 0, 1),
     }
     res = await request(app)
       .post('/api/checkout')
@@ -281,6 +311,10 @@ describe('POST /api/checkout', () => {
     const renter2 = await User.findOne({ email: payload.renter.email })
     expect(renter2).not.toBeNull()
     RENTER2_ID = renter2?._id.toString() || ''
+    const guestBooking = await Booking.findById(res.body.bookingId)
+    expect(guestBooking?.renter.toString()).toBe(RENTER2_ID)
+    expect(guestBooking?.renter.toString()).not.toBe(RENTER1_ID)
+    expect(renter2?.expireAt).toBeUndefined()
     const token = await Token.findOne({ user: RENTER2_ID })
     expect(token).not.toBeNull()
     expect(token?.token.length).toBeGreaterThan(0)
@@ -289,10 +323,10 @@ describe('POST /api/checkout', () => {
     payload.renter = undefined
     res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body.bookingId).toBeTruthy()
-
 
     payload.booking!.property = testHelper.GetRandromObjectIdAsString()
     res = await request(app)
@@ -304,15 +338,21 @@ describe('POST /api/checkout', () => {
     payload.booking!.location = testHelper.GetRandromObjectIdAsString()
     res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
-    expect(res.statusCode).toBe(400)
+    expect(res.statusCode).toBe(200)
+    const derivedLocationBooking = await Booking.findById(res.body.bookingId)
+    expect(derivedLocationBooking?.location.toString()).toBe(LOCATION_ID)
 
     payload.booking!.agency = AGENCY_ID
     payload.booking!.renter = testHelper.GetRandromObjectIdAsString()
     res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
-    expect(res.statusCode).toBe(204)
+    expect(res.statusCode).toBe(200)
+    const ownRenterBooking = await Booking.findById(res.body.bookingId)
+    expect(ownRenterBooking?.renter.toString()).toBe(RENTER1_ID)
 
     res = await request(app)
       .post('/api/checkout')
@@ -330,6 +370,216 @@ describe('POST /api/checkout', () => {
     for (const booking of bookings) {
       await testHelper.deleteNotifications(booking._id.toString())
     }
+  })
+
+  it('does not resolve an unauthenticated booking renter ID as an account', async () => {
+    const response = await request(app)
+      .post('/api/checkout')
+      .send({
+        booking: {
+          property: PROPERTY1_ID,
+          renter: RENTER1_ID,
+          from: new Date(2025, 6, 10),
+          to: new Date(2025, 6, 13),
+          cancellation: false,
+          price: 3000,
+        },
+        payLater: true,
+      })
+
+    expect(response.statusCode).toBe(400)
+    expect(response.text).toContain('Guest renter details are required')
+  })
+
+  it('uses the authenticated renter and ignores supplied renter details and booking renter IDs', async () => {
+    const email = testHelper.GetRandomEmail()
+    const response = await request(app)
+      .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
+      .send({
+        renter: {
+          fullName: 'Impersonated Renter',
+          email,
+          language: testHelper.LANGUAGE,
+          birthDate: new Date(1990, 0, 1),
+        },
+        booking: {
+          property: PROPERTY1_ID,
+          renter: RENTER2_ID,
+          from: new Date(2025, 6, 20),
+          to: new Date(2025, 6, 23),
+          cancellation: false,
+          price: 3000,
+        },
+        payLater: true,
+      })
+
+    expect(response.statusCode).toBe(200)
+    const booking = await Booking.findById(response.body.bookingId)
+    expect(booking?.renter.toString()).toBe(RENTER1_ID)
+    expect(await User.findOne({ email })).toBeNull()
+    await Booking.deleteOne({ _id: response.body.bookingId })
+  })
+
+  it('derives agency and location from the selected property', async () => {
+    const response = await request(app)
+      .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
+      .send({
+        booking: {
+          agency: testHelper.GetRandromObjectIdAsString(),
+          location: testHelper.GetRandromObjectIdAsString(),
+          property: PROPERTY1_ID,
+          renter: RENTER2_ID,
+          from: new Date(2025, 6, 24),
+          to: new Date(2025, 6, 27),
+          status: movininTypes.BookingStatus.Paid,
+          cancellation: false,
+          price: 3000,
+        },
+        payLater: true,
+      })
+
+    expect(response.statusCode).toBe(200)
+    const booking = await Booking.findById(response.body.bookingId)
+    expect(booking?.agency.toString()).toBe(AGENCY_ID)
+    expect(booking?.location.toString()).toBe(LOCATION_ID)
+    expect(booking?.renter.toString()).toBe(RENTER1_ID)
+    expect(booking?.status).toBe(movininTypes.BookingStatus.Pending)
+    expect(booking?.price).toBe(3000)
+    await testHelper.deleteNotifications(response.body.bookingId)
+    await Booking.deleteOne({ _id: response.body.bookingId })
+  })
+
+  it('does not create a guest account for an email already registered to an account', async () => {
+    const sendMail = jest.mocked(testTransporter.sendMail)
+    sendMail.mockClear()
+
+    const response = await request(app)
+      .post('/api/checkout')
+      .send({
+        renter: {
+          fullName: 'Existing Account Impersonation',
+          email: RENTER1_EMAIL,
+          language: testHelper.LANGUAGE,
+          birthDate: new Date(1990, 0, 1),
+        },
+        booking: {
+          property: PROPERTY1_ID,
+          from: new Date(2025, 6, 28),
+          to: new Date(2025, 7, 1),
+          cancellation: false,
+          price: 3000,
+        },
+        payLater: true,
+      })
+
+    expect(response.statusCode).toBe(400)
+    expect(await User.countDocuments({ email: RENTER1_EMAIL })).toBe(1)
+    expect(sendMail).not.toHaveBeenCalled()
+  })
+
+  it('atomically rejects reuse of a payment intent', async () => {
+    const paymentIntentId = `pi_checkout_${nanoid()}`
+    let savedCount = 0
+
+    const createBooking = async () => {
+      const booking = new Booking({
+        agency: AGENCY_ID,
+        property: PROPERTY1_ID,
+        renter: RENTER1_ID,
+        location: LOCATION_ID,
+        from: new Date(2025, 7, 10),
+        to: new Date(2025, 7, 13),
+        status: movininTypes.BookingStatus.Paid,
+        cancellation: false,
+        price: 3000,
+        paymentIntentId,
+      })
+
+      if (savedCount > 0) {
+        const error = new mongo.MongoServerError({ message: 'E11000 duplicate key error' })
+        error.code = 11000
+        throw error
+      }
+
+      await booking.save()
+      savedCount += 1
+      return true
+    }
+
+    const results = await Promise.allSettled([createBooking(), createBooking()])
+    const fulfilled = results.filter((r) => r.status === 'fulfilled')
+
+    expect(fulfilled).toHaveLength(1)
+    await Booking.deleteMany({ paymentIntentId })
+  })
+
+  it.each([
+    ['malformed', 'not-a-date', '2025-07-13T00:00:00.000Z'],
+    ['zero-length', '2025-07-13T00:00:00.000Z', '2025-07-13T00:00:00.000Z'],
+    ['reversed', '2025-07-14T00:00:00.000Z', '2025-07-13T00:00:00.000Z'],
+  ])('rejects %s date intervals before creating guest accounts or sending notifications', async (_label, from, to) => {
+    const email = testHelper.GetRandomEmail()
+    const sendMail = jest.mocked(testTransporter.sendMail)
+    sendMail.mockClear()
+    const notificationsBefore = await Notification.countDocuments({ user: AGENCY_ID })
+
+    const response = await request(app)
+      .post('/api/checkout')
+      .send({
+        renter: { fullName: 'Invalid Dates Renter', email, birthDate: new Date(1990, 0, 1) },
+        booking: {
+          property: PROPERTY1_ID,
+          from,
+          to,
+          cancellation: false,
+          price: 3000,
+        },
+        payLater: true,
+      })
+
+    expect(response.statusCode).toBe(400)
+    expect(await User.findOne({ email })).toBeNull()
+    expect(sendMail).not.toHaveBeenCalled()
+    expect(await Notification.countDocuments({ user: AGENCY_ID })).toBe(notificationsBefore)
+  })
+
+  it('rejects a nonexistent property before creating guest accounts or sending email', async () => {
+    const email = testHelper.GetRandomEmail()
+    const sendMail = jest.mocked(testTransporter.sendMail)
+    sendMail.mockClear()
+
+    const response = await request(app)
+      .post('/api/checkout')
+      .send({
+        renter: { fullName: 'Missing Property Renter', email, birthDate: new Date(1990, 0, 1) },
+        booking: {
+          property: testHelper.GetRandromObjectIdAsString(),
+          from: '2025-07-13T00:00:00.000Z',
+          to: '2025-07-16T00:00:00.000Z',
+          cancellation: false,
+          price: 3000,
+        },
+        payLater: true,
+      })
+
+    expect(response.statusCode).toBe(400)
+    expect(await User.findOne({ email })).toBeNull()
+    expect(sendMail).not.toHaveBeenCalled()
+  })
+
+  it('uses the existing rate limiter on checkout', async () => {
+    const evalMock = jest.spyOn(redis, 'eval').mockResolvedValue([0, 0])
+
+    const response = await request(app)
+      .post('/api/checkout')
+      .set('x-test-rate-limit', 'true')
+      .send({})
+
+    expect(response.statusCode).toBe(429)
+    expect(evalMock).toHaveBeenCalled()
+    evalMock.mockRestore()
   })
 })
 
@@ -355,7 +605,7 @@ describe('POST /api/checkout security', () => {
           to: new Date(2025, 6, 4),
           status: movininTypes.BookingStatus.Pending,
           cancellation: true,
-          price: 4000,
+          price: 3000,
         },
         payLater: true,
       })
@@ -383,6 +633,7 @@ describe('POST /api/checkout security', () => {
           fullName: 'Checkout Security Test',
           email,
           phone: '',
+          birthDate: new Date(1990, 0, 1),
           language: testHelper.LANGUAGE,
           type,
           verified: true,
@@ -400,7 +651,7 @@ describe('POST /api/checkout security', () => {
           to: new Date(2025, 6, 4),
           status: movininTypes.BookingStatus.Pending,
           cancellation: true,
-          price: 4000,
+          price: 3000,
         },
         payLater: true,
       }
@@ -447,6 +698,7 @@ describe('Security Regression Tests - Issue #28 Checkout Payment Binding', () =>
 
     const res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
 
     expect(res.statusCode).toBe(200)
@@ -499,6 +751,7 @@ describe('Security Regression Tests - Issue #28 Checkout Payment Binding', () =>
 
     const res = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
 
     expect(res.statusCode).toBe(400)
@@ -558,12 +811,14 @@ describe('Security Regression Tests - Issue #28 Checkout Payment Binding', () =>
     // First checkout succeeds
     const firstRes = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
     expect(firstRes.statusCode).toBe(200)
 
     // Replay attack attempt with same paymentIntentId fails
     const secondRes = await request(app)
       .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
       .send(payload)
     expect(secondRes.statusCode).toBe(400)
     expect(secondRes.text).toContain('already been used')
@@ -668,7 +923,10 @@ describe('Security Regression Tests - TOCTOU Availability Revalidation', () => {
       payLater: true,
     }
 
-    const res = await request(app).post('/api/checkout').send(payload)
+    const res = await request(app)
+      .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
+      .send(payload)
     expect(res.statusCode).toBe(409)
     expect(res.text).toContain('no longer available')
 
@@ -727,7 +985,10 @@ describe('Security Regression Tests - TOCTOU Availability Revalidation', () => {
       payLater: true,
     }
 
-    const res = await request(app).post('/api/checkout').send(payloadB)
+    const res = await request(app)
+      .post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
+      .send(payloadB)
     expect(res.statusCode).toBe(409)
     expect(res.text).toContain('no longer available')
 
@@ -787,8 +1048,8 @@ describe('Security Regression Tests - TOCTOU Availability Revalidation', () => {
     })
 
     const [res1, res2] = await Promise.all([
-      request(app).post('/api/checkout').send(makePayload(RENTER1_ID)),
-      request(app).post('/api/checkout').send(makePayload(toctouRenterId)),
+      request(app).post('/api/checkout').set(env.X_ACCESS_TOKEN, RENTER1_TOKEN).send(makePayload(RENTER1_ID)),
+      request(app).post('/api/checkout').set(env.X_ACCESS_TOKEN, RENTER1_TOKEN).send(makePayload(toctouRenterId)),
     ])
 
     // Both should succeed when blockOnPay is false

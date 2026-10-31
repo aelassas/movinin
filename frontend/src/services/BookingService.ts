@@ -12,7 +12,8 @@ export const checkout = (data: movininTypes.CheckoutPayload): Promise<{ status: 
   axiosInstance
     .post(
       '/api/checkout',
-      data
+      data,
+      { withCredentials: true }
     )
     .then((res) => ({ status: res.status, bookingId: res.data.bookingId }))
 /**
@@ -41,7 +42,7 @@ export const getBookings = (payload: movininTypes.GetBookingsPayload, page: numb
 export const getBooking = (id: string, sessionId?: string): Promise<movininTypes.Booking> =>
   axiosInstance
     .get(
-       `/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}${sessionId ? `?sessionId=${encodeURIComponent(sessionId)}` : ''}`,
+      `/api/booking/${encodeURIComponent(id)}/${UserService.getLanguage()}${sessionId ? `?sessionId=${encodeURIComponent(sessionId)}` : ''}`,
       { withCredentials: true }
     )
     .then((res) => res.data)
