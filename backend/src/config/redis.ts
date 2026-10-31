@@ -10,14 +10,16 @@ export const redis = new Redis(env.REDIS_URL, {
   enableReadyCheck: false,
   lazyConnect: true,
   retryStrategy: isTest ? () => null : undefined,
-})  
+})
 
 redis.on('connect', () => {
   logger.info('[Redis] Successfully connected to Redis server.')
 })
 
 redis.on('error', (err) => {
-  logger.info('[Redis] Connection error (running without cache):', err.message)
+  if (!isTest) {
+    logger.info('[Redis] Connection error (running without cache):', err.message)
+  }
 })
 
 export default redis
