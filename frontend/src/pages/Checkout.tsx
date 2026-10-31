@@ -339,17 +339,14 @@ const Checkout = () => {
       setLoading(false)
 
       if (status === 200) {
+        setBookingId(_bookingId)
+        setSessionId(_sessionId)
         if (payLater) {
           setVisible(false)
           setSuccess(true)
         } else if (env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.PayPal) {
           // Set payPalLoaded ONLY AFTER bookingId is set
-          setBookingId(_bookingId)
-          setSessionId(_sessionId)
           setPayPalLoaded(true)
-        } else {
-          setBookingId(_bookingId)
-          setSessionId(_sessionId)
         }
       } else {
         helper.error()
