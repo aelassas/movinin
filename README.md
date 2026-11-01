@@ -1,6 +1,7 @@
 [![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) 
 [![test](https://github.com/aelassas/movinin/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/test.yml)
 [![codecov](https://img.shields.io/codecov/c/github/aelassas/movinin?label=coverage)](https://codecov.io/gh/aelassas/movinin)
+[![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://movinin.dynv6.net/)
 [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/movinin/wiki)
 
 <!--
@@ -68,7 +69,7 @@ To contribute code or report issues, please read the [Contribution Guide](https:
 
 If you want to customize Movin' In while keeping your fork up to date with the latest changes, check out the [Fork, Customize, and Sync](https://github.com/aelassas/movinin/wiki/Fork,-Customize,-and-Sync) guide in the Wiki.
 -->
-<!--
+
 ## Live Demo
 
 ### Frontend
@@ -106,7 +107,6 @@ You can also install the Android App by downloading the APK and installing it on
 * [Download APK](https://github.com/aelassas/movinin/releases/download/v7.0/movinin-7.0.apk)
 * Login: jdoe@movinin.io
 * Password: M00vinin
--->
 
 ## License
 
