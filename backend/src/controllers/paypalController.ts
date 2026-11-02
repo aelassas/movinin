@@ -55,7 +55,7 @@ export const createPayPalOrder = async (req: Request, res: Response) => {
 export const checkPayPalOrder = async (req: Request, res: Response) => {
   try {
     const paypal = await import('../payment/paypal.js')
-    const { bookingId, orderId } = req.params
+    const { bookingId, orderId } = req.params as { bookingId: string, orderId: string }
 
     //
     // 1. Retrieve Checkout Session and Booking

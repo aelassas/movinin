@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { CookieOptions, Request, Response } from 'express'
-import nodemailer from 'nodemailer'
+import { SendMailOptions } from 'nodemailer'
 import validator from 'validator'
 import * as movininTypes from ':movinin-types'
 import i18n from '../lang/i18n'
@@ -138,7 +138,7 @@ const _signup = async (req: Request, res: Response, userType: movininTypes.UserT
     const activationLink = `http${env.HTTPS ? 's' : ''}://${req.headers.host}/api/confirm-email/${user.email}/${token.token}`
     logger.info(`[user.signup] Account activation link: ${activationLink}`)
 
-    const mailOptions: nodemailer.SendMailOptions = {
+    const mailOptions: SendMailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
       subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
@@ -336,7 +336,7 @@ export const create = async (req: Request, res: Response) => {
     // Send email
     i18n.locale = user.language
 
-    const mailOptions: nodemailer.SendMailOptions = {
+    const mailOptions: SendMailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
       subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
@@ -368,7 +368,7 @@ export const create = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const checkToken = async (req: Request, res: Response) => {
-  const { userId, email } = req.params
+  const { userId, email } = req.params as { userId: string, email: string }
 
   try {
     const user = await User.findOne({
@@ -377,7 +377,7 @@ export const checkToken = async (req: Request, res: Response) => {
     })
 
     if (user) {
-      const type = req.params.type.toUpperCase() as movininTypes.AppType
+      const type = (req.params.type as string).toUpperCase() as movininTypes.AppType
 
       if (
         ![movininTypes.AppType.Frontend, movininTypes.AppType.Admin].includes(type)
@@ -420,7 +420,7 @@ export const checkToken = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const deleteTokens = async (req: Request, res: Response) => {
-  const { userId } = req.params
+  const { userId } = req.params as { userId: string }
 
   try {
     const result = await Token.deleteMany({
@@ -449,7 +449,7 @@ export const deleteTokens = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const resend = async (req: Request, res: Response) => {
-  const { email } = req.params
+  const { email } = req.params as { email: string }
 
   try {
     if (!helper.isValidEmail(email)) {
@@ -459,7 +459,7 @@ export const resend = async (req: Request, res: Response) => {
     const user = await User.findOne({ email })
 
     if (user) {
-      const type = req.params.type.toUpperCase() as movininTypes.AppType
+      const type = (req.params.type as string).toUpperCase() as movininTypes.AppType
 
       if (
         ![movininTypes.AppType.Frontend.toString(), movininTypes.AppType.Admin.toString()].includes(type)
@@ -482,7 +482,7 @@ export const resend = async (req: Request, res: Response) => {
 
       const reset = req.params.reset === 'true'
 
-      const mailOptions: nodemailer.SendMailOptions = {
+      const mailOptions: SendMailOptions = {
         from: env.SMTP_FROM,
         to: user.email,
         subject: reset ? i18n.t('PASSWORD_RESET_SUBJECT') : i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
@@ -578,7 +578,7 @@ export const signin = async (req: Request, res: Response) => {
     }
 
     const user = await User.findOne({ email })
-    const type = req.params.type.toUpperCase() as movininTypes.AppType
+    const type = (req.params.type as string).toUpperCase() as movininTypes.AppType
 
     if (
       !password
@@ -806,7 +806,7 @@ export const signout = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const getPushToken = async (req: Request, res: Response) => {
-  const { userId } = req.params
+  const { userId } = req.params as { userId: string }
 
   try {
     if (!helper.isValidObjectId(userId)) {
@@ -836,7 +836,7 @@ export const getPushToken = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const createPushToken = async (req: Request, res: Response) => {
-  const { userId, token } = req.params
+  const { userId, token } = req.params as { userId: string, token: string }
 
   try {
     if (!helper.isValidObjectId(userId)) {
@@ -872,7 +872,7 @@ export const createPushToken = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const deletePushToken = async (req: Request, res: Response) => {
-  const { userId } = req.params
+  const { userId } = req.params as { userId: string }
 
   try {
     if (!helper.isValidObjectId(userId)) {
@@ -942,7 +942,7 @@ export const validateAccessToken = async (req: Request, res: Response) => {
  */
 export const confirmEmail = async (req: Request, res: Response) => {
   try {
-    const { token: _token, email: _email } = req.params
+    const { token: _token, email: _email } = req.params as { token: string, email: string }
 
     if (!helper.isValidEmail(_email)) {
       throw new Error('email is not valid')
@@ -1026,7 +1026,7 @@ export const resendLink = async (req: Request, res: Response) => {
 
     // Send email
     i18n.locale = user.language
-    const mailOptions: nodemailer.SendMailOptions = {
+    const mailOptions: SendMailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
       subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
@@ -1251,7 +1251,7 @@ export const updateLanguage = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const getUser = async (req: Request, res: Response) => {
-  const { id } = req.params
+  const { id } = req.params as { id: string }
   try {
     if (!helper.isValidObjectId(id)) {
       throw new Error('User id is not valid')
@@ -1492,7 +1492,7 @@ export const deleteAvatar = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const deleteTempAvatar = async (req: Request, res: Response) => {
-  const { avatar } = req.params
+  const { avatar } = req.params as { avatar: string }
 
   try {
     // prevent null bytes
@@ -1688,8 +1688,8 @@ export const getUsers = async (req: Request, res: Response) => {
 
     const keyword: string = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
-    const page: number = Number.parseInt(req.params.page, 10)
-    const size: number = Number.parseInt(req.params.size, 10)
+    const page: number = Number.parseInt(req.params.page as string, 10)
+    const size: number = Number.parseInt(req.params.size as string, 10)
     const { body }: { body: movininTypes.GetUsersBody } = req
     const { types, user: userId } = body
 
@@ -1853,7 +1853,7 @@ export const deleteUsers = async (req: Request, res: Response) => {
  */
 export const verifyRecaptcha = async (req: Request, res: Response) => {
   try {
-    const { token } = req.params
+    const { token } = req.params as { token: string }
     if (!token || token.length > 4096) {
       res.sendStatus(400)
       return
@@ -1973,7 +1973,7 @@ export const sendEmail = async (req: Request, res: Response) => {
     ...(message ? [`${i18n.t('MESSAGE')}:\n${message}`] : []),
   ].join('\n\n')
 
-  const mailOptions: nodemailer.SendMailOptions = {
+  const mailOptions: SendMailOptions = {
     from: env.SMTP_FROM,
     to: env.CONTACT_EMAIL,
     subject: isContactForm ? i18n.t('CONTACT_SUBJECT') : 'New Newsletter Subscription',
@@ -2081,7 +2081,7 @@ export const getSavedProperties = async (req: Request, res: Response) => {
  * Save a visible property for the authenticated customer.
  */
 export const saveProperty = async (req: Request, res: Response) => {
-  const { propertyId } = req.params
+  const { propertyId } = req.params as { propertyId: string }
 
   try {
     if (!helper.isValidObjectId(propertyId)) {
@@ -2117,7 +2117,7 @@ export const saveProperty = async (req: Request, res: Response) => {
  * Remove a property from the authenticated customer's saved list.
  */
 export const removeSavedProperty = async (req: Request, res: Response) => {
-  const { propertyId } = req.params
+  const { propertyId } = req.params as { propertyId: string }
 
   try {
     if (!helper.isValidObjectId(propertyId)) {

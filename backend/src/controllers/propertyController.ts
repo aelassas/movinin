@@ -408,7 +408,7 @@ export const update = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const checkProperty = async (req: Request, res: Response) => {
-  const { id } = req.params
+  const { id } = req.params as { id: string }
 
   try {
     const _id = new mongoose.Types.ObjectId(id)
@@ -527,7 +527,7 @@ export const uploadImage = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const deleteTempImage = async (req: Request, res: Response) => {
-  const { fileName } = req.params
+  const { fileName } = req.params as { fileName: string }
 
   try {
     // prevent null bytes
@@ -568,7 +568,7 @@ export const deleteTempImage = async (req: Request, res: Response) => {
  */
 export const deleteImage = async (req: Request, res: Response) => {
   try {
-    const { property: propertyId, image: imageFileName } = req.params
+    const { property: propertyId, image: imageFileName } = req.params as { property: string, image: string }
 
     const property = await Property.findById(propertyId)
 
@@ -661,8 +661,8 @@ export const getProperty = async (req: Request, res: Response) => {
 export const getProperties = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.GetPropertiesPayload } = req
-    const page = Number.parseInt(req.params.page, 10)
-    const size = Number.parseInt(req.params.size, 10)
+    const page = Number.parseInt(req.params.page as string, 10)
+    const size = Number.parseInt(req.params.size as string, 10)
     const agencies = body.agencies.map((id) => new mongoose.Types.ObjectId(id))
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const types = body.types || []
@@ -799,8 +799,8 @@ export const getBookingProperties = async (req: Request, res: Response) => {
     const location = new mongoose.Types.ObjectId(body.location)
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
-    const page = Number.parseInt(req.params.page, 10)
-    const size = Number.parseInt(req.params.size, 10)
+    const page = Number.parseInt(req.params.page as string, 10)
+    const size = Number.parseInt(req.params.size as string, 10)
 
     const properties = await Property.aggregate(
       [
@@ -838,8 +838,8 @@ export const getBookingProperties = async (req: Request, res: Response) => {
 export const getFrontendProperties = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.GetPropertiesPayload } = req
-    const page = Number.parseInt(req.params.page, 10)
-    const size = Number.parseInt(req.params.size, 10)
+    const page = Number.parseInt(req.params.page as string, 10)
+    const size = Number.parseInt(req.params.size as string, 10)
     const agencies = body.agencies.map((id) => new mongoose.Types.ObjectId(id))
     const location = new mongoose.Types.ObjectId(body.location)
     const types = body.types || []

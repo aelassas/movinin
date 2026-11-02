@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import escapeStringRegexp from 'escape-string-regexp'
 import { Expo, ExpoPushMessage, ExpoPushTicket } from 'expo-server-sdk'
 import { Request, Response } from 'express'
-import nodemailer from 'nodemailer'
+import { SendMailOptions } from 'nodemailer'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import i18n from '../lang/i18n'
@@ -122,7 +122,7 @@ export const notify = async (renter: env.User, bookingId: string, user: env.User
 
   // mail
   if (user.enableEmailNotifications) {
-    const mailOptions: nodemailer.SendMailOptions = {
+    const mailOptions: SendMailOptions = {
       from: env.SMTP_FROM,
       to: user.email,
       subject: message,
@@ -174,7 +174,7 @@ export const confirm = async (user: env.User, booking: env.Booking, payLater: bo
     return false
   }
 
-  const mailOptions: nodemailer.SendMailOptions = {
+  const mailOptions: SendMailOptions = {
     from: env.SMTP_FROM,
     to: user.email,
     subject: `${i18n.t('BOOKING_CONFIRMED_SUBJECT_PART1')} ${booking._id} ${i18n.t('BOOKING_CONFIRMED_SUBJECT_PART2')}`,
@@ -525,7 +525,7 @@ export const checkout = async (req: Request, res: Response) => {
       const token = new Token({ user: user._id, token: helper.generateToken() })
       await token.save()
 
-      const mailOptions: nodemailer.SendMailOptions = {
+      const mailOptions: SendMailOptions = {
         from: env.SMTP_FROM,
         to: user.email,
         subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
@@ -620,7 +620,7 @@ const notifyRenter = async (booking: env.Booking) => {
 
   // mail
   if (renter.enableEmailNotifications) {
-    const mailOptions: nodemailer.SendMailOptions = {
+    const mailOptions: SendMailOptions = {
       from: env.SMTP_FROM,
       to: renter.email,
       subject: message,
@@ -1014,8 +1014,8 @@ export const getBookingId = async (req: Request, res: Response) => {
 export const getBookings = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.GetBookingsPayload } = req
-    const page = Number.parseInt(req.params.page, 10)
-    const size = Number.parseInt(req.params.size, 10)
+    const page = Number.parseInt(req.params.page as string, 10)
+    const size = Number.parseInt(req.params.size as string, 10)
     let agencies = body.agencies.map((id: string) => new mongoose.Types.ObjectId(id))
     const {
       statuses,
@@ -1232,7 +1232,7 @@ export const getBookings = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const hasBookings = async (req: Request, res: Response) => {
-  const { renter } = req.params
+  const { renter } = req.params as { renter: string }
 
   try {
     const count = await Booking
@@ -1264,7 +1264,7 @@ export const hasBookings = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const cancelBooking = async (req: Request, res: Response) => {
-  const { id } = req.params
+  const { id } = req.params as { id: string }
 
   try {
     const booking = await Booking

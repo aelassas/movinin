@@ -260,8 +260,8 @@ export const getAgency = async (req: Request, res: Response) => {
  */
 export const getAgencies = async (req: Request, res: Response) => {
   try {
-    const page = Number.parseInt(req.params.page, 10)
-    const size = Number.parseInt(req.params.size, 10)
+    const page = Number.parseInt(req.params.page as string, 10)
+    const size = Number.parseInt(req.params.size as string, 10)
     const keyword = escapeStringRegexp(String(req.query.s || ''))
     const options = 'i'
 

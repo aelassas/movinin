@@ -11,13 +11,16 @@ axiosHelper.init(axiosInstance)
  * @param {movininTypes.CheckoutPayload} data
  * @returns {Promise<number>}
  */
-export const checkout = (data: movininTypes.CheckoutPayload): Promise<number> =>
-  axiosInstance
+export const checkout = async (data: movininTypes.CheckoutPayload): Promise<number> => {
+  const headers = await UserService.authHeader()
+  return axiosInstance
     .post(
       '/api/checkout',
-      data
+      data,
+      { headers }
     )
     .then((res) => res.status)
+}
 
 /**
  * Get bookings.
@@ -52,7 +55,7 @@ export const getBooking = async (id: string): Promise<movininTypes.Booking> => {
   const language = await UserService.getLanguage()
   return axiosInstance
     .get(
-`/api/booking/${encodeURIComponent(id)}/${language}`,
+      `/api/booking/${encodeURIComponent(id)}/${language}`,
       { headers }
     )
     .then((res) => res.data)
