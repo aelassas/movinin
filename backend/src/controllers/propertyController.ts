@@ -878,7 +878,7 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
     }
 
     const now = new Date()
-    const daysInMonth = movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
+    const daysInMonth = movininHelper.daysInMonth(now.getMonth() + 1, now.getFullYear())
     const daysInYear = movininHelper.daysInYear(now.getFullYear())
 
     let $addFields: any = {
