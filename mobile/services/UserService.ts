@@ -1,5 +1,4 @@
 import { Platform } from 'react-native'
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import * as Localization from 'expo-localization'
 import { decode as atob } from 'base-64'
 import { router } from 'expo-router'

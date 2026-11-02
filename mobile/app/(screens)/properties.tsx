@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useIsFocused } from '@react-navigation/native'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useIsFocused } from 'expo-router'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 

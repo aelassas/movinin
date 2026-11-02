@@ -7,10 +7,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native'
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { CommonActions, NavigationRoute, RouteProp } from '@react-navigation/native'
 import * as movininTypes from ':movinin-types'
-import * as movininHelper from ':movinin-helper'
 
 import * as helper from '@/utils/helper'
 import * as env from '@/config/env.config'
@@ -188,7 +185,7 @@ const PropertyList = ({
           ListFooterComponent={
             footerComponent || (loading
               ? <ActivityIndicator size="large" color="#0D63C9" style={styles.indicator} />
-              : null)
+              : undefined)
           }
           ListEmptyComponent={
             !loading ? (
@@ -196,7 +193,7 @@ const PropertyList = ({
                 <Text>{i18n.t('EMPTY_PROPERTY_LIST')}</Text>
               </View>
             )
-              : null
+              : undefined
           }
           refreshing={loading}
           refreshControl={

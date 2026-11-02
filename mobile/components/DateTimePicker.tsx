@@ -166,7 +166,7 @@ const CustomDateTimePicker: React.FC<DateTimePickerProps> = ({
               value={selectedDate || new Date()}
               minimumDate={minDate}
               maximumDate={maxDate}
-              onChange={(event, date) => handleDateChange(date ?? selectedDate)}
+              onValueChange={(event, date) => handleDateChange(date ?? selectedDate)}
             />
           ),
           ios: (

@@ -7,8 +7,7 @@ import {
   ScrollView,
   Keyboard
 } from 'react-native'
-import { useIsFocused } from '@react-navigation/native'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useLocalSearchParams, useRouter, useIsFocused } from 'expo-router'
 
 import * as env from '@/config/env.config'
 import i18n from '@/lang/i18n'

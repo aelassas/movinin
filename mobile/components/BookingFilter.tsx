@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, View, TextInput as ReactTextInput } from 'react-native'
+import { StyleSheet, View, TextInputInstance } from 'react-native'
 import * as movininTypes from ':movinin-types'
 
 import i18n from '@/lang/i18n'
@@ -32,7 +32,7 @@ const BookingFilter = ({
   const [location, setLocation] = useState<string>()
   const [keyword, setKeyword] = useState('')
   const [minDate, setMinDate] = useState<Date>()
-  const searchRef = useRef<ReactTextInput>(null)
+  const searchRef = useRef<TextInputInstance>(null)
 
   const _init = async () => {
     setInit(false)

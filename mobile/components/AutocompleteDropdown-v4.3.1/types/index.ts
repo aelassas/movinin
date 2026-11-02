@@ -1,6 +1,6 @@
 import type { MutableRefObject } from 'react'
 import type React from 'react'
-import type { StyleProp, TextInputProps, TextStyle, ViewStyle, FlatListProps, TextInput } from 'react-native'
+import type { StyleProp, TextInputProps, TextStyle, ViewStyle, FlatListProps, TextInputInstance } from 'react-native'
 
 export type AutocompleteDropdownItem = {
   id: string
@@ -73,5 +73,5 @@ export interface IAutocompleteDropdownProps {
   EmptyResultComponent?: React.ReactElement
   emptyResultText?: string
   flatListProps?: Partial<FlatListProps<AutocompleteDropdownItem>>
-  ref?: React.LegacyRef<TextInput> | undefined
+  ref?: React.LegacyRef<TextInputInstance> | undefined
 }

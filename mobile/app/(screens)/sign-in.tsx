@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, ScrollView, View, TextInput as ReactTextInput } from 'react-native'
+import { StyleSheet, ScrollView, View, TextInputInstance } from 'react-native'
 import { useIsFocused, useLocalSearchParams, useRouter } from 'expo-router'
 import validator from 'validator'
 import * as movininTypes from ':movinin-types'
@@ -32,8 +32,8 @@ const SignInScreen = () => {
   const [passwordError, setPasswordError] = useState(false)
   const [blacklisted, setBlacklisted] = useState(false)
 
-  const emailRef = useRef<ReactTextInput>(null)
-  const passwordRef = useRef<ReactTextInput>(null)
+  const emailRef = useRef<TextInputInstance>(null)
+  const passwordRef = useRef<TextInputInstance>(null)
 
   const clear = () => {
     setEmail('')

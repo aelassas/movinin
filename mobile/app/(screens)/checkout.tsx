@@ -4,10 +4,9 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput as ReactTextInput
+  TextInputInstance
 } from 'react-native'
-import { useIsFocused } from '@react-navigation/native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useIsFocused } from 'expo-router'
 import { MaterialIcons } from '@expo/vector-icons'
 import validator from 'validator'
 import { format, intervalToDuration } from 'date-fns'
@@ -89,14 +88,14 @@ const CheckoutScreen = () => {
   const [cancellationText, setCancellationText] = useState('')
   const [priceLabel, setPriceLabel] = useState('')
 
-  const fullNameRef = useRef<ReactTextInput>(null)
-  const emailRef = useRef<ReactTextInput>(null)
-  const phoneRef = useRef<ReactTextInput>(null)
-  const cardNameRef = useRef<ReactTextInput>(null)
-  const cardNumberRef = useRef<ReactTextInput>(null)
-  const cardMonthRef = useRef<ReactTextInput>(null)
-  const cardYearRef = useRef<ReactTextInput>(null)
-  const cvvRef = useRef<ReactTextInput>(null)
+  const fullNameRef = useRef<TextInputInstance>(null)
+  const emailRef = useRef<TextInputInstance>(null)
+  const phoneRef = useRef<TextInputInstance>(null)
+  const cardNameRef = useRef<TextInputInstance>(null)
+  const cardNumberRef = useRef<TextInputInstance>(null)
+  const cardMonthRef = useRef<TextInputInstance>(null)
+  const cardYearRef = useRef<TextInputInstance>(null)
+  const cvvRef = useRef<TextInputInstance>(null)
 
   const { presentPaymentSheet } = useStripe()
 
