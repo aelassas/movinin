@@ -15,6 +15,7 @@ import PropertyTypeFilter from '@/components/PropertyTypeFilter'
 import Map from '@/components/Map'
 import ViewOnMapButton from '@/components/ViewOnMapButton'
 import MapDialog from '@/components/MapDialog'
+import PropertySort from '@/components/PropertySort'
 import env from '@/config/env.config'
 
 import '@/assets/css/search.css'
@@ -32,6 +33,7 @@ const Properties = () => {
   const [loading, setLoading] = useState(true)
   const [propertyTypes, setPropertyTypes] = useState(movininHelper.getAllPropertyTypes())
   const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())
+  const [sortBy, setSortBy] = useState<movininTypes.PropertySortType>(movininTypes.PropertySortType.Default)
   const [openMapDialog, setOpenMapDialog] = useState(false)
 
   const handleAgencyFilterChange = (newAgencies: string[]) => {
@@ -139,6 +141,10 @@ const Properties = () => {
             )}
           </div>
           <div className="col-2">
+            <PropertySort
+              value={sortBy}
+              onChange={(newSortBy) => setSortBy(newSortBy)}
+            />
             <PropertyList
               agencies={agencies}
               types={propertyTypes}
@@ -147,6 +153,7 @@ const Properties = () => {
               loading={loading}
               from={from}
               to={to}
+              sortBy={sortBy}
               hideAgency={env.HIDE_AGENCIES}
             />
           </div>

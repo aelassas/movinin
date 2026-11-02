@@ -1,0 +1,23 @@
+div.property-sort {
+  width: 100%;
+  max-width: 872px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  box-sizing: border-box;
+}
+
+div.property-sort .sort-control {
+  min-width: 220px;
+  background-color: #fff;
+}
+
+@media only screen and (width <=960px) {
+  div.property-sort {
+    max-width: 480px;
+    padding: 0 10px;
+    margin-top: 10px;
+  }
+}

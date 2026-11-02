@@ -5,6 +5,7 @@ import escapeStringRegexp from 'escape-string-regexp'
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
 import * as movininTypes from ':movinin-types'
+import * as movininHelper from ':movinin-helper'
 import Booking from '../models/Booking'
 import Property from '../models/Property'
 import User from '../models/User'
@@ -876,41 +877,32 @@ export const getFrontendProperties = async (req: Request, res: Response) => {
       ],
     }
 
-    let $addFields = {}
-    let $sort: Record<string, 1 | -1> = { name: 1, _id: 1 }
-    if (env.DB_SERVER_SIDE_JAVASCRIPT) {
-      $addFields = {
-        dailyPrice:
-        {
-          $function:
-          {
-            body: function (price, rentalTerm) {
-              let dailyPrice = 0
-              const now = new Date()
-              if (rentalTerm === 'MONTHLY') {
-                dailyPrice = price / new Date(now.getFullYear(), now.getMonth(), 0).getDate()
-              } else if (rentalTerm === 'WEEKLY') {
-                dailyPrice = price / 7
-              } else if (rentalTerm === 'DAILY') {
-                dailyPrice = price
-              } else if (rentalTerm === 'YEARLY') {
-                const year = now.getFullYear()
-                dailyPrice = price / (((year % 4 === 0 && year % 100 > 0) || year % 400 === 0) ? 366 : 365)
-              }
+    const now = new Date()
+    const daysInMonth = movininHelper.daysInMonth(now.getMonth(), now.getFullYear())
+    const daysInYear = movininHelper.daysInYear(now.getFullYear())
 
-              dailyPrice = Number((Math.trunc(dailyPrice * 100) / 100).toFixed(2))
-              if (dailyPrice % 1 === 0) {
-                return Math.round(dailyPrice)
-              }
-              return dailyPrice
-            },
-            args: ['$price', '$rentalTerm'],
-            lang: 'js',
-          },
+    let $addFields: any = {
+      dailyPrice: {
+        $switch: {
+          branches: [
+            { case: { $eq: ['$rentalTerm', movininTypes.RentalTerm.Monthly] }, then: { $divide: [{ $ifNull: ['$price', 0] }, daysInMonth] } },
+            { case: { $eq: ['$rentalTerm', movininTypes.RentalTerm.Weekly] }, then: { $divide: [{ $ifNull: ['$price', 0] }, 7] } },
+            { case: { $eq: ['$rentalTerm', movininTypes.RentalTerm.Daily] }, then: { $ifNull: ['$price', 0] } },
+            { case: { $eq: ['$rentalTerm', movininTypes.RentalTerm.Yearly] }, then: { $divide: [{ $ifNull: ['$price', 0] }, daysInYear] } },
+          ],
+          default: { $ifNull: ['$price', 0] },
         },
-      }
+      },
+    }
 
+    let $sort: Record<string, 1 | -1> = { name: 1, _id: 1 }
+
+    if (body.sortBy === movininTypes.PropertySortType.PriceAsc) {
       $sort = { dailyPrice: 1, name: 1, _id: 1 }
+    } else if (body.sortBy === movininTypes.PropertySortType.PriceDesc) {
+      $sort = { dailyPrice: -1, name: 1, _id: 1 }
+    } else if (body.sortBy === movininTypes.PropertySortType.Default) {
+      $sort = { name: 1, _id: 1 }
     }
 
     const data = await Property.aggregate(

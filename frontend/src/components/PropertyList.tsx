@@ -23,6 +23,7 @@ interface PropertyListProps {
   location?: string
   from?: Date
   to?: Date
+  sortBy?: movininTypes.PropertySortType
   reload?: boolean
   properties?: movininTypes.Property[]
   className?: string
@@ -42,6 +43,7 @@ const PropertyList = ({
   location,
   from,
   to,
+  sortBy,
   reload,
   properties,
   className,
@@ -90,6 +92,7 @@ const PropertyList = ({
         location,
         from,
         to,
+        sortBy,
       }
       const data = await PropertyService.getProperties(payload, _page, env.PROPERTIES_PAGE_SIZE)
 
@@ -140,7 +143,7 @@ const PropertyList = ({
         setInit(false)
       }
     }
-  }, [page, agencies, types, rentalTerms, location, from, to]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, agencies, types, rentalTerms, location, from, to, sortBy]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (properties) {
@@ -163,6 +166,7 @@ const PropertyList = ({
     location,
     from,
     to,
+    sortBy,
   ])
 
   useEffect(() => {
@@ -170,7 +174,7 @@ const PropertyList = ({
       setPage(1)
       fetchData(1)
     }
-  }, [reload, agencies, types, rentalTerms, location]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [reload, agencies, types, rentalTerms, location, sortBy]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

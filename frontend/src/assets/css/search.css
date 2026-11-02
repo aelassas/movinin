@@ -62,6 +62,7 @@ div.properties div.col-1 div.info-box {
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
   }
 
   div.properties div.col-1 .property-count {
