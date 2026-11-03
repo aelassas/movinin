@@ -14,6 +14,18 @@ jobs:
 
     runs-on: ubuntu-latest
     environment: test
+
+    # Service containers to run alongside the job
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     
     strategy:
       matrix:
@@ -37,6 +49,7 @@ jobs:
            echo MI_HTTPS=$MI_HTTPS >> .env
            echo MI_DB_URI=$MI_DB_URI >> .env
            echo MI_DB_SSL=$MI_DB_SSL >> .env
+           echo MI_REDIS_URL=$MI_REDIS_URL >> .env
            echo MI_COOKIE_SECRET=$MI_COOKIE_SECRET >> .env
            echo MI_AUTH_COOKIE_DOMAIN=$MI_AUTH_COOKIE_DOMAIN >> .env
            echo MI_JWT_SECRET=$MI_JWT_SECRET >> .env
@@ -71,6 +84,7 @@ jobs:
         MI_DB_URI: ${{ secrets.MI_DB_URI }}
         MI_DB_SSL: ${{ vars.MI_DB_SSL }}
         MI_DB_DEBUG: ${{ vars.MI_DB_DEBUG }}
+        MI_REDIS_URL: redis://127.0.0.1:6379
         MI_COOKIE_SECRET: ${{ secrets.MI_COOKIE_SECRET }}
         MI_AUTH_COOKIE_DOMAIN: ${{ vars.MI_AUTH_COOKIE_DOMAIN }}
         MI_JWT_SECRET: ${{ secrets.MI_JWT_SECRET }}
@@ -125,7 +139,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue.number,
-                body: '⚠️ Codecov upload failed in workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+                body: 'Codecov upload failed in workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
               });
             }
           
@@ -156,6 +170,6 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue.number,
-                body: '⚠️ Coveralls upload failed in workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+                body: 'Coveralls upload failed in workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
               });
             }
