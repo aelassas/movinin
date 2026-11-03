@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-10-30T09:13:14Z
+> Generated on: 2026-11-03T08:26:00Z
 
 ---
 
@@ -885,7 +885,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 ### User Experience
 * Customer management
 * [Multiple login options](https://github.com/aelassas/movinin/wiki/Social-Login-Setup): Google, Facebook, Apple, Email
-* Multiple language support: English, French
+* Multiple language support: English, French, German
 * [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination styles: classic (next/previous), infinite scroll
 * Push notifications
@@ -4614,3 +4614,4 @@ Movin' In is a versatile, open-source platform tailored for property rental busi
 Movin' In is a highly customizable, scalable, and cost-efficient solution for property rental businesses. Its robust feature set and open-source nature make it a sustainable choice for long-term growth in the rental industry.
 
 ---
+
