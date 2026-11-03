@@ -144,25 +144,32 @@ export const DB_DEBUG = helper.StringToBoolean(__env__('MI_DB_DEBUG', false, 'fa
 export const DB_SERVER_SIDE_JAVASCRIPT = helper.StringToBoolean(__env__('MI_DB_SERVER_SIDE_JAVASCRIPT', false, 'false'))
 
 /**
- * Redis server connection URI.
+ * Redis server connection URI. Default is redis://127.0.0.1:6379.
  *
  * @type {string}
  */
-export const REDIS_URL = __env__('MI_REDIS_URL', false, 'redis://127.0.0.1:6379')
+export const BC_REDIS_URL = __env__('BC_REDIS_URL', false, __env__('MI_REDIS_URL', false, 'redis://127.0.0.1:6379'))
+
+/**
+ * Redis server connection URI. Default is redis://127.0.0.1:6379.
+ *
+ * @type {string}
+ */
+export const REDIS_URL = BC_REDIS_URL
 
 /**
  * Rate Limiter Capacity (maximum token bucket size). Default is 10.
  *
  * @type {number}
  */
-export const RATE_LIMIT_CAPACITY = Number.parseInt(__env__('MI_RATE_LIMIT_CAPACITY', false, '10'), 10)
+export const RATE_LIMIT_CAPACITY = Number.parseInt(__env__('MI_RATE_LIMIT_CAPACITY', false, __env__('BC_RATE_LIMIT_CAPACITY', false, '10')), 10)
 
 /**
  * Rate Limiter Refill Rate in milliseconds per token. Default is 2000ms.
  *
  * @type {number}
  */
-export const RATE_LIMIT_REFILL_RATE_MS = Number.parseInt(__env__('MI_RATE_LIMIT_REFILL_RATE_MS', false, '2000'), 10)
+export const RATE_LIMIT_REFILL_RATE_MS = Number.parseInt(__env__('MI_RATE_LIMIT_REFILL_RATE_MS', false, __env__('BC_RATE_LIMIT_REFILL_RATE_MS', false, '2000')), 10)
 
 /**
  * Cookie secret. It should at least be 32 characters long, but the longer the better.

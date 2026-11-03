@@ -20,5 +20,10 @@ describe('Test configuration options', () => {
 
         const UNKNOWN = env.__env__('MI_UNKNOWN', false)
         expect(!!UNKNOWN).toBeFalsy()
+
+        expect(env.BC_REDIS_URL).toBeDefined()
+        expect(env.REDIS_URL).toBeDefined()
+        expect(env.RATE_LIMIT_CAPACITY).toBeGreaterThan(0)
+        expect(env.RATE_LIMIT_REFILL_RATE_MS).toBeGreaterThan(0)
     })
 })

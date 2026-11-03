@@ -4,7 +4,7 @@ import * as logger from '../utils/logger'
 
 const isTest = env.CI || process.env.NODE_ENV === 'test'
 
-export const redis = new Redis(env.REDIS_URL, {
+export const redis = new Redis(env.BC_REDIS_URL || env.REDIS_URL, {
   maxRetriesPerRequest: isTest ? 0 : 1,
   enableOfflineQueue: !isTest, // Stops ioredis from queuing requests and stalling when Redis is down
   enableReadyCheck: false,
