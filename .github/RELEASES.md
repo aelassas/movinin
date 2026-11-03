@@ -1,5 +1,39 @@
 # Releases
 
+## [Movin' In 7.4](https://github.com/aelassas/movinin/releases/tag/v7.4) – 2026-11-03
+
+#### What's Changed
+* feat(mobile): upgrade to Expo SDK 58 and React Native to 0.83.2
+* feat(admin,frontend): upgrade to React 19.3.1
+* feat(admin,frontend,mobile): add German language support (#21)
+* feat(frontend): add customer-facing property price sorting (#35)
+* fix(backend): add object-level authorization to GET /api/user/:id
+* fix(backend): add object-level authorization to POST /api/check-password (#43)
+* fix(backend): allow adjacent booking dates and prevent overlap (#48)
+* fix(backend): fix authorize avatar update and deletion (#52)
+* fix(backend): secure booking checkout flow (#55)
+* fix(backend): enable tsc incremental build to prevent build OOM
+* fix(helper): use the correct month length when pricing monthly rentals (#61)
+* fix(admin,frontend): autocomplete current password (#46)
+* test(helper): add unit tests for bookcars-helper utilities (#63)
+* chore(deps): update dependencies
+
+#### New Contributors
+* @sahajsrivastava044-spec made their first contribution in https://github.com/aelassas/movinin/pull/48
+* @AayaanChoudhary made their first contribution in https://github.com/aelassas/movinin/pull/58
+* @satvik448 made their first contribution in https://github.com/aelassas/movinin/pull/52
+* @Madhavkalvium001 made their first contribution in https://github.com/aelassas/movinin/pull/54
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v7.3...v7.4
+
+### Assets
+- [movinin-7.4.apk](https://github.com/aelassas/movinin/releases/download/v7.4/movinin-7.4.apk) (114.89 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.4/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v7.4)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v7.4)
+
 ## [Movin' In 7.3](https://github.com/aelassas/movinin/releases/tag/v7.3) – 2026-10-25
 
 #### What's Changed
@@ -18,6 +52,7 @@
 **Full Changelog**: https://github.com/aelassas/movinin/compare/v7.2...7.3
 
 ### Assets
+- [movinin-7.3.apk](https://github.com/aelassas/movinin/releases/download/v7.3/movinin-7.3.apk) (114.89 MB)
 - [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.3/movinin-db.zip) (4.74 MB)
 
 ### Source Code
