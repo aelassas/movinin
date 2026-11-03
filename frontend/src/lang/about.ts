@@ -21,6 +21,15 @@ const strings = new LocalizedStrings({
     CONTENT2: "Enjoy unmatched convenience, reliability, and value with our premier property rental service. From effortless bookings to high-quality properties, we're your trusted travel partner.",
     FIND_DEAL: 'Find Deal',
   },
+  de: {
+    TITLE1: `${env.WEBSITE_NAME} - Ihr erstklassiger Immobilienvermietungsservice`,
+    SUBTITLE1: 'Ihr vertrauenswürdiger Partner für Immobilienvermietung',
+    CONTENT1: `Bei ${env.WEBSITE_NAME} wissen wir, dass jede Reise einzigartig ist. Wir haben es uns zur Aufgabe gemacht, unseren Kunden eine vielfältige Auswahl an Immobilien anzubieten, die jedem Reisebedürfnis gerecht wird. Ob Sie eine Stadt erkunden, geschäftlich unterwegs sind oder das Abenteuer suchen – unsere zuverlässigen Immobilienvermietungsservices sorgen dafür, dass Ihr Abenteuer nahtlos beginnt. Unsere Mission ist es, einen außergewöhnlichen Kundenservice zu bieten, der Ihr Erlebnis angenehm und stressfrei macht. Mit wettbewerbsfähigen Preisen, einer Vielzahl gepflegter Immobilien und einem engagierten Team, das Ihnen jederzeit zur Seite steht, möchten wir Ihr vertrauenswürdiger Partner unterwegs sein. Entscheiden Sie sich für ${env.WEBSITE_NAME} für alle Ihre Immobilienvermietungsbedürfnisse und erleben Sie die Freiheit, in Ihrem eigenen Tempo zu erkunden.`,
+    TITLE2: `Warum ${env.WEBSITE_NAME} wählen`,
+    SUBTITLE2: 'Erleben Sie Exzellenz auf jeder Reise',
+    CONTENT2: 'Genießen Sie unübertroffenen Komfort, Zuverlässigkeit und Wert mit unserem erstklassigen Immobilienvermietungsservice. Von mühelosen Buchungen bis zu hochwertigen Immobilien – wir sind Ihr vertrauenswürdiger Reisepartner.',
+    FIND_DEAL: 'Angebot finden',
+  },
 })
 
 langHelper.setLanguage(strings)

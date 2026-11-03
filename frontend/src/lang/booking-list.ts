@@ -28,7 +28,20 @@ const strings = new LocalizedStrings({
     CANCEL_BOOKING: 'Are you sure you want to cancel this booking?',
     CANCEL_BOOKING_REQUEST_SENT: 'Your cancel request has been submited. We will contact you to finalize the cancellation procedure.',
   },
-})
+      de: {
+        PROPERTY: 'Immobilie',
+        AGENCY: 'Agentur',
+        PRICE: 'Preis',
+        STATUS: 'Status',
+        EMPTY_LIST: 'Keine Buchungen.',
+        VIEW: 'Diese Buchung ansehen',
+        DAYS: 'Tage',
+        COST: 'GESAMT',
+        CANCEL: 'Diese Buchung stornieren',
+        CANCEL_BOOKING: 'Sind Sie sicher, dass Sie diese Buchung stornieren möchten?',
+        CANCEL_BOOKING_REQUEST_SENT: 'Ihre Stornierungsanfrage wurde übermittelt. Wir werden uns mit Ihnen in Verbindung setzen, um das Stornierungsverfahren abzuschließen.',
+      },
+    })
 
 langHelper.setLanguage(strings)
 export { strings }

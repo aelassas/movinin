@@ -9,6 +9,10 @@ const strings = new LocalizedStrings({
     en: {
         HIDDEN: 'Hidden',
         HIDDEN_INFO: 'This property is hidden.',
+    },
+    de: {
+        HIDDEN: 'Ausgeblendet',
+        HIDDEN_INFO: 'Diese Immobilie ist ausgeblendet.',
     }
 })
 

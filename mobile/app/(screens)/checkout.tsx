@@ -10,7 +10,7 @@ import { useIsFocused } from 'expo-router'
 import { MaterialIcons } from '@expo/vector-icons'
 import validator from 'validator'
 import { format, intervalToDuration } from 'date-fns'
-import { enUS, fr } from 'date-fns/locale'
+import { getDateLocale } from '@/utils/dateLocale'
 import { PaymentSheetError, initPaymentSheet, useStripe } from '@stripe/stripe-react-native'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
@@ -82,7 +82,7 @@ const CheckoutScreen = () => {
   const [tosError, setTosError] = useState(false)
   const [error, setError] = useState(false)
   const [success, setSuccess] = useState(true)
-  const [locale, setLocale] = useState(fr)
+  const [locale, setLocale] = useState(getDateLocale('fr'))
 
   const [currencySymbol, setCurrencySymbol] = useState('')
   const [cancellationText, setCancellationText] = useState('')
@@ -107,7 +107,7 @@ const CheckoutScreen = () => {
       const _language = await UserService.getLanguage()
       i18n.locale = _language
       setLanguage(_language)
-      setLocale(_language === 'fr' ? fr : enUS)
+      setLocale(getDateLocale(_language))
 
       setAuthenticated(false)
       setUser(null)
@@ -436,7 +436,7 @@ const CheckoutScreen = () => {
       try {
         if (!payLater) {
           const name = movininHelper.truncateString(`${env.WEBSITE_NAME} - ${__property.name}`, StripeService.ORDER_NAME_MAX_LENGTH)
-          const _locale = _fr ? fr : enUS
+          const _locale = getDateLocale(language)
           const days = movininHelper.days(__from, __to)
           const daysLabel = __from && __to && `${helper.getDaysShort(days)} (${movininHelper.capitalize(format(__from, _format, { locale: _locale }),)} - ${movininHelper.capitalize(format(__to, _format, { locale: _locale }))})`
           const _description = `${env.WEBSITE_NAME} - ${__property.name} - ${daysLabel} - ${__location.name}`

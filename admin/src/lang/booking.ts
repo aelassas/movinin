@@ -10,6 +10,10 @@ const strings = new LocalizedStrings({
     TOTAL: 'Total:',
     DELETE_BOOKING: 'Are you sure you want to delete this booking?',
   },
+  de: {
+    TOTAL: 'Gesamt:',
+    DELETE_BOOKING: 'Sind Sie sicher, dass Sie diese Buchung löschen möchten?',
+  },
 })
 
 langHelper.setLanguage(strings)

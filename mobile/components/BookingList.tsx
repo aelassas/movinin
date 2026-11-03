@@ -14,7 +14,7 @@ import {
   Portal,
   Button as NativeButton
 } from 'react-native-paper'
-import { enUS, fr } from 'date-fns/locale'
+import { getDateLocale } from '@/utils/dateLocale'
 import * as movininTypes from ':movinin-types'
 import * as env from '@/config/env.config'
 import i18n from '@/lang/i18n'
@@ -54,7 +54,7 @@ const BookingList = ({
   const [cancelRequestProcessing, setCancelRequestProcessing] = useState(false)
   const [cancelRequestSent, setCancelRequestSent] = useState(false)
   const [deleted, setDeleted] = useState(false)
-  const [locale, setLoacle] = useState(fr)
+  const [locale, setLoacle] = useState(getDateLocale('fr'))
   const [refreshing, setRefreshing] = useState(false)
 
   const fetchData = async (reset = false) => {
@@ -95,7 +95,7 @@ const BookingList = ({
   }
 
   useEffect(() => {
-    setLoacle(language === 'fr' ? fr : enUS)
+    setLoacle(getDateLocale(language))
   }, [language])
 
   useEffect(() => {

@@ -8,6 +8,9 @@ const strings = new LocalizedStrings({
   en: {
     NO_MATCH: 'Nothing to see here!',
   },
+  de: {
+    NO_MATCH: 'Hier gibt es nichts zu sehen!',
+  },
 })
 
 langHelper.setLanguage(strings)

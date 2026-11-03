@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { DirectionsCar as CarIcon } from '@mui/icons-material'
 import { format } from 'date-fns'
-import { fr, enUS } from 'date-fns/locale'
+import { getDateLocale } from '@/utils/dateLocale'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import * as helper from '@/utils/helper'
@@ -67,7 +67,7 @@ const CheckoutStatus = (
   }
 
   const _fr = language === 'fr'
-  const _locale = _fr ? fr : enUS
+  const _locale = getDateLocale(language)
   const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
   const days = (booking && movininHelper.days(new Date(booking.from), new Date(booking.to))) || 0
   const success = status === 'success'

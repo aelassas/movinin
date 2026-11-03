@@ -14,6 +14,12 @@ const strings = new LocalizedStrings({
     SUBSCRIBE: 'Subscribe',
     SUCCESS: 'Subscription successful!',
   },
+  de: {
+    TITLE: 'Abonnieren',
+    SUB_TITLE: 'Abonnieren Sie unseren Newsletter, um die neuesten Updates zu erhalten!',
+    SUBSCRIBE: 'Abonnieren',
+    SUCCESS: 'Abonnement erfolgreich!',
+  },
 })
 
 langHelper.setLanguage(strings)

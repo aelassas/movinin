@@ -34,6 +34,22 @@ const strings = new LocalizedStrings({
     SIGN_OUT: 'Sign out',
     COUNTRIES: 'Countries',
   },
+  de: {
+    DASHBOARD: 'Dashboard',
+    SCHEDULER: 'Immobilienplaner',
+    HOME: 'Startseite',
+    AGENCIES: 'Agenturen',
+    LOCATIONS: 'Standorte',
+    PROPERTIES: 'Immobilien',
+    USERS: 'Benutzer',
+    ABOUT: 'Über uns',
+    TOS: 'Nutzungsbedingungen',
+    CONTACT: 'Kontakt',
+    LANGUAGE: 'Sprache',
+    SETTINGS: 'Einstellungen',
+    SIGN_OUT: 'Abmelden',
+    COUNTRIES: 'Länder',
+  },
 })
 
 langHelper.setLanguage(strings)

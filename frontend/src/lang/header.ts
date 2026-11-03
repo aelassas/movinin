@@ -34,6 +34,22 @@
       COOKIE_POLICY: 'Cookie Policy',
       NOTIFICATIONS: 'Notifications',
     },
+    de: {
+      SIGN_IN: 'Anmelden',
+      HOME: 'Startseite',
+      BOOKINGS: 'Buchungen',
+      ABOUT: 'Über uns',
+      TOS: 'Nutzungsbedingungen',
+      CONTACT: 'Kontakt',
+      LANGUAGE: 'Sprache',
+      SETTINGS: 'Einstellungen',
+      SIGN_OUT: 'Abmelden',
+      AGENCIES: 'Agenturen',
+      LOCATIONS: 'Reiseziele',
+      PRIVACY_POLICY: 'Datenschutzerklärung',
+      COOKIE_POLICY: 'Cookie-Richtlinie',
+      NOTIFICATIONS: 'Benachrichtigungen',
+    },
   })
 
   langHelper.setLanguage(strings)

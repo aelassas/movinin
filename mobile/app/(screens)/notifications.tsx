@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { useLocalSearchParams, useIsFocused } from 'expo-router'
-import { enUS, fr } from 'date-fns/locale'
+import { getDateLocale } from '@/utils/dateLocale'
 
 import * as movininTypes from ':movinin-types'
 
@@ -17,13 +17,13 @@ const NotificationsScreen = () => {
   const [reload, setReload] = useState(false)
   const [visible, setVisible] = useState(false)
   const [user, setUser] = useState<movininTypes.User>()
-  const [locale, setLoacle] = useState(fr)
+  const [locale, setLoacle] = useState(getDateLocale('fr'))
 
   const _init = async () => {
     setVisible(false)
     const language = await UserService.getLanguage()
     i18n.locale = language
-    setLoacle(language === 'fr' ? fr : enUS)
+    setLoacle(getDateLocale(language))
 
     const currentUser = await UserService.getCurrentUser()
 

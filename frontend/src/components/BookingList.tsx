@@ -23,7 +23,7 @@ import {
   Cancel as CancelIcon
 } from '@mui/icons-material'
 import { format } from 'date-fns'
-import { fr as dfnsFR, enUS as dfnsENUS } from 'date-fns/locale'
+import { getDateLocale } from '@/utils/dateLocale'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
 import * as BookingService from '@/services/BookingService'
@@ -388,7 +388,7 @@ const BookingList = ({
   }
 
   const _fr = language === 'fr'
-  const _locale = _fr ? dfnsFR : dfnsENUS
+  const _locale = getDateLocale(language)
   const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
   const bookingDetailHeight = env.AGENCY_IMAGE_HEIGHT + 10
 

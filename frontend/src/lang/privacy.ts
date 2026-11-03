@@ -120,6 +120,69 @@ If you have any questions about this Privacy Policy or our data practices, pleas
 By using our services, you acknowledge that you have read and understood this Privacy Policy and agree to its terms.
     `,
   },
+  de: {
+    TITLE: 'Datenschutzerklärung',
+    PRIVACY_POLICY: `
+Ihre Privatsphäre ist uns bei ${env.WEBSITE_NAME} wichtig. Diese Datenschutzerklärung beschreibt, wie wir Ihre Daten erheben, verwenden und schützen, wenn Sie unsere Website und unsere Dienste nutzen. Durch den Zugriff auf unsere Dienste willigen Sie in die in dieser Erklärung beschriebenen Verfahren ein.
+
+
+1. Daten, die wir erheben
+
+Wir erheben Daten von Ihnen, wenn Sie sich auf unserer Website registrieren, eine Bestellung aufgeben oder mit unseren Diensten interagieren. Zu den Daten, die wir erheben können, gehören:
+
+Name
+E-Mail-Adresse
+Telefonnummer
+Zahlungsinformationen
+Mietpräferenzen
+Sie können unsere Website anonym besuchen, allerdings können bestimmte Funktionen eingeschränkt sein.
+
+
+2. Wie wir Ihre Daten verwenden
+
+Ihre Daten können auf folgende Weise verwendet werden:
+
+Zur Bearbeitung Ihrer Reservierungen und Zahlungen
+Zur Verbesserung des Kundenservice
+Zum Versand regelmäßiger E-Mails zu Ihrer Bestellung oder zu anderen Produkten und Dienstleistungen
+Zur Beantwortung von Anfragen und Supportanfragen
+
+
+3. Wie wir Ihre Daten schützen
+
+Wir setzen verschiedene Sicherheitsmaßnahmen ein, um die Sicherheit Ihrer personenbezogenen Daten zu gewährleisten. Alle sensiblen Daten werden über sichere Server übertragen und sind nur für autorisiertes Personal zugänglich. Wir speichern Ihre Kreditkartendaten nicht auf unseren Servern.
+
+
+4. Weitergabe Ihrer Daten
+
+Wir verkaufen, tauschen oder übermitteln Ihre personenbezogenen Daten nicht an externe Dritte, es sei denn an vertrauenswürdige Partner, die uns beim Betrieb unserer Website, bei der Durchführung unseres Geschäfts oder bei der Erbringung von Leistungen für Sie unterstützen, sofern diese Partner zusichern, diese Daten vertraulich zu behandeln. Wir können Ihre Daten außerdem offenlegen, wenn wir die Offenlegung für angemessen halten, um geltendes Recht einzuhalten, unsere Websiterichtlinien durchzusetzen oder unsere Rechte, unser Eigentum und unsere Sicherheit oder die Rechte, das Eigentum und die Sicherheit anderer zu schützen.
+
+
+5. Datenschutz bei Kindern
+
+Wir halten den Children's Online Privacy Protection Act (COPPA) ein. Unsere Dienste richten sich nicht an Kinder unter 13 Jahren, und wir erheben nicht wissentlich personenbezogene Daten von Kindern unter 13 Jahren. Sollten wir feststellen, dass wir personenbezogene Daten eines Kindes unter 13 Jahren erhoben haben, werden wir Maßnahmen ergreifen, um diese Daten zu löschen.
+
+
+6. Änderungen unserer Datenschutzerklärung
+
+Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Wir informieren Sie über Änderungen, indem wir die neue Datenschutzerklärung auf dieser Seite veröffentlichen. Wir empfehlen Ihnen, diese Datenschutzerklärung regelmäßig auf Änderungen zu überprüfen.
+
+
+7. Ihre Rechte
+
+Sie haben das Recht, Auskunft über die personenbezogenen Daten zu verlangen, die wir über Sie gespeichert haben, die Berichtigung unrichtiger Angaben zu verlangen und vorbehaltlich bestimmter Ausnahmen die Löschung Ihrer personenbezogenen Daten zu verlangen. Um diese Rechte auszuüben, kontaktieren Sie uns bitte über die unten angegebenen Kontaktdaten.
+
+
+8. Kontakt
+
+Wenn Sie Fragen zu dieser Datenschutzerklärung oder zu unseren Datenverarbeitungspraktiken haben, kontaktieren Sie uns bitte unter ${env.CONTACT_EMAIL}. Wir sind bestrebt, auf Ihre Anliegen einzugehen und Ihre Privatsphäre zu schützen.
+
+
+9. Anerkennung
+
+Durch die Nutzung unserer Dienste bestätigen Sie, dass Sie diese Datenschutzerklärung gelesen und verstanden haben, und erklären sich mit ihren Bedingungen einverstanden.
+    `,
+  },
 })
 
 langHelper.setLanguage(strings)

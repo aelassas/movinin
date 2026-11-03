@@ -210,6 +210,20 @@ export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => [
 ]
 
 /**
+ * Get plural suffix of a count-based label (German uses 'e' or 'n', other languages use 's').
+ *
+ * @param {number} count
+ * @param {string} [deSuffix='e']
+ * @returns {string}
+ */
+const getPluralSuffix = (count: number, deSuffix = 'e') => {
+  if (count <= 1) {
+    return ''
+  }
+  return strings.getLanguage() === 'de' ? deSuffix : 's'
+}
+
+/**
  * Get bedrooms tooltip.
  *
  * @param {number} bedrooms
@@ -217,9 +231,9 @@ export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => [
  * @returns {string}
  */
 export const getBedroomsTooltip = (bedrooms: number, fr?: boolean) =>
-  `${strings.TOOLTIP_1}${bedrooms} ${fr
+  `${strings.TOOLTIP_1}${bedrooms} ${fr || strings.getLanguage() === 'de'
     ? bedrooms > 1 ? strings.BEDROOMS_TOOLTIP_2 : strings.BEDROOMS_TOOLTIP_1
-    : strings.BEDROOMS_TOOLTIP_1 + (bedrooms > 1 ? 's' : '')}`
+    : strings.BEDROOMS_TOOLTIP_1 + getPluralSuffix(bedrooms)}`
 
 /**
  * Get bathrooms tooltip.
@@ -229,9 +243,9 @@ export const getBedroomsTooltip = (bedrooms: number, fr?: boolean) =>
  * @returns {string}
  */
 export const getBathroomsTooltip = (bathrooms: number, fr?: boolean) =>
-  `${strings.TOOLTIP_1}${bathrooms} ${fr
+  `${strings.TOOLTIP_1}${bathrooms} ${fr || strings.getLanguage() === 'de'
     ? bathrooms > 1 ? strings.BATHROOMS_TOOLTIP_2 : strings.BATHROOMS_TOOLTIP_1
-    : strings.BATHROOMS_TOOLTIP_1 + (bathrooms > 1 ? 's' : '')}`
+    : strings.BATHROOMS_TOOLTIP_1 + getPluralSuffix(bathrooms)}`
 
 /**
  * Get kitchens tooltip.
@@ -240,7 +254,7 @@ export const getBathroomsTooltip = (bathrooms: number, fr?: boolean) =>
  * @returns {string}
  */
 export const getKitchensTooltip = (bathrooms: number) =>
-  `${strings.TOOLTIP_1}${bathrooms} ${strings.KITCHENS_TOOLTIP_1 + (bathrooms > 1 ? 's' : '')}`
+  `${strings.TOOLTIP_1}${bathrooms} ${strings.KITCHENS_TOOLTIP_1 + getPluralSuffix(bathrooms, 'n')}`
 
 /**
  * Get parking spaces tooltip.
@@ -250,9 +264,9 @@ export const getKitchensTooltip = (bathrooms: number) =>
  * @returns {string}
  */
 export const getKParkingSpacesTooltip = (parkingSpaces: number, fr?: boolean) =>
-  `${strings.TOOLTIP_1}${parkingSpaces} ${fr
+  `${strings.TOOLTIP_1}${parkingSpaces} ${fr || strings.getLanguage() === 'de'
     ? parkingSpaces > 1 ? strings.PARKING_SPACES_TOOLTIP_2 : strings.PARKING_SPACES_TOOLTIP_1
-    : strings.PARKING_SPACES_TOOLTIP_1 + (parkingSpaces > 1 ? 's' : '')}`
+    : strings.PARKING_SPACES_TOOLTIP_1 + getPluralSuffix(parkingSpaces)}`
 
 /**
  * Get all user types.
@@ -303,7 +317,7 @@ export const getUserType = (type?: movininTypes.UserType) => {
  * @returns {string}
  */
 export const getDays = (days: number) =>
-  `${strings.PRICE_DAYS_PART_1} ${days} ${strings.PRICE_DAYS_PART_2}${days > 1 ? 's' : ''}`
+  `${strings.PRICE_DAYS_PART_1} ${days} ${strings.PRICE_DAYS_PART_2}${getPluralSuffix(days)}`
 
 /**
  * Get short days label.
@@ -311,7 +325,7 @@ export const getDays = (days: number) =>
  * @param {number} days
  * @returns {string}
  */
-export const getDaysShort = (days: number) => `${days} ${strings.PRICE_DAYS_PART_2}${days > 1 ? 's' : ''}`
+export const getDaysShort = (days: number) => `${days} ${strings.PRICE_DAYS_PART_2}${getPluralSuffix(days)}`
 
 /**
  * Get cancellation label.

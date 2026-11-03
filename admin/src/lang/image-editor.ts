@@ -13,6 +13,12 @@ const strings = new LocalizedStrings({
         ADD_IMAGES: 'Add additional images',
         UPDATE_IMAGE: 'Update main image',
         DELETE_IMAGE: 'Are you sure you want to delete this image?',
+    },
+    de: {
+        ADD_IMAGE: 'Hauptbild hinzufügen',
+        ADD_IMAGES: 'Weitere Bilder hinzufügen',
+        UPDATE_IMAGE: 'Hauptbild aktualisieren',
+        DELETE_IMAGE: 'Sind Sie sicher, dass Sie dieses Bild löschen möchten?',
     }
 })
 

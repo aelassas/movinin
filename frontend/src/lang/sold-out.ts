@@ -9,6 +9,10 @@ const strings = new LocalizedStrings({
     en: {
         SOLD_OUT: 'Sold out',
         SOLD_OUT_INFO: 'This property is sold out.',
+    },
+    de: {
+        SOLD_OUT: 'Ausverkauft',
+        SOLD_OUT_INFO: 'Diese Immobilie ist ausverkauft.',
     }
 })
 

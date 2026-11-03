@@ -16,6 +16,13 @@ const strings = new LocalizedStrings({
     SEND: 'Send',
     MESSAGE_SENT: 'Message sent'
   },
+  de: {
+    CONTACT_HEADING: 'Kontakt',
+    SUBJECT: 'Betreff',
+    MESSAGE: 'Nachricht',
+    SEND: 'Senden',
+    MESSAGE_SENT: 'Nachricht gesendet'
+  },
   el: {
     CONTACT_HEADING: 'Επικοινωνία',
     SUBJECT: 'Θέμα',

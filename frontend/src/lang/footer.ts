@@ -37,6 +37,22 @@ const strings = new LocalizedStrings({
     PRIVACY_POLICY: 'Privacy Policy',
     COOKIE_POLICY: 'Cookie Policy',
   },
+  de: {
+    COPYRIGHT_PART1,
+    COPYRIGHT_PART2: '. Alle Rechte vorbehalten.',
+
+    CORPORATE: 'Unternehmen',
+    ABOUT: 'Über uns',
+    TOS: 'Nutzungsbedingungen',
+    RENT: 'Immobilie mieten',
+    AGENCIES: 'Agenturen',
+    LOCATIONS: 'Reiseziele',
+    SUPPORT: 'Support',
+    CONTACT: 'Kontakt',
+    SECURE_PAYMENT: `100 % sichere Zahlung mit ${env.WEBSITE_NAME}`,
+    PRIVACY_POLICY: 'Datenschutzerklärung',
+    COOKIE_POLICY: 'Cookie-Richtlinie',
+  },
 })
 
 langHelper.setLanguage(strings)

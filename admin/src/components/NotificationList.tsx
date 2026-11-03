@@ -21,7 +21,7 @@ import {
   ArrowForwardIos as NextPageIcon,
 } from '@mui/icons-material'
 import { format } from 'date-fns'
-import { fr, enUS } from 'date-fns/locale'
+import { getDateLocale } from '@/utils/dateLocale'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
@@ -53,7 +53,7 @@ const NotificationList = ({ user }: NotificationListProps) => {
   const notificationsListRef = useRef<HTMLDivElement>(null)
 
   const _fr = user && user.language === 'fr'
-  const _locale = _fr ? fr : enUS
+  const _locale = getDateLocale(user?.language)
   const _format = _fr ? 'eee d LLLL, kk:mm' : 'eee, d LLLL, kk:mm'
 
   const fetch = useCallback(async () => {

@@ -21,7 +21,7 @@ import {
 import validator from 'validator'
 import { nanoid } from 'nanoid'
 import { format, intervalToDuration } from 'date-fns'
-import { fr, enUS } from 'date-fns/locale'
+import { getDateLocale } from '@/utils/dateLocale'
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
@@ -109,7 +109,7 @@ const Checkout = () => {
   const [payPalProcessing, setPayPalProcessing] = useState(false)
 
   const _fr = language === 'fr'
-  const _locale = _fr ? fr : enUS
+  const _locale = getDateLocale(language)
   const _format = _fr ? 'eee d LLL yyyy kk:mm' : 'eee, d LLL yyyy, p'
   const bookingDetailHeight = env.AGENCY_IMAGE_HEIGHT + 10
   const days = movininHelper.days(from, to)

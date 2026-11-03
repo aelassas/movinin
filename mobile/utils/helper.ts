@@ -178,7 +178,20 @@ export const getCancellation = async (cancellation: number, language: string) =>
  * @param {number} days
  * @returns {string}
  */
-export const getDays = (days: number) => `${i18n.t('PRICE_DAYS_PART_1')} ${days} ${i18n.t('PRICE_DAYS_PART_2')}${days > 1 ? 's' : ''}`
+export const getDays = (days: number) => `${i18n.t('PRICE_DAYS_PART_1')} ${days} ${i18n.t('PRICE_DAYS_PART_2')}${getDaysPluralSuffix(days)}`
+
+/**
+ * Get plural suffix of the day label (German uses 'e', other languages use 's').
+ *
+ * @param {number} days
+ * @returns {string}
+ */
+const getDaysPluralSuffix = (days: number) => {
+  if (days <= 1) {
+    return ''
+  }
+  return i18n.locale === 'de' ? 'e' : 's'
+}
 
 /**
  * Get short days label.
@@ -186,7 +199,7 @@ export const getDays = (days: number) => `${i18n.t('PRICE_DAYS_PART_1')} ${days}
  * @param {number} days
  * @returns {string}
  */
-export const getDaysShort = (days: number) => `${days} ${i18n.t('PRICE_DAYS_PART_2')}${days > 1 ? 's' : ''}`
+export const getDaysShort = (days: number) => `${days} ${i18n.t('PRICE_DAYS_PART_2')}${getDaysPluralSuffix(days)}`
 
 /**
  * Get cancellation option label.
