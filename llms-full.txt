@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-11-03T08:40:20Z
+> Generated on: 2026-11-03T21:03:53Z
 
 ---
 
@@ -66,7 +66,7 @@ To add a new language, follow the instructions below. Use an existing language (
 1. Add the new language [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) to the `LANGUAGES` setting in `backend/src/config/env.config.ts`.
 2. Create a new file *<code>.ts* in the `backend/src/lang` folder (copy `en.ts` and translate the values) and export your translations from it.
 3. Import and register your translations in `backend/src/lang/i18n.ts`.
-4. Optional: to format dates in booking confirmation emails in the user's language, map the language code to a locale (e.g., `de` → `de-DE`) in the `confirm` function of `backend/src/controllers/bookingController.ts`.
+4. To format dates in booking confirmation emails in the user's language, map the language code to a locale (e.g., `de` → `de-DE`) in the `confirm` function of `backend/src/controllers/bookingController.ts`.
 
 > [!NOTE]
 > Location and country names are stored per language in the database. Missing values for a newly supported language are created automatically from the existing ones at startup.
