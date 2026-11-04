@@ -279,7 +279,8 @@ const Checkout = () => {
         }
       }
 
-      const basePrice = await movininHelper.convertPrice(price, PaymentService.getCurrency(), env.BASE_CURRENCY)
+      // Payments are always charged in the base currency; the converted price is only a display estimate
+      const basePrice = movininHelper.calculateTotalPrice(property, from, to, { cancellation })
 
       const booking: movininTypes.Booking = {
         agency: property.agency._id as string,
@@ -305,8 +306,8 @@ const Checkout = () => {
           const description = movininHelper.truncateString(_description, StripeService.ORDER_DESCRIPTION_MAX_LENGTH)
 
           const payload: movininTypes.CreatePaymentPayload = {
-            amount: price,
-            currency: PaymentService.getCurrency(),
+            amount: basePrice,
+            currency: env.BASE_CURRENCY,
             locale: language,
             receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
             name,
@@ -650,8 +651,8 @@ const Checkout = () => {
 
                                 const orderId = await PayPalService.createOrder(
                                   bookingId,
-                                  price,
-                                  PaymentService.getCurrency(),
+                                  movininHelper.calculateTotalPrice(property, from, to, { cancellation }),
+                                  env.BASE_CURRENCY,
                                   name,
                                   description
                                 )

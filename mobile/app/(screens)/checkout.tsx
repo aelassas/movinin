@@ -428,7 +428,8 @@ const CheckoutScreen = () => {
         }
       }
 
-      const currency = await StripeService.getCurrency()
+      // Payments are always charged in the base currency; the converted price is only a display estimate
+      const basePrice = movininHelper.calculateTotalPrice(__property, __from, __to, { cancellation })
       let paid = payLater
       let canceled = false
       let paymentIntentId: string | undefined
@@ -443,8 +444,8 @@ const CheckoutScreen = () => {
           const description = movininHelper.truncateString(_description, StripeService.ORDER_DESCRIPTION_MAX_LENGTH)
 
           const createPaymentIntentPayload: movininTypes.CreatePaymentPayload = {
-            amount: price,
-            currency,
+            amount: basePrice,
+            currency: env.BASE_CURRENCY,
             locale: language,
             receiptEmail: (!authenticated ? renter?.email : user?.email) as string,
             name,
@@ -469,7 +470,7 @@ const CheckoutScreen = () => {
               googlePay: {
                 merchantCountryCode: env.STRIPE_COUNTRY_CODE.toUpperCase(),
                 testEnv: env.STRIPE_PUBLISHABLE_KEY.includes('_test_'),
-                currencyCode: currency,
+                currencyCode: env.BASE_CURRENCY,
               },
               applePay: {
                 merchantCountryCode: env.STRIPE_COUNTRY_CODE.toUpperCase(),
@@ -507,8 +508,6 @@ const CheckoutScreen = () => {
         alert(i18n.t('PAYMENT_FAILED'))
         return
       }
-
-      const basePrice = await movininHelper.convertPrice(price, currency, env.BASE_CURRENCY)
 
       const booking: movininTypes.Booking = {
         agency: __property.agency._id as string,
