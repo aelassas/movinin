@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-11-04T08:16:30Z
+> Generated on: 2026-11-04T08:17:22Z
 
 ---
 
@@ -945,7 +945,7 @@ Customers can sign up via the frontend or mobile app, browse available propertie
 ### User Experience
 * Customer management
 * [Multiple login options](https://github.com/aelassas/movinin/wiki/Social-Login-Setup): Google, Facebook, Apple, Email
-* Multiple language support: English, French, German
+* Multiple language support: English, French, German, Spanish
 * [Multiple currencies support](https://github.com/aelassas/movinin/wiki/Add-New-Currency)
 * Multiple pagination styles: classic (next/previous), infinite scroll
 * Push notifications
