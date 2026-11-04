@@ -1,7 +1,7 @@
 # Movin' In - Full Documentation Context
 
 > Auto-generated full documentation context compiled from the Movin' In Wiki.
-> Generated on: 2026-11-03T21:03:53Z
+> Generated on: 2026-11-04T08:16:30Z
 
 ---
 
@@ -54,6 +54,7 @@ Movin' In comes with built-in support for the following languages:
 | English  | `en` | English  |
 | French   | `fr` | Français |
 | German   | `de` | Deutsch  |
+| Spanish  | `es` | Español  |
 
 English is the default language (`DEFAULT_LANGUAGE`, configurable with `VITE_MI_DEFAULT_LANGUAGE` in the Admin Panel and Frontend). The Mobile App uses the device language when it is supported, otherwise the default language.
 
@@ -100,12 +101,12 @@ To add a new language, follow the instructions below. Use an existing language (
 4. Add the language code to `supportedLanguages` in `getDefaultLanguage` in `mobile/services/UserService.ts`, so that it is selected automatically when it matches the device language.
 5. Add the date locales:
    * `mobile/utils/dateLocale.ts`: return the date-fns locale of the new language in `getDateLocale`.
-   * `mobile/components/DateTimePicker.tsx`: add the date-fns locale to `localeMap`.
+   * `mobile/components/DateTimePicker.tsx` uses `getDateLocale`, so no change is needed there.
 
 ### Plurals and Grammar
 Some labels are built in code and not only in translation files:
 * Counts such as days, bedrooms, bathrooms, kitchens and parking spaces append a suffix to the singular word: `s` by default, `e` or `n` for German. If your language needs another rule, update `getPluralSuffix` in `admin/src/utils/helper.ts` and `frontend/src/utils/helper.ts`, and `getDaysPluralSuffix` in `mobile/utils/helper.ts`.
-* Bedroom, bathroom and parking space tooltips use the `*_TOOLTIP_1` (singular) and `*_TOOLTIP_2` (plural) keys for French and German. For these languages, make sure both keys are translated.
+* Bedroom, bathroom and parking space tooltips use the `*_TOOLTIP_1` (singular) and `*_TOOLTIP_2` (plural) keys for French, German and Spanish. For these languages, make sure both keys are translated.
 * French-specific punctuation and agreement (e.g., ` : ` and `Incluse`) are handled by `isFrench` in `packages/movinin-helper/index.ts`. Other languages use the default English rules.
 
 ### Check Your Changes
