@@ -89,22 +89,52 @@ export const validateEmail = (data: movininTypes.ValidateEmailPayload): Promise<
     .then((exist) => exist.status)
 
 /**
+ * Update the user's language to the language selected in the UI before signing in.
+ * If the update fails, the user keeps the language saved on the server.
+ *
+ * @async
+ * @param {movininTypes.User} user
+ * @param {string} language
+ * @returns {Promise<movininTypes.User>}
+ */
+const syncLanguage = async (user: movininTypes.User, language: string): Promise<movininTypes.User> => {
+  if (!user._id || user.blacklisted || !language || user.language === language) {
+    return user
+  }
+
+  try {
+    const status = await updateLanguage({ id: user._id, language })
+    if (status === 200) {
+      return { ...user, language }
+    }
+  } catch (err) {
+    console.error(err)
+  }
+
+  return user
+}
+
+/**
  * Sign in.
  *
  * @param {movininTypes.SignInPayload} data
  * @returns {Promise<{ status: number, data: movininTypes.User }>}
  */
-export const signin = (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> =>
-  axiosInstance
+export const signin = async (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> => {
+  const language = getLanguage()
+
+  const res = await axiosInstance
     .post(
       `/api/sign-in/${env.APP_TYPE}`,
       data,
       { withCredentials: true }
     )
-    .then((res) => {
-      localStorage.setItem('mi-fe-user', JSON.stringify(res.data))
-      return { status: res.status, data: res.data }
-    })
+
+  localStorage.setItem('mi-fe-user', JSON.stringify(res.data))
+
+  const user = res.status === 200 ? await syncLanguage(res.data, language) : res.data
+  return { status: res.status, data: user }
+}
 
 /**
  * Social sign in.
@@ -112,17 +142,21 @@ export const signin = (data: movininTypes.SignInPayload): Promise<{ status: numb
  * @param {movininTypes.SignInPayload} data
  * @returns {Promise<{ status: number, data: movininTypes.User }>}
  */
-export const socialSignin = (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> =>
-  axiosInstance
+export const socialSignin = async (data: movininTypes.SignInPayload): Promise<{ status: number, data: movininTypes.User }> => {
+  const language = getLanguage()
+
+  const res = await axiosInstance
     .post(
       '/api/social-sign-in',
       data,
       { withCredentials: true }
     )
-    .then((res) => {
-      localStorage.setItem('mi-fe-user', JSON.stringify(res.data))
-      return { status: res.status, data: res.data }
-    })
+
+  localStorage.setItem('mi-fe-user', JSON.stringify(res.data))
+
+  const user = res.status === 200 ? await syncLanguage(res.data, language) : res.data
+  return { status: res.status, data: user }
+}
 
 /**
  * Sign out.
