@@ -24,6 +24,20 @@ describe('calculateTotalPrice', () => {
       expect(movininHelper.calculateTotalPrice(property, from, to)).toBe(600) // 150 * 4
     })
 
+    it('should not charge an extra day when the stay spans the end of daylight saving time', () => {
+      const property = {
+        price: 100,
+        rentalTerm: movininTypes.RentalTerm.Daily,
+        cancellation: 0,
+      } as movininTypes.Property
+
+      // Noon to noon in Europe/Paris; clocks go back on 2026-10-25, so the interval is 31 days + 1 hour
+      const from = new Date('2026-10-01T12:00:00+02:00')
+      const to = new Date('2026-11-01T12:00:00+01:00')
+
+      expect(movininHelper.calculateTotalPrice(property, from, to)).toBe(3100) // 100 * 31
+    })
+
     it('should return 0 when stay duration is 0 days', () => {
       const property = {
         price: 200,

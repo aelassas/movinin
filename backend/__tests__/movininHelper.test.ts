@@ -240,6 +240,13 @@ describe('movininHelper', () => {
       expect(movininHelper.totalDays(from, new Date('2026-06-05T12:00:00.000Z'))).toBe(4)
     })
 
+    it('should not add or drop a day across a daylight saving time change', () => {
+      // Europe/Paris, noon to noon: the stay contains the 25-hour day of 2026-10-25
+      expect(movininHelper.days(new Date('2026-10-01T12:00:00+02:00'), new Date('2026-11-01T12:00:00+01:00'))).toBe(31)
+      // and the 23-hour day of 2026-03-29
+      expect(movininHelper.days(new Date('2026-03-01T12:00:00+01:00'), new Date('2026-04-01T12:00:00+02:00'))).toBe(31)
+    })
+
     it('should return 0 for the same date and for missing dates', () => {
       expect(movininHelper.days(from, new Date(from))).toBe(0)
       expect(movininHelper.days(undefined, from)).toBe(0)
