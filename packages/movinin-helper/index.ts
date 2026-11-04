@@ -203,13 +203,14 @@ export const flattenAgencies = (companies: movininTypes.User[]): string[] =>
 
 /**
  * Get number of days between two dates.
+ * Rounded so that a daylight saving time change (a 23 or 25 hour day) does not add or drop a day.
  *
  * @param {?Date} [from]
  * @param {?Date} [to]
  * @returns {number}
  */
 export const days = (from?: Date, to?: Date) =>
-  (from && to && Math.ceil((to.getTime() - from.getTime()) / (1000 * 3600 * 24))) || 0
+  (from && to && Math.round((to.getTime() - from.getTime()) / (1000 * 3600 * 24))) || 0
 
 /**
  * Check if User's language is French.
