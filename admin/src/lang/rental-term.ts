@@ -52,6 +52,36 @@ const strings = new LocalizedStrings({
     DAY: 'dia',
     YEAR: 'ano',
   },
+  it: {
+    MONTHLY: 'Mensile',
+    WEEKLY: 'Settimanale',
+    DAILY: 'Giornaliero',
+    YEARLY: 'Annuale',
+    MONTH: 'mese',
+    WEEK: 'settimana',
+    DAY: 'giorno',
+    YEAR: 'anno',
+  },
+  zh: {
+    MONTHLY: '按月',
+    WEEKLY: '按周',
+    DAILY: '按日',
+    YEARLY: '按年',
+    MONTH: '月',
+    WEEK: '周',
+    DAY: '天',
+    YEAR: '年',
+  },
+  ja: {
+    MONTHLY: '月額',
+    WEEKLY: '週額',
+    DAILY: '日額',
+    YEARLY: '年額',
+    MONTH: '月',
+    WEEK: '週',
+    DAY: '日',
+    YEAR: '年',
+  },
 })
 
 langHelper.setLanguage(strings)

@@ -42,6 +42,30 @@ const strings = new LocalizedStrings({
     COUNTRY: 'País',
     PARENT_LOCATION: 'Localização principal',
   },
+  it: {
+    NEW_LOCATION_HEADING: 'Nuova località',
+    LOCATION_NAME: 'Località',
+    INVALID_LOCATION: 'Questa località esiste già.',
+    LOCATION_CREATED: 'Località creata con successo.',
+    COUNTRY: 'Paese',
+    PARENT_LOCATION: 'Località principale',
+  },
+  zh: {
+    NEW_LOCATION_HEADING: '新建地点',
+    LOCATION_NAME: '地点',
+    INVALID_LOCATION: '此地点已存在。',
+    LOCATION_CREATED: '地点创建成功。',
+    COUNTRY: '国家',
+    PARENT_LOCATION: '上级地点',
+  },
+  ja: {
+    NEW_LOCATION_HEADING: '新規場所',
+    LOCATION_NAME: '場所',
+    INVALID_LOCATION: 'この場所はすでに存在します。',
+    LOCATION_CREATED: '場所を作成しました。',
+    COUNTRY: '国',
+    PARENT_LOCATION: '親の場所',
+  },
 })
 
 langHelper.setLanguage(strings)

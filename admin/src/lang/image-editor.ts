@@ -31,7 +31,25 @@ const strings = new LocalizedStrings({
         ADD_IMAGES: 'Adicionar imagens adicionais',
         UPDATE_IMAGE: 'Atualizar imagem principal',
         DELETE_IMAGE: 'Tens a certeza de que queres eliminar esta imagem?',
-    }
+    },
+    it: {
+        ADD_IMAGE: 'Aggiungi immagine principale',
+        ADD_IMAGES: 'Aggiungi altre immagini',
+        UPDATE_IMAGE: 'Aggiorna immagine principale',
+        DELETE_IMAGE: 'Sei sicuro di voler eliminare questa immagine?',
+    },
+    zh: {
+        ADD_IMAGE: '添加主图',
+        ADD_IMAGES: '添加更多图片',
+        UPDATE_IMAGE: '更新主图',
+        DELETE_IMAGE: '确定要删除此图片吗？',
+    },
+    ja: {
+        ADD_IMAGE: 'メイン画像を追加',
+        ADD_IMAGES: 'その他の画像を追加',
+        UPDATE_IMAGE: 'メイン画像を更新',
+        DELETE_IMAGE: 'この画像を削除してもよろしいですか？',
+    },
 })
 
 langHelper.setLanguage(strings)

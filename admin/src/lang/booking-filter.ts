@@ -17,6 +17,15 @@ const strings = new LocalizedStrings({
   pt: {
     LOCATION: 'localização',
   },
+  it: {
+    LOCATION: 'località',
+  },
+  zh: {
+    LOCATION: '地点',
+  },
+  ja: {
+    LOCATION: '場所',
+  },
 })
 
 langHelper.setLanguage(strings)

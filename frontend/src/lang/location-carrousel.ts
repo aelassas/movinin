@@ -27,6 +27,21 @@ const strings = new LocalizedStrings({
     AVALIABLE_LOCATION: 'localização disponível',
     AVALIABLE_LOCATIONS: 'localizações disponíveis',
   },
+  it: {
+    SELECT_LOCATION: 'Seleziona la destinazione',
+    AVALIABLE_LOCATION: 'località disponibile',
+    AVALIABLE_LOCATIONS: 'località disponibili',
+  },
+  zh: {
+    SELECT_LOCATION: '选择目的地',
+    AVALIABLE_LOCATION: '个可用地点',
+    AVALIABLE_LOCATIONS: '个可用地点',
+  },
+  ja: {
+    SELECT_LOCATION: '目的地を選択',
+    AVALIABLE_LOCATION: 'か所の利用可能な場所',
+    AVALIABLE_LOCATIONS: 'か所の利用可能な場所',
+  },
 })
 
 langHelper.setLanguage(strings)

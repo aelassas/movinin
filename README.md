@@ -1,13 +1,13 @@
 [![build](https://github.com/aelassas/movinin/actions/workflows/build.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/build.yml) 
 [![test](https://github.com/aelassas/movinin/actions/workflows/test.yml/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/test.yml)
 [![codecov](https://img.shields.io/codecov/c/github/aelassas/movinin?label=coverage)](https://codecov.io/gh/aelassas/movinin)
-[![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://movinin.dynv6.net/)
+[![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://movinin.wexdev.com/)
 [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/movinin/wiki)
 
 <!--
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-brightgreen?logo=jest)](https://github.com/jestjs/jest)
 [![docs](https://img.shields.io/badge/docs-wiki-brightgreen)](https://github.com/aelassas/movinin/wiki)
-[![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://movinin.dynv6.net/)
+[![live demo](https://img.shields.io/badge/live-demo-brightgreen)](https://movinin.wexdev.com/)
 [![loc](https://raw.githubusercontent.com/aelassas/movinin/refs/heads/loc/badge.svg)](https://github.com/aelassas/movinin/actions/workflows/loc.yml)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/aelassas/movinin/pulls)
 [![codecov](https://codecov.io/gh/aelassas/movinin/graph/badge.svg?token=TXD8SM1QHB)](https://codecov.io/gh/aelassas/movinin)
@@ -21,19 +21,21 @@
 https://github.com/user-attachments/assets/806cbe2d-9f49-413e-9359-2546306f9653
 -->
 
-[![](https://movin-in.github.io/content/cover-1.png)](https://movinin.dynv6.net:3004/)
+[![](https://movin-in.github.io/content/cover-1.png)](https://movinin.wexdev.com/)
 
 ## Movin' In
 
-Movin' In is a Rental Property Management Platform with an admin panel for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
+Movin' In is an open-source and cross-platform Rental Property Management Platform with an admin panel for managing properties, customers and bookings, a frontend and a mobile app for renting properties.
 
-The platform supports Stripe and PayPal payment gateways, allowing you to choose the one best suited for your country or business model. If Stripe isn't available in your region, PayPal serves as a secure and convenient alternative for accepting payments.
-
-Movin' In supports both single-agency and multi-agency modes. Agencies have access to an admin panel to manage their properties, customers, and bookings. Each newly created agency receives an email prompting them to register and access the system.
+Movin' In supports both single-agency and multi-agency modes. Agencies have access to an admin panel to manage their properties, customers and bookings, with a property scheduler, flexible time-based availability and automatic email and push notifications. Each newly created agency receives an email prompting them to register and access the system.
 
 The admin panel allows admins to manage agencies, properties, countries, locations, customers, bookings and payments.
 
-Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly.
+Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly. Locations are hierarchical, with countries and map integration, so customers can search by broader regions as well as by specific places. Prices are set per rental term (daily, weekly, monthly or yearly) and calculated pro rata for the booked period, with an optional cancellation extra.
+
+The platform supports Stripe and PayPal payment gateways, allowing you to choose the one best suited for your country or business model. If Stripe isn't available in your region, PayPal serves as a secure and convenient alternative for accepting payments. Customers can pay by credit card, PayPal, Google Pay, Apple Pay, Link or choose to pay later. Prices are stored in a base currency and converted to the customer's currency.
+
+Movin' In is available in 8 languages: English, French, German, Spanish, Portuguese, Italian, Chinese (Simplified) and Japanese. Customers can sign in with Google, Facebook, Apple or email. The admin panel and frontend are responsive, and the native mobile app runs on Android and iOS from a single codebase. The platform is protected against XSS, XST, CSRF, MITM and DDoS attacks, supports error monitoring with Sentry, and can be deployed easily with Docker.
 
 ## Quick Links
 * [Overview](https://github.com/aelassas/movinin/wiki/Overview)  
@@ -74,13 +76,13 @@ If you want to customize Movin' In while keeping your fork up to date with the l
 
 ### Frontend
 
-* URL: https://movinin.dynv6.net/
+* URL: https://movinin.wexdev.com/
 * Login: jdoe@movinin.io
 * Password: M00vinin
 
 ### Admin Panel
 
-* URL: https://movinin.dynv6.net:3003/
+* URL: https://movinin.wexdev.com:3003/
 * Login: admin@movinin.io
 * Password: M00vinin
 

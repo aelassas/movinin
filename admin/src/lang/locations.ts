@@ -42,6 +42,30 @@ const strings = new LocalizedStrings({
     LOCATION: 'localização',
     LOCATIONS: 'localizações',
   },
+  it: {
+    NEW_LOCATION: 'Nuova località',
+    DELETE_LOCATION: 'Sei sicuro di voler eliminare questa località?',
+    CANNOT_DELETE_LOCATION: 'Questa località non può essere eliminata perché è collegata ad altre località o immobili.',
+    EMPTY_LIST: 'Nessuna località.',
+    LOCATION: 'località',
+    LOCATIONS: 'località',
+  },
+  zh: {
+    NEW_LOCATION: '新建地点',
+    DELETE_LOCATION: '确定要删除此地点吗？',
+    CANNOT_DELETE_LOCATION: '该地点已关联其他地点或房源，无法删除。',
+    EMPTY_LIST: '暂无地点。',
+    LOCATION: '地点',
+    LOCATIONS: '地点',
+  },
+  ja: {
+    NEW_LOCATION: '新しい場所',
+    DELETE_LOCATION: 'この場所を削除してもよろしいですか？',
+    CANNOT_DELETE_LOCATION: 'この場所は他の場所または物件に関連付けられているため、削除できません。',
+    EMPTY_LIST: '場所がありません。',
+    LOCATION: '場所',
+    LOCATIONS: '場所',
+  },
 })
 
 langHelper.setLanguage(strings)

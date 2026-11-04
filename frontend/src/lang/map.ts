@@ -17,6 +17,15 @@ const strings = new LocalizedStrings({
   pt: {
     SELECT_LOCATION: 'Selecionar destino',
   },
+  it: {
+    SELECT_LOCATION: 'Seleziona destinazione',
+  },
+  zh: {
+    SELECT_LOCATION: '选择目的地',
+  },
+  ja: {
+    SELECT_LOCATION: '目的地を選択',
+  },
 })
 
 langHelper.setLanguage(strings)

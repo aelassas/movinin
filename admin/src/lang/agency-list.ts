@@ -27,6 +27,21 @@ const strings = new LocalizedStrings({
     VIEW_AGENCY: 'Ver o perfil da agência',
     DELETE_AGENCY: 'Tens a certeza de que queres eliminar esta agência e todos os seus dados?',
   },
+  it: {
+    EMPTY_LIST: 'Nessuna agenzia.',
+    VIEW_AGENCY: "Visualizza il profilo dell'agenzia",
+    DELETE_AGENCY: 'Sei sicuro di voler eliminare questa agenzia e tutti i suoi dati?',
+  },
+  zh: {
+    EMPTY_LIST: '暂无中介机构。',
+    VIEW_AGENCY: '查看中介机构资料',
+    DELETE_AGENCY: '确定要删除此中介机构及其所有数据吗？',
+  },
+  ja: {
+    EMPTY_LIST: '代理店はありません。',
+    VIEW_AGENCY: '代理店プロフィールを表示',
+    DELETE_AGENCY: 'この代理店とそのすべてのデータを削除してもよろしいですか？',
+  },
 })
 
 langHelper.setLanguage(strings)

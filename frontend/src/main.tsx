@@ -4,9 +4,9 @@ import { ToastContainer } from 'react-toastify'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 
-import { frFR as corefrFR, deDE as coredeDE, esES as coreesES, ptPT as coreptPT, enUS as coreenUS } from '@mui/material/locale'
-import { frFR, deDE, esES, ptPT, enUS } from '@mui/x-date-pickers/locales'
-import { frFR as dataGridfrFR, deDE as dataGriddeDE, esES as dataGridesES, ptPT as dataGridptPT, enUS as dataGridenUS } from '@mui/x-data-grid/locales'
+import { frFR as corefrFR, deDE as coredeDE, esES as coreesES, ptPT as coreptPT, itIT as coreitIT, zhCN as corezhCN, jaJP as corejaJP, enUS as coreenUS } from '@mui/material/locale'
+import { frFR, deDE, esES, ptPT, itIT, zhCN, jaJP, enUS } from '@mui/x-date-pickers/locales'
+import { frFR as dataGridfrFR, deDE as dataGriddeDE, esES as dataGridesES, ptPT as dataGridptPT, itIT as dataGriditIT, zhCN as dataGridzhCN, jaJP as dataGridjaJP, enUS as dataGridenUS } from '@mui/x-data-grid/locales'
 import { disableDevTools } from ':disable-react-devtools'
 import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
@@ -152,6 +152,12 @@ if (lang) {
       updateLang('es')
     } else if (country === 'PT') {
       updateLang('pt')
+    } else if (['IT', 'SM', 'VA'].includes(country)) {
+      updateLang('it')
+    } else if (['CN', 'SG'].includes(country)) {
+      updateLang('zh')
+    } else if (country === 'JP') {
+      updateLang('ja')
     } else if (['US', 'GB', 'AU'].includes(country)) {
       updateLang('en')
     } else {
@@ -165,6 +171,9 @@ const isFr = language === 'fr'
 const isDe = language === 'de'
 const isEs = language === 'es'
 const isPt = language === 'pt'
+const isIt = language === 'it'
+const isZh = language === 'zh'
+const isJa = language === 'ja'
 
 const theme = createTheme(
   {
@@ -246,9 +255,9 @@ const theme = createTheme(
       },
     },
   },
-  (isFr && frFR) || (isDe && deDE) || (isEs && esES) || (isPt && ptPT) || enUS,
-  (isFr && dataGridfrFR) || (isDe && dataGriddeDE) || (isEs && dataGridesES) || (isPt && dataGridptPT) || dataGridenUS,
-  (isFr && corefrFR) || (isDe && coredeDE) || (isEs && coreesES) || (isPt && coreptPT) || coreenUS,
+  (isFr && frFR) || (isDe && deDE) || (isEs && esES) || (isPt && ptPT) || (isIt && itIT) || (isZh && zhCN) || (isJa && jaJP) || enUS,
+  (isFr && dataGridfrFR) || (isDe && dataGriddeDE) || (isEs && dataGridesES) || (isPt && dataGridptPT) || (isIt && dataGriditIT) || (isZh && dataGridzhCN) || (isJa && dataGridjaJP) || dataGridenUS,
+  (isFr && corefrFR) || (isDe && coredeDE) || (isEs && coreesES) || (isPt && coreptPT) || (isIt && coreitIT) || (isZh && corezhCN) || (isJa && corejaJP) || coreenUS,
 )
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

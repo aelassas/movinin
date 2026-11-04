@@ -31,7 +31,25 @@ const strings = new LocalizedStrings({
         AVAILABLE_INFO: 'Esta propriedade está disponível.',
         UNAVAILABLE: 'Indisponível',
         UNAVAILABLE_INFO: 'Esta propriedade está indisponível.',
-    }
+    },
+    it: {
+        AVAILABLE: 'Disponibile',
+        AVAILABLE_INFO: 'Questo immobile è disponibile.',
+        UNAVAILABLE: 'Non disponibile',
+        UNAVAILABLE_INFO: 'Questo immobile non è disponibile.',
+    },
+    zh: {
+        AVAILABLE: '可租',
+        AVAILABLE_INFO: '此房产可供出租。',
+        UNAVAILABLE: '不可租',
+        UNAVAILABLE_INFO: '此房产暂不可出租。',
+    },
+    ja: {
+        AVAILABLE: '空室あり',
+        AVAILABLE_INFO: 'この物件は利用可能です。',
+        UNAVAILABLE: '空室なし',
+        UNAVAILABLE_INFO: 'この物件は利用できません。',
+    },
 })
 
 langHelper.setLanguage(strings)

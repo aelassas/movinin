@@ -37,6 +37,27 @@ const strings = new LocalizedStrings({
     RESET: 'Repor',
     EMAIL_SENT: 'E-mail de reposição da palavra-passe enviado.',
   },
+  it: {
+    RESET_PASSWORD_HEADING: 'Reimpostazione della password',
+    RESET_PASSWORD: 'Inserisca il suo indirizzo e-mail: le invieremo un messaggio per reimpostare la password.',
+    EMAIL_ERROR: 'Indirizzo e-mail non registrato',
+    RESET: 'Reimposta',
+    EMAIL_SENT: 'E-mail di reimpostazione della password inviata.',
+  },
+  zh: {
+    RESET_PASSWORD_HEADING: '重置密码',
+    RESET_PASSWORD: '请输入您的电子邮箱地址，我们将向您发送重置密码的邮件。',
+    EMAIL_ERROR: '该电子邮箱地址未注册',
+    RESET: '重置',
+    EMAIL_SENT: '重置密码邮件已发送。',
+  },
+  ja: {
+    RESET_PASSWORD_HEADING: 'パスワードの再設定',
+    RESET_PASSWORD: 'メールアドレスを入力してください。パスワード再設定用のメールをお送りします。',
+    EMAIL_ERROR: 'このメールアドレスは登録されていません',
+    RESET: '再設定',
+    EMAIL_SENT: 'パスワード再設定用のメールを送信しました。',
+  },
 })
 
 langHelper.setLanguage(strings)

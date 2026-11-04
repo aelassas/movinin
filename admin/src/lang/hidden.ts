@@ -21,7 +21,19 @@ const strings = new LocalizedStrings({
     pt: {
         HIDDEN: 'Oculto',
         HIDDEN_INFO: 'Esta propriedade está oculta.',
-    }
+    },
+    it: {
+        HIDDEN: 'Nascosto',
+        HIDDEN_INFO: 'Questo immobile è nascosto.',
+    },
+    zh: {
+        HIDDEN: '已隐藏',
+        HIDDEN_INFO: '该房源已隐藏。',
+    },
+    ja: {
+        HIDDEN: '非表示',
+        HIDDEN_INFO: 'この物件は非表示です。',
+    },
 })
 
 langHelper.setLanguage(strings)

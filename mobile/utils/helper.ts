@@ -178,19 +178,34 @@ export const getCancellation = async (cancellation: number, language: string) =>
  * @param {number} days
  * @returns {string}
  */
-export const getDays = (days: number) => `${i18n.t('PRICE_DAYS_PART_1')} ${days} ${i18n.t('PRICE_DAYS_PART_2')}${getDaysPluralSuffix(days)}`
+export const getDays = (days: number) => `${i18n.t('PRICE_DAYS_PART_1')} ${days} ${pluralizeDay(days)}`
 
 /**
- * Get plural suffix of the day label (German uses 'e', other languages use 's').
+ * Get the plural form of the day label.
+ * German adds 'e', Italian turns the final 'o' into 'i', Chinese and Japanese have no plural form
+ * and other languages add 's'.
  *
  * @param {number} days
  * @returns {string}
  */
-const getDaysPluralSuffix = (days: number) => {
+const pluralizeDay = (days: number) => {
+  const word = i18n.t('PRICE_DAYS_PART_2')
+
   if (days <= 1) {
-    return ''
+    return word
   }
-  return i18n.locale === 'de' ? 'e' : 's'
+
+  switch (i18n.locale) {
+    case 'de':
+      return `${word}e`
+    case 'it':
+      return word.replace(/[oa]$/, (vowel: string) => (vowel === 'o' ? 'i' : 'e'))
+    case 'zh':
+    case 'ja':
+      return word
+    default:
+      return `${word}s`
+  }
 }
 
 /**
@@ -199,7 +214,7 @@ const getDaysPluralSuffix = (days: number) => {
  * @param {number} days
  * @returns {string}
  */
-export const getDaysShort = (days: number) => `${days} ${i18n.t('PRICE_DAYS_PART_2')}${getDaysPluralSuffix(days)}`
+export const getDaysShort = (days: number) => `${days} ${pluralizeDay(days)}`
 
 /**
  * Get cancellation option label.

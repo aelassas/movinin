@@ -273,6 +273,174 @@ Caso tenha alguma questão relativa a estes Termos de Serviço, queira contactar
 Ao utilizar os nossos serviços, o utilizador reconhece que leu e compreendeu estes Termos de Serviço e concorda em ficar vinculado pelos mesmos.
     `,
   },
+  it: {
+    TITLE: 'Termini di servizio',
+    TOS: `
+Benvenuti su ${env.WEBSITE_NAME}! Accedendo al nostro sito web e utilizzando i nostri servizi, l'utente accetta di rispettare e di essere vincolato dai seguenti Termini di servizio. Qualora non accetti tali termini, la preghiamo di non utilizzare i nostri servizi.
+
+
+1. Accettazione dei termini
+
+Accedendo ai nostri servizi o utilizzandoli, l'utente conferma di aver letto, compreso e accettato i presenti Termini di servizio e la nostra Informativa sulla privacy.
+
+
+2. Utilizzo dei nostri servizi
+
+L'utente si impegna a utilizzare i nostri servizi esclusivamente per finalità lecite e in modo da non violare i diritti di terzi né limitare o impedire ad altri l'utilizzo dei nostri servizi. Ciò include il rispetto di tutte le leggi e i regolamenti applicabili.
+
+
+3. Prenotazioni e pagamenti
+
+Quando effettua una prenotazione con ${env.WEBSITE_NAME}, l'utente si impegna a fornire informazioni accurate e complete. Tutti i pagamenti devono essere effettuati tramite il nostro sistema di pagamento sicuro. Una volta completato il pagamento, l'utente riceverà una conferma della prenotazione.
+
+
+4. Politica di cancellazione
+
+Le cancellazioni effettuate almeno 24 ore prima della data di locazione possono dare diritto al rimborso integrale. Le cancellazioni effettuate meno di 24 ore prima della data di locazione possono comportare l'addebito di una penale di cancellazione. Si prega di consultare la nostra politica di cancellazione per informazioni dettagliate.
+
+
+5. Condizioni di locazione
+
+Tutte le locazioni sono soggette alle nostre condizioni di locazione, che comprendono, a titolo esemplificativo e non esaustivo, limiti di età e obblighi assicurativi. L'utente è responsabile di verificare di soddisfare tutti i requisiti prima di effettuare una prenotazione.
+
+
+6. Limitazione di responsabilità
+
+${env.WEBSITE_NAME} non sarà responsabile per alcun danno indiretto, incidentale o consequenziale derivante dall'utilizzo dei nostri servizi. In nessun caso la nostra responsabilità complessiva potrà superare l'importo pagato dall'utente per i servizi.
+
+
+7. Modifiche ai termini
+
+Ci riserviamo il diritto di modificare i presenti Termini di servizio in qualsiasi momento. Qualsiasi modifica avrà efficacia immediata dal momento della pubblicazione sul nostro sito web. L'utilizzo continuato dei nostri servizi dopo qualsiasi modifica costituisce accettazione dei nuovi termini.
+
+
+8. Legge applicabile
+
+I presenti Termini di servizio sono disciplinati e interpretati in conformità alle leggi. Qualsiasi controversia derivante dai presenti termini sarà risolta dinanzi ai tribunali.
+
+
+9. Informazioni di contatto
+
+Per qualsiasi domanda relativa ai presenti Termini di servizio, la preghiamo di contattarci all'indirizzo ${env.CONTACT_EMAIL}. Siamo a sua disposizione per qualsiasi richiesta relativa ai nostri servizi.
+
+
+10. Presa d'atto
+
+Utilizzando i nostri servizi, l'utente dichiara di aver letto e compreso i presenti Termini di servizio e accetta di esserne vincolato.
+    `,
+  },
+  zh: {
+    TITLE: '服务条款',
+    TOS: `
+欢迎使用 ${env.WEBSITE_NAME}！访问我们的网站并使用我们的服务，即表示您同意遵守并受以下服务条款的约束。如果您不同意这些条款，请勿使用我们的服务。
+
+
+1. 条款的接受
+
+访问或使用我们的服务，即表示您确认已阅读、理解并同意本服务条款及我们的隐私政策。
+
+
+2. 服务的使用
+
+您同意仅出于合法目的并以不侵犯他人权利、不限制或妨碍他人使用我们服务的方式使用我们的服务。这包括遵守所有适用的法律法规。
+
+
+3. 预订与付款
+
+当您通过 ${env.WEBSITE_NAME} 进行预订时，您同意提供准确、完整的信息。所有款项均须通过我们的安全支付系统支付。付款完成后，您将收到预订确认。
+
+
+4. 取消政策
+
+在租赁日期前 24 小时取消的，可能有资格获得全额退款。在租赁日期前不足 24 小时取消的，可能需要支付取消费用。详细信息请参阅我们的取消政策。
+
+
+5. 租赁条件
+
+所有租赁均须遵守我们的租赁条件，包括但不限于年龄限制和保险义务。您有责任在进行预订之前确保自己满足所有要求。
+
+
+6. 责任限制
+
+对于因您使用我们的服务而产生的任何间接、附带或后果性损害，${env.WEBSITE_NAME} 不承担责任。在任何情况下，我们的责任总额均不得超过您为服务所支付的金额。
+
+
+7. 条款的修改
+
+我们保留随时修改本服务条款的权利。任何修改自发布于我们网站之时起立即生效。在任何修改之后您继续使用我们的服务，即视为您接受新条款。
+
+
+8. 适用法律
+
+本服务条款受法律管辖，并依照法律进行解释。因本条款引起的任何争议均应提交法院解决。
+
+
+9. 联系方式
+
+如果您对本服务条款有任何疑问，请通过 ${env.CONTACT_EMAIL} 与我们联系。对于与我们的服务相关的任何咨询，我们都乐意为您提供帮助。
+
+
+10. 确认
+
+使用我们的服务，即表示您确认已阅读并理解本服务条款，并同意受其约束。
+    `,
+  },
+  ja: {
+    TITLE: '利用規約',
+    TOS: `
+${env.WEBSITE_NAME} へようこそ。当社ウェブサイトにアクセスし、当社のサービスをご利用になることにより、お客様は以下の利用規約を遵守し、これに拘束されることに同意したものとみなされます。これらの規約に同意されない場合は、当社のサービスをご利用にならないでください。
+
+
+1. 規約の承諾
+
+当社のサービスにアクセスし、またはこれをご利用になることにより、お客様は、本利用規約および当社のプライバシーポリシーを読み、理解し、これに同意したことを確認したものとみなされます。
+
+
+2. サービスの利用
+
+お客様は、当社のサービスを適法な目的のためにのみ、かつ、他者の権利を侵害せず、他者による当社のサービスの利用を制限または妨げない方法で利用することに同意するものとします。これには、適用されるすべての法令の遵守が含まれます。
+
+
+3. 予約および支払い
+
+${env.WEBSITE_NAME} で予約を行う場合、お客様は、正確かつ完全な情報を提供することに同意するものとします。すべての支払いは、当社の安全な決済システムを通じて行っていただく必要があります。お支払いが完了すると、予約の確認通知をお受け取りいただけます。
+
+
+4. キャンセルポリシー
+
+レンタル日の24時間前までにキャンセルされた場合は、全額返金の対象となることがあります。レンタル日の24時間前を過ぎてからキャンセルされた場合は、キャンセル料が発生することがあります。詳細につきましては、当社のキャンセルポリシーをご参照ください。
+
+
+5. レンタル条件
+
+すべてのレンタルは、年齢制限および保険に関する義務を含むがこれらに限定されない、当社のレンタル条件の適用を受けます。お客様は、予約を行う前に、すべての要件を満たしていることを確認する責任を負います。
+
+
+6. 責任の制限
+
+${env.WEBSITE_NAME} は、お客様による当社のサービスの利用に起因または関連して生じる間接的、付随的または結果的損害について、一切責任を負いません。いかなる場合においても、当社の責任の総額は、お客様がサービスに対して支払った金額を超えないものとします。
+
+
+7. 規約の変更
+
+当社は、本利用規約をいつでも変更する権利を留保します。変更は、当社ウェブサイトに掲載された時点で直ちに効力を生じます。変更後も引き続き当社のサービスをご利用になる場合、お客様は変更後の規約に同意したものとみなされます。
+
+
+8. 準拠法
+
+本利用規約は、法律に準拠し、法律に従って解釈されるものとします。本規約に起因または関連して生じる紛争は、裁判所において解決されるものとします。
+
+
+9. お問い合わせ先
+
+本利用規約に関してご質問がある場合は、${env.CONTACT_EMAIL} までご連絡ください。当社のサービスに関するお問い合わせには、誠意をもって対応いたします。
+
+
+10. 確認事項
+
+当社のサービスをご利用になることにより、お客様は、本利用規約を読み、理解したことを確認し、これに拘束されることに同意したものとみなされます。
+    `,
+  },
 })
 
 langHelper.setLanguage(strings)

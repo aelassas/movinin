@@ -22,6 +22,18 @@ const strings = new LocalizedStrings({
         SOLD_OUT: 'Esgotada',
         SOLD_OUT_INFO: 'Esta propriedade está esgotada.',
     },
+    it: {
+        SOLD_OUT: 'Esaurito',
+        SOLD_OUT_INFO: 'Questo immobile è esaurito.',
+    },
+    zh: {
+        SOLD_OUT: '已售罄',
+        SOLD_OUT_INFO: '该房产已售罄。',
+    },
+    ja: {
+        SOLD_OUT: '売り切れ',
+        SOLD_OUT_INFO: 'この物件は売り切れです。',
+    },
 })
 
 langHelper.setLanguage(strings)

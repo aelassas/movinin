@@ -139,26 +139,40 @@ export const getBookingStatuses = (): movininTypes.StatusFilterItem[] => [
 ]
 
 /**
- * Get plural suffix of a count-based label (German uses 'e' or 'n', other languages use 's').
+ * Get the plural form of a count-based label.
+ * German adds 'e' or 'n', Italian turns a final 'o' into 'i' and a final 'a' into 'e',
+ * Chinese and Japanese have no plural form and other languages add 's'.
  *
+ * @param {string} word singular form
  * @param {number} count
  * @param {string} [deSuffix='e']
  * @returns {string}
  */
-const getPluralSuffix = (count: number, deSuffix = 'e') => {
+const pluralize = (word: string, count: number, deSuffix = 'e') => {
   if (count <= 1) {
-    return ''
+    return word
   }
-  return strings.getLanguage() === 'de' ? deSuffix : 's'
+
+  switch (strings.getLanguage()) {
+    case 'de':
+      return `${word}${deSuffix}`
+    case 'it':
+      return word.replace(/[oa]$/, (vowel) => (vowel === 'o' ? 'i' : 'e'))
+    case 'zh':
+    case 'ja':
+      return word
+    default:
+      return `${word}s`
+  }
 }
 
 /**
- * Check if the tooltips of the current language use separate singular and plural keys (French, German and Spanish).
+ * Check if the tooltips of the current language use separate singular and plural keys (French, German, Spanish, Portuguese, Italian, Chinese and Japanese).
  *
  * @param {?boolean} [fr]
  * @returns {boolean}
  */
-const hasPluralTooltipKeys = (fr?: boolean) => fr || ['de', 'es', 'pt'].includes(strings.getLanguage())
+const hasPluralTooltipKeys = (fr?: boolean) => fr || ['de', 'es', 'pt', 'it', 'zh', 'ja'].includes(strings.getLanguage())
 
 /**
  * Get bedrooms tooltip.
@@ -170,7 +184,7 @@ const hasPluralTooltipKeys = (fr?: boolean) => fr || ['de', 'es', 'pt'].includes
 export const getBedroomsTooltip = (bedrooms: number, fr?: boolean) =>
   `${strings.TOOLTIP_1}${bedrooms} ${hasPluralTooltipKeys(fr)
     ? bedrooms > 1 ? strings.BEDROOMS_TOOLTIP_2 : strings.BEDROOMS_TOOLTIP_1
-    : strings.BEDROOMS_TOOLTIP_1 + getPluralSuffix(bedrooms)}`
+    : pluralize(strings.BEDROOMS_TOOLTIP_1, bedrooms)}`
 
 /**
  * Get bathrooms tooltip.
@@ -182,7 +196,7 @@ export const getBedroomsTooltip = (bedrooms: number, fr?: boolean) =>
 export const getBathroomsTooltip = (bathrooms: number, fr?: boolean) =>
   `${strings.TOOLTIP_1}${bathrooms} ${hasPluralTooltipKeys(fr)
     ? bathrooms > 1 ? strings.BATHROOMS_TOOLTIP_2 : strings.BATHROOMS_TOOLTIP_1
-    : strings.BATHROOMS_TOOLTIP_1 + getPluralSuffix(bathrooms)}`
+    : pluralize(strings.BATHROOMS_TOOLTIP_1, bathrooms)}`
 
 /**
  * Get kitchens tooltip.
@@ -191,7 +205,7 @@ export const getBathroomsTooltip = (bathrooms: number, fr?: boolean) =>
  * @returns {string}
  */
 export const getKitchensTooltip = (bathrooms: number) =>
-  `${strings.TOOLTIP_1}${bathrooms} ${strings.KITCHENS_TOOLTIP_1 + getPluralSuffix(bathrooms, 'n')}`
+  `${strings.TOOLTIP_1}${bathrooms} ${pluralize(strings.KITCHENS_TOOLTIP_1, bathrooms, 'n')}`
 
 /**
  * Get parking spaces tooltip.
@@ -203,7 +217,7 @@ export const getKitchensTooltip = (bathrooms: number) =>
 export const getKParkingSpacesTooltip = (parkingSpaces: number, fr?: boolean) =>
   `${strings.TOOLTIP_1}${parkingSpaces} ${hasPluralTooltipKeys(fr)
     ? parkingSpaces > 1 ? strings.PARKING_SPACES_TOOLTIP_2 : strings.PARKING_SPACES_TOOLTIP_1
-    : strings.PARKING_SPACES_TOOLTIP_1 + getPluralSuffix(parkingSpaces)}`
+    : pluralize(strings.PARKING_SPACES_TOOLTIP_1, parkingSpaces)}`
 
 /**
  * Get days label.
@@ -211,7 +225,7 @@ export const getKParkingSpacesTooltip = (parkingSpaces: number, fr?: boolean) =>
  * @param {number} days
  * @returns {string}
  */
-export const getDays = (days: number) => `${strings.PRICE_DAYS_PART_1} ${days} ${strings.PRICE_DAYS_PART_2}${getPluralSuffix(days)}`
+export const getDays = (days: number) => `${strings.PRICE_DAYS_PART_1} ${days} ${pluralize(strings.PRICE_DAYS_PART_2, days)}`
 
 /**
  * Get short days label.
@@ -219,7 +233,7 @@ export const getDays = (days: number) => `${strings.PRICE_DAYS_PART_1} ${days} $
  * @param {number} days
  * @returns {string}
  */
-export const getDaysShort = (days: number) => `${days} ${strings.PRICE_DAYS_PART_2}${getPluralSuffix(days)}`
+export const getDaysShort = (days: number) => `${days} ${pluralize(strings.PRICE_DAYS_PART_2, days)}`
 
 /**
  * Get cancellation label.

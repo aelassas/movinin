@@ -7,6 +7,9 @@ import { fr } from '../src/lang/fr'
 import { de } from '../src/lang/de'
 import { es } from '../src/lang/es'
 import { pt } from '../src/lang/pt'
+import { it as italian } from '../src/lang/it'
+import { zh } from '../src/lang/zh'
+import { ja } from '../src/lang/ja'
 
 describe('Languages', () => {
   it('should support German', () => {
@@ -21,12 +24,30 @@ describe('Languages', () => {
     expect(env.LANGUAGES).toContain('pt')
   })
 
+  it('should support Italian, Chinese and Japanese', () => {
+    expect(env.LANGUAGES).toEqual(expect.arrayContaining(['it', 'zh', 'ja']))
+  })
+
   it('should have the same translation keys in all languages', () => {
     const enKeys = Object.keys(en).sort()
     expect(Object.keys(de).sort()).toEqual(enKeys)
     expect(Object.keys(es).sort()).toEqual(enKeys)
     expect(Object.keys(pt).sort()).toEqual(enKeys)
+    expect(Object.keys(italian).sort()).toEqual(enKeys)
+    expect(Object.keys(zh).sort()).toEqual(enKeys)
+    expect(Object.keys(ja).sort()).toEqual(enKeys)
     expect(Object.keys(fr).sort()).toEqual(enKeys)
+  })
+
+  it.each([
+    ['it', italian],
+    ['zh', zh],
+    ['ja', ja],
+  ])('should resolve %s translations', (locale, translations) => {
+    i18n.locale = locale
+    expect(i18n.t('ACCOUNT_ACTIVATION_SUBJECT')).toBe(translations.ACCOUNT_ACTIVATION_SUBJECT)
+    expect(i18n.t('HELLO')).toBe(translations.HELLO)
+    i18n.locale = 'en'
   })
 
   it('should resolve German translations', () => {

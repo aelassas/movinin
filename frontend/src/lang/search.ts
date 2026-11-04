@@ -12,6 +12,12 @@ const strings = new LocalizedStrings({
   },
   pt: {
   },
+  it: {
+  },
+  zh: {
+  },
+  ja: {
+  },
 })
 
 langHelper.setLanguage(strings)

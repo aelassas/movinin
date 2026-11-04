@@ -31,6 +31,21 @@ const LANGUAGES = [
     countryCode: 'pt',
     label: 'Português',
   },
+  {
+    code: 'it',
+    countryCode: 'it',
+    label: 'Italiano',
+  },
+  {
+    code: 'zh',
+    countryCode: 'cn',
+    label: '简体中文',
+  },
+  {
+    code: 'ja',
+    countryCode: 'jp',
+    label: '日本語',
+  },
 ]
 
 type Currency = { code: string, symbol: string }

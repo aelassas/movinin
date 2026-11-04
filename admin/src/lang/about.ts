@@ -48,6 +48,33 @@ const strings = new LocalizedStrings({
     CONTENT2: 'Desfruta de uma comodidade, fiabilidade e valor incomparáveis com o nosso serviço de arrendamento de propriedades de referência. Desde reservas sem esforço até propriedades de alta qualidade, somos o teu parceiro de viagem de confiança.',
     FIND_DEAL: 'Encontrar oferta',
   },
+  it: {
+    TITLE1: `${env.WEBSITE_NAME} - Il tuo servizio di affitto immobili di riferimento`,
+    SUBTITLE1: "Il tuo partner di fiducia per l'affitto di immobili",
+    CONTENT1: `Da ${env.WEBSITE_NAME} sappiamo che ogni viaggio è unico. Ci impegniamo a offrire ai nostri clienti un'ampia selezione di immobili che soddisfano ogni esigenza di viaggio. Che tu stia visitando una città, ti sposti per lavoro o cerchi un'avventura, i nostri affidabili servizi di affitto immobili garantiscono che la tua avventura inizi senza intoppi. La nostra missione è offrire un servizio clienti eccezionale, per rendere la tua esperienza piacevole e senza stress. Con tariffe competitive, una varietà di immobili ben curati e un team dedicato pronto ad assisterti, ci impegniamo a essere il tuo partner di fiducia lungo la strada. Scegli ${env.WEBSITE_NAME} per tutte le tue esigenze di affitto immobili e scopri la libertà di esplorare al tuo ritmo.`,
+    TITLE2: `Perché scegliere ${env.WEBSITE_NAME}`,
+    SUBTITLE2: "Vivi l'eccellenza in ogni viaggio",
+    CONTENT2: 'Goditi comodità, affidabilità e convenienza senza rivali con il nostro servizio di affitto immobili di riferimento. Dalle prenotazioni senza sforzo agli immobili di alta qualità, siamo il tuo partner di viaggio di fiducia.',
+    FIND_DEAL: 'Trova offerta',
+  },
+  zh: {
+    TITLE1: `${env.WEBSITE_NAME} - 您值得信赖的优质房产租赁服务`,
+    SUBTITLE1: '您可靠的房产租赁合作伙伴',
+    CONTENT1: `在 ${env.WEBSITE_NAME}，我们深知每一次旅程都独一无二。我们致力于为客户提供丰富多样的房产选择，满足各种出行需求。无论你是在探索一座城市、出差办事，还是寻找冒险体验，我们可靠的房产租赁服务都能让你的旅程顺利开启。我们的使命是提供卓越的客户服务，让你的体验愉快又轻松。凭借具有竞争力的价格、种类丰富且维护良好的房产，以及随时为你提供帮助的专业团队，我们努力成为你旅途中值得信赖的伙伴。选择 ${env.WEBSITE_NAME} 满足你所有的房产租赁需求，按自己的节奏自由探索吧。`,
+    TITLE2: `为什么选择 ${env.WEBSITE_NAME}`,
+    SUBTITLE2: '每一次旅程，都有卓越体验',
+    CONTENT2: '我们的优质房产租赁服务为你带来无与伦比的便捷、可靠与超值体验。从轻松预订到高品质房产，我们是你值得信赖的旅行伙伴。',
+    FIND_DEAL: '查找优惠',
+  },
+  ja: {
+    TITLE1: `${env.WEBSITE_NAME} - 信頼できる賃貸物件サービス`,
+    SUBTITLE1: '物件賃貸の頼れるパートナー',
+    CONTENT1: `${env.WEBSITE_NAME} では、旅は一つひとつ異なるものだと考えています。あらゆる旅のニーズに応えられるよう、多彩な物件をお客様にご提供することをお約束します。街を探索する方も、出張で移動する方も、冒険を求める方も、信頼できる賃貸物件サービスで、旅をスムーズにスタートできます。私たちの使命は、卓越したカスタマーサービスで、快適でストレスのない体験をお届けすることです。競争力のある料金、よく手入れされた多彩な物件、そしてサポートに全力を尽くすチームで、旅の頼れるパートナーを目指します。賃貸物件のことなら ${env.WEBSITE_NAME} をお選びいただき、自分のペースで自由に旅を楽しみましょう。`,
+    TITLE2: `${env.WEBSITE_NAME} が選ばれる理由`,
+    SUBTITLE2: 'すべての旅で、極上の体験を',
+    CONTENT2: '上質な賃貸物件サービスで、比類のない利便性、信頼性、お得さをお楽しみください。手間のかからない予約から高品質な物件まで、信頼できる旅のパートナーです。',
+    FIND_DEAL: 'お得な物件を探す',
+  },
 })
 
 langHelper.setLanguage(strings)

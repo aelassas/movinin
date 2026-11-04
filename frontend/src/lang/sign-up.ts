@@ -27,6 +27,21 @@ const strings = new LocalizedStrings({
     SIGN_UP: 'Registar',
     SIGN_UP_ERROR: 'Ocorreu um erro durante o registo.',
   },
+  it: {
+    SIGN_UP_HEADING: 'Registrazione',
+    SIGN_UP: 'Registrati',
+    SIGN_UP_ERROR: 'Si è verificato un errore durante la registrazione.',
+  },
+  zh: {
+    SIGN_UP_HEADING: '注册',
+    SIGN_UP: '注册',
+    SIGN_UP_ERROR: '注册时出现错误。',
+  },
+  ja: {
+    SIGN_UP_HEADING: '新規登録',
+    SIGN_UP: '登録する',
+    SIGN_UP_ERROR: '登録中にエラーが発生しました。',
+  },
 })
 
 langHelper.setLanguage(strings)

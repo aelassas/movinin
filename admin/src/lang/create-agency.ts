@@ -33,6 +33,24 @@ const strings = new LocalizedStrings({
     AGENCY_IMAGE_SIZE_ERROR: `A imagem deve estar no formato ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
     RECOMMENDED_IMAGE_SIZE: `Tamanho de imagem recomendado: ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
   },
+  it: {
+    CREATE_AGENCY_HEADING: 'Nuova agenzia',
+    INVALID_AGENCY_NAME: 'Questa agenzia esiste già.',
+    AGENCY_IMAGE_SIZE_ERROR: `L'immagine deve essere nel formato ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
+    RECOMMENDED_IMAGE_SIZE: `Dimensione consigliata dell'immagine: ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
+  },
+  zh: {
+    CREATE_AGENCY_HEADING: '新建中介机构',
+    INVALID_AGENCY_NAME: '此中介机构已存在。',
+    AGENCY_IMAGE_SIZE_ERROR: `图片格式必须为 ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
+    RECOMMENDED_IMAGE_SIZE: `建议图片尺寸：${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
+  },
+  ja: {
+    CREATE_AGENCY_HEADING: '新規代理店',
+    INVALID_AGENCY_NAME: 'この代理店はすでに存在します。',
+    AGENCY_IMAGE_SIZE_ERROR: `画像の形式は ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT} にしてください`,
+    RECOMMENDED_IMAGE_SIZE: `推奨画像サイズ：${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
+  },
 })
 
 langHelper.setLanguage(strings)

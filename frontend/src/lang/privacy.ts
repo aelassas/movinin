@@ -309,6 +309,195 @@ Caso tenha alguma questão sobre esta Política de Privacidade ou sobre as nossa
 Ao utilizar os nossos serviços, o utilizador reconhece que leu e compreendeu esta Política de Privacidade e concorda com os seus termos.
     `,
   },
+  it: {
+    TITLE: 'Informativa sulla privacy',
+    PRIVACY_POLICY: `
+La privacy dell'utente è importante per noi di ${env.WEBSITE_NAME}. La presente Informativa sulla privacy descrive le modalità con cui raccogliamo, utilizziamo e proteggiamo le informazioni dell'utente quando utilizza il nostro sito web e i nostri servizi. Accedendo ai nostri servizi, l'utente acconsente alle pratiche descritte nella presente informativa.
+
+
+1. Informazioni che raccogliamo
+
+Raccogliamo informazioni dall'utente quando si registra sul nostro sito, effettua un ordine o interagisce con i nostri servizi. Le informazioni che possiamo raccogliere comprendono:
+
+Nome
+Indirizzo e-mail
+Numero di telefono
+Informazioni di pagamento
+Preferenze di locazione
+È possibile visitare il nostro sito in forma anonima, ma alcune funzionalità potrebbero risultare limitate.
+
+
+2. Come utilizziamo le informazioni
+
+Le informazioni dell'utente possono essere utilizzate per i seguenti scopi:
+
+Elaborare le prenotazioni e i pagamenti
+Migliorare il servizio clienti
+Inviare e-mail periodiche relative all'ordine o ad altri prodotti e servizi
+Rispondere a richieste di informazioni e di assistenza
+
+
+3. Come proteggiamo le informazioni
+
+Adottiamo diverse misure di sicurezza per garantire la protezione dei dati personali dell'utente. Tutte le informazioni sensibili sono trasmesse tramite server sicuri e sono accessibili esclusivamente al personale autorizzato. Non conserviamo sui nostri server i dati della carta di credito dell'utente.
+
+
+4. Condivisione delle informazioni
+
+Non vendiamo, scambiamo né trasferiamo in altro modo a terzi le informazioni di identificazione personale dell'utente, ad eccezione dei partner di fiducia che ci assistono nella gestione del nostro sito web, nello svolgimento della nostra attività o nell'erogazione dei servizi all'utente, a condizione che tali soggetti si impegnino a mantenere riservate tali informazioni. Potremo inoltre divulgare le informazioni dell'utente qualora riteniamo che la divulgazione sia opportuna per conformarci alla legge, far rispettare le politiche del nostro sito o tutelare i nostri diritti o i diritti, la proprietà o la sicurezza di altri.
+
+
+5. Privacy dei minori
+
+Rispettiamo il Children's Online Privacy Protection Act (COPPA). I nostri servizi non sono rivolti a minori di 13 anni e non raccogliamo consapevolmente dati personali di minori di 13 anni. Qualora venissimo a conoscenza di aver raccolto dati personali di un minore di 13 anni, adotteremo le misure necessarie per eliminarli.
+
+
+6. Modifiche alla nostra Informativa sulla privacy
+
+Possiamo aggiornare la presente Informativa sulla privacy di volta in volta. Comunicheremo all'utente eventuali modifiche pubblicando la nuova Informativa sulla privacy in questa pagina. Si consiglia di consultare periodicamente la presente Informativa sulla privacy per verificare eventuali modifiche.
+
+
+7. Diritti dell'utente
+
+L'utente ha il diritto di richiedere l'accesso ai dati personali che lo riguardano, di richiederne la rettifica in caso di inesattezze e di richiederne la cancellazione, fatte salve alcune eccezioni. Per esercitare tali diritti, la preghiamo di contattarci utilizzando i recapiti indicati di seguito.
+
+
+8. Contattaci
+
+Per qualsiasi domanda relativa alla presente Informativa sulla privacy o alle nostre pratiche in materia di dati, la preghiamo di contattarci all'indirizzo ${env.CONTACT_EMAIL}. Ci impegniamo a rispondere alle preoccupazioni dell'utente e a tutelarne la privacy.
+
+
+9. Presa d'atto
+
+Utilizzando i nostri servizi, l'utente dichiara di aver letto e compreso la presente Informativa sulla privacy e ne accetta i termini.
+    `,
+  },
+  zh: {
+    TITLE: '隐私政策',
+    PRIVACY_POLICY: `
+在 ${env.WEBSITE_NAME}，我们高度重视您的隐私。本隐私政策阐明了您在使用我们的网站和服务时，我们如何收集、使用和保护您的信息。访问我们的服务，即表示您同意本政策所述的各项做法。
+
+
+1. 我们收集的信息
+
+当您在我们的网站上注册、下订单或与我们的服务互动时，我们会收集您的信息。我们可能收集的信息包括：
+
+姓名
+电子邮件地址
+电话号码
+支付信息
+租赁偏好
+您可以匿名访问我们的网站，但某些功能可能会受到限制。
+
+
+2. 我们如何使用您的信息
+
+您的信息可能用于以下方面：
+
+处理您的预订和付款
+改进客户服务
+就您的订单或其他产品和服务定期向您发送电子邮件
+回复咨询和支持请求
+
+
+3. 我们如何保护您的信息
+
+我们采取多种安全措施来维护您个人信息的安全。所有敏感信息均通过安全服务器传输，并且仅限获得授权的人员访问。我们不会在我们的服务器上存储您的信用卡信息。
+
+
+4. 信息的共享
+
+我们不会出售、交易或以其他方式将您的个人身份信息转让给外部各方，但协助我们运营网站、开展业务或为您提供服务的可信赖合作伙伴除外，前提是这些合作伙伴同意对这些信息保密。当我们认为披露信息对于遵守法律、执行我们的网站政策或保护我们或他人的权利、财产或安全是适当的时，我们也可能披露您的信息。
+
+
+5. 儿童隐私
+
+我们遵守《儿童在线隐私保护法》（COPPA）。我们的服务不面向 13 岁以下的儿童，我们也不会故意收集 13 岁以下儿童的个人信息。如果我们发现自己收集了 13 岁以下儿童的个人信息，我们将采取措施删除此类信息。
+
+
+6. 本隐私政策的变更
+
+我们可能会不时更新本隐私政策。我们将通过在本页面发布新的隐私政策来通知您任何变更。建议您定期查阅本隐私政策，以了解任何变更。
+
+
+7. 您的权利
+
+您有权要求访问我们所持有的关于您的个人信息，有权要求更正任何不准确之处，并有权要求删除您的个人信息，但某些例外情况除外。如需行使这些权利，请通过下方提供的联系方式与我们联系。
+
+
+8. 联系我们
+
+如果您对本隐私政策或我们的数据处理做法有任何疑问，请通过 ${env.CONTACT_EMAIL} 与我们联系。我们致力于解决您的关切并保护您的隐私。
+
+
+9. 确认
+
+使用我们的服务，即表示您确认已阅读并理解本隐私政策，并同意其条款。
+    `,
+  },
+  ja: {
+    TITLE: 'プライバシーポリシー',
+    PRIVACY_POLICY: `
+${env.WEBSITE_NAME} は、お客様のプライバシーを重視しております。本プライバシーポリシーは、お客様が当社のウェブサイトおよびサービスをご利用になる際に、当社がお客様の情報をどのように収集、利用、保護するかを定めるものです。当社のサービスにアクセスすることにより、お客様は本ポリシーに記載された取扱いに同意したものとみなされます。
+
+
+1. 当社が収集する情報
+
+当社は、お客様が当社サイトに登録したとき、注文を行ったとき、または当社のサービスを利用されたときに、お客様の情報を収集します。当社が収集する情報には、以下が含まれます。
+
+氏名
+メールアドレス
+電話番号
+支払い情報
+レンタルに関するご希望
+当社サイトには匿名で訪問することも可能ですが、一部の機能が制限される場合があります。
+
+
+2. 情報の利用方法
+
+お客様の情報は、以下の目的で利用されることがあります。
+
+予約および支払いの処理
+カスタマーサービスの向上
+ご注文またはその他の商品・サービスに関する定期的なメールの送信
+お問い合わせおよびサポート依頼への対応
+
+
+3. 情報の保護方法
+
+当社は、お客様の個人情報の安全を維持するため、さまざまなセキュリティ対策を講じています。すべての機密情報は安全なサーバーを通じて送信され、権限を有する担当者のみがアクセスできます。当社は、お客様のクレジットカード情報を当社のサーバーに保存しません。
+
+
+4. 情報の共有
+
+当社は、お客様の個人を特定できる情報を、外部の第三者に販売、取引、またはその他の方法で提供することはありません。ただし、当社のウェブサイトの運営、事業の遂行、またはお客様へのサービス提供を支援する信頼できるパートナーに対しては、当該パートナーがこの情報を秘密として保持することに同意している場合に限り、提供することがあります。また、法令を遵守するため、当社サイトのポリシーを執行するため、または当社もしくは他者の権利、財産、安全を保護するために開示が適切であると当社が判断した場合にも、お客様の情報を開示することがあります。
+
+
+5. 児童のプライバシー
+
+当社は、児童オンラインプライバシー保護法（COPPA）を遵守しています。当社のサービスは13歳未満の児童を対象としておらず、13歳未満の児童から個人情報を故意に収集することはありません。13歳未満の児童の個人情報を収集したことが判明した場合は、当該情報を削除するための措置を講じます。
+
+
+6. プライバシーポリシーの変更
+
+当社は、本プライバシーポリシーを随時更新することがあります。変更がある場合は、本ページに新しいプライバシーポリシーを掲載することによりお知らせします。変更内容については、本プライバシーポリシーを定期的にご確認いただくことをお勧めします。
+
+
+7. お客様の権利
+
+お客様は、当社が保有するお客様の個人情報へのアクセスを請求する権利、誤りの訂正を請求する権利、および一定の例外を除き個人情報の削除を請求する権利を有します。これらの権利を行使される場合は、下記の連絡先までご連絡ください。
+
+
+8. お問い合わせ
+
+本プライバシーポリシーまたは当社のデータの取扱いに関してご質問がある場合は、${env.CONTACT_EMAIL} までご連絡ください。当社は、お客様のご懸念に対応し、プライバシーを保護することをお約束します。
+
+
+9. 確認事項
+
+当社のサービスをご利用になることにより、お客様は、本プライバシーポリシーを読み、理解したことを確認し、その条件に同意したものとみなされます。
+    `,
+  },
 })
 
 langHelper.setLanguage(strings)
