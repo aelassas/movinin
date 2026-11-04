@@ -33,9 +33,11 @@ The admin panel allows admins to manage agencies, properties, countries, locatio
 
 Customers can sign up via the frontend or mobile app, browse available properties based on location and date, and complete the booking and payment process seamlessly. Locations are hierarchical, with countries and map integration, so customers can search by broader regions as well as by specific places. Prices are set per rental term (daily, weekly, monthly or yearly) and calculated pro rata for the booked period, with an optional cancellation extra.
 
-The platform supports Stripe and PayPal payment gateways, allowing you to choose the one best suited for your country or business model. If Stripe isn't available in your region, PayPal serves as a secure and convenient alternative for accepting payments. Customers can pay by credit card, PayPal, Google Pay, Apple Pay, Link or choose to pay later. Prices are stored in a base currency and converted to the customer's currency.
+Locations are [hierarchical](https://github.com/aelassas/movinin/wiki/Locations), with countries, nested child locations, and a map display.
 
-Movin' In is available in 8 languages: English, French, German, Spanish, Portuguese, Italian, Chinese (Simplified) and Japanese. Customers can sign in with Google, Facebook, Apple or email. The admin panel and frontend are responsive, and the native mobile app runs on Android and iOS from a single codebase. The platform is protected against XSS, XST, CSRF, MITM and DDoS attacks, supports error monitoring with Sentry, and can be deployed easily with Docker.
+The platform supports [Stripe and PayPal payment gateways](https://github.com/aelassas/movinin/wiki/Payment-Gateways), allowing you to choose the one best suited for your country or business model. If Stripe isn't available in your region, PayPal serves as a secure and convenient alternative for accepting payments. Customers can pay by credit card, PayPal, Google Pay, Apple Pay, Link or choose to pay later. Prices are stored in a base currency and converted to the customer's currency.
+
+Movin' In supports 8 languages (English, French, Spanish, German, Portuguese, Italian, Chinese, and Japanese) and [134 currencies](https://github.com/aelassas/movinin/wiki/Add-New-Currency), and you can [add a new language](https://github.com/aelassas/movinin/wiki/Add-New-Language) by following the guide. It is protected against common web attacks (XSS, CSRF, MITM, and DDoS), includes error monitoring with [Sentry](https://github.com/aelassas/movinin/wiki/Setup-Sentry), and is easy to deploy with [Docker](https://github.com/aelassas/movinin/wiki/Installing-(Docker)).
 
 ## Quick Links
 * [Overview](https://github.com/aelassas/movinin/wiki/Overview)  
