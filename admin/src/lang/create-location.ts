@@ -34,6 +34,14 @@ const strings = new LocalizedStrings({
     COUNTRY: 'País',
     PARENT_LOCATION: 'Ubicación principal',
   },
+  pt: {
+    NEW_LOCATION_HEADING: 'Nova localização',
+    LOCATION_NAME: 'Localização',
+    INVALID_LOCATION: 'Esta localização já existe.',
+    LOCATION_CREATED: 'Localização criada com sucesso.',
+    COUNTRY: 'País',
+    PARENT_LOCATION: 'Localização principal',
+  },
 })
 
 langHelper.setLanguage(strings)

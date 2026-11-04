@@ -158,7 +158,7 @@ const getPluralSuffix = (count: number, deSuffix = 'e') => {
  * @param {?boolean} [fr]
  * @returns {boolean}
  */
-const hasPluralTooltipKeys = (fr?: boolean) => fr || ['de', 'es'].includes(strings.getLanguage())
+const hasPluralTooltipKeys = (fr?: boolean) => fr || ['de', 'es', 'pt'].includes(strings.getLanguage())
 
 /**
  * Get bedrooms tooltip.

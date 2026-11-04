@@ -158,7 +158,7 @@ export const en = {
   HOUSE: 'House',
   APARTMENT: 'Apartment',
   PLOT: 'Plot',
-  FARM: 'Famr',
+  FARM: 'Farm',
   COMMERCIAL: 'Commercial',
   INDUSTRIAL: 'Industrial',
   TOWN_HOUSE: 'Town House',

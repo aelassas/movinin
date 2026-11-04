@@ -26,6 +26,12 @@ const strings = new LocalizedStrings({
     VALIDATION_EMAIL_SENT: 'Correo de validación enviado.',
     VALIDATION_EMAIL_ERROR: 'Se ha producido un error al enviar el correo de validación.',
   },
+  pt: {
+    VALIDATE_EMAIL: 'Foi enviado um e-mail de validação para o teu endereço de e-mail. Por favor, verifica a tua caixa de correio e valida a tua conta clicando no link do e-mail. Expirará ao fim de um dia. Se não recebeste o e-mail de validação, clica em reenviar.',
+    RESEND: 'Reenviar',
+    VALIDATION_EMAIL_SENT: 'E-mail de validação enviado.',
+    VALIDATION_EMAIL_ERROR: 'Ocorreu um erro ao enviar o e-mail de validação.',
+  },
 })
 
 langHelper.setLanguage(strings)

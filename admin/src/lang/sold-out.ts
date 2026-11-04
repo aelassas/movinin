@@ -17,6 +17,10 @@ const strings = new LocalizedStrings({
     es: {
         SOLD_OUT: 'Agotada',
         SOLD_OUT_INFO: 'Esta propiedad está agotada.',
+    },
+    pt: {
+        SOLD_OUT: 'Esgotado',
+        SOLD_OUT_INFO: 'Esta propriedade está esgotada.',
     }
 })
 

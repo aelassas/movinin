@@ -6,6 +6,7 @@ import { en } from '../src/lang/en'
 import { fr } from '../src/lang/fr'
 import { de } from '../src/lang/de'
 import { es } from '../src/lang/es'
+import { pt } from '../src/lang/pt'
 
 describe('Languages', () => {
   it('should support German', () => {
@@ -16,10 +17,15 @@ describe('Languages', () => {
     expect(env.LANGUAGES).toContain('es')
   })
 
+  it('should support Portuguese', () => {
+    expect(env.LANGUAGES).toContain('pt')
+  })
+
   it('should have the same translation keys in all languages', () => {
     const enKeys = Object.keys(en).sort()
     expect(Object.keys(de).sort()).toEqual(enKeys)
     expect(Object.keys(es).sort()).toEqual(enKeys)
+    expect(Object.keys(pt).sort()).toEqual(enKeys)
     expect(Object.keys(fr).sort()).toEqual(enKeys)
   })
 
@@ -33,7 +39,13 @@ describe('Languages', () => {
   it('should resolve Spanish translations', () => {
     i18n.locale = 'es'
     expect(i18n.t('ACCOUNT_ACTIVATION_SUBJECT')).toBe(es.ACCOUNT_ACTIVATION_SUBJECT)
-    expect(i18n.t('HELLO')).toBe(es.HELLO)
+    i18n.locale = 'en'
+  })
+
+  it('should resolve Portuguese translations', () => {
+    i18n.locale = 'pt'
+    expect(i18n.t('ACCOUNT_ACTIVATION_SUBJECT')).toBe(pt.ACCOUNT_ACTIVATION_SUBJECT)
+    expect(i18n.t('HELLO')).toBe(pt.HELLO)
     i18n.locale = 'en'
   })
 })

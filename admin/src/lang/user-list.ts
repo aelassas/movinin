@@ -26,6 +26,12 @@ const strings = new LocalizedStrings({
     DELETE_SELECTION: 'Eliminar los usuarios seleccionados',
     BLACKLIST: 'Añadir a la lista negra',
   },
+  pt: {
+    DELETE_USER: 'Tens a certeza de que queres eliminar este utilizador e todos os seus dados?',
+    DELETE_USERS: 'Tens a certeza de que queres eliminar os utilizadores selecionados e todos os seus dados?',
+    DELETE_SELECTION: 'Eliminar utilizadores selecionados',
+    BLACKLIST: 'Adicionar à lista negra',
+  },
 })
 
 langHelper.setLanguage(strings)

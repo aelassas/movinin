@@ -149,7 +149,7 @@ export const notify = async (renter: env.User, bookingId: string, user: env.User
  */
 export const confirm = async (user: env.User, booking: env.Booking, payLater: boolean) => {
   const { language } = user
-  const locales: Record<string, string> = { fr: 'fr-FR', de: 'de-DE', es: 'es-ES' }
+  const locales: Record<string, string> = { fr: 'fr-FR', de: 'de-DE', es: 'es-ES', pt: 'pt-PT' }
   const locale = locales[language] ?? 'en-US'
   const options: Intl.DateTimeFormatOptions = {
     weekday: 'long',

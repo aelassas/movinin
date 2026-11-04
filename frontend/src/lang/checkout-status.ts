@@ -39,6 +39,15 @@ const strings = new LocalizedStrings({
     STATUS_MESSAGE: 'Revise su bandeja de entrada y siga los pasos descritos en el correo electrónico de confirmación de la reserva para reservar su propiedad. Encontrará la dirección de la propiedad y el enlace de Google Maps en el correo electrónico de confirmación.',
     SESSION_ID_MISMATCH: 'El ID de sesión no coincide. Por favor, inténtelo de nuevo.',
   },
+  pt: {
+    CONGRATULATIONS: 'Parabéns!',
+    SUCCESS: 'O seu pagamento foi efetuado com sucesso. Enviámos-lhe um e-mail de confirmação.',
+    SUCCESS_PAY_LATER: 'A sua reserva foi efetuada com sucesso. Enviámos-lhe um e-mail de confirmação.',
+    ERROR: 'Ocorreu um erro! Tente novamente mais tarde',
+    STATUS_TITLE: `Confirmação de Reserva ${env.WEBSITE_NAME}`,
+    STATUS_MESSAGE: 'Verifique a sua caixa de correio e siga os passos descritos no e-mail de confirmação da reserva para reservar a sua propriedade. Encontrará a morada da propriedade e a ligação do Google Maps no e-mail de confirmação.',
+    SESSION_ID_MISMATCH: 'O ID da sessão não corresponde. Tente novamente.',
+  },
 })
 
 langHelper.setLanguage(strings)

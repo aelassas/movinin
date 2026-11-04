@@ -39,6 +39,15 @@ const strings = new LocalizedStrings({
     CONTENT2: 'Disfruta de una comodidad, fiabilidad y valor incomparables con nuestro servicio de alquiler de propiedades de referencia. Desde reservas sin esfuerzo hasta propiedades de alta calidad, somos tu socio de viaje de confianza.',
     FIND_DEAL: 'Encontrar oferta',
   },
+  pt: {
+    TITLE1: `${env.WEBSITE_NAME} - O teu serviço de arrendamento de propriedades de referência`,
+    SUBTITLE1: 'O teu parceiro de confiança para o arrendamento de propriedades',
+    CONTENT1: `Na ${env.WEBSITE_NAME}, sabemos que cada viagem é única. Comprometemo-nos a oferecer aos nossos clientes uma ampla seleção de propriedades que respondem a todas as necessidades de viagem. Quer estejas a explorar uma cidade, a viajar em negócios ou à procura de aventura, os nossos fiáveis serviços de arrendamento de propriedades garantem que a tua aventura começa sem contratempos. A nossa missão é prestar um atendimento ao cliente excecional, para que a tua experiência seja agradável e sem preocupações. Com preços competitivos, uma variedade de propriedades bem conservadas e uma equipa dedicada pronta a ajudar-te, esforçamo-nos por ser o teu parceiro de confiança na estrada. Escolhe a ${env.WEBSITE_NAME} para todas as tuas necessidades de arrendamento de propriedades e desfruta da liberdade de explorar ao teu próprio ritmo.`,
+    TITLE2: `Porquê escolher a ${env.WEBSITE_NAME}`,
+    SUBTITLE2: 'Vive a excelência em cada viagem',
+    CONTENT2: 'Desfruta de uma comodidade, fiabilidade e valor incomparáveis com o nosso serviço de arrendamento de propriedades de referência. Desde reservas sem esforço até propriedades de alta qualidade, somos o teu parceiro de viagem de confiança.',
+    FIND_DEAL: 'Encontrar oferta',
+  },
 })
 
 langHelper.setLanguage(strings)

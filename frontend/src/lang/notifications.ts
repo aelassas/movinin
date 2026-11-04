@@ -46,6 +46,17 @@ const strings = new LocalizedStrings({
     DELETE_NOTIFICATION: '¿Está seguro de que desea eliminar esta notificación?',
     DELETE_NOTIFICATIONS: '¿Está seguro de que desea eliminar estas notificaciones?',
   },
+  pt: {
+    EMPTY_LIST: 'Sem notificações',
+    VIEW: 'Ver',
+    MARK_AS_READ: 'Marcar como lida',
+    MARK_AS_UNREAD: 'Marcar como não lida',
+    MARK_ALL_AS_READ: 'Marcar tudo como lido',
+    MARK_ALL_AS_UNREAD: 'Marcar tudo como não lido',
+    DELETE_ALL: 'Eliminar tudo',
+    DELETE_NOTIFICATION: 'Tem a certeza de que pretende eliminar esta notificação?',
+    DELETE_NOTIFICATIONS: 'Tem a certeza de que pretende eliminar estas notificações?',
+  },
 })
 
 langHelper.setLanguage(strings)

@@ -39,6 +39,15 @@ const strings = new LocalizedStrings({
     CONTENT2: 'Disfrute de una comodidad, una fiabilidad y un valor inigualables con nuestro servicio de alquiler de propiedades de primera categoría. Desde reservas sin complicaciones hasta propiedades de alta calidad, somos su compañero de viaje de confianza.',
     FIND_DEAL: 'Encontrar oferta',
   },
+  pt: {
+    TITLE1: `${env.WEBSITE_NAME} - O Seu Serviço de Aluguer de Propriedades de Referência`,
+    SUBTITLE1: 'O Seu Parceiro de Confiança para o Aluguer de Propriedades',
+    CONTENT1: `Na ${env.WEBSITE_NAME}, sabemos que cada viagem é única. Comprometemo-nos a oferecer aos nossos clientes uma seleção diversificada de propriedades que respondem a todas as necessidades de viagem. Quer esteja a explorar uma cidade, em deslocação profissional ou à procura de aventura, os nossos fiáveis serviços de aluguer de propriedades garantem que a sua aventura começa sem sobressaltos. A nossa missão é prestar um atendimento excecional, tornando a sua experiência agradável e sem preocupações. Com preços competitivos, uma variedade de propriedades bem conservadas e uma equipa dedicada pronta a ajudá-lo, esforçamo-nos por ser o seu parceiro de confiança na estrada. Escolha a ${env.WEBSITE_NAME} para todas as suas necessidades de aluguer de propriedades e descubra a liberdade de explorar ao seu ritmo.`,
+    TITLE2: `Porquê Escolher a ${env.WEBSITE_NAME}`,
+    SUBTITLE2: 'Viva a Excelência em Cada Viagem',
+    CONTENT2: 'Desfrute de conveniência, fiabilidade e valor inigualáveis com o nosso serviço de aluguer de propriedades de referência. Desde reservas sem esforço a propriedades de elevada qualidade, somos o seu parceiro de viagem de confiança.',
+    FIND_DEAL: 'Encontrar Oferta',
+  },
 })
 
 langHelper.setLanguage(strings)

@@ -69,6 +69,22 @@ const strings = new LocalizedStrings({
     PRIVACY_POLICY: 'Política de privacidad',
     COOKIE_POLICY: 'Política de cookies',
   },
+  pt: {
+    COPYRIGHT_PART1,
+    COPYRIGHT_PART2: '. Todos os direitos reservados.',
+
+    CORPORATE: 'Empresa',
+    ABOUT: 'Sobre Nós',
+    TOS: 'Termos de Serviço',
+    RENT: 'Alugar uma Propriedade',
+    AGENCIES: 'Agências',
+    LOCATIONS: 'Destinos',
+    SUPPORT: 'Suporte',
+    CONTACT: 'Contacto',
+    SECURE_PAYMENT: `Pagamento 100% seguro com ${env.WEBSITE_NAME}`,
+    PRIVACY_POLICY: 'Política de Privacidade',
+    COOKIE_POLICY: 'Política de Cookies',
+  },
 })
 
 langHelper.setLanguage(strings)

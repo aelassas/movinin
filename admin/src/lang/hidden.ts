@@ -17,6 +17,10 @@ const strings = new LocalizedStrings({
     es: {
         HIDDEN: 'Oculta',
         HIDDEN_INFO: 'Esta propiedad está oculta.',
+    },
+    pt: {
+        HIDDEN: 'Oculto',
+        HIDDEN_INFO: 'Esta propriedade está oculta.',
     }
 })
 

@@ -34,6 +34,14 @@ const strings = new LocalizedStrings({
     RESET_PASSWORD: '¿Has olvidado tu contraseña?',
     STAY_CONNECTED: 'Mantener la sesión iniciada',
   },
+  pt: {
+    SIGN_IN_HEADING: 'Iniciar sessão',
+    SIGN_IN: 'Iniciar sessão',
+    ERROR_IN_SIGN_IN: 'E-mail ou palavra-passe incorretos.',
+    IS_BLACKLISTED: 'A tua conta está suspensa.',
+    RESET_PASSWORD: 'Esqueceste-te da palavra-passe?',
+    STAY_CONNECTED: 'Manter sessão iniciada',
+  },
 })
 
 langHelper.setLanguage(strings)

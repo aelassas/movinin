@@ -66,6 +66,22 @@ const strings = new LocalizedStrings({
     SIGN_OUT: 'Cerrar sesión',
     COUNTRIES: 'Países',
   },
+  pt: {
+    DASHBOARD: 'Painel de controlo',
+    SCHEDULER: 'Calendário de propriedades',
+    HOME: 'Início',
+    AGENCIES: 'Agências',
+    LOCATIONS: 'Localizações',
+    PROPERTIES: 'Propriedades',
+    USERS: 'Utilizadores',
+    ABOUT: 'Sobre nós',
+    TOS: 'Termos de serviço',
+    CONTACT: 'Contacto',
+    LANGUAGE: 'Idioma',
+    SETTINGS: 'Definições',
+    SIGN_OUT: 'Terminar sessão',
+    COUNTRIES: 'Países',
+  },
 })
 
 langHelper.setLanguage(strings)

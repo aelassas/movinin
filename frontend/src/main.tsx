@@ -4,9 +4,9 @@ import { ToastContainer } from 'react-toastify'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 
-import { frFR as corefrFR, deDE as coredeDE, esES as coreesES, enUS as coreenUS } from '@mui/material/locale'
-import { frFR, deDE, esES, enUS } from '@mui/x-date-pickers/locales'
-import { frFR as dataGridfrFR, deDE as dataGriddeDE, esES as dataGridesES, enUS as dataGridenUS } from '@mui/x-data-grid/locales'
+import { frFR as corefrFR, deDE as coredeDE, esES as coreesES, ptPT as coreptPT, enUS as coreenUS } from '@mui/material/locale'
+import { frFR, deDE, esES, ptPT, enUS } from '@mui/x-date-pickers/locales'
+import { frFR as dataGridfrFR, deDE as dataGriddeDE, esES as dataGridesES, ptPT as dataGridptPT, enUS as dataGridenUS } from '@mui/x-data-grid/locales'
 import { disableDevTools } from ':disable-react-devtools'
 import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
@@ -150,6 +150,8 @@ if (lang) {
       updateLang('de')
     } else if (['ES', 'MX', 'AR', 'CO', 'CL', 'PE', 'VE', 'EC', 'UY', 'BO', 'PY', 'CR', 'PA', 'DO', 'GT', 'HN', 'SV', 'NI', 'CU', 'PR'].includes(country)) {
       updateLang('es')
+    } else if (country === 'PT') {
+      updateLang('pt')
     } else if (['US', 'GB', 'AU'].includes(country)) {
       updateLang('en')
     } else {
@@ -162,6 +164,7 @@ language = UserService.getLanguage()
 const isFr = language === 'fr'
 const isDe = language === 'de'
 const isEs = language === 'es'
+const isPt = language === 'pt'
 
 const theme = createTheme(
   {
@@ -243,9 +246,9 @@ const theme = createTheme(
       },
     },
   },
-  (isFr && frFR) || (isDe && deDE) || (isEs && esES) || enUS,
-  (isFr && dataGridfrFR) || (isDe && dataGriddeDE) || (isEs && dataGridesES) || dataGridenUS,
-  (isFr && corefrFR) || (isDe && coredeDE) || (isEs && coreesES) || coreenUS,
+  (isFr && frFR) || (isDe && deDE) || (isEs && esES) || (isPt && ptPT) || enUS,
+  (isFr && dataGridfrFR) || (isDe && dataGriddeDE) || (isEs && dataGridesES) || (isPt && dataGridptPT) || dataGridenUS,
+  (isFr && corefrFR) || (isDe && coredeDE) || (isEs && coreesES) || (isPt && coreptPT) || coreenUS,
 )
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

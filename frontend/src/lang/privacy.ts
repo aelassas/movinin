@@ -245,7 +245,71 @@ Si tiene alguna pregunta sobre esta Política de privacidad o sobre nuestras pr�
 
 Al utilizar nuestros servicios, usted reconoce que ha leído y entendido esta Política de privacidad y acepta sus términos.
     `,
-  },})
+  },
+  pt: {
+    TITLE: 'Política de Privacidade',
+    PRIVACY_POLICY: `
+A sua privacidade é importante para nós em ${env.WEBSITE_NAME}. A presente Política de Privacidade descreve a forma como recolhemos, utilizamos e protegemos as suas informações quando utiliza o nosso website e os nossos serviços. Ao aceder aos nossos serviços, o utilizador consente as práticas descritas nesta política.
+
+
+1. Informações que Recolhemos
+
+Recolhemos informações junto do utilizador quando se regista no nosso site, efetua uma encomenda ou interage com os nossos serviços. As informações que podemos recolher incluem:
+
+Nome
+Endereço de e-mail
+Número de telefone
+Informações de pagamento
+Preferências de aluguer
+O utilizador pode visitar o nosso site de forma anónima, mas determinadas funcionalidades poderão ficar limitadas.
+
+
+2. Como Utilizamos as Suas Informações
+
+As suas informações podem ser utilizadas das seguintes formas:
+
+Para processar as suas reservas e pagamentos
+Para melhorar o apoio ao cliente
+Para enviar e-mails periódicos relativos à sua encomenda ou a outros produtos e serviços
+Para responder a pedidos de informação e de assistência
+
+
+3. Como Protegemos as Suas Informações
+
+Implementamos diversas medidas de segurança para preservar a segurança das suas informações pessoais. Todas as informações sensíveis são transmitidas através de servidores seguros e só podem ser acedidas por pessoal autorizado. Não armazenamos os dados do seu cartão de crédito nos nossos servidores.
+
+
+4. Partilha das Suas Informações
+
+Não vendemos, trocamos nem transferimos de qualquer outra forma as suas informações de identificação pessoal para terceiros, exceto para parceiros de confiança que nos auxiliam na exploração do nosso website, na condução da nossa atividade ou na prestação de serviços ao utilizador, desde que esses terceiros se comprometam a manter essas informações confidenciais. Podemos igualmente divulgar as suas informações quando considerarmos que essa divulgação é adequada para cumprir a lei, fazer cumprir as políticas do nosso site ou proteger os nossos direitos, ou os direitos, a propriedade ou a segurança de terceiros.
+
+
+5. Privacidade das Crianças
+
+Cumprimos a Lei de Proteção da Privacidade das Crianças na Internet (Children's Online Privacy Protection Act, COPPA). Os nossos serviços não se destinam a crianças com menos de 13 anos e não recolhemos intencionalmente informações pessoais de crianças com menos de 13 anos. Se tomarmos conhecimento de que recolhemos informações pessoais de uma criança com menos de 13 anos, tomaremos medidas para eliminar essas informações.
+
+
+6. Alterações à Nossa Política de Privacidade
+
+Podemos atualizar esta Política de Privacidade periodicamente. Notificaremos o utilizador de quaisquer alterações através da publicação da nova Política de Privacidade nesta página. Recomendamos que consulte periodicamente esta Política de Privacidade para tomar conhecimento de eventuais alterações.
+
+
+7. Os Seus Direitos
+
+O utilizador tem o direito de solicitar o acesso às informações pessoais que detemos a seu respeito, de solicitar a retificação de quaisquer inexatidões e de solicitar o apagamento das suas informações pessoais, sob reserva de determinadas exceções. Para exercer estes direitos, queira contactar-nos através das informações indicadas abaixo.
+
+
+8. Contacte-nos
+
+Caso tenha alguma questão sobre esta Política de Privacidade ou sobre as nossas práticas em matéria de dados, queira contactar-nos através do endereço ${env.CONTACT_EMAIL}. Estamos empenhados em dar resposta às suas preocupações e em proteger a sua privacidade.
+
+
+9. Reconhecimento
+
+Ao utilizar os nossos serviços, o utilizador reconhece que leu e compreendeu esta Política de Privacidade e concorda com os seus termos.
+    `,
+  },
+})
 
 langHelper.setLanguage(strings)
 export { strings }

@@ -54,6 +54,19 @@ const strings = new LocalizedStrings({
         CANCEL_BOOKING: '¿Está seguro de que desea cancelar esta reserva?',
         CANCEL_BOOKING_REQUEST_SENT: 'Su solicitud de cancelación ha sido enviada. Nos pondremos en contacto con usted para finalizar el procedimiento de cancelación.',
       },
+      pt: {
+        PROPERTY: 'Propriedade',
+        AGENCY: 'Agência',
+        PRICE: 'Preço',
+        STATUS: 'Estado',
+        EMPTY_LIST: 'Sem reservas.',
+        VIEW: 'Ver esta reserva',
+        DAYS: 'Dias',
+        COST: 'CUSTO',
+        CANCEL: 'Cancelar esta reserva',
+        CANCEL_BOOKING: 'Tem a certeza de que pretende cancelar esta reserva?',
+        CANCEL_BOOKING_REQUEST_SENT: 'O seu pedido de cancelamento foi submetido. Entraremos em contacto consigo para finalizar o procedimento de cancelamento.',
+      },
     })
 
 langHelper.setLanguage(strings)

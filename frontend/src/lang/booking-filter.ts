@@ -14,6 +14,9 @@ const strings = new LocalizedStrings({
   es: {
     LOCATION: 'ubicación',
   },
+  pt: {
+    LOCATION: 'localização',
+  },
 })
 
 langHelper.setLanguage(strings)
