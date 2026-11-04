@@ -14,6 +14,10 @@ const strings = new LocalizedStrings({
     UPDATE_COUNTRY: 'Land aktualisieren',
     COUNTRY_UPDATED: 'Land erfolgreich aktualisiert.',
   },
+  es: {
+    UPDATE_COUNTRY: 'Actualización del país',
+    COUNTRY_UPDATED: 'País actualizado correctamente.',
+  },
 })
 
 langHelper.setLanguage(strings)

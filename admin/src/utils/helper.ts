@@ -224,6 +224,14 @@ const getPluralSuffix = (count: number, deSuffix = 'e') => {
 }
 
 /**
+ * Check if the tooltips of the current language use separate singular and plural keys (French, German and Spanish).
+ *
+ * @param {?boolean} [fr]
+ * @returns {boolean}
+ */
+const hasPluralTooltipKeys = (fr?: boolean) => fr || ['de', 'es'].includes(strings.getLanguage())
+
+/**
  * Get bedrooms tooltip.
  *
  * @param {number} bedrooms
@@ -231,7 +239,7 @@ const getPluralSuffix = (count: number, deSuffix = 'e') => {
  * @returns {string}
  */
 export const getBedroomsTooltip = (bedrooms: number, fr?: boolean) =>
-  `${strings.TOOLTIP_1}${bedrooms} ${fr || strings.getLanguage() === 'de'
+  `${strings.TOOLTIP_1}${bedrooms} ${hasPluralTooltipKeys(fr)
     ? bedrooms > 1 ? strings.BEDROOMS_TOOLTIP_2 : strings.BEDROOMS_TOOLTIP_1
     : strings.BEDROOMS_TOOLTIP_1 + getPluralSuffix(bedrooms)}`
 
@@ -243,7 +251,7 @@ export const getBedroomsTooltip = (bedrooms: number, fr?: boolean) =>
  * @returns {string}
  */
 export const getBathroomsTooltip = (bathrooms: number, fr?: boolean) =>
-  `${strings.TOOLTIP_1}${bathrooms} ${fr || strings.getLanguage() === 'de'
+  `${strings.TOOLTIP_1}${bathrooms} ${hasPluralTooltipKeys(fr)
     ? bathrooms > 1 ? strings.BATHROOMS_TOOLTIP_2 : strings.BATHROOMS_TOOLTIP_1
     : strings.BATHROOMS_TOOLTIP_1 + getPluralSuffix(bathrooms)}`
 
@@ -264,7 +272,7 @@ export const getKitchensTooltip = (bathrooms: number) =>
  * @returns {string}
  */
 export const getKParkingSpacesTooltip = (parkingSpaces: number, fr?: boolean) =>
-  `${strings.TOOLTIP_1}${parkingSpaces} ${fr || strings.getLanguage() === 'de'
+  `${strings.TOOLTIP_1}${parkingSpaces} ${hasPluralTooltipKeys(fr)
     ? parkingSpaces > 1 ? strings.PARKING_SPACES_TOOLTIP_2 : strings.PARKING_SPACES_TOOLTIP_1
     : strings.PARKING_SPACES_TOOLTIP_1 + getPluralSuffix(parkingSpaces)}`
 

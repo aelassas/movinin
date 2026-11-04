@@ -13,7 +13,11 @@ const strings = new LocalizedStrings({
     de: {
         SOLD_OUT: 'Ausverkauft',
         SOLD_OUT_INFO: 'Diese Immobilie ist ausverkauft.',
-    }
+    },
+    es: {
+        SOLD_OUT: 'Agotada',
+        SOLD_OUT_INFO: 'Esta propiedad está agotada.',
+    },
 })
 
 langHelper.setLanguage(strings)

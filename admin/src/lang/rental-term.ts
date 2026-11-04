@@ -32,6 +32,16 @@ const strings = new LocalizedStrings({
     DAY: 'Tag',
     YEAR: 'Jahr',
   },
+  es: {
+    MONTHLY: 'Mensual',
+    WEEKLY: 'Semanal',
+    DAILY: 'Diario',
+    YEARLY: 'Anual',
+    MONTH: 'mes',
+    WEEK: 'semana',
+    DAY: 'día',
+    YEAR: 'año',
+  },
 })
 
 langHelper.setLanguage(strings)

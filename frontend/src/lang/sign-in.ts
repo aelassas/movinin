@@ -29,6 +29,15 @@ const strings = new LocalizedStrings({
     RESET_PASSWORD: 'Passwort vergessen?',
     STAY_CONNECTED: 'Angemeldet bleiben',
   },
+  es: {
+    SIGN_IN_HEADING: 'Iniciar sesión',
+    SIGN_IN: 'Iniciar sesión',
+    SIGN_UP: 'Registrarse',
+    ERROR_IN_SIGN_IN: 'Correo electrónico o contraseña incorrectos.',
+    IS_BLACKLISTED: 'Su cuenta está suspendida.',
+    RESET_PASSWORD: '¿Olvidó su contraseña?',
+    STAY_CONNECTED: 'Mantener la sesión iniciada',
+  },
 })
 
 langHelper.setLanguage(strings)

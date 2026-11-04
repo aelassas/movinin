@@ -17,6 +17,11 @@ const strings = new LocalizedStrings({
     TOKEN_EXPIRED: 'Ihr Kontoaktivierungslink ist abgelaufen.',
     ACTIVATE: 'Aktivieren',
   },
+  es: {
+    ACTIVATE_HEADING: 'Activación de la cuenta',
+    TOKEN_EXPIRED: 'El enlace de activación de su cuenta ha caducado.',
+    ACTIVATE: 'Activar',
+  },
 })
 
 langHelper.setLanguage(strings)

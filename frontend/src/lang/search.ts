@@ -8,6 +8,8 @@ const strings = new LocalizedStrings({
   },
   de: {
   },
+  es: {
+  },
 })
 
 langHelper.setLanguage(strings)

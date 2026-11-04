@@ -21,6 +21,12 @@ const strings = new LocalizedStrings({
     AGENCY_IMAGE_SIZE_ERROR: `Das Bild muss das Format ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT} haben`,
     RECOMMENDED_IMAGE_SIZE: `Empfohlene Bildgröße: ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
   },
+  es: {
+    CREATE_AGENCY_HEADING: 'Nueva agencia',
+    INVALID_AGENCY_NAME: 'Esta agencia ya existe.',
+    AGENCY_IMAGE_SIZE_ERROR: `La imagen debe tener el formato ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
+    RECOMMENDED_IMAGE_SIZE: `Tamaño de imagen recomendado: ${env.AGENCY_IMAGE_WIDTH}x${env.AGENCY_IMAGE_HEIGHT}`,
+  },
 })
 
 langHelper.setLanguage(strings)

@@ -11,6 +11,9 @@ const strings = new LocalizedStrings({
   de: {
     UPDATE_USER_HEADING: 'Benutzer aktualisieren',
   },
+  es: {
+    UPDATE_USER_HEADING: 'Actualización del usuario',
+  },
 })
 
 langHelper.setLanguage(strings)

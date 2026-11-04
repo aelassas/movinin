@@ -50,6 +50,22 @@ const strings = new LocalizedStrings({
     SIGN_OUT: 'Abmelden',
     COUNTRIES: 'Länder',
   },
+  es: {
+    DASHBOARD: 'Panel de control',
+    SCHEDULER: 'Calendario de propiedades',
+    HOME: 'Inicio',
+    AGENCIES: 'Agencias',
+    LOCATIONS: 'Ubicaciones',
+    PROPERTIES: 'Propiedades',
+    USERS: 'Usuarios',
+    ABOUT: 'Acerca de',
+    TOS: 'Términos del servicio',
+    CONTACT: 'Contacto',
+    LANGUAGE: 'Idioma',
+    SETTINGS: 'Ajustes',
+    SIGN_OUT: 'Cerrar sesión',
+    COUNTRIES: 'Países',
+  },
 })
 
 langHelper.setLanguage(strings)

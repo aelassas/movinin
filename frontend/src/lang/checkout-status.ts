@@ -30,6 +30,15 @@ const strings = new LocalizedStrings({
     STATUS_MESSAGE: 'Überprüfen Sie Ihr Postfach und befolgen Sie die in der Buchungsbestätigungs-E-Mail beschriebenen Schritte, um Ihre Immobilie zu buchen. Die Adresse der Immobilie und den Google-Maps-Link finden Sie in der Bestätigungs-E-Mail.',
     SESSION_ID_MISMATCH: 'Session-ID stimmt nicht überein. Bitte versuchen Sie es erneut.',
   },
+  es: {
+    CONGRATULATIONS: '¡Felicidades!',
+    SUCCESS: 'Su pago se ha realizado correctamente. Le hemos enviado un correo electrónico de confirmación.',
+    SUCCESS_PAY_LATER: 'Su reserva se ha realizado correctamente. Le hemos enviado un correo electrónico de confirmación.',
+    ERROR: '¡Algo salió mal! Inténtelo de nuevo más tarde',
+    STATUS_TITLE: `${env.WEBSITE_NAME} Confirmación de reserva`,
+    STATUS_MESSAGE: 'Revise su bandeja de entrada y siga los pasos descritos en el correo electrónico de confirmación de la reserva para reservar su propiedad. Encontrará la dirección de la propiedad y el enlace de Google Maps en el correo electrónico de confirmación.',
+    SESSION_ID_MISMATCH: 'El ID de sesión no coincide. Por favor, inténtelo de nuevo.',
+  },
 })
 
 langHelper.setLanguage(strings)

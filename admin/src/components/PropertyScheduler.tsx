@@ -171,6 +171,42 @@ const PropertyScheduler = (
       }
     }
 
+    if (_language === 'es') {
+      return {
+        navigation: {
+          month: 'Mes',
+          week: 'Semana',
+          day: 'Día',
+          today: 'Hoy',
+          agenda: 'Agenda',
+        },
+        form: {
+          addTitle: 'Añadir evento',
+          editTitle: 'Editar evento',
+          confirm: 'Confirmar',
+          delete: 'Eliminar',
+          cancel: 'Cancelar',
+        },
+        event: {
+          title: 'Título',
+          subtitle: 'Subtítulo',
+          start: 'Inicio',
+          end: 'Fin',
+          allDay: 'Todo el día',
+        },
+        validation: {
+          required: 'Obligatorio',
+          invalidEmail: 'Correo electrónico no válido',
+          onlyNumbers: 'Solo se permiten números',
+          min: 'Mínimo {{min}} letras',
+          max: 'Máximo {{max}} letras',
+        },
+        moreEvents: 'Más...',
+        noDataToDisplay: 'No hay datos para mostrar',
+        loading: 'Cargando...',
+      }
+    }
+
     // default to english
     return {
       navigation: {

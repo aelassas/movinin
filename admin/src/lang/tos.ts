@@ -161,6 +161,62 @@ Wenn Sie Fragen zu diesen Nutzungsbedingungen haben, kontaktieren Sie uns bitte 
 Durch die Nutzung unserer Dienste bestätigen Sie, dass Sie diese Nutzungsbedingungen gelesen und verstanden haben, und erklären sich damit einverstanden, an sie gebunden zu sein.
     `,
   },
+  es: {
+    TITLE: 'Términos del servicio',
+    TOS: `
+¡Bienvenido a ${env.WEBSITE_NAME}! Al acceder a nuestro sitio web y utilizar nuestros servicios, aceptas cumplir y quedar vinculado por los siguientes Términos del servicio. Si no estás de acuerdo con estos términos, por favor no utilices nuestros servicios.
+
+
+1. Aceptación de los términos
+
+Al acceder a nuestros servicios o utilizarlos, confirmas que has leído, comprendido y aceptado estos Términos del servicio y nuestra Política de privacidad.
+
+
+2. Uso de nuestros servicios
+
+Aceptas utilizar nuestros servicios únicamente con fines lícitos y de manera que no infrinja los derechos de ninguna otra persona, ni restrinja o impida el uso que esta haga de nuestros servicios. Esto incluye el cumplimiento de todas las leyes y reglamentos aplicables.
+
+
+3. Reservas y pagos
+
+Cuando realizas una reserva con ${env.WEBSITE_NAME}, aceptas proporcionar información precisa y completa. Todos los pagos deben realizarse a través de nuestro sistema de pago seguro. Una vez completado el pago, recibirás una confirmación de tu reserva.
+
+
+4. Política de cancelación
+
+Las cancelaciones realizadas con 24 horas de antelación a la fecha del alquiler pueden dar derecho a un reembolso completo. Las cancelaciones realizadas con menos de 24 horas de antelación a la fecha del alquiler pueden conllevar un cargo por cancelación. Consulta nuestra política de cancelación para obtener información detallada.
+
+
+5. Condiciones de alquiler
+
+Todos los alquileres están sujetos a nuestras condiciones de alquiler, que incluyen, entre otras, restricciones de edad y obligaciones de seguro. Eres responsable de asegurarte de cumplir todos los requisitos antes de realizar una reserva.
+
+
+6. Limitación de responsabilidad
+
+${env.WEBSITE_NAME} no será responsable de ningún daño indirecto, incidental o consecuente que se derive del uso de nuestros servicios. En ningún caso nuestra responsabilidad total superará el importe que hayas pagado por los servicios.
+
+
+7. Modificaciones de los términos
+
+Nos reservamos el derecho de modificar estos Términos del servicio en cualquier momento. Cualquier cambio será efectivo inmediatamente después de su publicación en nuestro sitio web. Si continúas utilizando nuestros servicios tras cualquier cambio, se entenderá que aceptas los nuevos términos.
+
+
+8. Legislación aplicable
+
+Estos Términos del servicio se regirán e interpretarán de acuerdo con las leyes. Cualquier disputa derivada de estos términos se resolverá ante los tribunales.
+
+
+9. Información de contacto
+
+Si tienes alguna pregunta sobre estos Términos del servicio, contáctanos en ${env.CONTACT_EMAIL}. Estamos aquí para ayudarte con cualquier consulta relacionada con nuestros servicios.
+
+
+10. Reconocimiento
+
+Al utilizar nuestros servicios, reconoces que has leído y comprendido estos Términos del servicio y aceptas quedar vinculado por ellos.
+    `,
+  },
 })
 
 langHelper.setLanguage(strings)

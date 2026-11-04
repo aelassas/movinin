@@ -23,6 +23,13 @@ const strings = new LocalizedStrings({
     RECAPTCHA_ERROR: 'Füllen Sie das Captcha aus, um fortzufahren.',
     SIGN_UP_ERROR: 'Bei der Registrierung ist ein Fehler aufgetreten.',
   },
+  es: {
+    SIGN_UP_HEADING: 'Registrarse',
+    TOS_SIGN_UP: 'He leído y acepto los Términos de uso.',
+    SIGN_UP: 'Registrarse',
+    RECAPTCHA_ERROR: 'Completa el captcha para continuar.',
+    SIGN_UP_ERROR: 'Se ha producido un error durante el registro.',
+  },
 })
 
 langHelper.setLanguage(strings)

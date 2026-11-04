@@ -50,6 +50,22 @@
       COOKIE_POLICY: 'Cookie-Richtlinie',
       NOTIFICATIONS: 'Benachrichtigungen',
     },
+    es: {
+      SIGN_IN: 'Iniciar sesión',
+      HOME: 'Inicio',
+      BOOKINGS: 'Reservas',
+      ABOUT: 'Acerca de',
+      TOS: 'Términos de servicio',
+      CONTACT: 'Contacto',
+      LANGUAGE: 'Idioma',
+      SETTINGS: 'Configuración',
+      SIGN_OUT: 'Cerrar sesión',
+      AGENCIES: 'Agencias',
+      LOCATIONS: 'Destinos',
+      PRIVACY_POLICY: 'Política de privacidad',
+      COOKIE_POLICY: 'Política de cookies',
+      NOTIFICATIONS: 'Notificaciones',
+    },
   })
 
   langHelper.setLanguage(strings)

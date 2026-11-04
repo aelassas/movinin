@@ -1,5 +1,5 @@
 import type { Locale } from 'date-fns'
-import { de, enUS, fr } from 'date-fns/locale'
+import { de, enUS, es, fr } from 'date-fns/locale'
 
 /**
  * Get date-fns locale from an ISO 639-1 language code.
@@ -13,6 +13,8 @@ export const getDateLocale = (language?: string): Locale => {
       return fr
     case 'de':
       return de
+    case 'es':
+      return es
     default:
       return enUS
   }

@@ -50,6 +50,22 @@ const strings = new LocalizedStrings({
     DAYS: 'Tage',
     COST: 'KOSTEN',
   },
+  es: {
+    PROPERTY: 'Propiedad',
+    AGENCY: 'Agencia',
+    RENTER: 'Inquilino',
+    PRICE: 'Precio',
+    STATUS: 'Estado',
+    UPDATE_SELECTION: 'Editar selección',
+    DELETE_SELECTION: 'Eliminar selección',
+    UPDATE_STATUS: 'Modificación del estado',
+    NEW_STATUS: 'Nuevo estado',
+    DELETE_BOOKING: '¿Seguro que quieres eliminar esta reserva?',
+    DELETE_BOOKINGS: '¿Seguro que quieres eliminar las reservas seleccionadas?',
+    EMPTY_LIST: 'No hay reservas.',
+    DAYS: 'Días',
+    COST: 'COSTE',
+  },
 })
 
 langHelper.setLanguage(strings)

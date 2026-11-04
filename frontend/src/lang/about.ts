@@ -30,6 +30,15 @@ const strings = new LocalizedStrings({
     CONTENT2: 'Genießen Sie unübertroffenen Komfort, Zuverlässigkeit und Wert mit unserem erstklassigen Immobilienvermietungsservice. Von mühelosen Buchungen bis zu hochwertigen Immobilien – wir sind Ihr vertrauenswürdiger Reisepartner.',
     FIND_DEAL: 'Angebot finden',
   },
+  es: {
+    TITLE1: `${env.WEBSITE_NAME} - Su servicio de alquiler de propiedades de primera categoría`,
+    SUBTITLE1: 'Su socio de confianza para el alquiler de propiedades',
+    CONTENT1: `En ${env.WEBSITE_NAME} entendemos que cada viaje es único. Nos comprometemos a ofrecer a nuestros clientes una amplia selección de propiedades que se adaptan a todas las necesidades de viaje. Ya sea que explore una ciudad, viaje por negocios o busque aventura, nuestros fiables servicios de alquiler de propiedades garantizan que su aventura comience sin contratiempos. Nuestra misión es ofrecer un servicio de atención al cliente excepcional, para que su experiencia sea agradable y libre de estrés. Con precios competitivos, una gran variedad de propiedades bien cuidadas y un equipo dedicado dispuesto a ayudarle, nos esforzamos por ser su socio de confianza en el camino. Elija ${env.WEBSITE_NAME} para todas sus necesidades de alquiler de propiedades y descubra la libertad de explorar a su propio ritmo.`,
+    TITLE2: `Por qué elegir ${env.WEBSITE_NAME}`,
+    SUBTITLE2: 'Viva la excelencia en cada viaje',
+    CONTENT2: 'Disfrute de una comodidad, una fiabilidad y un valor inigualables con nuestro servicio de alquiler de propiedades de primera categoría. Desde reservas sin complicaciones hasta propiedades de alta calidad, somos su compañero de viaje de confianza.',
+    FIND_DEAL: 'Encontrar oferta',
+  },
 })
 
 langHelper.setLanguage(strings)

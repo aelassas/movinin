@@ -17,6 +17,11 @@ const strings = new LocalizedStrings({
     AGENCY: 'Agentur',
     AGENCIES: 'Agenturen',
   },
+  es: {
+    NEW_AGENCY: 'Nueva agencia',
+    AGENCY: 'agencia',
+    AGENCIES: 'agencias',
+  },
 })
 
 langHelper.setLanguage(strings)

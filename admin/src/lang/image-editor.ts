@@ -19,6 +19,12 @@ const strings = new LocalizedStrings({
         ADD_IMAGES: 'Weitere Bilder hinzufügen',
         UPDATE_IMAGE: 'Hauptbild aktualisieren',
         DELETE_IMAGE: 'Sind Sie sicher, dass Sie dieses Bild löschen möchten?',
+    },
+    es: {
+        ADD_IMAGE: 'Añadir imagen principal',
+        ADD_IMAGES: 'Añadir imágenes adicionales',
+        UPDATE_IMAGE: 'Actualizar imagen principal',
+        DELETE_IMAGE: '¿Seguro que quieres eliminar esta imagen?',
     }
 })
 

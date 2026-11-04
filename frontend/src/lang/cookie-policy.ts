@@ -153,7 +153,56 @@ Wir können diese Cookie-Richtlinie von Zeit zu Zeit aktualisieren, um Änderung
 Wenn Sie Fragen zu dieser Cookie-Richtlinie haben, kontaktieren Sie uns bitte unter: ${env.CONTACT_EMAIL}
     `,
   },
-})
+  es: {
+    TITLE: 'Política de cookies',
+    POLICY: `
+Esta Política de cookies explica cómo ${env.WEBSITE_NAME} (“nosotros”, “nos” o “nuestro”) utiliza cookies y tecnologías similares en nuestro sitio web. Al utilizar nuestro sitio web, usted consiente el uso de cookies tal como se describe en esta política.
+
+1. ¿Qué son las cookies?
+
+Las cookies son pequeños archivos de texto que se almacenan en su dispositivo (ordenador, tableta, teléfono inteligente) cuando visita un sitio web. Ayudan a mejorar su experiencia de navegación recordando sus preferencias y proporcionando información o servicios relevantes.
+
+2. Tipos de cookies que utilizamos
+
+Utilizamos los siguientes tipos de cookies:
+
+- Cookies estrictamente necesarias: estas cookies son esenciales para el funcionamiento del sitio web y no pueden desactivarse en nuestros sistemas.
+- Cookies de rendimiento: estas cookies nos ayudan a comprender cómo interactúan los visitantes con nuestro sitio web, recopilando y comunicando información de forma anónima.
+- Cookies funcionales: estas cookies permiten que el sitio web ofrezca funcionalidades y personalización mejoradas.
+- Cookies de segmentación/publicidad: estas cookies se utilizan para mostrar anuncios relevantes y medir el rendimiento de los anuncios.
+
+3. Cómo utilizamos las cookies
+
+Utilizamos cookies para:
+
+- Mejorar la funcionalidad y el rendimiento del sitio web.
+- Analizar el uso del sitio para mejorar nuestros servicios.
+- Personalizar su experiencia y recordar sus preferencias.
+- Mostrar anuncios segmentados en función de sus intereses.
+
+4. Gestión de sus preferencias de cookies
+
+Puede gestionar sus preferencias de cookies en cualquier momento ajustando la configuración de su navegador. La mayoría de los navegadores le permiten:
+
+- Bloquear todas las cookies.
+- Eliminar las cookies existentes.
+- Recibir notificaciones cuando se establece una cookie.
+
+Tenga en cuenta que desactivar las cookies puede afectar a su experiencia en nuestro sitio web.
+
+5. Cookies de terceros
+
+Podemos permitir que proveedores de servicios externos coloquen cookies en nuestro sitio web para analizar el tráfico del sitio, prestar servicios de publicidad o habilitar funciones adicionales. Estas cookies se rigen por las políticas de privacidad de dichos terceros.
+
+6. Cambios en esta Política de cookies
+
+Podemos actualizar esta Política de cookies de vez en cuando para reflejar cambios en la tecnología, la legislación o nuestras prácticas. La política actualizada se publicará en esta página con una fecha de “Última actualización” revisada.
+
+7. Contacto
+
+Si tiene alguna pregunta sobre esta Política de cookies, póngase en contacto con nosotros en: ${env.CONTACT_EMAIL}
+    `,
+  },})
 
 langHelper.setLanguage(strings)
 export { strings }

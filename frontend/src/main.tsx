@@ -4,9 +4,9 @@ import { ToastContainer } from 'react-toastify'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 
-import { frFR as corefrFR, deDE as coredeDE, enUS as coreenUS } from '@mui/material/locale'
-import { frFR, deDE, enUS } from '@mui/x-date-pickers/locales'
-import { frFR as dataGridfrFR, deDE as dataGriddeDE, enUS as dataGridenUS } from '@mui/x-data-grid/locales'
+import { frFR as corefrFR, deDE as coredeDE, esES as coreesES, enUS as coreenUS } from '@mui/material/locale'
+import { frFR, deDE, esES, enUS } from '@mui/x-date-pickers/locales'
+import { frFR as dataGridfrFR, deDE as dataGriddeDE, esES as dataGridesES, enUS as dataGridenUS } from '@mui/x-data-grid/locales'
 import { disableDevTools } from ':disable-react-devtools'
 import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
@@ -148,6 +148,8 @@ if (lang) {
       updateLang('fr')
     } else if (['DE', 'AT', 'CH'].includes(country)) {
       updateLang('de')
+    } else if (['ES', 'MX', 'AR', 'CO', 'CL', 'PE', 'VE', 'EC', 'UY', 'BO', 'PY', 'CR', 'PA', 'DO', 'GT', 'HN', 'SV', 'NI', 'CU', 'PR'].includes(country)) {
+      updateLang('es')
     } else if (['US', 'GB', 'AU'].includes(country)) {
       updateLang('en')
     } else {
@@ -159,6 +161,7 @@ if (lang) {
 language = UserService.getLanguage()
 const isFr = language === 'fr'
 const isDe = language === 'de'
+const isEs = language === 'es'
 
 const theme = createTheme(
   {
@@ -240,9 +243,9 @@ const theme = createTheme(
       },
     },
   },
-  (isFr && frFR) || (isDe && deDE) || enUS,
-  (isFr && dataGridfrFR) || (isDe && dataGriddeDE) || dataGridenUS,
-  (isFr && corefrFR) || (isDe && coredeDE) || coreenUS,
+  (isFr && frFR) || (isDe && deDE) || (isEs && esES) || enUS,
+  (isFr && dataGridfrFR) || (isDe && dataGriddeDE) || (isEs && dataGridesES) || dataGridenUS,
+  (isFr && corefrFR) || (isDe && coredeDE) || (isEs && coreesES) || coreenUS,
 )
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
