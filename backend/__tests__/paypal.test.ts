@@ -75,7 +75,7 @@ describe('POST /api/create-paypal-order', () => {
     // test success (create paypal order)
     const payload: movininTypes.CreatePayPalOrderPayload = {
       amount: 1, // Client sends manipulated amount, server uses booking.price (234)
-      currency: 'USD',
+      currency: env.BASE_CURRENCY,
       name: 'Beautiful House',
       description: 'Beautiful House',
       bookingId: booking._id.toString(),
@@ -85,6 +85,13 @@ describe('POST /api/create-paypal-order', () => {
       .send(payload)
     expect(res.statusCode).toBe(200)
     expect(res.body.length).toBeGreaterThan(0)
+
+    // test failure (create paypal order in a non-base currency)
+    res = await request(app)
+      .post('/api/create-paypal-order')
+      .send({ ...payload, currency: env.BASE_CURRENCY.toUpperCase() === 'USD' ? 'EUR' : 'USD' })
+    expect(res.statusCode).toBe(400)
+    expect(res.text).toContain('Payment currency mismatch')
 
     // test failure (create paypal order with non-existent booking)
     payload.bookingId = testHelper.GetRandromObjectIdAsString()

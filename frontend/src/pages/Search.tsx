@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
@@ -35,15 +35,32 @@ const Properties = () => {
   const [rentalTerms, setRentalTerms] = useState(movininHelper.getAllRentalTerms())
   const [sortBy, setSortBy] = useState<movininTypes.PropertySortType>(movininTypes.PropertySortType.Default)
   const [openMapDialog, setOpenMapDialog] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0)
+  const initializedRef = useRef(false)
 
   const handleAgencyFilterChange = (newAgencies: string[]) => {
     setAgencies(newAgencies)
   }
 
-  const handlePropertyFilterSubmit = (filter: movininTypes.PropertyFilter) => {
-    setLocation(filter.location)
+  const handlePropertyFilterSubmit = async (filter: movininTypes.PropertyFilter) => {
+    let _location = filter.location
+
+    // The filter only provides the location id and name, load the full location (coordinates, etc.)
+    if (location && location._id === _location._id) {
+      _location = location
+    } else {
+      try {
+        _location = await LocationService.getLocation(_location._id as string) ?? _location
+      } catch (err) {
+        helper.error(err)
+      }
+    }
+
+    setLocation(_location)
     setFrom(filter.from)
     setTo(filter.to)
+    // Always query again, even if the search criteria are unchanged, as property data may have changed
+    setRefreshKey((prev) => prev + 1)
   }
 
   const handlePropertyTypeFilterChange = (values: movininTypes.PropertyType[]) => {
@@ -55,6 +72,15 @@ const Properties = () => {
   }
 
   const onLoad = async (user?: movininTypes.User) => {
+    // onLoad is called again each time the user changes (e.g. when saving a property),
+    // in that case keep the current search instead of resetting it to the initial one
+    if (initializedRef.current) {
+      if (!user || user.verified) {
+        setVisible(true)
+      }
+      return
+    }
+
     const { state } = reactLocation
     if (!state) {
       setNoMatch(true)
@@ -69,6 +95,8 @@ const Properties = () => {
       setNoMatch(true)
       return
     }
+
+    initializedRef.current = true
 
     let _location: movininTypes.Location | null = null
     try {
@@ -93,6 +121,7 @@ const Properties = () => {
         setVisible(true)
       }
     } catch (err) {
+      initializedRef.current = false
       helper.error(err)
     }
   }
@@ -154,6 +183,7 @@ const Properties = () => {
               from={from}
               to={to}
               sortBy={sortBy}
+              refreshKey={refreshKey}
               hideAgency={env.HIDE_AGENCIES}
             />
           </div>

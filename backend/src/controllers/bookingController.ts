@@ -32,6 +32,27 @@ export const BOOKING_RESERVATION_STATUSES = [
 ]
 
 /**
+ * Check whether a property has a reservation overlapping the requested period.
+ * A booking occupies [from, to): a booking ending on the day another one starts does not overlap,
+ * which is consistent with the availability check of the properties search.
+ *
+ * @async
+ * @param {string} propertyId
+ * @param {Date} from
+ * @param {Date} to
+ * @returns {Promise<boolean>}
+ */
+const hasConflictingBooking = async (propertyId: string, from: Date, to: Date) => {
+  const conflict = await Booking.exists({
+    property: propertyId,
+    from: { $lt: to },
+    to: { $gt: from },
+    status: { $in: BOOKING_RESERVATION_STATUSES },
+  })
+  return !!conflict
+}
+
+/**
  * In-process per-property async mutex.
  * Serialises concurrent checkout requests for the same property so that
  * the overlap-check and booking.save() are atomic from the application's
@@ -454,12 +475,7 @@ export const checkout = async (req: Request, res: Response) => {
     // Revalidate date availability (TOCTOU guard)
     // Only enforced when blockOnPay is true (exclusive availability required).
     if (propertyObj.blockOnPay) {
-      const conflictingBooking = await Booking.exists({
-        property: propertyObj._id,
-        from: { $lte: toDate },
-        to: { $gte: fromDate },
-        status: { $in: BOOKING_RESERVATION_STATUSES },
-      })
+      const conflictingBooking = await hasConflictingBooking(propertyObj._id.toString(), fromDate, toDate)
       if (conflictingBooking) {
         if (guestUser) {
           await guestUser.deleteOne()
@@ -481,12 +497,7 @@ export const checkout = async (req: Request, res: Response) => {
     if (propertyObj.blockOnPay) {
       await withPropertyLock(propertyObj._id.toString(), async () => {
         // Re-check inside the lock to close the race window
-        const conflict = await Booking.exists({
-          property: propertyObj._id,
-          from: { $lte: toDate },
-          to: { $gte: fromDate },
-          status: { $in: BOOKING_RESERVATION_STATUSES },
-        })
+        const conflict = await hasConflictingBooking(propertyObj._id.toString(), fromDate, toDate)
         if (conflict) {
           const conflictErr = new Error('CONFLICT') as Error & { code: string }
           conflictErr.code = 'CONFLICT'

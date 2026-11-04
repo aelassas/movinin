@@ -11,6 +11,14 @@ import Property from '../models/Property'
 import * as bookingController from './bookingController'
 
 /**
+ * Check that a currency is the base currency, the only currency payments are accepted in.
+ *
+ * @param {?string} currency
+ * @returns {boolean}
+ */
+const isBaseCurrency = (currency?: string) => typeof currency === 'string' && currency.toUpperCase() === env.BASE_CURRENCY.toUpperCase()
+
+/**
  * Create Checkout Session.
  *
  * @async
@@ -30,6 +38,14 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
       description,
       customerName,
     }: movininTypes.CreatePaymentPayload = req.body
+
+
+    if (!isBaseCurrency(currency)) {
+      const message = `Payment currency mismatch: expected ${env.BASE_CURRENCY}, got ${currency}`
+      logger.error(`[stripe.createCheckoutSession] ${message}`)
+      res.status(400).send(message)
+      return
+    }
 
     //
     // 1. Create the customer if he does not already exist
@@ -60,7 +76,7 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
               name,
             },
             unit_amount: Math.floor(amount * 100),
-            currency: currency.toLowerCase(),
+            currency: env.BASE_CURRENCY.toLowerCase(),
           },
           quantity: 1,
         },
@@ -222,6 +238,13 @@ export const createPaymentIntent = async (req: Request, res: Response) => {
       customerName,
     }: movininTypes.CreatePaymentPayload = req.body
 
+    if (!isBaseCurrency(currency)) {
+      const message = `Payment currency mismatch: expected ${env.BASE_CURRENCY}, got ${currency}`
+      logger.error(`[stripe.createPaymentIntent] ${message}`)
+      res.status(400).send(message)
+      return
+    }
+
     //
     // 1. Create the customer if he does not already exist
     //
@@ -246,7 +269,7 @@ export const createPaymentIntent = async (req: Request, res: Response) => {
       // For example, to charge 10 USD, provide an amount value of 1000 (that is, 1000 cents).
       //
       amount: Math.floor(amount * 100),
-      currency: currency.toLowerCase(),
+      currency: env.BASE_CURRENCY.toLowerCase(),
       receipt_email: receiptEmail,
       description,
       customer: customer.id,

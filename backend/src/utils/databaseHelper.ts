@@ -218,6 +218,32 @@ export const models = defineModels([
 ] as const)
 
 /**
+ * Sets blockOnPay to false on properties created before the field existed.
+ * Without it, the schema default (true) would be applied when loading these properties,
+ * whereas the admin panel and the properties search consider them as not blocking.
+ *
+ * @async
+ * @returns {Promise<boolean>}
+ */
+export const initializeBlockOnPay = async (): Promise<boolean> => {
+  try {
+    const res = await Property.updateMany(
+      { blockOnPay: { $exists: false } },
+      { $set: { blockOnPay: false } },
+      { timestamps: false },
+    )
+
+    if (res.modifiedCount > 0) {
+      logger.info(`blockOnPay set to false on ${res.modifiedCount} properties`)
+    }
+    return true
+  } catch (err) {
+    logger.error('Failed to initialize blockOnPay:', err)
+    return false
+  }
+}
+
+/**
  * Initializes database.
  *
  * @async
@@ -259,6 +285,7 @@ export const initialize = async (createIndexes: boolean = true): Promise<boolean
     const results = await Promise.all([
       databaseLangHelper.initializeLocations(),
       databaseLangHelper.initializeCountries(),
+      initializeBlockOnPay(),
     ])
 
     const res = results.every(Boolean)

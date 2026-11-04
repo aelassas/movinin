@@ -8,6 +8,7 @@ import * as testHelper from './testHelper'
 import LocationValue from '../src/models/LocationValue'
 import Location from '../src/models/Location'
 import Country from '../src/models/Country'
+import Property from '../src/models/Property'
 
 beforeAll(() => {
   // testHelper.initializeLogger()
@@ -84,12 +85,38 @@ describe('Test database initialization', () => {
   })
 })
 
+describe('Test blockOnPay initialization', () => {
+  it('should set blockOnPay to false on properties created before the field existed', async () => {
+    expect(await databaseHelper.connect(env.DB_URI, false, false)).toBeTruthy()
+
+    // Raw insert to bypass the schema default
+    const { insertedId: legacyId } = await Property.collection.insertOne({ name: 'Legacy Property' })
+    const { insertedId: blockingId } = await Property.collection.insertOne({ name: 'Blocking Property', blockOnPay: true })
+
+    try {
+      expect(await databaseHelper.initializeBlockOnPay()).toBeTruthy()
+
+      const legacy = await Property.collection.findOne({ _id: legacyId })
+      const blocking = await Property.collection.findOne({ _id: blockingId })
+      expect(legacy?.blockOnPay).toBe(false)
+      expect(blocking?.blockOnPay).toBe(true)
+
+      // The schema default must not turn legacy properties into blocking ones
+      expect((await Property.findById(legacyId))?.blockOnPay).toBe(false)
+    } finally {
+      await Property.collection.deleteMany({ _id: { $in: [legacyId, blockingId] } })
+      await databaseHelper.close()
+    }
+  })
+})
+
 describe('Test database initialization failures', () => {
   it('should check database initialization failures', async () => {
     // test failure (lost db connection)
     await databaseHelper.close()
     expect(await databaseLangHelper.initializeLocations()).toBeFalsy()
     expect(await databaseLangHelper.initializeCountries()).toBeFalsy()
+    expect(await databaseHelper.initializeBlockOnPay()).toBeFalsy()
   })
 })
 

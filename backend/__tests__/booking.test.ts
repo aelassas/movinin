@@ -999,6 +999,68 @@ describe('Security Regression Tests - TOCTOU Availability Revalidation', () => {
     await Booking.deleteOne({ _id: reservedBooking._id })
   })
 
+  describe('back-to-back bookings', () => {
+    const makeBooking = (from: Date, to: Date, status: movininTypes.BookingStatus, renter: string) => new Booking({
+      agency: AGENCY_ID,
+      property: toctouPropertyId,
+      renter,
+      location: LOCATION_ID,
+      from,
+      to,
+      status,
+      cancellation: false,
+      price: 500 * Math.round((to.getTime() - from.getTime()) / (24 * 60 * 60 * 1000)),
+    })
+
+    const checkout = (from: Date, to: Date) => {
+      const payload: movininTypes.CheckoutPayload = {
+        booking: {
+          agency: AGENCY_ID,
+          property: toctouPropertyId,
+          renter: toctouRenterId,
+          location: LOCATION_ID,
+          from,
+          to,
+          status: movininTypes.BookingStatus.Pending,
+          cancellation: false,
+          price: 500 * Math.round((to.getTime() - from.getTime()) / (24 * 60 * 60 * 1000)),
+        },
+        payLater: true,
+      }
+
+      return request(app)
+        .post('/api/checkout')
+        .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
+        .send(payload)
+    }
+
+    afterEach(async () => {
+      await Booking.deleteMany({ property: toctouPropertyId })
+    })
+
+    it('should allow a checkout starting on the day an existing booking ends', async () => {
+      await makeBooking(new Date(2027, 0, 10), new Date(2027, 0, 12), movininTypes.BookingStatus.Paid, RENTER1_ID).save()
+
+      const res = await checkout(new Date(2027, 0, 12), new Date(2027, 0, 13))
+      expect(res.statusCode).toBe(200)
+    })
+
+    it('should allow a checkout ending on the day an existing booking starts', async () => {
+      await makeBooking(new Date(2027, 0, 12), new Date(2027, 0, 14), movininTypes.BookingStatus.Reserved, RENTER1_ID).save()
+
+      const res = await checkout(new Date(2027, 0, 10), new Date(2027, 0, 12))
+      expect(res.statusCode).toBe(200)
+    })
+
+    it('should still reject a checkout overlapping an existing booking by one day', async () => {
+      await makeBooking(new Date(2027, 0, 10), new Date(2027, 0, 12), movininTypes.BookingStatus.Paid, RENTER1_ID).save()
+
+      const res = await checkout(new Date(2027, 0, 11), new Date(2027, 0, 13))
+      expect(res.statusCode).toBe(409)
+      expect(res.text).toContain('no longer available')
+    })
+  })
+
   it('should NOT block concurrent checkouts when blockOnPay is false', async () => {
     // A property without blockOnPay — standard behaviour should allow concurrent bookings
     const nonBlockProp = new Property({

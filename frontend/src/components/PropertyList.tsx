@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Card,
   CardContent,
@@ -24,6 +24,7 @@ interface PropertyListProps {
   from?: Date
   to?: Date
   sortBy?: movininTypes.PropertySortType
+  refreshKey?: number
   reload?: boolean
   properties?: movininTypes.Property[]
   className?: string
@@ -44,6 +45,7 @@ const PropertyList = ({
   from,
   to,
   sortBy,
+  refreshKey,
   reload,
   properties,
   className,
@@ -62,6 +64,10 @@ const PropertyList = ({
   const [page, setPage] = useState(1)
   const [rowCount, setRowCount] = useState(0)
   const [totalRecords, setTotalRecords] = useState(0)
+
+  // Only the latest fetch is allowed to update the list, older responses are ignored
+  const requestIdRef = useRef(0)
+  const filtersRef = useRef<unknown[]>([])
 
   useEffect(() => {
     if (env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || env.isMobile) {
@@ -82,6 +88,9 @@ const PropertyList = ({
   }, [fetch, loading, page])
 
   const fetchData = async (_page: number) => {
+    requestIdRef.current += 1
+    const requestId = requestIdRef.current
+
     try {
       setLoading(true)
 
@@ -95,6 +104,10 @@ const PropertyList = ({
         sortBy,
       }
       const data = await PropertyService.getProperties(payload, _page, env.PROPERTIES_PAGE_SIZE)
+
+      if (requestId !== requestIdRef.current) {
+        return
+      }
 
       const _data = data && data.length > 0 ? data[0] : { pageInfo: { totalRecord: 0 }, resultData: [] }
       if (!_data) {
@@ -122,18 +135,33 @@ const PropertyList = ({
         onLoad({ rows: _data.resultData, rowCount: _totalRecords })
       }
     } catch (err) {
-      helper.error(err)
+      if (requestId === requestIdRef.current) {
+        helper.error(err)
+      }
     } finally {
-      setLoading(false)
-      setInit(false)
+      if (requestId === requestIdRef.current) {
+        setLoading(false)
+        setInit(false)
+      }
     }
   }
 
   useEffect(() => {
+    const filters = [agencies, types, rentalTerms, location, from, to, sortBy, refreshKey]
+    const filtersChanged = filters.some((filter, index) => filter !== filtersRef.current[index])
+    filtersRef.current = filters
+
+    // When filters change on a page other than the first one, the page reset below triggers the fetch
+    if (filtersChanged && page !== 1) {
+      return
+    }
+
     if (agencies) {
       if (agencies.length > 0) {
         fetchData(page)
       } else {
+        requestIdRef.current += 1
+        setLoading(false)
         setRows([])
         setRowCount(0)
         setFetch(false)
@@ -143,7 +171,7 @@ const PropertyList = ({
         setInit(false)
       }
     }
-  }, [page, agencies, types, rentalTerms, location, from, to, sortBy]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, agencies, types, rentalTerms, location, from, to, sortBy, refreshKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (properties) {
@@ -167,6 +195,7 @@ const PropertyList = ({
     from,
     to,
     sortBy,
+    refreshKey,
   ])
 
   useEffect(() => {
