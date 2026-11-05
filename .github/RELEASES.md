@@ -1,5 +1,34 @@
 # Releases
 
+## [Movin' In 7.5](https://github.com/aelassas/movinin/releases/tag/v7.5) – 2026-11-05
+
+#### What's Changed
+* feat(admin, frontend, mobile): add German, Portuguese, Italian, Chinese (simplified) and Japanese language support
+* fix(helper): don't charge an extra day when a stay spans a DST change (#67)
+* fix(backend): migrate cars missing blockOnPay to false at startup to avoid 409 on checkout
+* fix(backend): round amounts to cents instead of flooring them (#70)
+* fix(backend, mobile): localization issues
+* fix(admin): show language button in header on desktop when not signed in
+* fix(admin, frontend, mobile): keep language selected before sign-in and sync it to user.language after sign-in
+* fix(frontend, mobile): always charge in the base currency (#69)
+* fix(mobile): prevent DateTimePicker from re-opening on Android after being dismissed
+* test(backend): add rateLimiter.test.ts (#65)
+* test(backend): add Redis integration tests and configure CI service container
+* chore(deps): update dependencies
+
+#### New Contributors
+* @5eBeKs made their first contribution in https://github.com/aelassas/movinin/pull/67
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v7.4...v7.5
+
+### Assets
+- [movinin-7.5.apk](https://github.com/aelassas/movinin/releases/download/v7.5/movinin-7.5.apk) (114.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.5/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v7.5)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v7.5)
+
 ## [Movin' In 7.4](https://github.com/aelassas/movinin/releases/tag/v7.4) – 2026-11-03
 
 #### What's Changed
