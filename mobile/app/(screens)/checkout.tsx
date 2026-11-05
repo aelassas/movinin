@@ -335,7 +335,7 @@ const CheckoutScreen = () => {
         start: birthDate,
         end: new Date(),
       }).years ?? 0
-      const _birthDateValid = sub >= env.MINIMUM_AGE
+      const _birthDateValid = sub >= (__property?.minimumAge ?? env.MINIMUM_AGE)
 
       setBirthDateValid(_birthDateValid)
       setError(!_birthDateValid)
