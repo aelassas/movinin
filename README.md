@@ -76,41 +76,24 @@ If you want to customize Movin' In while keeping your fork up to date with the l
 
 ## Live Demo
 
-### Frontend
-
-* URL: https://movinin.wexdev.com/
-* Login: jdoe@movinin.io
-* Password: M00vinin
-
-### Admin Panel
-
-* URL: https://movinin.wexdev.com:3003/
-* Login: admin@movinin.io
-* Password: M00vinin
+| App | URL | Login | Password |
+|-----|-----|-------|----------|
+| Frontend | https://movinin.wexdev.com/ | `jdoe@movinin.io` | `M00vinin` |
+| Admin Panel | https://movinin.wexdev.com:3003/ | `admin@movinin.io` | `M00vinin` |
 
 ### Mobile App
 
-You can install the Android app on any Android device.
+Install the Android app on any Android device by scanning the QR code with the Camera app, or by [downloading the APK](https://github.com/aelassas/movinin/releases/download/v7.5/movinin-7.5.apk). Sign in with the frontend login above.
 
-### Scan this code with a device
+<img alt="QR code to download the Movin' In Android APK" width="120" src="https://github.com/user-attachments/assets/d3d2e5fa-2ea9-44a8-8110-c99cb78946cc">
 
-Open the Camera app and point it at this code. Then tap the notification that appears.
+<details>
+<summary>How to install the Mobile App on Android</summary>
 
-<img alt="" width="120" src="https://movin-in.github.io/content/qr-code-7.0.png">
+* Android 8.0 (API level 26) and higher: open the Install unknown apps system settings screen and allow app installations from the source you are downloading the app from (e.g. your web browser).
+* Android 7.1.1 (API level 25) and lower: enable the Unknown sources system setting, found in Settings > Security.
 
-### How to install the Mobile App on Android
-
-* On devices running Android 8.0 (API level 26) and higher, you must navigate to the Install unknown apps system settings screen to enable app installations from a particular location (i.e. the web browser you are downloading the app from).
-
-* On devices running Android 7.1.1 (API level 25) and lower, you should enable the Unknown sources system setting, found in Settings > Security on your device.
-
-### Alternative Way
-
-You can also install the Android App by downloading the APK and installing it on any Android device.
-
-* [Download APK](https://github.com/aelassas/movinin/releases/download/v7.0/movinin-7.0.apk)
-* Login: jdoe@movinin.io
-* Password: M00vinin
+</details>
 
 ## License
 
