@@ -85,7 +85,7 @@ If you want to customize Movin' In while keeping your fork up to date with the l
 
 Install the Android app on any Android device by scanning the QR code with the Camera app, or by [downloading the APK](https://github.com/aelassas/movinin/releases/download/v7.5/movinin-7.5.apk). Sign in with the frontend login above.
 
-<img alt="QR code to download the Movin' In Android APK" width="120" src="https://github.com/user-attachments/assets/d3d2e5fa-2ea9-44a8-8110-c99cb78946cc">
+<img alt="QR code to download the Movin' In Android APK" width="120" src="https://github.com/user-attachments/assets/bf2b821f-027c-4add-893c-d947a116f91f">
 
 <details>
 <summary>How to install the Mobile App on Android</summary>
