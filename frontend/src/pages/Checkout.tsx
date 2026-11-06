@@ -299,6 +299,7 @@ const Checkout = () => {
       //
       let _customerId: string | undefined
       let _sessionId: string | undefined
+      let _clientSecret: string | null = null
       if (!payLater) {
         if (env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.Stripe) {
           const name = movininHelper.truncateString(`${env.WEBSITE_NAME} - ${property.name}`, StripeService.ORDER_NAME_MAX_LENGTH)
@@ -315,7 +316,8 @@ const Checkout = () => {
             customerName: (!authenticated ? renter?.fullName : user?.fullName) as string,
           }
           const res = await StripeService.createCheckoutSession(payload)
-          setClientSecret(res.clientSecret)
+          // The payment form is shown only after the booking has been created
+          _clientSecret = res.clientSecret
           _sessionId = res.sessionId
           _customerId = res.customerId
         } else {
@@ -348,6 +350,9 @@ const Checkout = () => {
         } else if (env.PAYMENT_GATEWAY === movininTypes.PaymentGateway.PayPal) {
           // Set payPalLoaded ONLY AFTER bookingId is set
           setPayPalLoaded(true)
+        } else {
+          // Set clientSecret ONLY AFTER the booking has been created
+          setClientSecret(_clientSecret)
         }
       } else {
         helper.error()
