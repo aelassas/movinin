@@ -185,23 +185,29 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
       user.expireAt = undefined
       await user.save()
 
-      // Notify renter
-      if (!(await bookingController.confirm(user, booking, false))) {
-        res.sendStatus(400)
-        return
-      }
+      // The session is paid and the booking is saved as paid: a failing email or
+      // notification is logged and does not turn the paid session into an error
+      try {
+        // Notify renter
+        if (!(await bookingController.confirm(user, booking, false))) {
+          res.sendStatus(400)
+          return
+        }
 
-      // Notify agency
-      i18n.locale = agency.language
-      let message = i18n.t('BOOKING_PAID_NOTIFICATION')
-      await bookingController.notify(user, booking._id.toString(), agency, message)
+        // Notify agency
+        i18n.locale = agency.language
+        let message = i18n.t('BOOKING_PAID_NOTIFICATION')
+        await bookingController.notify(user, booking._id.toString(), agency, message)
 
-      // Notify admin
-      const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin }))
-      if (admin) {
-        i18n.locale = admin.language
-        message = i18n.t('BOOKING_PAID_NOTIFICATION')
-        await bookingController.notify(user, booking._id.toString(), admin, message)
+        // Notify admin
+        const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin }))
+        if (admin) {
+          i18n.locale = admin.language
+          message = i18n.t('BOOKING_PAID_NOTIFICATION')
+          await bookingController.notify(user, booking._id.toString(), admin, message)
+        }
+      } catch (notifyErr) {
+        logger.error(`[stripe.checkCheckoutSession] Booking ${booking._id.toString()} paid, but sending emails or notifications failed`, notifyErr)
       }
 
       res.sendStatus(200)
