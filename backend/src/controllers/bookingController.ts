@@ -291,6 +291,16 @@ export const checkout = async (req: Request, res: Response) => {
       return
     }
 
+    // Pick-up and drop-off locations must exist before the booking is saved
+    const { location: bookingLocation } = bookingInput
+    if (
+      typeof bookingLocation !== 'string' || !helper.isValidObjectId(bookingLocation)
+      || !(await Location.exists({ _id: bookingLocation }))
+    ) {
+      res.status(400).send('Invalid location')
+      return
+    }
+
     // Calculate expected total
     const expectedBasePrice = movininHelper.calculateTotalPrice(
       propertyObj.toObject() as unknown as movininTypes.Property,
@@ -528,60 +538,70 @@ export const checkout = async (req: Request, res: Response) => {
       : body.paymentIntentId
         ? movininTypes.BookingStatus.Paid
         : movininTypes.BookingStatus.Void
-    if (guestUser) {
-      if (status === movininTypes.BookingStatus.Paid || body.payLater) {
+    if (guestUser && (status === movininTypes.BookingStatus.Paid || body.payLater)) {
+      try {
         guestUser.expireAt = undefined
         await guestUser.save()
+      } catch (guestErr) {
+        logger.error(`[booking.checkout] Booking ${booking._id.toString()} saved, but clearing the guest account expiry failed`, guestErr)
       }
+    }
 
-      const token = new Token({ user: user._id, token: helper.generateToken() })
-      await token.save()
+    // The booking is saved (and its payment captured): a failing email or
+    // notification is logged and does not turn the checkout into an error
+    try {
+      if (guestUser) {
+        const token = new Token({ user: user._id, token: helper.generateToken() })
+        await token.save()
 
-      const mailOptions: SendMailOptions = {
-        from: env.SMTP_FROM,
-        to: user.email,
-        subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
-        html: `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
+        const mailOptions: SendMailOptions = {
+          from: env.SMTP_FROM,
+          to: user.email,
+          subject: i18n.t('ACCOUNT_ACTIVATION_SUBJECT'),
+          html: `<p>${i18n.t('HELLO')}${user.fullName},<br><br>
         ${i18n.t('ACCOUNT_ACTIVATION_LINK')}<br><br>
         ${helper.joinURL(env.FRONTEND_HOST, 'activate')}/?u=${encodeURIComponent(user._id.toString())}&e=${encodeURIComponent(user.email)}&t=${encodeURIComponent(token.token)}<br><br>
         ${i18n.t('REGARDS')}<br></p>`,
-      }
-      await mailHelper.sendMail(mailOptions)
-    } else if (paymentIntentCustomerId) {
-      user.customerId = paymentIntentCustomerId
-      await user.save()
-    }
-
-    if (body.payLater || (booking.status === movininTypes.BookingStatus.Paid && body.paymentIntentId && body.customerId)) {
-      // Mark property as unavailable
-      // if (env.MARK_PROPERTY_AS_UNAVAILABLE_ON_CHECKOUT) {
-      //   await Property.updateOne({ _id: booking.property }, { available: false })
-      // }
-
-      // Send confirmation email
-      if (!(await confirm(user, booking, body.payLater!))) {
-        res.sendStatus(400)
-        return
+        }
+        await mailHelper.sendMail(mailOptions)
+      } else if (paymentIntentCustomerId) {
+        user.customerId = paymentIntentCustomerId
+        await user.save()
       }
 
-      // Notify agency
-      const agencyUser = await User.findById(booking.agency)
-      if (!agencyUser) {
-        logger.info(`Agency ${booking.agency} not found`)
-        res.sendStatus(204)
-        return
-      }
-      i18n.locale = agencyUser.language
-      let message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
-      await notify(user, booking._id.toString(), agencyUser, message)
+      if (body.payLater || (booking.status === movininTypes.BookingStatus.Paid && body.paymentIntentId && body.customerId)) {
+        // Mark property as unavailable
+        // if (env.MARK_PROPERTY_AS_UNAVAILABLE_ON_CHECKOUT) {
+        //   await Property.updateOne({ _id: booking.property }, { available: false })
+        // }
 
-      // Notify admin
-      const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin }))
-      if (admin) {
-        i18n.locale = admin.language
-        message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
-        await notify(user, booking._id.toString(), admin, message)
+        // Send confirmation email
+        if (!(await confirm(user, booking, body.payLater!))) {
+          res.sendStatus(400)
+          return
+        }
+
+        // Notify agency
+        const agencyUser = await User.findById(booking.agency)
+        if (!agencyUser) {
+          logger.info(`Agency ${booking.agency} not found`)
+          res.sendStatus(204)
+          return
+        }
+        i18n.locale = agencyUser.language
+        let message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
+        await notify(user, booking._id.toString(), agencyUser, message)
+
+        // Notify admin
+        const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: movininTypes.UserType.Admin }))
+        if (admin) {
+          i18n.locale = admin.language
+          message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
+          await notify(user, booking._id.toString(), admin, message)
+        }
       }
+    } catch (notifyErr) {
+      logger.error(`[booking.checkout] Booking ${booking._id.toString()} saved, but sending emails or notifications failed`, notifyErr)
     }
 
     res.status(200).send({ bookingId: booking._id })

@@ -32,6 +32,7 @@ let RENTER1_ID: string
 let RENTER1_TOKEN: string
 let RENTER2_ID: string
 let LOCATION_ID: string
+let LOCATION2_ID: string
 let PROPERTY1_ID: string
 let PROPERTY2_ID: string
 let BOOKING_ID: string
@@ -69,6 +70,7 @@ beforeAll(async () => {
 
   // create a location
   LOCATION_ID = await testHelper.createLocation('Location 1 EN', 'Location 1 FR')
+  LOCATION2_ID = await testHelper.createLocation('Location 2 EN', 'Location 2 FR')
 
   // create property
   const payload: movininTypes.CreatePropertyPayload = {
@@ -119,6 +121,7 @@ afterAll(async () => {
 
   // delete the location
   await testHelper.deleteLocation(LOCATION_ID)
+  await testHelper.deleteLocation(LOCATION2_ID)
 
   // delete the property
   await Property.deleteMany({ _id: { $in: [PROPERTY1_ID, PROPERTY2_ID] } })
@@ -335,7 +338,7 @@ describe('POST /api/checkout', () => {
     expect(res.statusCode).toBe(400)
 
     payload.booking!.property = PROPERTY1_ID
-    payload.booking!.location = testHelper.GetRandromObjectIdAsString()
+    payload.booking!.location = LOCATION2_ID
     res = await request(app)
       .post('/api/checkout')
       .set(env.X_ACCESS_TOKEN, RENTER1_TOKEN)
@@ -378,6 +381,7 @@ describe('POST /api/checkout', () => {
       .send({
         booking: {
           property: PROPERTY1_ID,
+          location: LOCATION_ID,
           renter: RENTER1_ID,
           from: new Date(2025, 6, 10),
           to: new Date(2025, 6, 13),
@@ -406,6 +410,7 @@ describe('POST /api/checkout', () => {
         booking: {
           property: PROPERTY1_ID,
           renter: RENTER2_ID,
+          location: LOCATION_ID,
           from: new Date(2025, 6, 20),
           to: new Date(2025, 6, 23),
           cancellation: false,
@@ -428,7 +433,7 @@ describe('POST /api/checkout', () => {
       .send({
         booking: {
           agency: testHelper.GetRandromObjectIdAsString(),
-          location: testHelper.GetRandromObjectIdAsString(),
+          location: LOCATION2_ID,
           property: PROPERTY1_ID,
           renter: RENTER2_ID,
           from: new Date(2025, 6, 24),
