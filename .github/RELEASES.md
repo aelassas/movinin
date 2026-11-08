@@ -1,5 +1,21 @@
 # Releases
 
+## [Movin' In 7.6](https://github.com/aelassas/movinin/releases/tag/v7.6) – 2026-11-08
+
+#### What's Changed
+* fix(mobile): check a guest renter against the property minimum age before payment by @5eBeKs in https://github.com/aelassas/movinin/pull/72
+
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v7.5...v7.6
+
+### Assets
+- [movinin-7.6.apk](https://github.com/aelassas/movinin/releases/download/v7.6/movinin-7.6.apk) (114.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.6/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v7.6)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v7.6)
+
 ## [Movin' In 7.5](https://github.com/aelassas/movinin/releases/tag/v7.5) – 2026-11-05
 
 #### What's Changed
