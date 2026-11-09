@@ -16,15 +16,18 @@ describe('POST /api/send-email', () => {
   let redisEval: jest.Mock
   let previousContactEmail: string | undefined
   let previousRecaptchaSecret: string | undefined
+  let previousRecaptchaMinScore: string | undefined
   let previousNodeEnv: string | undefined
 
   beforeEach(async () => {
     jest.resetModules()
     previousContactEmail = process.env.MI_CONTACT_EMAIL
     previousRecaptchaSecret = process.env.MI_RECAPTCHA_SECRET
+    previousRecaptchaMinScore = process.env.MI_RECAPTCHA_MIN_SCORE
     previousNodeEnv = process.env.NODE_ENV
     process.env.MI_CONTACT_EMAIL = 'contact@example.com'
     process.env.MI_RECAPTCHA_SECRET = 'test-secret'
+    process.env.MI_RECAPTCHA_MIN_SCORE = '0.5'
 
     verificationResponse = { success: true, action: 'submit', score: 0.9 }
     verificationError = false
@@ -92,6 +95,11 @@ describe('POST /api/send-email', () => {
       delete process.env.NODE_ENV
     } else {
       process.env.NODE_ENV = previousNodeEnv
+    }
+    if (previousRecaptchaMinScore === undefined) {
+      delete process.env.MI_RECAPTCHA_MIN_SCORE
+    } else {
+      process.env.MI_RECAPTCHA_MIN_SCORE = previousRecaptchaMinScore
     }
   })
 
@@ -253,25 +261,25 @@ describe('POST /api/send-email', () => {
     expect(sendMail).toHaveBeenCalledTimes(rateLimitCapacity)
   })
 
-it('fails closed when the Redis limiter is unavailable in production', async () => {
-  const originalEnv = process.env.NODE_ENV
-  process.env.NODE_ENV = 'production'
-  redisUnavailable = true
+  it('fails closed when the Redis limiter is unavailable in production', async () => {
+    const originalEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'production'
+    redisUnavailable = true
 
-  try {
-    const response = await request(app)
-      .post('/api/send-email')
-      .set('Origin', frontendHost)
-      .set('x-test-rate-limit', 'true')
-      .send(validPayload())
+    try {
+      const response = await request(app)
+        .post('/api/send-email')
+        .set('Origin', frontendHost)
+        .set('x-test-rate-limit', 'true')
+        .send(validPayload())
 
-    expect(response.statusCode).toBe(503)
-    expect(sendMail).not.toHaveBeenCalled()
-  } finally {
-    process.env.NODE_ENV = originalEnv
-    redisUnavailable = false
-  }
-})
+      expect(response.statusCode).toBe(503)
+      expect(sendMail).not.toHaveBeenCalled()
+    } finally {
+      process.env.NODE_ENV = originalEnv
+      redisUnavailable = false
+    }
+  })
 
   it.each([
     ['invalid email', { from: 'not-an-email' }],
