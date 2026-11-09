@@ -43,7 +43,6 @@ const CheckoutStatus = (
 
   useEffect(() => {
     const init = async () => {
-      console.log('sessionId', sessionId)
       // If accessed via a route with :sessionId, verify matching URL param
       if (sessionIdFromUrl && sessionId !== sessionIdFromUrl) {
         setSessionIdMismatch(true)
