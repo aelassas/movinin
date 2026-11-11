@@ -1,5 +1,22 @@
 # Releases
 
+## [Movin' In 7.7](https://github.com/aelassas/movinin/releases/tag/v7.7) – 2026-11-11
+
+* feat(backend): export `MI_RECAPTCHA_MIN_SCORE` in env config
+* fix(backend): treat email and notification errors as non-blocking during checkout
+* fix(backend): don't fail a paid PayPal or Stripe order when an email fails
+* fix(backend): adjust reCAPTCHA score threshold for non-production environments
+
+**Full Changelog**: https://github.com/aelassas/movinin/compare/v7.6...v7.7
+
+### Assets
+- [movinin-7.7.apk](https://github.com/aelassas/movinin/releases/download/v7.7/movinin-7.7.apk) (114.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.7/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v7.7)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v7.7)
+
 ## [Movin' In 7.6](https://github.com/aelassas/movinin/releases/tag/v7.6) – 2026-11-08
 
 #### What's Changed
