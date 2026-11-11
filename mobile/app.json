@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Movin' In",
-    "version": "7.7.0",
+    "version": "7.8.0",
     "scheme": "movinin",
     "slug": "movinin",
     "icon": "./assets/icon.png",
@@ -9,7 +9,7 @@
       "**/*"
     ],
     "android": {
-      "versionCode": 770,
+      "versionCode": 780,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png"
       },
@@ -19,7 +19,7 @@
       "backgroundColor": "#00000000"
     },
     "ios": {
-      "buildNumber": "7.7.0",
+      "buildNumber": "7.8.0",
       "supportsTablet": true,
       "icon": "./assets/icon.png",
       "bundleIdentifier": "com.movinin",
