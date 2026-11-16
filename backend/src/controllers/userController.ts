@@ -423,16 +423,24 @@ export const deleteTokens = async (req: Request, res: Response) => {
   const { userId } = req.params as { userId: string }
 
   try {
-    const result = await Token.deleteMany({
-      user: new mongoose.Types.ObjectId(userId),
-    })
-
-    if (result.deletedCount > 0) {
-      res.sendStatus(200)
+    if (!helper.isValidObjectId(userId)) {
+      res.status(400).send(i18n.t('ERROR'))
       return
     }
 
-    res.sendStatus(400)
+    const sessionUserId = req.user?._id
+    const sessionUserType = req.user?.type
+    if (!sessionUserId || (sessionUserId !== userId && sessionUserType !== movininTypes.UserType.Admin)) {
+      logger.error(`[user.deleteTokens] Forbidden: user ${sessionUserId} tried to delete tokens of user ${userId}`)
+      res.status(403).send('Forbidden')
+      return
+    }
+
+    await Token.deleteMany({
+      user: new mongoose.Types.ObjectId(userId),
+    })
+
+    res.sendStatus(200)
   } catch (err) {
     logger.error(`[user.deleteTokens] ${i18n.t('ERROR')} ${userId}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
@@ -469,9 +477,6 @@ export const resend = async (req: Request, res: Response) => {
         res.sendStatus(403)
         return
       }
-
-      user.active = false
-      await user.save()
 
       // generate token and save
       const token = new Token({ user: user._id, token: helper.generateToken() })
@@ -518,21 +523,38 @@ export const resend = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const activate = async (req: Request, res: Response) => {
-  const { body }: { body: movininTypes.ActivatePayload } = req
-  const { userId } = body
+  const { body }: { body: Partial<movininTypes.ActivatePayload> } = req
+
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    res.status(400).send(i18n.t('ERROR'))
+    return
+  }
+
+  const { userId, token: rawToken, password } = body
 
   try {
-    if (!helper.isValidObjectId(userId)) {
-      throw new Error('body.userId is not valid')
+    if (
+      typeof userId !== 'string'
+      || !helper.isValidObjectId(userId)
+      || typeof rawToken !== 'string'
+      || rawToken.trim().length === 0
+      || typeof password !== 'string'
+      || password.length < 6
+    ) {
+      res.status(400).send(i18n.t('ERROR'))
+      return
     }
 
-    const user = await User.findById(userId)
+    const userObjectId = new mongoose.Types.ObjectId(userId)
+    const user = await User.findById(userObjectId)
 
     if (user) {
-      const token = await Token.findOne({ user: userId, token: body.token })
+      const token = await Token.findOneAndDelete({
+        user: userObjectId,
+        token: String(rawToken),
+      })
 
       if (token) {
-        const { password } = body
         const passwordHash = await authHelper.hashPassword(password)
         user.password = passwordHash
 
@@ -541,6 +563,8 @@ export const activate = async (req: Request, res: Response) => {
         user.expireAt = undefined
         await user.save()
 
+        await Token.deleteMany({ user: userObjectId })
+
         res.sendStatus(200)
         return
       }
@@ -548,7 +572,7 @@ export const activate = async (req: Request, res: Response) => {
 
     res.sendStatus(204)
   } catch (err) {
-    logger.error(`[user.activate] ${i18n.t('ERROR')} ${userId}`, err)
+    logger.error(`[user.activate] ${i18n.t('ERROR')} ${String(userId)}`, err)
     res.status(400).send(i18n.t('ERROR') + err)
   }
 }

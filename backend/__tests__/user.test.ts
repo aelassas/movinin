@@ -534,6 +534,7 @@ describe('POST /api/activate', () => {
     expect(user).not.toBeNull()
     expect(user?.active).toBeTruthy()
     expect(user?.verified).toBeTruthy()
+    expect(await Token.findOne({ user: USER1_ID })).toBeNull()
 
     payload.userId = USER2_ID
     res = await request(app)
@@ -556,7 +557,7 @@ describe('POST /api/activate', () => {
 
     res = await request(app)
       .post('/api/activate')
-    expect(res.statusCode).toBe(500)
+    expect(res.statusCode).toBe(400)
   })
 })
 
@@ -566,10 +567,10 @@ describe('GET /api/confirm-email/:email/:token', () => {
     expect(user).not.toBeNull()
     user!.verified = false
     await user?.save()
-    const userToken = await Token.findOne({ user: USER1_ID })
-    expect(userToken).not.toBeNull()
-    const token = userToken?.token
-    expect(token?.length).toBeGreaterThan(1)
+    const userToken = new Token({ user: USER1_ID, token: helper.generateToken() })
+    await userToken.save()
+    const token = userToken.token
+    expect(token.length).toBeGreaterThan(1)
     let res = await request(app)
       .get(`/api/confirm-email/${USER1_EMAIL}/${token}`)
     expect(res.statusCode).toBe(200)
@@ -615,8 +616,7 @@ describe('POST /api/resend/:type/:email/:reset', () => {
     // expect(user?.active).toBeFalsy()
 
     user = await User.findById(USER1_ID)
-    expect(user).not.toBeNull()
-    expect(user?.active).toBeFalsy()
+    expect(user?.active).toBeTruthy()
 
     res = await request(app)
       .post(`/api/resend/${movininTypes.AppType.Admin}/${USER1_EMAIL}/${reset}`)
@@ -685,23 +685,36 @@ describe('POST /api/resend-link', () => {
 
 describe('DELETE /api/delete-tokens/:userId', () => {
   it("should delete user's tokens", async () => {
-    let userTokens = await Token.find({ user: USER1_ID })
-    expect(userTokens.length).toBeGreaterThan(0)
+    const token = await testHelper.signinAsAdmin()
 
+    // test failure (unauthenticated)
     let res = await request(app)
       .delete(`/api/delete-tokens/${USER1_ID}`)
-    expect(res.statusCode).toBe(200)
+    expect(res.statusCode).toBe(403)
 
+    // test success
+    let userTokens = await Token.find({ user: USER1_ID })
+    expect(userTokens.length).toBeGreaterThan(0)
+    res = await request(app)
+      .delete(`/api/delete-tokens/${USER1_ID}`)
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(200)
     userTokens = await Token.find({ user: USER1_ID })
     expect(userTokens.length).toBe(0)
 
+    // test success (idempotent when no tokens remain)
     res = await request(app)
       .delete(`/api/delete-tokens/${USER1_ID}`)
-    expect(res.statusCode).toBe(400)
+      .set(env.X_ACCESS_TOKEN, token)
+    expect(res.statusCode).toBe(200)
 
+    // test failure (wrong user id)
     res = await request(app)
       .delete('/api/delete-tokens/0')
+      .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(400)
+
+    await testHelper.signout(token)
   })
 })
 
