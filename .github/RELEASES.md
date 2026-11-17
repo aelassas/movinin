@@ -1,5 +1,18 @@
 # Releases
 
+## [Movin' In 7.8](https://github.com/aelassas/movinin/releases/tag/v7.8) – 2026-11-17
+
+* fix(security): prevent NoSQL operator injection in /api/activate by @destinyfkrr ([GHSA-c686-3wqx-x82h](https://github.com/aelassas/movinin/security/advisories/GHSA-c686-3wqx-x82h))
+* ci(loc.yml): replace apt-get with npm for cloc installation
+
+### Assets
+- [movinin-7.8.apk](https://github.com/aelassas/movinin/releases/download/v7.8/movinin-7.8.apk) (114.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.8/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v7.8)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v7.8)
+
 ## [Movin' In 7.7](https://github.com/aelassas/movinin/releases/tag/v7.7) – 2026-11-11
 
 * feat(backend): export `MI_RECAPTCHA_MIN_SCORE` in env config
