@@ -570,7 +570,7 @@ export const deleteTempImage = async (req: Request, res: Response) => {
 export const deleteImage = async (req: Request, res: Response) => {
   try {
     const { property: propertyId, image: imageFileName } = req.params as { property: string, image: string }
-console.log(`Deleting image ${imageFileName} for property ${propertyId}`)
+
     const property = await Property.findById(propertyId)
 
     if (property) {
