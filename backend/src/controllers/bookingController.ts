@@ -100,6 +100,48 @@ async function withPropertyLock<T>(propertyId: string, fn: () => Promise<T>): Pr
 export const create = async (req: Request, res: Response) => {
   try {
     const { body }: { body: movininTypes.Booking } = req
+    if (!body || typeof body !== 'object') {
+      res.status(400).send(i18n.t('ERROR') + 'Booking missing')
+      return
+    }
+
+    const sessionUserId = req.user?._id
+    const sessionUser = sessionUserId ? await User.findById(sessionUserId) : null
+    if (!sessionUser || (sessionUser.type !== movininTypes.UserType.Admin && sessionUser.type !== movininTypes.UserType.Agency)) {
+      logger.error(`[booking.create] Unauthorized attempt to create booking by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot create a booking')
+      return
+    }
+
+    const propertyId = typeof body.property === 'string' ? body.property : String(body.property || '')
+    if (!helper.isValidObjectId(propertyId)) {
+      res.status(400).send(i18n.t('ERROR') + 'Invalid property')
+      return
+    }
+
+    const property = await Property.findById(propertyId)
+    if (!property) {
+      res.status(400).send(i18n.t('ERROR') + 'Property not found')
+      return
+    }
+
+    if (sessionUser.type === movininTypes.UserType.Agency) {
+      if (property.agency?.toString() !== sessionUser._id.toString()) {
+        logger.error(`[booking.create] Unauthorized attempt by agency ${sessionUserId} to book property ${property._id} owned by ${property.agency}`)
+        res.status(403).send('Forbidden: You cannot create a booking for another agency\'s property')
+        return
+      }
+      body.agency = sessionUser._id.toString()
+    } else if (body.agency && body.agency.toString() !== property.agency?.toString()) {
+      res.status(400).send(i18n.t('ERROR') + 'Invalid agency')
+      return
+    }
+
+    if (body.location && body.location.toString() !== property.location?.toString()) {
+      res.status(400).send(i18n.t('ERROR') + 'Invalid location')
+      return
+    }
+
     const booking = new Booking(body)
 
     await booking.save()

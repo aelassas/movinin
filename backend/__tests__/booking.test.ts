@@ -1740,4 +1740,47 @@ describe('Security Regression Tests - Issue #124 Equivalent', () => {
     expect(res.body.renter).toBeDefined()
     expect(res.body.renter.password).toBeUndefined()
   })
+
+  it("should prevent Agency A from creating a booking for Agency B's property", async () => {
+    const propertyB = await Property.findOne({ agency: agencyBId })
+    expect(propertyB).not.toBeNull()
+
+    const payload: movininTypes.Booking = {
+      agency: agencyBId,
+      location: propertyB!.location.toString(),
+      property: propertyB!._id.toString(),
+      renter: RENTER1_ID,
+      from: new Date(2027, 2, 1),
+      to: new Date(2027, 2, 8),
+      status: movininTypes.BookingStatus.Paid,
+      cancellation: false,
+      price: 100,
+    }
+
+    // Agency A attempts to book Agency B's property (with agencyBId)
+    let res = await request(app)
+      .post('/api/create-booking')
+      .set(env.X_ACCESS_TOKEN, agencyAToken)
+      .send(payload)
+    expect(res.statusCode).toBe(403)
+
+    // Agency A attempts to book Agency B's property (even with own agencyAId)
+    payload.agency = agencyAId
+    res = await request(app)
+      .post('/api/create-booking')
+      .set(env.X_ACCESS_TOKEN, agencyAToken)
+      .send(payload)
+    expect(res.statusCode).toBe(403)
+
+    // Agency B can create a booking for own property (and spoofed agency ID is overridden)
+    payload.agency = agencyAId
+    res = await request(app)
+      .post('/api/create-booking')
+      .set(env.X_ACCESS_TOKEN, agencyBToken)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    expect(res.body.agency).toBe(agencyBId)
+
+    await Booking.deleteOne({ _id: res.body._id })
+  })
 })

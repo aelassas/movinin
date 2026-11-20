@@ -570,21 +570,33 @@ export const deleteTempImage = async (req: Request, res: Response) => {
 export const deleteImage = async (req: Request, res: Response) => {
   try {
     const { property: propertyId, image: imageFileName } = req.params as { property: string, image: string }
-
+console.log(`Deleting image ${imageFileName} for property ${propertyId}`)
     const property = await Property.findById(propertyId)
 
-    if (property && property.images) {
-      const index = property.images.findIndex((i) => i === imageFileName)
-
-      if (index > -1) {
-        const _image = path.join(env.CDN_PROPERTIES, imageFileName)
-        if (await helper.pathExists(_image)) {
-          await asyncFs.unlink(_image)
-        }
-        property.images.splice(index, 1)
-        await property.save()
-        res.sendStatus(200)
+    if (property) {
+      // begin of security check
+      const sessionUserId = req.user?._id
+      const sessionUser = await User.findById(sessionUserId)
+      if (!sessionUser || (sessionUser.type === movininTypes.UserType.Agency && property.agency?.toString() !== sessionUserId)) {
+        logger.error(`[property.deleteImage] Unauthorized attempt to delete image of property ${property._id} by user ${sessionUserId}`)
+        res.status(403).send('Forbidden: You cannot delete this property image')
         return
+      }
+      // end of security check
+
+      if (property.images) {
+        const index = property.images.findIndex((i) => i === imageFileName)
+
+        if (index > -1) {
+          const _image = path.join(env.CDN_PROPERTIES, imageFileName)
+          if (await helper.pathExists(_image)) {
+            await asyncFs.unlink(_image)
+          }
+          property.images.splice(index, 1)
+          await property.save()
+          res.sendStatus(200)
+          return
+        }
       }
 
       res.sendStatus(204)

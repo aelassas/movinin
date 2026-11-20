@@ -378,11 +378,24 @@ describe('POST /api/delete-property-image/:id/:image', () => {
     let property = await Property.findById(PROPERTY_ID)
     expect(property?.images).toBeDefined()
     expect(property?.images?.length).toBe(2)
+    const otherAgencyId = property?.agency?.toString() === AGENCY1_ID ? AGENCY2_ID : AGENCY1_ID
+    const otherAgencyToken = await testHelper.generateToken(otherAgencyId)
     const additionalImageName = (property?.images ?? [])[0]
     const additionalImagePath = path.join(env.CDN_PROPERTIES, additionalImageName)
     let imageExists = await helper.pathExists(additionalImagePath)
     expect(imageExists).toBeTruthy()
+
+    // test failure (another agency cannot delete the property's image)
     let res = await request(app)
+      .post(`/api/delete-property-image/${PROPERTY_ID}/${additionalImageName}`)
+      .set(env.X_ACCESS_TOKEN, otherAgencyToken)
+    expect(res.statusCode).toBe(403)
+    imageExists = await helper.pathExists(additionalImagePath)
+    expect(imageExists).toBeTruthy()
+    expect((await Property.findById(PROPERTY_ID))?.images).toContain(additionalImageName)
+
+    // test success (admin deletes additional image)
+    res = await request(app)
       .post(`/api/delete-property-image/${PROPERTY_ID}/${additionalImageName}`)
       .set(env.X_ACCESS_TOKEN, token)
     expect(res.statusCode).toBe(200)
