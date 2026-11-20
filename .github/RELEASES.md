@@ -1,5 +1,17 @@
 # Releases
 
+## [Movin' In 7.9](https://github.com/aelassas/movinin/releases/tag/v7.9) – 2026-11-20
+
+* fix(security): enforce agency ownership checks on booking creation and property image deletion by @kats1123 ([GHSA-v7r2-65q4-28j3](https://github.com/aelassas/movinin/security/advisories/GHSA-v7r2-65q4-28j3))
+
+### Assets
+- [movinin-7.9.apk](https://github.com/aelassas/movinin/releases/download/v7.9/movinin-7.9.apk) (114.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v7.9/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v7.9)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v7.9)
+
 ## [Movin' In 7.8](https://github.com/aelassas/movinin/releases/tag/v7.8) – 2026-11-17
 
 * fix(security): prevent NoSQL operator injection in /api/activate by @destinyfkrr ([GHSA-c686-3wqx-x82h](https://github.com/aelassas/movinin/security/advisories/GHSA-c686-3wqx-x82h))
