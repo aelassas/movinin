@@ -183,6 +183,56 @@ describe('POST /api/create-property', () => {
 
     await testHelper.signout(token)
   })
+
+  it('should enforce authenticated agency ownership when an agency creates a property', async () => {
+    const agency1Token = await testHelper.generateToken(AGENCY1_ID)
+    const mainImage = path.join(env.CDN_TEMP_PROPERTIES, MAIN_IMAGE1)
+    if (!(await helper.pathExists(mainImage))) {
+      await asyncFs.copyFile(MAIN_IMAGE1_PATH, mainImage)
+    }
+
+    const payload: movininTypes.CreatePropertyPayload = {
+      name: 'Injected Property',
+      agency: AGENCY2_ID, // Agency 1 attempts to assign property to Agency 2
+      type: movininTypes.PropertyType.House,
+      description: '<p>Test description</p>',
+      image: MAIN_IMAGE1,
+      images: [],
+      bedrooms: 2,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 1,
+      size: 120,
+      petsAllowed: false,
+      furnished: true,
+      aircon: true,
+      minimumAge: 21,
+      location: LOCATION1_ID,
+      address: '',
+      price: 1500,
+      hidden: false,
+      cancellation: 0,
+      available: true,
+      rentalTerm: movininTypes.RentalTerm.Monthly,
+    }
+
+    const res = await request(app)
+      .post('/api/create-property')
+      .set(env.X_ACCESS_TOKEN, agency1Token)
+      .send(payload)
+    expect(res.statusCode).toBe(200)
+    expect(res.body.agency).toBe(AGENCY1_ID)
+
+    const createdProperty = await Property.findById(res.body._id)
+    expect(createdProperty?.agency.toString()).toBe(AGENCY1_ID)
+    if (createdProperty?.image) {
+      const imgPath = path.join(env.CDN_PROPERTIES, createdProperty.image)
+      if (await helper.pathExists(imgPath)) {
+        await asyncFs.unlink(imgPath)
+      }
+    }
+    await createdProperty?.deleteOne()
+  })
 })
 
 describe('PUT /api/update-property', () => {
@@ -368,6 +418,84 @@ describe('PUT /api/update-property', () => {
     expect(res.statusCode).toBe(500)
 
     await testHelper.signout(token)
+  })
+
+  it("should prevent an agency from transferring a property to another agency or updating another agency's property", async () => {
+    const agency1Token = await testHelper.generateToken(AGENCY1_ID)
+    const agency2Token = await testHelper.generateToken(AGENCY2_ID)
+
+    const property = new Property({
+      name: 'Transfer Guard Property',
+      agency: AGENCY1_ID,
+      type: movininTypes.PropertyType.House,
+      description: '<p>Test description</p>',
+      image: 'guard.jpg',
+      images: [],
+      bedrooms: 2,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 1,
+      size: 120,
+      petsAllowed: false,
+      furnished: true,
+      aircon: true,
+      minimumAge: 21,
+      location: LOCATION1_ID,
+      address: '',
+      price: 1500,
+      hidden: false,
+      cancellation: 0,
+      available: true,
+      rentalTerm: movininTypes.RentalTerm.Monthly,
+    })
+    await property.save()
+
+    try {
+      const payload: movininTypes.UpdatePropertyPayload = {
+        _id: property._id.toString(),
+        name: 'Transfer Guard Property Updated',
+        agency: AGENCY2_ID, // Agency 1 attempts to transfer ownership to Agency 2
+        type: movininTypes.PropertyType.House,
+        description: '<p>Test description</p>',
+        image: '',
+        images: [],
+        bedrooms: 2,
+        bathrooms: 1,
+        kitchens: 1,
+        parkingSpaces: 1,
+        size: 120,
+        petsAllowed: false,
+        furnished: true,
+        aircon: true,
+        minimumAge: 21,
+        location: LOCATION1_ID,
+        address: '',
+        price: 1600,
+        hidden: false,
+        cancellation: 0,
+        available: true,
+        rentalTerm: movininTypes.RentalTerm.Monthly,
+        blockOnPay: true,
+      }
+
+      // Agency 2 cannot update Agency 1's property
+      let res = await request(app)
+        .put('/api/update-property')
+        .set(env.X_ACCESS_TOKEN, agency2Token)
+        .send(payload)
+      expect(res.statusCode).toBe(403)
+
+      // Agency 1 updates own property, but agency field remains locked to AGENCY1_ID
+      res = await request(app)
+        .put('/api/update-property')
+        .set(env.X_ACCESS_TOKEN, agency1Token)
+        .send(payload)
+      expect(res.statusCode).toBe(200)
+      expect(res.body.agency).toBe(AGENCY1_ID)
+      expect((await Property.findById(property._id))?.agency.toString()).toBe(AGENCY1_ID)
+    } finally {
+      await property.deleteOne()
+    }
   })
 })
 

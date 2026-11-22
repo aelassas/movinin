@@ -1783,4 +1783,89 @@ describe('Security Regression Tests - Issue #124 Equivalent', () => {
 
     await Booking.deleteOne({ _id: res.body._id })
   })
+
+  it("should prevent Agency A from moving a booking onto Agency B's property or into Agency B's account", async () => {
+    const propertyB = await Property.findOne({ agency: agencyBId })
+    expect(propertyB).not.toBeNull()
+
+    const propertyA = new Property({
+      name: 'Agency A Property',
+      agency: agencyAId,
+      type: movininTypes.PropertyType.House,
+      description: 'Test Property A',
+      image: 'house.jpg',
+      images: [],
+      bedrooms: 2,
+      bathrooms: 1,
+      kitchens: 1,
+      parkingSpaces: 1,
+      size: 100,
+      petsAllowed: false,
+      furnished: true,
+      aircon: true,
+      minimumAge: 21,
+      location: LOCATION_ID,
+      price: 1000,
+      cancellation: 0,
+      available: true,
+      rentalTerm: movininTypes.RentalTerm.Daily,
+    })
+    await propertyA.save()
+
+    const bookingA = new Booking({
+      agency: agencyAId,
+      property: propertyA._id,
+      renter: RENTER1_ID,
+      location: LOCATION_ID,
+      from: new Date(2027, 3, 1),
+      to: new Date(2027, 3, 5),
+      status: movininTypes.BookingStatus.Reserved,
+      price: 4000,
+    })
+    await bookingA.save()
+
+    try {
+      const payload: movininTypes.Booking = {
+        _id: bookingA._id.toString(),
+        agency: agencyBId,
+        property: propertyB!._id.toString(),
+        renter: RENTER1_ID,
+        location: LOCATION_ID,
+        from: new Date(2027, 3, 1),
+        to: new Date(2027, 3, 5),
+        status: movininTypes.BookingStatus.Reserved,
+        cancellation: false,
+        price: 4000,
+      }
+
+      // Agency A attempts to retarget own booking onto Agency B's property and agency B
+      let res = await request(app)
+        .put('/api/update-booking')
+        .set(env.X_ACCESS_TOKEN, agencyAToken)
+        .send(payload)
+      expect(res.statusCode).toBe(403)
+
+      // Even with agencyAId in payload, targeting Agency B's property is rejected
+      payload.agency = agencyAId
+      res = await request(app)
+        .put('/api/update-booking')
+        .set(env.X_ACCESS_TOKEN, agencyAToken)
+        .send(payload)
+      expect(res.statusCode).toBe(403)
+
+      // Updating own booking on own property succeeds and forces agency to agencyAId
+      payload.property = propertyA._id.toString()
+      payload.agency = agencyBId // spoofed agency ID is overridden
+      res = await request(app)
+        .put('/api/update-booking')
+        .set(env.X_ACCESS_TOKEN, agencyAToken)
+        .send(payload)
+      expect(res.statusCode).toBe(200)
+      expect(res.body.agency).toBe(agencyAId)
+      expect(res.body.property).toBe(propertyA._id.toString())
+    } finally {
+      await Booking.deleteOne({ _id: bookingA._id })
+      await propertyA.deleteOne()
+    }
+  })
 })

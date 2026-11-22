@@ -28,6 +28,18 @@ export const create = async (req: Request, res: Response) => {
   const { body }: { body: movininTypes.CreatePropertyPayload } = req
 
   try {
+    const sessionUserId = req.user?._id
+    const sessionUser = sessionUserId ? await User.findById(sessionUserId) : null
+    if (!sessionUser || (sessionUser.type !== movininTypes.UserType.Admin && sessionUser.type !== movininTypes.UserType.Agency)) {
+      logger.error(`[property.create] Unauthorized attempt to create property by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot create a property')
+      return
+    }
+
+    if (sessionUser.type === movininTypes.UserType.Agency) {
+      body.agency = sessionUser._id.toString()
+    }
+
     const {
       name,
       type,
@@ -236,7 +248,7 @@ export const update = async (req: Request, res: Response) => {
       // begin of security check
       const sessionUserId = req.user?._id
       const sessionUser = await User.findById(sessionUserId)
-      if (!sessionUser || (sessionUser.type === movininTypes.UserType.Agency && property.agency?.toString() !== sessionUserId)) {
+      if (!sessionUser || sessionUser.type === movininTypes.UserType.User || (sessionUser.type === movininTypes.UserType.Agency && property.agency?.toString() !== sessionUserId)) {
         logger.error(`[property.update] Unauthorized attempt to update property ${property._id} by user ${sessionUserId}`)
         res.status(403).send('Forbidden: You cannot update this property')
         return
@@ -273,7 +285,9 @@ export const update = async (req: Request, res: Response) => {
 
       property.name = name
       property.type = type as movininTypes.PropertyType
-      property.agency = new mongoose.Types.ObjectId(agency)
+      property.agency = sessionUser.type === movininTypes.UserType.Agency
+        ? sessionUser._id
+        : new mongoose.Types.ObjectId(agency)
       property.description = description
       property.available = available
       property.bedrooms = bedrooms

@@ -794,6 +794,30 @@ export const update = async (req: Request, res: Response) => {
         res.status(403).send('Forbidden: You cannot update booking information')
         return
       }
+
+      const targetPropertyId = typeof body.property === 'string' ? body.property : String(body.property || '')
+      if (!helper.isValidObjectId(targetPropertyId)) {
+        res.status(400).send(i18n.t('ERROR') + 'Invalid property')
+        return
+      }
+
+      const targetProperty = await Property.findById(targetPropertyId)
+      if (!targetProperty) {
+        res.status(400).send(i18n.t('ERROR') + 'Property not found')
+        return
+      }
+
+      if (sessionUser.type === movininTypes.UserType.Agency) {
+        if (targetProperty.agency?.toString() !== sessionUser._id.toString()) {
+          logger.error(`[booking.update] Unauthorized attempt by agency ${sessionUserId} to assign booking ${booking._id.toString()} to property ${targetProperty._id} owned by ${targetProperty.agency}`)
+          res.status(403).send('Forbidden: You cannot assign a booking to another agency\'s property')
+          return
+        }
+        body.agency = sessionUser._id.toString()
+      } else if (body.agency && body.agency.toString() !== targetProperty.agency?.toString()) {
+        res.status(400).send(i18n.t('ERROR') + 'Invalid agency')
+        return
+      }
       // end of security check
 
       const {
