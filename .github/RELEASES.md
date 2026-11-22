@@ -1,5 +1,17 @@
 # Releases
 
+## [Movin' In 8.0](https://github.com/aelassas/movinin/releases/tag/v8.0) – 2026-11-22
+
+* fix(security): enforce agency ownership checks on property creation, property updates, and booking updates
+
+### Assets
+- [movinin-8.0.apk](https://github.com/aelassas/movinin/releases/download/v8.0/movinin-8.0.apk) (114.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v8.0/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v8.0)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v8.0)
+
 ## [Movin' In 7.9](https://github.com/aelassas/movinin/releases/tag/v7.9) – 2026-11-20
 
 * fix(security): enforce agency ownership checks on booking creation and property image deletion by @kats1123 ([GHSA-v7r2-65q4-28j3](https://github.com/aelassas/movinin/security/advisories/GHSA-v7r2-65q4-28j3))
