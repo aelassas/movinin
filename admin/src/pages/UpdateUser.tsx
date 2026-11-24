@@ -299,6 +299,8 @@ const UpdateUser = () => {
         return
       }
 
+      setLoading(true)
+
       const language = UserService.getLanguage()
       const data: movininTypes.UpdateUserPayload = {
         _id: user._id as string,
@@ -334,6 +336,8 @@ const UpdateUser = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 

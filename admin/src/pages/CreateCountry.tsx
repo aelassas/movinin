@@ -16,6 +16,7 @@ import { strings } from '@/lang/create-country'
 import * as CountryService from '@/services/CountryService'
 import * as helper from '@/utils/helper'
 import env from '@/config/env.config'
+import Backdrop from '@/components/SimpleBackdrop'
 
 import '@/assets/css/create-country.css'
 
@@ -25,6 +26,7 @@ const CreateCountry = () => {
   const [visible, setVisible] = useState(false)
   const [names, setNames] = useState<movininTypes.CountryName[]>([])
   const [nameErrors, setNameErrors] = useState<boolean[]>([])
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -49,6 +51,8 @@ const CreateCountry = () => {
       setNameErrors(_nameErrors)
 
       if (isValid) {
+        setLoading(true)
+
         const status = await CountryService.create(names)
 
         if (status === 200) {
@@ -64,6 +68,8 @@ const CreateCountry = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -118,6 +124,8 @@ const CreateCountry = () => {
           </form>
         </Paper>
       </div>
+
+      {loading && <Backdrop text={commonStrings.PLEASE_WAIT} />}
     </Layout>
   )
 }

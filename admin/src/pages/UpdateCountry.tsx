@@ -96,6 +96,7 @@ const UpdateCountry = () => {
       setNameErrors(_nameErrors)
 
       if (isValid) {
+        setLoading(true)
         const status = await CountryService.update(country._id, names)
 
         if (status === 200) {
@@ -113,6 +114,8 @@ const UpdateCountry = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 

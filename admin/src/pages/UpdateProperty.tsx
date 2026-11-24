@@ -236,6 +236,8 @@ const UpdateProperty = () => {
         return
       }
 
+      setLoading(true)
+
       const data = {
         _id: property._id,
         name,
@@ -274,6 +276,8 @@ const UpdateProperty = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 

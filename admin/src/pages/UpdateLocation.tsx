@@ -106,6 +106,8 @@ const UpdateLocation = () => {
       setNameErrors(_nameErrors)
 
       if (isValid) {
+        setLoading(true)
+
         const payload: movininTypes.UpsertLocationPayload = {
           country: country._id,
           latitude: latitude ? Number(latitude) : undefined,
@@ -130,6 +132,8 @@ const UpdateLocation = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 

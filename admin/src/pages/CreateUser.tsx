@@ -273,6 +273,8 @@ const CreateUser = () => {
         return
       }
 
+      setLoading(true)
+
       const language = UserService.getLanguage()
       const agency = admin ? undefined : user._id
 
@@ -302,6 +304,8 @@ const CreateUser = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
