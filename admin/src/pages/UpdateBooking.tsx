@@ -182,6 +182,8 @@ const UpdateBooking = () => {
         return
       }
 
+      setLoading(true)
+
       const _booking: movininTypes.Booking = {
         _id: booking._id,
         agency: agency._id,
@@ -204,6 +206,8 @@ const UpdateBooking = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
