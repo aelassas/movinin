@@ -1,5 +1,19 @@
 # Releases
 
+## [Movin' In 8.1](https://github.com/aelassas/movinin/releases/tag/v8.1) – 2026-11-25
+
+* fix(security): enforce ownership checks on push tokens and email notifications
+* fix(admin): show saving overlay when creating or updating bookings, properties, locations, countries, and users
+* fix(admin,frontend): use fixed positioning for overlay backdrop
+
+### Assets
+- [movinin-8.1.apk](https://github.com/aelassas/movinin/releases/download/v8.1/movinin-8.1.apk) (114.97 MB)
+- [movinin-db.zip](https://github.com/aelassas/movinin/releases/download/v8.1/movinin-db.zip) (4.74 MB)
+
+### Source Code
+- [Source code (zip)](https://api.github.com/repos/aelassas/movinin/zipball/v8.1)
+- [Source code (tar)](https://api.github.com/repos/aelassas/movinin/tarball/v8.1)
+
 ## [Movin' In 8.0](https://github.com/aelassas/movinin/releases/tag/v8.0) – 2026-11-22
 
 * fix(security): enforce agency ownership checks on property creation, property updates, and booking updates
