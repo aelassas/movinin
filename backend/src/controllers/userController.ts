@@ -837,6 +837,16 @@ export const getPushToken = async (req: Request, res: Response) => {
       throw new Error('userId is not valid')
     }
 
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = sessionUserId ? await User.findById(sessionUserId) : null
+    if (!sessionUser || (sessionUser.type !== movininTypes.UserType.Admin && sessionUser._id.toString() !== userId)) {
+      logger.error(`[user.getPushToken] Unauthorized attempt to get push token for user ${userId} by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot access this push token')
+      return
+    }
+    // end of security check
+
     const pushToken = await PushToken.findOne({ user: userId })
     if (pushToken) {
       res.json(pushToken.token)
@@ -866,6 +876,16 @@ export const createPushToken = async (req: Request, res: Response) => {
     if (!helper.isValidObjectId(userId)) {
       throw new Error('userId is not valid')
     }
+
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = sessionUserId ? await User.findById(sessionUserId) : null
+    if (!sessionUser || (sessionUser.type !== movininTypes.UserType.Admin && sessionUser._id.toString() !== userId)) {
+      logger.error(`[user.createPushToken] Unauthorized attempt to create push token for user ${userId} by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot create a push token for another user')
+      return
+    }
+    // end of security check
 
     const exist = await PushToken.exists({ user: userId })
 
@@ -902,6 +922,16 @@ export const deletePushToken = async (req: Request, res: Response) => {
     if (!helper.isValidObjectId(userId)) {
       throw new Error('userId is not valid')
     }
+
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = sessionUserId ? await User.findById(sessionUserId) : null
+    if (!sessionUser || (sessionUser.type !== movininTypes.UserType.Admin && sessionUser._id.toString() !== userId)) {
+      logger.error(`[user.deletePushToken] Unauthorized attempt to delete push token for user ${userId} by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot delete another user\'s push token')
+      return
+    }
+    // end of security check
 
     await PushToken.deleteMany({ user: userId })
     res.sendStatus(200)
@@ -1192,6 +1222,16 @@ export const updateEmailNotifications = async (req: Request, res: Response) => {
       res.sendStatus(204)
       return
     }
+
+    // begin of security check
+    const sessionUserId = req.user?._id
+    const sessionUser = sessionUserId ? await User.findById(sessionUserId) : null
+    if (!sessionUser || (sessionUser.type !== movininTypes.UserType.Admin && !sessionUser._id.equals(user._id))) {
+      logger.error(`[user.updateEmailNotifications] Unauthorized attempt to update email notifications for user ${_id} by user ${sessionUserId}`)
+      res.status(403).send('Forbidden: You cannot update email notifications for another user')
+      return
+    }
+    // end of security check
 
     const { enableEmailNotifications } = body
     user.enableEmailNotifications = enableEmailNotifications

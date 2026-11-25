@@ -2256,3 +2256,127 @@ describe('POST /api/send-email', () => {
     expect(res.statusCode).toBe(500)
   })
 })
+
+describe('Push token and email notification authorization security', () => {
+  const agencyEmail = testHelper.GetRandomEmail()
+  const managedCustomerEmail = testHelper.GetRandomEmail()
+  const victimCustomerEmail = testHelper.GetRandomEmail()
+  const attackerCustomerEmail = testHelper.GetRandomEmail()
+  let agencyId: string
+  let managedCustomerId: string
+  let victimCustomerId: string
+  let attackerCustomerId: string
+
+  beforeAll(async () => {
+    agencyId = await testHelper.createAgency(agencyEmail, 'Push Auth Agency')
+
+    const managedCustomer = new User({
+      email: managedCustomerEmail,
+      fullName: 'Managed Customer',
+      language: testHelper.LANGUAGE,
+      type: movininTypes.UserType.User,
+      agency: agencyId,
+      verified: true,
+      active: true,
+    })
+    await managedCustomer.save()
+    managedCustomerId = managedCustomer._id.toString()
+
+    const victimCustomer = new User({
+      email: victimCustomerEmail,
+      fullName: 'Victim Customer',
+      language: testHelper.LANGUAGE,
+      type: movininTypes.UserType.User,
+      enableEmailNotifications: true,
+      verified: true,
+      active: true,
+    })
+    await victimCustomer.save()
+    victimCustomerId = victimCustomer._id.toString()
+
+    const attackerCustomer = new User({
+      email: attackerCustomerEmail,
+      fullName: 'Attacker Customer',
+      language: testHelper.LANGUAGE,
+      type: movininTypes.UserType.User,
+      verified: true,
+      active: true,
+    })
+    await attackerCustomer.save()
+    attackerCustomerId = attackerCustomer._id.toString()
+  })
+
+  afterAll(async () => {
+    await PushToken.deleteMany({ user: { $in: [managedCustomerId, victimCustomerId, attackerCustomerId] } })
+    await User.deleteMany({ _id: { $in: [managedCustomerId, victimCustomerId, attackerCustomerId] } })
+    await testHelper.deleteAgency(agencyId)
+  })
+
+  it('prevents cross-user and agency access to push token endpoints', async () => {
+    const victimToken = await testHelper.generateToken(victimCustomerId)
+    const attackerToken = await testHelper.generateToken(attackerCustomerId)
+    const agencyToken = await testHelper.generateToken(agencyId)
+    const victimPushToken = `ExponentPushToken[${nanoid()}]`
+
+    // Victim registers own push token
+    let res = await request(app)
+      .post(`/api/create-push-token/${victimCustomerId}/${victimPushToken}`)
+      .set(env.X_ACCESS_TOKEN, victimToken)
+    expect(res.statusCode).toBe(200)
+
+    // Attacker customer and unrelated agency cannot read, replace, or delete victim's push token
+    for (const callerToken of [attackerToken, agencyToken]) {
+      res = await request(app)
+        .get(`/api/push-token/${victimCustomerId}`)
+        .set(env.X_ACCESS_TOKEN, callerToken)
+      expect(res.statusCode).toBe(403)
+
+      res = await request(app)
+        .post(`/api/delete-push-token/${victimCustomerId}`)
+        .set(env.X_ACCESS_TOKEN, callerToken)
+      expect(res.statusCode).toBe(403)
+
+      res = await request(app)
+        .post(`/api/create-push-token/${victimCustomerId}/ExponentPushToken[attacker]`)
+        .set(env.X_ACCESS_TOKEN, callerToken)
+      expect(res.statusCode).toBe(403)
+    }
+
+    // Victim's token remains intact
+    res = await request(app)
+      .get(`/api/push-token/${victimCustomerId}`)
+      .set(env.X_ACCESS_TOKEN, victimToken)
+    expect(res.statusCode).toBe(200)
+    expect(res.body).toBe(victimPushToken)
+
+    // Victim can delete own push token
+    res = await request(app)
+      .post(`/api/delete-push-token/${victimCustomerId}`)
+      .set(env.X_ACCESS_TOKEN, victimToken)
+    expect(res.statusCode).toBe(200)
+    expect(await PushToken.findOne({ user: victimCustomerId })).toBeNull()
+  })
+
+  it('prevents users and agencys from changing another user email notifications setting', async () => {
+    const victimToken = await testHelper.generateToken(victimCustomerId)
+    const attackerToken = await testHelper.generateToken(attackerCustomerId)
+    const agencyToken = await testHelper.generateToken(agencyId)
+
+    for (const callerToken of [attackerToken, agencyToken]) {
+      const res = await request(app)
+        .post('/api/update-email-notifications')
+        .set(env.X_ACCESS_TOKEN, callerToken)
+        .send({ _id: victimCustomerId, enableEmailNotifications: false })
+      expect(res.statusCode).toBe(403)
+      expect((await User.findById(victimCustomerId))?.enableEmailNotifications).toBe(true)
+    }
+
+    // Victim can update own setting
+    const res = await request(app)
+      .post('/api/update-email-notifications')
+      .set(env.X_ACCESS_TOKEN, victimToken)
+      .send({ _id: victimCustomerId, enableEmailNotifications: false })
+    expect(res.statusCode).toBe(200)
+    expect((await User.findById(victimCustomerId))?.enableEmailNotifications).toBe(false)
+  })
+})
